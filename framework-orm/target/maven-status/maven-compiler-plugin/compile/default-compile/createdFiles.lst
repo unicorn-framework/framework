@@ -1,0 +1,9 @@
+org\unicron\framework\mybatis\config\MapperScanConfig.class
+org\unicron\framework\mybatis\config\RoutingStrategy.class
+org\unicron\framework\mybatis\config\UnicornTransactionTemplate.class
+org\unicron\framework\mybatis\config\DynamicRoutingDataSource.class
+org\unicron\framework\mybatis\config\DataSourceConfig.class
+org\unicron\framework\mybatis\generator\CodeGenerator.class
+org\unicron\framework\mybatis\config\MybatisConfig.class
+org\unicron\framework\mybatis\App.class
+org\unicron\framework\mybatis\config\DynamicRoutingContextHolder.class

@@ -1,0 +1,3 @@
+org\unicorn\framwork\oss\App.class
+org\unicorn\framwork\oss\config\OssBucketConfig$OssBucketConfigBuilder.class
+org\unicorn\framwork\oss\config\OssBucketConfig.class
