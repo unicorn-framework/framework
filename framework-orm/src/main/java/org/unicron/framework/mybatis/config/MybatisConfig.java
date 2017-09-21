@@ -13,12 +13,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
-/**
- * 
- * @author xiebin
- *
- */
-import org.springframework.transaction.support.TransactionTemplate;
 @Configuration
 @EnableTransactionManagement
 public class MybatisConfig implements  TransactionManagementConfigurer  {
@@ -50,8 +44,8 @@ public class MybatisConfig implements  TransactionManagementConfigurer  {
 	        return new DataSourceTransactionManager(dataSource);
 	    }
 	    @Bean
-	    public TransactionTemplate newTransactionTemplate() {
-	    	TransactionTemplate newTransactionTemplate=new TransactionTemplate();
+	    public UnicornTransactionTemplate newTransactionTemplate() {
+	    	UnicornTransactionTemplate newTransactionTemplate=new UnicornTransactionTemplate();
 	    	newTransactionTemplate.setTransactionManager(annotationDrivenTransactionManager());
 	    	newTransactionTemplate.setIsolationLevel(TransactionDefinition.ISOLATION_DEFAULT);
 	    	newTransactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -59,12 +53,12 @@ public class MybatisConfig implements  TransactionManagementConfigurer  {
 	    }
 	    
 	    @Bean
-	    public TransactionTemplate nestedTransactionTemplate() {
-	    	TransactionTemplate newTransactionTemplate=new TransactionTemplate();
-	    	newTransactionTemplate.setTransactionManager(annotationDrivenTransactionManager());
-	    	newTransactionTemplate.setIsolationLevel(TransactionDefinition.ISOLATION_DEFAULT);
-	    	newTransactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
-	        return newTransactionTemplate;
+	    public UnicornTransactionTemplate nestedTransactionTemplate() {
+	    	UnicornTransactionTemplate nestedTransactionTemplate=new UnicornTransactionTemplate();
+	    	nestedTransactionTemplate.setTransactionManager(annotationDrivenTransactionManager());
+	    	nestedTransactionTemplate.setIsolationLevel(TransactionDefinition.ISOLATION_DEFAULT);
+	    	nestedTransactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
+	        return nestedTransactionTemplate;
 	    }
 	    
 	
