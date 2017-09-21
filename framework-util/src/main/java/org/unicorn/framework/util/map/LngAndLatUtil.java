@@ -10,9 +10,9 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.unicorn.framework.util.map.CoodinateCovertorUtil.LngLat;
-
-import net.sf.json.JSONObject;
 
 /**
 *
@@ -22,11 +22,11 @@ import net.sf.json.JSONObject;
 public class LngAndLatUtil {
 
 	
-	public static Map<String,Double> getLngAndLat(String address){
+	public static Map<String,Double> getLngAndLat(String address) throws JSONException{
         Map<String,Double> map=new HashMap<String, Double>();
         String url = "http://api.map.baidu.com/geocoder/v2/?address="+address+"&output=json&ak=fvb2HN4OjKygCXA58exgW7FhtUmNlR1c";
         String json = loadJSON(url);
-        JSONObject obj = JSONObject.fromObject(json);
+        JSONObject obj = new JSONObject(json);
         if(obj.get("status").toString().equals("0")){
             double lng=obj.getJSONObject("result").getJSONObject("location").getDouble("lng");
             double lat=obj.getJSONObject("result").getJSONObject("location").getDouble("lat");
@@ -58,7 +58,7 @@ public class LngAndLatUtil {
         }
         return json.toString();
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws JSONException{
         /*把代码中的ak值（红色字部分）更改为你自己的ak值，在百度地图API中注册一下就有。
         调用方式：
         ak=F454f8a5efe5e577997931cc01de3974
