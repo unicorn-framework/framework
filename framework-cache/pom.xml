@@ -8,9 +8,7 @@
 		<artifactId>unicorn-framework</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.unicorn</groupId>
 	<artifactId>framework-cache</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<name>framework-cache</name>
 	<url>http://maven.apache.org</url>
 	<properties>
