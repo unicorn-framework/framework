@@ -15,12 +15,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.unicorn</groupId>
-			<artifactId>framework-core</artifactId>
-			<version>${module.version}</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>

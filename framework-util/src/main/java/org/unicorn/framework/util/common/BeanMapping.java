@@ -11,9 +11,6 @@ import org.dozer.Mapper;
 import org.dozer.MappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.unicorn.framework.core.SysCode;
-import org.unicorn.framework.core.exception.PendingException;
-import org.unicorn.framework.core.exception.UnicornRuntimeException;
 
 /**
  * 不同类型的bean对象属性映射转化
@@ -67,7 +64,8 @@ public class BeanMapping {
             return dstObject;
         } catch (MappingException e) {
             logger.error("对象映射出错, 原对象类型: {}, 目标对象类型: {}", source.getClass(), dstClass);
-             throw new UnicornRuntimeException(SysCode.OBJECT_TRANSF_ERROR.getCode(),"转换失败");
+             e.printStackTrace(); 
+             return null;
         }
     }
 
