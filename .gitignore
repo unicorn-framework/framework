@@ -1,7 +1,7 @@
 .classpath
 framework-base/target/
 framework-cache/target/
-framework-core/target/classes/META-INF/maven/org.unicorn/framework-core/pom.properties
+framework-core/target/
 framework-orm/target/
 framework-core/target/
 framework-util/target/
