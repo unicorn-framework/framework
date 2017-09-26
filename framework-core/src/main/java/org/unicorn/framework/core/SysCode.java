@@ -31,6 +31,12 @@ public class SysCode {
 	public static final ResBean PARAM_ERROR = new ResBean("99993", "参数不能为空");
 	/** 未找到对应的处理器 **/
 	public static final ResBean NOT_FOUND_HANDLER = new ResBean("99994", "未找到对应的处理器");
+	
+	/** 未找到对应的处理器 **/
+	public static final ResBean OUT_SYS_INTERFACE_INVOKE_ERROR = new ResBean("99995", "外部系统接口调用错误");
+	
+	/** 未找到对应的处理器 **/
+	public static final ResBean OUT_SYS_INTERFACE_IO_ERROR = new ResBean("99996", "外部系统接口服务IO异常");
     /**
      * 6开头的是缓存服务器异常
      */

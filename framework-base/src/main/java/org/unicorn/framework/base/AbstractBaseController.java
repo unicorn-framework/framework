@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 *@author xiebin
 *
 */
-public abstract class AbstractController {
+public abstract class AbstractBaseController {
 	
 	 private static final Logger log = LoggerFactory.getLogger("controller");
 	 
@@ -32,7 +32,7 @@ public abstract class AbstractController {
 		 log.error(message); 
 	 }
 	 public void error(String message,Object ...objs){
-		 log.error(message); 
+		 log.error(message,objs); 
 	 }
 
 

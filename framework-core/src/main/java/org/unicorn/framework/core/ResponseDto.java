@@ -61,5 +61,7 @@ public class ResponseDto<T> {
 		this.url = url;
 	}
      
-     
+     public boolean isSuccess(){
+    	 return this.getResCode().equals(SysCode.SUCCESS.getCode());
+     }
 }

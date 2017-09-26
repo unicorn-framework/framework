@@ -1,6 +1,7 @@
 package org.unicorn.framework.core.exception;
 
 import org.unicorn.framework.core.ResBean;
+import org.unicorn.framework.core.ResponseDto;
 
 /**
  * 
@@ -22,6 +23,11 @@ public class PendingException extends UnicornException {
 	public PendingException(ResBean resBean) {
 		super(resBean.getCode(), resBean.getInfo());
 		this.code = resBean.getCode();
+	}
+	
+	public PendingException(ResponseDto<?> responseDto) {
+		super(responseDto.getResCode(), responseDto.getResInfo());
+		this.code = responseDto.getResCode();
 	}
 
 	public PendingException(String code, String message, Class<?> clazz) {
