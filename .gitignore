@@ -8,3 +8,4 @@ framework-util/target/
 framwork-oss/target/
 framework-config-server/target/
 framwork-elastic-job/target/
+/bin/

@@ -32,7 +32,7 @@ public abstract class AbstractService {
 		 log.error(message); 
 	 }
 	 public void error(String message,Object ...objs){
-		 log.error(message); 
+		 log.error(message,objs); 
 	 }
 
 }

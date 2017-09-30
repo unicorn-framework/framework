@@ -157,6 +157,7 @@ public class CoreHttpUtils {
 			conn.setUseCaches(false);
 			// 设置请求方式
 			conn.setRequestMethod(method);
+			conn.setRequestProperty("User-Agent", "Mozilla/31.0 (compatible; MSIE 10.0; Windows NT; DigExt)"); //防止报403错误。  
 			// 设置超时时间
 			conn.setReadTimeout(timeout);
 			// 设置请求头部

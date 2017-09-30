@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.unicorn.framework.base.AbstractService;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
@@ -17,7 +18,7 @@ import org.unicorn.framework.core.exception.PendingException;
  *
  */
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends AbstractService {
 
 	@ExceptionHandler(value = Exception.class)
 	@ResponseBody
@@ -38,7 +39,7 @@ public class GlobalExceptionHandler {
 			resDto.setResCode(SysCode.SYS_FAIL.getCode());
 			resDto.setResInfo(SysCode.SYS_FAIL.getInfo());
 		}
-
+        error("异常信息:{}",resDto,e);
 		return resDto;
 	}
 
