@@ -11,7 +11,9 @@ import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -40,6 +42,12 @@ public class CoreHttpUtils {
 	public static final int DEFAULT_TIMEOUT = 5000;
 	
 	public static final String CHARSET_UTF8="UTF-8";
+	public static final List<Integer> HTTPSTATUS=new ArrayList<>();
+	static{
+		HTTPSTATUS.add(204);
+		HTTPSTATUS.add(404);
+		HTTPSTATUS.add(403);
+	}
 
 	public static String get(String requestUrl, Object body) throws IOException {
 		return CoreHttpUtils.get(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
@@ -197,7 +205,12 @@ public class CoreHttpUtils {
 			result = buffer.toString();
 
 		} catch (IOException ex) {
-			throw ex;
+			int status=conn.getResponseCode();
+			logger.error("接口调用失败:响应码：{}",conn.getResponseCode());
+			if(!HTTPSTATUS.contains(status)){
+				throw ex;
+			}
+			
 		} finally {
 			// 释放资源
 			try {
@@ -350,19 +363,6 @@ public class CoreHttpUtils {
 			String password = "guest";
 			return new PasswordAuthentication(username, password.toCharArray());
 		}
-	}
-	
-	public static void main(String[] args) throws IOException {
-		
-		
-		System.out.println(get("http://192.168.50.102:58180/hdcard-services/api/member/query_by_mobilenum?mobilenum=13315548798",null));
-		
-		Map<String,Object> obj = new HashMap<String,Object>();
-        obj.put("cellPhone", "15581622348");
-       System.out.println("请求信息："+new Gson().toJson(obj));
-		
-	//	System.out.println(put("http://192.168.50.102:58180/hdcard-services/api/member/regist?xid="+new Date().getTime()/1000+"&orgcode=WEB",new Gson().toJson(obj)));
-		
 	}
 	
 }
