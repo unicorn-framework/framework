@@ -1,0 +1,11 @@
+.classpath
+framework-base/target/
+framework-cache/target/
+framework-core/target/
+framework-orm/target/
+framework-core/target/
+framework-util/target/
+framwork-oss/target/
+framework-config-server/target/
+framwork-elastic-job/target/
+/bin/
