@@ -12,7 +12,6 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -206,7 +205,7 @@ public class CoreHttpUtils {
 
 		} catch (IOException ex) {
 			int status=conn.getResponseCode();
-			logger.error("接口调用失败:响应码：{}",conn.getResponseCode());
+			logger.error("接口调用失败:url==>{},响应码===>{}",requestUrl,conn.getResponseCode());
 			if(!HTTPSTATUS.contains(status)){
 				throw ex;
 			}
