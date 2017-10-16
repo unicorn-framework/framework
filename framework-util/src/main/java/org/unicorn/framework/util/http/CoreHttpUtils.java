@@ -186,6 +186,7 @@ public class CoreHttpUtils {
 				} else {
 					outputStr = new Gson().toJson(body);
 				}
+				logger.info("请求url+" + outputStr);
 				logger.info("请求参数+" + outputStr);
 				OutputStream outputStream = conn.getOutputStream();
 				outputStream.write(outputStr.getBytes(encoding));
@@ -205,7 +206,7 @@ public class CoreHttpUtils {
 
 		} catch (IOException ex) {
 			int status=conn.getResponseCode();
-			logger.error("接口调用失败:url==>{},响应码===>{}",requestUrl,conn.getResponseCode());
+ 			logger.error("接口调用失败:url==>{},响应码===>{}",requestUrl,conn.getResponseCode());
 			if(!HTTPSTATUS.contains(status)){
 				throw ex;
 			}
