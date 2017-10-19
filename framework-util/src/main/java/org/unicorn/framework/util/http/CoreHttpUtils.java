@@ -12,7 +12,6 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -46,7 +45,7 @@ public class CoreHttpUtils {
 	static{
 		HTTPSTATUS.add(204);
 		HTTPSTATUS.add(404);
-		HTTPSTATUS.add(403);
+//		HTTPSTATUS.add(403);
 	}
 
 	public static String get(String requestUrl, Object body) throws IOException {
@@ -187,6 +186,7 @@ public class CoreHttpUtils {
 				} else {
 					outputStr = new Gson().toJson(body);
 				}
+				logger.info("请求url+" + outputStr);
 				logger.info("请求参数+" + outputStr);
 				OutputStream outputStream = conn.getOutputStream();
 				outputStream.write(outputStr.getBytes(encoding));
@@ -206,7 +206,7 @@ public class CoreHttpUtils {
 
 		} catch (IOException ex) {
 			int status=conn.getResponseCode();
-			logger.error("接口调用失败:响应码：{}",conn.getResponseCode());
+ 			logger.error("接口调用失败:url==>{},响应码===>{}",requestUrl,conn.getResponseCode());
 			if(!HTTPSTATUS.contains(status)){
 				throw ex;
 			}
