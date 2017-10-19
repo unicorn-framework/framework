@@ -45,7 +45,7 @@ public class CoreHttpUtils {
 	static{
 		HTTPSTATUS.add(204);
 		HTTPSTATUS.add(404);
-		HTTPSTATUS.add(403);
+//		HTTPSTATUS.add(403);
 	}
 
 	public static String get(String requestUrl, Object body) throws IOException {
