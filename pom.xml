@@ -221,5 +221,6 @@
 
 		<module>framework-cache</module>
 		<module>framework-orm</module>
+		<module>framework-drools</module>
 	</modules>
 </project>

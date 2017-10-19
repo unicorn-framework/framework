@@ -9,3 +9,5 @@ framwork-oss/target/
 framework-config-server/target/
 framwork-elastic-job/target/
 /bin/
+framework-drools/.project
+framework-drools/.settings/
