@@ -8,11 +8,11 @@ import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 
 /**
- *
+ *处理适配器
  * @author xiebin
  *
  */
-public class HandlerFactroy  {
+public class HandlerAdapter  {
 
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
