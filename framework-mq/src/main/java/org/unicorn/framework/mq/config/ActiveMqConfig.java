@@ -20,7 +20,6 @@ public class ActiveMqConfig {
 	public  PooledConnectionFactory pooledConnectionFactory(){
 		PooledConnectionFactory pooledConnectionFactory=new PooledConnectionFactory();
 		pooledConnectionFactory.setConnectionFactory(activeMQConnectionFactory());
-		
 		return pooledConnectionFactory;
 	}
 	
