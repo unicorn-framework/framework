@@ -63,8 +63,8 @@ public class SysCode {
 	public static final ResBean PARA_NULL = new ResBean("80000", "数据库操作入参为空");
 
 	/**
-	 * rpc调用异常，服务不可用
+	 * jms调用异常，服务不可用
 	 */
-	public static final ResBean RPC_FAIL = new ResBean("70001", "rpc调用异常，服务不可用");
+	public static final ResBean JMS_FAIL = new ResBean("70001", "JMS调用异常，服务不可用");
 
 }

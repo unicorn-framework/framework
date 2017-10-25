@@ -1,5 +1,5 @@
 package org.unicorn.framework.annotion;
 
-public @interface LogAnnation {
+public @interface JmsCapAnnation {
 
 }
