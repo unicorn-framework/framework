@@ -30,12 +30,41 @@ public class MessageProduerService extends AbstractService implements IMessagePr
     }
 
 	@Override
-	public void sendMessage(DestinactionDomain destinactionDomain, String message) throws PendingException {
+	public void sendTextMessage(DestinactionDomain destinactionDomain, String message) throws PendingException {
 		 try{
 	        	jmsTemplate.convertAndSend(destinactionDomain.getDestinaction(), message);  
 	        }catch(Exception e){
 	        	SysCode.JMS_FAIL.throwException();
 	        }
 		
-	}  
+	} 
+	@Override
+	public void sendObjectMessage(DestinactionDomain destinactionDomain, Object message) throws PendingException {
+		 try{
+	        	jmsTemplate.convertAndSend(destinactionDomain.getDestinaction(), message);  
+	        }catch(Exception e){
+	        	SysCode.JMS_FAIL.throwException();
+	        }
+		
+	}
+
+	@Override
+	public void sendTextMessage(Destination destination, String message) throws PendingException {
+		 try{
+	        	jmsTemplate.convertAndSend(destination, message);  
+	        }catch(Exception e){
+	        	SysCode.JMS_FAIL.throwException();
+	        }
+		
+	}
+
+	@Override
+	public void sendObjectMessage(Destination destination, Object message) throws PendingException {
+		try{
+        	jmsTemplate.convertAndSend(destination, message);  
+        }catch(Exception e){
+        	SysCode.JMS_FAIL.throwException();
+        }
+		
+	} 
 }

@@ -12,7 +12,10 @@ import org.unicorn.framework.mq.domain.DestinactionDomain;
  */
 public interface IMessageProduerService {
 	
-    public void sendMessage(Destination destination, final String message) throws PendingException;
+    public void sendTextMessage(Destination destination, final String message) throws PendingException;
     
-    public void sendMessage(DestinactionDomain destinactionDomain, final String message) throws PendingException;
+    public void sendTextMessage(DestinactionDomain destinactionDomain, String message) throws PendingException;
+    
+    public void sendObjectMessage(DestinactionDomain destinactionDomain, Object message) throws PendingException ;
+    public void sendObjectMessage(Destination destination, Object message) throws PendingException ;
 }

@@ -24,5 +24,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.unicorn</groupId>
+			<artifactId>framework-util</artifactId>
+			<version>${module.version}</version>
+		</dependency>
 	</dependencies>
 </project>

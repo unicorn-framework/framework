@@ -1,12 +1,7 @@
-package org.unicorn.framework.mq.domain;
+package org.unicorn.framework.core.domain;
 
 import java.io.Serializable;
-import java.util.Map;
 
-import javax.jms.Destination;
-
-import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.activemq.command.ActiveMQTopic;
 import org.unicorn.framework.enums.jms.JmsCommunicationType;
 
 import lombok.AllArgsConstructor;
@@ -43,11 +38,4 @@ public class DestinactionDomain implements Serializable{
      * 消息体
      */
     private Object messageBody;
-    public Destination getDestinaction(){
-    	if(jmsCommunicationType.equals(JmsCommunicationType.P2P)){
-    		return new ActiveMQQueue(this.getDestinactionName());
-    	}else{
-    		return new ActiveMQTopic(this.getDestinactionName());
-    	}
-    }
 }
