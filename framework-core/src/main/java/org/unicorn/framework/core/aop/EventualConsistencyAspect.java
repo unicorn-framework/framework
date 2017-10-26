@@ -1,5 +1,5 @@
 
-package org.unicorn.framework.core.intercepter;
+package org.unicorn.framework.core.aop;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import com.google.gson.Gson;
  */
 @Aspect
 @Component
-public class EventualConsistencyIntereptor extends AbstractService {
+public class EventualConsistencyAspect extends AbstractService {
    @Value("${message.center.domain:http://localhost:8080}")
    private String messageCenterDomain;
    

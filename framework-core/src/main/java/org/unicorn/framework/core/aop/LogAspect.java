@@ -1,5 +1,5 @@
 
-package org.unicorn.framework.core.intercepter;
+package org.unicorn.framework.core.aop;
 
 import java.io.Serializable;
 
@@ -26,7 +26,7 @@ import com.google.gson.Gson;
  */
 @Aspect
 @Component
-public class LogIntereptor extends AbstractService {
+public class LogAspect extends AbstractService {
 
 	@Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
 	public void controllerPointCut() {

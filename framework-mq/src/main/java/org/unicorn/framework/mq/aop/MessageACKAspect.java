@@ -11,7 +11,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.base.AbstractService;
-import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.util.http.CoreHttpUtils;
 
 import com.google.gson.Gson;
@@ -23,7 +22,7 @@ import com.google.gson.Gson;
  */
 @Aspect
 @Component
-public class MessageACKIntereptor extends AbstractService {
+public class MessageACKAspect extends AbstractService {
    @Value("${message.center.domain:http://localhost:8080}")
    private String messageCenterDomain;
    
