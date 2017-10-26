@@ -103,7 +103,7 @@ public class EventualConsistencyAspect extends AbstractService {
 			return;
 		}
 		ResponseDto<?> dto=(ResponseDto<?>)ret;
-		Map<String,Object> messageMap= (Map<String, Object>) UnicornContext.getValue("messageInfo");
+		Map<String,Object> messageMap= UnicornContext.getValue("messageInfo");
 		//方法执行成功
 		if(dto.isSuccess()){
 			try {
@@ -114,7 +114,7 @@ public class EventualConsistencyAspect extends AbstractService {
 				messageMap.put("messageBody",gson.toJson(messageBody ));
 				CoreHttpUtils.post(messageCenterDomain+"/message/send",messageMap);
 				//修改消息状态为已发送
-				Map<String,Object> queryMessageMap= (Map<String, Object>) UnicornContext.getValue("messageInfo");
+				Map<String,Object> queryMessageMap= UnicornContext.getValue("messageInfo");
 				//设置消息状态为已发送
 				Map<String,Object> updateMap=new HashMap<>();
 				updateMap.put("status", 1);
@@ -134,10 +134,9 @@ public class EventualConsistencyAspect extends AbstractService {
 			
 		}
 	}
-	@SuppressWarnings("unchecked")
 	@AfterThrowing("eventualConsistencyPointCut()") //
 	public void throwException(JoinPoint  pjp) {
-		Map<String,Object> messageMap= (Map<String, Object>) UnicornContext.getValue("messageInfo");
+		Map<String,Object> messageMap=  UnicornContext.getValue("messageInfo");
 		try{
 			Map<String,Object> deleteMap=new HashMap<>();
 			deleteMap.put("id", messageMap.get("id"));

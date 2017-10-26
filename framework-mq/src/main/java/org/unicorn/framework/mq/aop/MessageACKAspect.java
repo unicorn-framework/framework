@@ -16,7 +16,7 @@ import org.unicorn.framework.util.http.CoreHttpUtils;
 import com.google.gson.Gson;
 
 /**
- * 
+ * 消息应答确认
  * @author xiebin
  *
  */
