@@ -1,7 +1,6 @@
 package org.unicorn.framework.mq.domain;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import javax.jms.Destination;
 
