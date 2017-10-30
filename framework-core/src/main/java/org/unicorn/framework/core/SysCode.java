@@ -24,6 +24,12 @@ public class SysCode {
 
 	/** SYS_FAIL,系统未知错误 */
 	public static final ResBean HTTP_RESPONSE_ERROR = new ResBean("90001", "http响应错误");
+	/** MICRO_SERVICE_ERROR  微服务调用失败*/
+	public static final ResBean MICRO_SERVICE_ERROR = new ResBean("90009", "微服务调用超时");
+	
+	
+	
+	
 	/** SYS_FAIL,系统未知错误 */
 	public static final ResBean CODEUNDEFINED = new ResBean("99999", "系统未知错误");
 	/** 空指针异常 **/

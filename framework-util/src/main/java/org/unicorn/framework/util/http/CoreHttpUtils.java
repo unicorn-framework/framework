@@ -186,7 +186,7 @@ public class CoreHttpUtils {
 				} else {
 					outputStr = new Gson().toJson(body);
 				}
-				logger.info("请求url+" + outputStr);
+				logger.info("请求url+" + requestUrl);
 				logger.info("请求参数+" + outputStr);
 				OutputStream outputStream = conn.getOutputStream();
 				outputStream.write(outputStr.getBytes(encoding));
