@@ -1,5 +1,6 @@
 package org.unicorn.framework.util.common;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
@@ -51,5 +52,9 @@ public class RandomUtils {
             }
         }
         return sb.toString();
+    }
+    
+    public static String getFlowNum(String businessPrefix){
+    	return businessPrefix+"_"+ DateUtils.format(new Date(), "yyyyMMddHHmmss")+"_"+getCode(10,0);
     }
 }

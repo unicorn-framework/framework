@@ -27,6 +27,8 @@ public class SysCode {
 	/** MICRO_SERVICE_ERROR  微服务调用失败*/
 	public static final ResBean MICRO_SERVICE_ERROR = new ResBean("90009", "微服务调用超时");
 	
+	/** DROOS_VALUE_ZERO_ERROR  规则计算值为0*/
+	public static final ResBean DROOS_VALUE_ZERO_ERROR = new ResBean("90010", "微服务调用超时");
 	
 	
 	
