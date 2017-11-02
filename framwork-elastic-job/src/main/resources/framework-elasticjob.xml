@@ -12,11 +12,11 @@
 
     <!--配置作业注册中心  120.27.212.130:2181 -->
 
-    <reg:zookeeper id="regCenter" serverLists="${zk.reg.center}" namespace="jobFrameWork" baseSleepTimeMilliseconds="1000" maxSleepTimeMilliseconds="3000" maxRetries="3" />
+    <reg:zookeeper id="regCenter" serverLists="${zk.reg.center}" namespace="${zk.job.namespace}" baseSleepTimeMilliseconds="1000" maxSleepTimeMilliseconds="3000" maxRetries="3"  />
 
     <!-- 配置作业A-->
 
-    <job:bean id="frameWorkDemo" class="org.unicorn.framework.elastic.job.DemoElasticJob" regCenter="regCenter" cron="${demo.time}"   shardingTotalCount="3" shardingItemParameters="0=A,1=B,2=C" />
+    <job:bean id="frameWorkDemo"   class="org.unicorn.framework.elastic.job.DemoElasticJob" regCenter="regCenter" cron="${demo.time}"   shardingTotalCount="3" shardingItemParameters="0=A,1=B,2=C" />
   
  
 </beans>
