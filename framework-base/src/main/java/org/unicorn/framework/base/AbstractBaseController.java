@@ -4,12 +4,16 @@ package org.unicorn.framework.base;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+
 /**
 *
 *@author xiebin
 *
 */
 public abstract class AbstractBaseController {
+	
+	public Gson gson=new Gson();
 	
 	 private static final Logger log = LoggerFactory.getLogger("controller");
 	 

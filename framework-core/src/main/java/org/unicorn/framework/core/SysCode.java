@@ -48,6 +48,12 @@ public class SysCode {
 
 	/** 未找到对应的处理器 **/
 	public static final ResBean OUT_SYS_INTERFACE_IO_ERROR = new ResBean("99996", "外部系统接口服务IO异常");
+	
+	/**加密失败 **/
+	public static final ResBean ENCRYPT_ERROR = new ResBean("99997", "加密失败");
+	
+	/**签名验证失败 **/
+	public static final ResBean SIGN_ERROR = new ResBean("99997", "签名验证失败");
 	/**
 	 * 6开头的是缓存服务器异常
 	 */
