@@ -4,6 +4,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.pool.PooledConnectionFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.core.JmsTemplate;
@@ -15,6 +16,7 @@ import org.unicorn.framework.base.AbstractService;
  *
  */
 @Configuration
+@ConditionalOnProperty(prefix = "spring.activemq", name = {"broker-url", "user","password"})
 public class ActiveMqConfig  extends AbstractService{
 	@Autowired
 	ActiveMqProperties  activeMqProperties;
