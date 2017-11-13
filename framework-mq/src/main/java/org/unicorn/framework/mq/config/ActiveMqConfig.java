@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.core.JmsTemplate;
 import org.unicorn.framework.base.AbstractService;
-import org.unicorn.framework.core.SysCode;
 
 /**
  * 
