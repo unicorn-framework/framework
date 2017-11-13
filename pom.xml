@@ -218,11 +218,10 @@
 		<module>framwork-oss</module>
 		<module>framework-config-server</module>
 
-
 		<module>framework-cache</module>
 		<module>framework-orm</module>
 		<module>framework-drools</module>
 		<module>framework-mq</module>
-    <module>framework-log</module>
+
   </modules>
 </project>
