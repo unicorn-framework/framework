@@ -114,13 +114,13 @@
 		<repository>
 			<id>releases</id>
 			<name>Team Nexus Repository</name>
-			<url>http://192.168.50.201:8082/nexus/content/repositories/releases/</url>
+			<url>http://220.168.26.90:8083/nexus/content/repositories/releases/</url>
 		</repository>
 
 		<repository>
 			<id>snapshots</id>
 			<name>Team Nexus Repository</name>
-			<url>http://192.168.50.201:8082/nexus/content/repositories/snapshots/</url>
+			<url>http://220.168.26.90:8083/nexus/content/repositories/snapshots/</url>
 		</repository>
 	</repositories>
 
@@ -130,12 +130,12 @@
 		<repository>
 			<id>releases</id>
 			<name>Gigold Nexus Repository</name>
-			<url>http://192.168.50.201:8082/nexus/content/repositories/releases/</url>
+			<url>http://220.168.26.90:8083/nexus/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
 			<name>Gigold Nexus Repository</name>
-			<url>http://192.168.50.201:8082/nexus/content/repositories/snapshots/</url>
+			<url>http://220.168.26.90:8083/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
