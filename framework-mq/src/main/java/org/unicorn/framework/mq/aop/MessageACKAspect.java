@@ -11,6 +11,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.base.AbstractService;
+import org.unicorn.framework.enums.jms.JmsACKStatus;
 import org.unicorn.framework.util.http.CoreHttpUtils;
 
 import com.google.gson.Gson;
@@ -26,8 +27,6 @@ public class MessageACKAspect extends AbstractService {
    @Value("${message.center.domain:http://localhost:8080}")
    private String messageCenterDomain;
    
-   private Gson gson=new Gson();
-	
 	@Pointcut("@annotation(org.springframework.jms.annotation.JmsListener)")
 	public void messageAckPointCut() {
 	}
@@ -42,11 +41,10 @@ public class MessageACKAspect extends AbstractService {
 	public void afterReturning(JoinPoint  pjp,Object ret) {
 		try {
 			Object args[]=pjp.getArgs();
-			System.out.println(args[0]);
 			Map<String,Object> messageBodyMap=gson.fromJson(args[0].toString(), Map.class);
 			//设置消息状态为已发送
 			Map<String,Object> updateMap=new HashMap<>();
-			updateMap.put("status", 2);
+			updateMap.put("status", JmsACKStatus.FINISH);
 			updateMap.put("id", messageBodyMap.get("messageId"));
 			
 			CoreHttpUtils.post(messageCenterDomain+"/message/update",updateMap);

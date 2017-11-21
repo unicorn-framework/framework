@@ -18,6 +18,7 @@ import org.unicorn.framework.base.AbstractService;
 import org.unicorn.framework.base.UnicornContext;
 import org.unicorn.framework.base.annotation.EventualConsistencyAnnotation;
 import org.unicorn.framework.core.ResponseDto;
+import org.unicorn.framework.enums.jms.JmsACKStatus;
 import org.unicorn.framework.util.http.CoreHttpUtils;
 
 import com.google.gson.Gson;
@@ -58,12 +59,14 @@ public class EventualConsistencyAspect extends AbstractService {
 			//设置消息发送的目的地名称
 			messageMap.put("destinactionName", jmsCapAnnation.destination());
 			//设置消息初始状态 0:待发送 1: 已发送 2:已完成
-			messageMap.put("status", 0);
+			messageMap.put("status", JmsACKStatus.SENDING);
 			//设置消息体
 			messageMap.put("messageBody", getMessageBody(pjp));
 			
 			String messageInfoStr=CoreHttpUtils.post(messageCenterDomain+"/message/save",messageMap);
+			System.out.println("messageInfoStr======"+messageInfoStr);
 			ResponseDto<Map<String,Object>> resDto=gson.fromJson(messageInfoStr, ResponseDto.class);
+			System.out.println("resDto======"+gson.toJson(resDto));
 			UnicornContext.setValue("messageInfo", resDto.getData());
 		} catch (Exception e) {
 			error("消息预保存失败",e);
@@ -99,16 +102,19 @@ public class EventualConsistencyAspect extends AbstractService {
 	public void afterReturning(JoinPoint  pjp,Object ret) {
 		MethodSignature signature = (MethodSignature) pjp.getSignature();
 		EventualConsistencyAnnotation jmsCapAnnation=signature.getMethod().getAnnotation(EventualConsistencyAnnotation.class);
+		info("jmsCapAnnation======"+jmsCapAnnation);
 		if(jmsCapAnnation==null){
 			return;
 		}
 		ResponseDto<?> dto=(ResponseDto<?>)ret;
 		Map<String,Object> messageMap= UnicornContext.getValue("messageInfo");
+		info("jmsCapAnnation111======"+jmsCapAnnation);
 		//方法执行成功
 		if(dto.isSuccess()){
 			try {
 				//发送消息
 				messageMap.put("jmsCommunicationType", jmsCapAnnation.jmsCommunicationType());
+				System.out.println("jmsCapAnnation2222======"+jmsCapAnnation);
 				Map<String,Object> messageBody =gson.fromJson(messageMap.get("messageBody").toString(),Map.class);
 				messageBody.put("messageId", messageMap.get("id"));
 				messageMap.put("messageBody",gson.toJson(messageBody ));
@@ -117,7 +123,7 @@ public class EventualConsistencyAspect extends AbstractService {
 				Map<String,Object> queryMessageMap= UnicornContext.getValue("messageInfo");
 				//设置消息状态为已发送
 				Map<String,Object> updateMap=new HashMap<>();
-				updateMap.put("status", 1);
+				updateMap.put("status", JmsACKStatus.SENDED);
 				updateMap.put("id", queryMessageMap.get("id"));
 				CoreHttpUtils.post(messageCenterDomain+"/message/update",updateMap);
 			} catch (Exception e) {
