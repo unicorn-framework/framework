@@ -21,8 +21,6 @@ import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.enums.jms.JmsACKStatus;
 import org.unicorn.framework.util.http.CoreHttpUtils;
 
-import com.google.gson.Gson;
-
 /**
  * 
  * @author xiebin
@@ -33,10 +31,8 @@ import com.google.gson.Gson;
 public class EventualConsistencyAspect extends AbstractService {
    @Value("${message.center.domain:http://localhost:8080}")
    private String messageCenterDomain;
-   
-   private Gson gson=new Gson();
-	
-	@Pointcut("@annotation(org.unicorn.framework.base.annotation.EventualConsistencyAnnotation)")
+
+   @Pointcut("@annotation(org.unicorn.framework.base.annotation.EventualConsistencyAnnotation)")
 	public void eventualConsistencyPointCut() {
 	}
     /**
@@ -102,19 +98,16 @@ public class EventualConsistencyAspect extends AbstractService {
 	public void afterReturning(JoinPoint  pjp,Object ret) {
 		MethodSignature signature = (MethodSignature) pjp.getSignature();
 		EventualConsistencyAnnotation jmsCapAnnation=signature.getMethod().getAnnotation(EventualConsistencyAnnotation.class);
-		info("jmsCapAnnation======"+jmsCapAnnation);
 		if(jmsCapAnnation==null){
 			return;
 		}
 		ResponseDto<?> dto=(ResponseDto<?>)ret;
 		Map<String,Object> messageMap= UnicornContext.getValue("messageInfo");
-		info("jmsCapAnnation111======"+jmsCapAnnation);
 		//方法执行成功
 		if(dto.isSuccess()){
 			try {
 				//发送消息
 				messageMap.put("jmsCommunicationType", jmsCapAnnation.jmsCommunicationType());
-				System.out.println("jmsCapAnnation2222======"+jmsCapAnnation);
 				Map<String,Object> messageBody =gson.fromJson(messageMap.get("messageBody").toString(),Map.class);
 				messageBody.put("messageId", messageMap.get("id"));
 				messageMap.put("messageBody",gson.toJson(messageBody ));
