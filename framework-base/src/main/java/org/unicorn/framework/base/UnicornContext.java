@@ -3,7 +3,7 @@ package org.unicorn.framework.base;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UnicornContext {
+public class UnicornContext{
 	private static final ThreadLocal<Map<Object, Object>> context = new ThreadLocal<Map<Object, Object>>() {  
         @Override  
         protected Map<Object, Object> initialValue() {  
@@ -17,26 +17,30 @@ public class UnicornContext {
      * @param key 
      * @return 
      */  
-    public static Object getValue(Object key) {  
+    @SuppressWarnings("unchecked")
+	public static <T>  T getValue(Object key) {  
         if(context.get() == null) {  
             return null;  
         }  
-        return context.get().get(key);  
+        return (T) context.get().get(key);  
     }  
   
+    
+    
     /** 
      * 存储 
      * @param key 
      * @param value 
      * @return 
      */  
-    public static Object setValue(Object key, Object value) {  
+    @SuppressWarnings("unchecked")
+	public static <T> T setValue(Object key, T value) {  
         Map<Object, Object> cacheMap = context.get();  
         if(cacheMap == null) {  
             cacheMap = new HashMap<Object, Object>();  
             context.set(cacheMap);  
         }  
-        return cacheMap.put(key, value);  
+        return (T) cacheMap.put(key, value);  
     }  
   
     /** 

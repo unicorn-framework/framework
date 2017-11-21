@@ -96,7 +96,7 @@ public class CoodinateCovertorUtil {
   
 //测试代码  
     public static void main(String[] args) {  
-        LngLat lngLat_bd = new LngLat(112.989746,28.19722);  
+        LngLat lngLat_bd = new LngLat(112.960195000 ,28.232849000);  
         System.out.println(bd_decrypt(lngLat_bd));  
         System.out.println(bd_encrypt(new LngLat(113.002878,28.028143)));  
     }  

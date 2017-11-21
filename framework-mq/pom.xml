@@ -8,26 +8,26 @@
 		<artifactId>unicorn-framework</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>framework-core</artifactId>
-	<name>framework-core</name>
+	<artifactId>framework-mq</artifactId>
+	<name>framework-mq</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
-	   <dependency>
-			<groupId>org.unicorn</groupId>
-			<artifactId>framework-base</artifactId>
-			<version>${module.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
+			<artifactId>spring-boot-starter-activemq</artifactId>
 		</dependency>
+
+		 <dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-pool</artifactId>
+		</dependency> 
 		
 		<dependency>
 			<groupId>org.unicorn</groupId>
-			<artifactId>framework-util</artifactId>
+			<artifactId>framework-core</artifactId>
 			<version>${module.version}</version>
 		</dependency>
 	</dependencies>

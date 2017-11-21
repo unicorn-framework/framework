@@ -24,6 +24,14 @@ public class SysCode {
 
 	/** SYS_FAIL,系统未知错误 */
 	public static final ResBean HTTP_RESPONSE_ERROR = new ResBean("90001", "http响应错误");
+	/** MICRO_SERVICE_ERROR  微服务调用失败*/
+	public static final ResBean MICRO_SERVICE_ERROR = new ResBean("90009", "微服务调用超时");
+	
+	/** DROOS_VALUE_ZERO_ERROR  规则计算值为0*/
+	public static final ResBean DROOS_VALUE_ZERO_ERROR = new ResBean("90010", "微服务调用超时");
+	
+	
+	
 	/** SYS_FAIL,系统未知错误 */
 	public static final ResBean CODEUNDEFINED = new ResBean("99999", "系统未知错误");
 	/** 空指针异常 **/
@@ -40,6 +48,12 @@ public class SysCode {
 
 	/** 未找到对应的处理器 **/
 	public static final ResBean OUT_SYS_INTERFACE_IO_ERROR = new ResBean("99996", "外部系统接口服务IO异常");
+	
+	/**加密失败 **/
+	public static final ResBean ENCRYPT_ERROR = new ResBean("99997", "加密失败");
+	
+	/**签名验证失败 **/
+	public static final ResBean SIGN_ERROR = new ResBean("99997", "签名验证失败");
 	/**
 	 * 6开头的是缓存服务器异常
 	 */
@@ -63,8 +77,8 @@ public class SysCode {
 	public static final ResBean PARA_NULL = new ResBean("80000", "数据库操作入参为空");
 
 	/**
-	 * rpc调用异常，服务不可用
+	 * jms调用异常，服务不可用
 	 */
-	public static final ResBean RPC_FAIL = new ResBean("70001", "rpc调用异常，服务不可用");
+	public static final ResBean JMS_FAIL = new ResBean("70001", "JMS调用异常，服务不可用");
 
 }

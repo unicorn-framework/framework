@@ -25,6 +25,7 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.unicorn.framework.util.json.JsonUtils;
 
 import com.google.gson.Gson;
 
@@ -34,106 +35,101 @@ import com.google.gson.Gson;
  * @author xiebin
  * @since 2017-08-25
  */
-public class CoreHttpUtils {
+public class UnicornCoreHttpUtils<T> {
 
-	private static final Logger logger = LoggerFactory.getLogger(CoreHttpUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(UnicornCoreHttpUtils.class);
 
 	public static final int DEFAULT_TIMEOUT = 5000;
 	
 	public static final String CHARSET_UTF8="UTF-8";
 	public static final List<Integer> HTTPSTATUS=new ArrayList<>();
-	static{
-		HTTPSTATUS.add(204);
-		HTTPSTATUS.add(404);
-//		HTTPSTATUS.add(403);
+
+	public static Map<String,Object> get(String requestUrl, Object body) throws IOException {
+		return UnicornCoreHttpUtils.get(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
 	}
 
-	public static String get(String requestUrl, Object body) throws IOException {
-		return CoreHttpUtils.get(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
+	public static Map<String,Object> get(String requestUrl, Object body, String contentType) throws IOException {
+		return UnicornCoreHttpUtils.get(requestUrl, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT);
 	}
 
-	public static String get(String requestUrl, Object body, String contentType) throws IOException {
-		return CoreHttpUtils.get(requestUrl, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT);
+	public static Map<String,Object> get(String requestUrl, Object body, String encoding, int timeout) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, null, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "GET");
 	}
 
-	public static String get(String requestUrl, Object body, String encoding, int timeout) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, null, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "GET");
+	public static Map<String,Object> get(String requestUrl, Object body, String contentType, String encoding, int timeout) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, null, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT, "GET");
 	}
 
-	public static String get(String requestUrl, Object body, String contentType, String encoding, int timeout) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, null, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT, "GET");
+	public static Map<String,Object> get(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "GET");
 	}
 
-	public static String get(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "GET");
+	public static Map<String,Object> post(String requestUrl, Object body) throws IOException {
+		return UnicornCoreHttpUtils.post(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
 	}
 
-	public static String post(String requestUrl, Object body) throws IOException {
-		return CoreHttpUtils.post(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
+	public static Map<String,Object> post(String requestUrl, Object body, String contentType) throws IOException {
+		return UnicornCoreHttpUtils.post(requestUrl, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT);
 	}
 
-	public static String post(String requestUrl, Object body, String contentType) throws IOException {
-		return CoreHttpUtils.post(requestUrl, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT);
+	public static Map<String,Object> post(String requestUrl, Object body, String encoding, int timeout) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, null, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "POST");
 	}
 
-	public static String post(String requestUrl, Object body, String encoding, int timeout) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, null, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "POST");
+	public static Map<String,Object> post(String requestUrl, Object body, String contentType, String encoding, int timeout) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, null, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT, "POST");
 	}
 
-	public static String post(String requestUrl, Object body, String contentType, String encoding, int timeout) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, null, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT, "POST");
+	public static Map<String,Object> post(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "POST");
 	}
 
-	public static String post(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "POST");
+	public static Map<String,Object> post(String requestUrl, Map<String, String> headerMap, Object body, int timeout) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, timeout, "POST");
 	}
 
-	public static String post(String requestUrl, Map<String, String> headerMap, Object body, int timeout) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, timeout, "POST");
+	public static Map<String,Object> put(String requestUrl, Object body) throws IOException {
+		return UnicornCoreHttpUtils.put(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
 	}
 
-	public static String put(String requestUrl, Object body) throws IOException {
-		return CoreHttpUtils.put(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
+	public static Map<String,Object> put(String requestUrl, Object body, String contentType) throws IOException {
+		return UnicornCoreHttpUtils.put(requestUrl, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT);
 	}
 
-	public static String put(String requestUrl, Object body, String contentType) throws IOException {
-		return CoreHttpUtils.put(requestUrl, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT);
+	public static Map<String,Object> put(String requestUrl, Object body, String encoding, int timeout) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, null, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "PUT");
 	}
 
-	public static String put(String requestUrl, Object body, String encoding, int timeout) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, null, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "PUT");
+	public static Map<String,Object> put(String requestUrl, Object body, String contentType, String encoding, int timeout) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, null, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT, "PUT");
 	}
 
-	public static String put(String requestUrl, Object body, String contentType, String encoding, int timeout) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, null, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT, "PUT");
+	public static Map<String,Object> put(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "PUT");
 	}
 
-	public static String put(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "PUT");
+	public static Map<String,Object> delete(String requestUrl, Object body) throws IOException {
+		return UnicornCoreHttpUtils.delete(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
 	}
 
-	public static String delete(String requestUrl, Object body) throws IOException {
-		return CoreHttpUtils.delete(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
+	public static Map<String,Object> delete(String requestUrl, Object body, String contentType) throws IOException {
+		return UnicornCoreHttpUtils.delete(requestUrl, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT);
 	}
 
-	public static String delete(String requestUrl, Object body, String contentType) throws IOException {
-		return CoreHttpUtils.delete(requestUrl, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT);
+	public static Map<String,Object> delete(String requestUrl, Object body, String encoding, int timeout) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, null, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "DELETE");
 	}
 
-	public static String delete(String requestUrl, Object body, String encoding, int timeout) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, null, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "DELETE");
+	public static Map<String,Object> delete(String requestUrl, Object body, String contentType, String encoding, int timeout) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, null, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT, "DELETE");
 	}
 
-	public static String delete(String requestUrl, Object body, String contentType, String encoding, int timeout) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, null, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT, "DELETE");
-	}
-
-	public static String delete(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
-		return CoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "DELETE");
+	public static Map<String,Object> delete(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "DELETE");
 	}
 
 
-	public static String callHttp(String requestUrl, Map<String, String> headerMap, Object body, String contentTypeString, String encoding, int timeout,
+	public static Map<String,Object>callHttp(String requestUrl, Map<String, String> headerMap, Object body, String contentTypeString, String encoding, int timeout,
 			String method) throws IOException {
 		Authenticator.setDefault(new MyAuthenticator());
 		String result = null;
@@ -240,7 +236,7 @@ public class CoreHttpUtils {
 
 			}
 		}
-		return result;
+		return JsonUtils.fromJson(result, Map.class );
 	}
 	
 	public static byte[] getInputStream(String requestUrl, Map<String, String> headerMap, Object body, String contentTypeString, String encoding, int timeout,
