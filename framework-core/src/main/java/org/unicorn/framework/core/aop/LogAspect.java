@@ -16,6 +16,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.unicorn.framework.base.AbstractService;
 import org.unicorn.framework.base.UnicornContext;
+import org.unicorn.framework.util.json.JsonUtils;
 
 import com.google.gson.Gson;
 
@@ -52,13 +53,13 @@ public class LogAspect extends AbstractService {
 		Object args[]=pjp.getArgs();
 		for(Object arg:args){
 			if(arg instanceof Serializable){
-				info("请求报文 :{} ", new Gson().toJson(arg));
+				info("请求报文 :{} ", JsonUtils.toJson(arg));
 			}
 		}
 	}
 	@AfterReturning(pointcut="controllerPointCut()",returning = "ret") //
 	public void afterReturning(Object ret) {
-		info("请求响应报文：{}", new Gson().toJson(ret));
+		info("请求响应报文：{}", JsonUtils.toJson(ret));
 		long costMs = System.currentTimeMillis() - Long.valueOf(UnicornContext.getValue("beginTime").toString());
 		info("请求结束，耗时：{}ms", costMs);
 	}

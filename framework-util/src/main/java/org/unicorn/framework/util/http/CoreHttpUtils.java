@@ -25,6 +25,7 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.unicorn.framework.util.json.JsonUtils;
 
 import com.google.gson.Gson;
 
@@ -184,7 +185,7 @@ public class CoreHttpUtils {
 				if (body instanceof String) {
 					outputStr = (String) body;
 				} else {
-					outputStr = new Gson().toJson(body);
+					outputStr = JsonUtils.toJson(body);
 				}
 				logger.info("请求url+" + requestUrl);
 				logger.info("请求参数+" + outputStr);
