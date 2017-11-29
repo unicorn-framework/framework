@@ -14,8 +14,6 @@ import org.unicorn.framework.base.AbstractService;
 import org.unicorn.framework.enums.jms.JmsACKStatus;
 import org.unicorn.framework.util.http.CoreHttpUtils;
 
-import com.google.gson.Gson;
-
 /**
  * 消息应答确认
  * @author xiebin

@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 /**
  * 
  * @author xiebin
@@ -23,21 +24,22 @@ public class DataSourceConfig {
 		// 配置多数据源
         Map<Object, Object> dsMap = new HashMap<Object, Object>(5);
         dsMap.put(RoutingStrategy.Master, busDataSource());
-        dsMap.put(RoutingStrategy.Slave, otherDataSource());
+        dsMap.put(RoutingStrategy.Slave, slaveDataSource());
         routingDataSource.setDefaultTargetDataSource( busDataSource());
         routingDataSource.setTargetDataSources(dsMap);
         return routingDataSource;
     }
 
 	@Bean
-    @ConfigurationProperties(prefix="spring.datasource")
+	@Primary
+    @ConfigurationProperties(prefix="spring.unicorn.datasource")
     public DataSource busDataSource() {
         return DataSourceBuilder.create().type(com.alibaba.druid.pool.DruidDataSource.class).build();
     }
 	@Bean
-    @ConfigurationProperties(prefix="spring.slave.datasource")
-    public DataSource otherDataSource() {
-        return DataSourceBuilder.create().build();
+    @ConfigurationProperties(prefix="spring.unicorn.slave.datasource")
+    public DataSource slaveDataSource() {
+		 return DataSourceBuilder.create().type(com.alibaba.druid.pool.DruidDataSource.class).build();
     }
 	
 	
