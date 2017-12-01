@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -129,6 +130,17 @@ public class JsonUtils {
 	public static <T> T fromJson(String json, Class<T> cls)
 			throws JsonParseException, JsonMappingException, IOException {
 		return objectMapper.readValue(json, cls);
+	}
+	
+	
+	public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {   
+		        return objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);   
+	}   
+	
+	public static <T> List<T> fromJsonList(String json, Class<T> cls)
+			throws JsonParseException, JsonMappingException, IOException {
+		JavaType javaType = getCollectionType(List.class, cls); 
+		return fromJson(json,javaType);
 	}
 
 	public static <T> T fromJson(String json, Type type) throws JsonParseException, JsonMappingException, IOException {
