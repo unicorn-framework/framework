@@ -1,4 +1,4 @@
-package org.unicorn.framework.mybatis.dto;
+package org.unicorn.framework.core.dto;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
  *
  */
 
-public abstract class AbstractPageDto implements Serializable{
+public abstract class AbstractRequestPageDto extends AbstractRequestDto{
 
 	/**
 	 * 
@@ -28,6 +28,4 @@ public abstract class AbstractPageDto implements Serializable{
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-    
-	public abstract void vaildatioinThrowException();
 }
