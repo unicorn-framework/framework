@@ -42,7 +42,7 @@ public class MessageACKAspect extends AbstractService {
 			Map<String,Object> messageBodyMap=gson.fromJson(args[0].toString(), Map.class);
 			//设置消息状态为已发送
 			Map<String,Object> updateMap=new HashMap<>();
-			updateMap.put("status", JmsACKStatus.FINISH);
+			updateMap.put("status", JmsACKStatus.FINISH.getCode());
 			updateMap.put("id", messageBodyMap.get("messageId"));
 			
 			CoreHttpUtils.post(messageCenterDomain+"/message/update",updateMap);

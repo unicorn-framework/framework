@@ -20,6 +20,7 @@ import org.unicorn.framework.base.annotation.EventualConsistencyAnnotation;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.enums.jms.JmsACKStatus;
 import org.unicorn.framework.util.http.CoreHttpUtils;
+import org.unicorn.framework.util.json.JsonUtils;
 
 /**
  * 
@@ -55,18 +56,15 @@ public class EventualConsistencyAspect extends AbstractService {
 			//设置消息发送的目的地名称
 			messageMap.put("destinactionName", jmsCapAnnation.destination());
 			//设置消息初始状态 0:待发送 1: 已发送 2:已完成
-			messageMap.put("status", JmsACKStatus.SENDING);
+			messageMap.put("status", JmsACKStatus.SENDING.getCode());
 			//设置消息体
 			messageMap.put("messageBody", getMessageBody(pjp));
-			
 			String messageInfoStr=CoreHttpUtils.post(messageCenterDomain+"/message/save",messageMap);
-			System.out.println("messageInfoStr======"+messageInfoStr);
+			info("消息预存储："+messageInfoStr);
 			ResponseDto<Map<String,Object>> resDto=gson.fromJson(messageInfoStr, ResponseDto.class);
-			System.out.println("resDto======"+gson.toJson(resDto));
 			UnicornContext.setValue("messageInfo", resDto.getData());
 		} catch (Exception e) {
 			error("消息预保存失败",e);
-			
 		}
 	}
 	
@@ -108,15 +106,15 @@ public class EventualConsistencyAspect extends AbstractService {
 			try {
 				//发送消息
 				messageMap.put("jmsCommunicationType", jmsCapAnnation.jmsCommunicationType());
-				Map<String,Object> messageBody =gson.fromJson(messageMap.get("messageBody").toString(),Map.class);
+				Map<String,Object> messageBody =JsonUtils.fromJson(messageMap.get("messageBody").toString(),Map.class);
 				messageBody.put("messageId", messageMap.get("id"));
-				messageMap.put("messageBody",gson.toJson(messageBody ));
+				messageMap.put("messageBody",JsonUtils.toJson(messageBody ));
 				CoreHttpUtils.post(messageCenterDomain+"/message/send",messageMap);
 				//修改消息状态为已发送
 				Map<String,Object> queryMessageMap= UnicornContext.getValue("messageInfo");
 				//设置消息状态为已发送
 				Map<String,Object> updateMap=new HashMap<>();
-				updateMap.put("status", JmsACKStatus.SENDED);
+				updateMap.put("status", JmsACKStatus.SENDED.getCode());
 				updateMap.put("id", queryMessageMap.get("id"));
 				CoreHttpUtils.post(messageCenterDomain+"/message/update",updateMap);
 			} catch (Exception e) {

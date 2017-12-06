@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.unicorn.framework.enums.jms.JmsCommunicationType;
 
 /**最终一致性保障注解

@@ -63,6 +63,7 @@ public class MessageProduerService extends AbstractService implements IMessagePr
 		try{
         	jmsTemplate.convertAndSend(destination, message);  
         }catch(Exception e){
+        	error("消息发送失败:",e);
         	SysCode.JMS_FAIL.throwException();
         }
 		
