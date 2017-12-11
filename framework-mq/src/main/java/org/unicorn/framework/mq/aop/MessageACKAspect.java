@@ -44,7 +44,6 @@ public class MessageACKAspect extends AbstractService {
 			Map<String,Object> updateMap=new HashMap<>();
 			updateMap.put("status", JmsACKStatus.FINISH.getCode());
 			updateMap.put("id", messageBodyMap.get("messageId"));
-			
 			CoreHttpUtils.post(messageCenterDomain+"/message/update",updateMap);
 		} catch (Exception e) {
 			error("消息应答",e);

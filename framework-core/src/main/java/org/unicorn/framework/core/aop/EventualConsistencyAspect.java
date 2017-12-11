@@ -40,7 +40,6 @@ public class EventualConsistencyAspect extends AbstractService {
      * 方法调用之前 调用消息服务生成待发消息记录
      * @param pjp
      */
-	@SuppressWarnings("unchecked")
 	@Before("eventualConsistencyPointCut()") //
 	public void before(JoinPoint  pjp) {
 		MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -49,23 +48,34 @@ public class EventualConsistencyAspect extends AbstractService {
 			return;
 		}
 		try {
-			//预保存消息
-			Map<String,Object> messageMap=new HashMap<>();
-			//设置消息通讯类型            
-			messageMap.put("jmsCommunicationType", jmsCapAnnation.jmsCommunicationType().getCode());
-			//设置消息发送的目的地名称
-			messageMap.put("destinactionName", jmsCapAnnation.destination());
-			//设置消息初始状态 0:待发送 1: 已发送 2:已完成
-			messageMap.put("status", JmsACKStatus.SENDING.getCode());
-			//设置消息体
-			messageMap.put("messageBody", getMessageBody(pjp));
-			String messageInfoStr=CoreHttpUtils.post(messageCenterDomain+"/message/save",messageMap);
-			info("消息预存储："+messageInfoStr);
-			ResponseDto<Map<String,Object>> resDto=gson.fromJson(messageInfoStr, ResponseDto.class);
-			UnicornContext.setValue("messageInfo", resDto.getData());
+			preSaveMessage(jmsCapAnnation,pjp);
 		} catch (Exception e) {
 			error("消息预保存失败",e);
 		}
+	}
+	
+	
+	/**
+	 * 消息预保存
+	 * @param jmsCapAnnation
+	 * @param pjp
+	 */
+	@SuppressWarnings("unchecked")
+	private void preSaveMessage(EventualConsistencyAnnotation jmsCapAnnation,JoinPoint  pjp) throws Exception{
+		//预保存消息
+		Map<String,Object> messageMap=new HashMap<>();
+		//设置消息通讯类型            
+		messageMap.put("jmsCommunicationType", jmsCapAnnation.jmsCommunicationType().getCode());
+		//设置消息发送的目的地名称
+		messageMap.put("destinactionName", jmsCapAnnation.destination());
+		//设置消息初始状态 0:待发送 1: 已发送 2:已完成
+		messageMap.put("status", JmsACKStatus.SENDING.getCode());
+		//设置消息体
+		messageMap.put("messageBody", getMessageBody(pjp));
+		String messageInfoStr=CoreHttpUtils.post(messageCenterDomain+"/message/save",messageMap);
+		info("消息预存储："+messageInfoStr);
+		ResponseDto<Map<String,Object>> resDto=gson.fromJson(messageInfoStr, ResponseDto.class);
+		UnicornContext.setValue("messageInfo", resDto.getData());
 	}
 	
 	/**
@@ -91,7 +101,6 @@ public class EventualConsistencyAspect extends AbstractService {
 	 * @param pjp
 	 * @param ret
 	 */
-	@SuppressWarnings("unchecked")
 	@AfterReturning(pointcut="eventualConsistencyPointCut()",returning = "ret") 
 	public void afterReturning(JoinPoint  pjp,Object ret) {
 		MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -100,38 +109,58 @@ public class EventualConsistencyAspect extends AbstractService {
 			return;
 		}
 		ResponseDto<?> dto=(ResponseDto<?>)ret;
-		Map<String,Object> messageMap= UnicornContext.getValue("messageInfo");
 		//方法执行成功
 		if(dto.isSuccess()){
-			try {
-				//发送消息
-				messageMap.put("jmsCommunicationType", jmsCapAnnation.jmsCommunicationType());
-				Map<String,Object> messageBody =JsonUtils.fromJson(messageMap.get("messageBody").toString(),Map.class);
-				messageBody.put("messageId", messageMap.get("id"));
-				messageMap.put("messageBody",JsonUtils.toJson(messageBody ));
-				CoreHttpUtils.post(messageCenterDomain+"/message/send",messageMap);
-				//修改消息状态为已发送
-				Map<String,Object> queryMessageMap= UnicornContext.getValue("messageInfo");
-				//设置消息状态为已发送
-				Map<String,Object> updateMap=new HashMap<>();
-				updateMap.put("status", JmsACKStatus.SENDED.getCode());
-				updateMap.put("id", queryMessageMap.get("id"));
-				CoreHttpUtils.post(messageCenterDomain+"/message/update",updateMap);
-			} catch (Exception e) {
-				error("消息发送失败",e);
-			}
+			handlerSucess(jmsCapAnnation);
 		}else{
-			try{
-				Map<String,Object> deleteMap=new HashMap<>();
-				deleteMap.put("id", messageMap.get("id"));
-				CoreHttpUtils.post(messageCenterDomain+"/message/delete",deleteMap);
-			}catch(Exception e){
-				error("删除消息失败",e);
-			}
-			
+			handlerFail(jmsCapAnnation);
 		}
 	}
-	@AfterThrowing("eventualConsistencyPointCut()") //
+	
+	/**
+	 * 被拦截方法执行失败
+	 * @param jmsCapAnnation
+	 */
+	private void handlerFail(EventualConsistencyAnnotation jmsCapAnnation){
+		Map<String,Object> messageMap= UnicornContext.getValue("messageInfo");
+		try{
+			Map<String,Object> deleteMap=new HashMap<>();
+			deleteMap.put("id", messageMap.get("id"));
+			CoreHttpUtils.post(messageCenterDomain+"/message/delete",deleteMap);
+		}catch(Exception e){
+			error("删除消息失败",e);
+		}
+	}
+	/**
+	 * 被拦截方法执行成功
+	 * @param jmsCapAnnation
+	 */
+	@SuppressWarnings("unchecked")
+	private void handlerSucess(EventualConsistencyAnnotation jmsCapAnnation){
+		Map<String,Object> messageMap= UnicornContext.getValue("messageInfo");
+		try {
+			//发送消息
+			messageMap.put("jmsCommunicationType", jmsCapAnnation.jmsCommunicationType());
+			Map<String,Object> messageBody =JsonUtils.fromJson(messageMap.get("messageBody").toString(),Map.class);
+			messageBody.put("messageId", messageMap.get("id"));
+			messageMap.put("messageBody",JsonUtils.toJson(messageBody ));
+			CoreHttpUtils.post(messageCenterDomain+"/message/send",messageMap);
+			//修改消息状态为已发送
+			Map<String,Object> queryMessageMap= UnicornContext.getValue("messageInfo");
+			//设置消息状态为已发送
+			Map<String,Object> updateMap=new HashMap<>();
+			updateMap.put("status", JmsACKStatus.SENDED.getCode());
+			updateMap.put("id", queryMessageMap.get("id"));
+			CoreHttpUtils.post(messageCenterDomain+"/message/update",updateMap);
+		} catch (Exception e) {
+			error("消息发送失败",e);
+		}
+	}
+	/**
+	 * 被拦截方法执行抛异常 
+	 * @param pjp
+	 */
+	@AfterThrowing("eventualConsistencyPointCut()") 
 	public void throwException(JoinPoint  pjp) {
 		Map<String,Object> messageMap=  UnicornContext.getValue("messageInfo");
 		try{

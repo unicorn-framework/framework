@@ -42,6 +42,8 @@ public class DestinactionDomain implements Serializable{
      * 消息体
      */
     private String messageBody;
+    
+    
     public Destination getDestinaction(){
     	if(jmsCommunicationType.equals(JmsCommunicationType.P2P)){
     		return new ActiveMQQueue(this.getDestinactionName());
