@@ -83,7 +83,7 @@ public class EventualConsistencyAspect extends AbstractService {
 				paramMap.put(paramtersNames[i], args[i]);
 			}
 		}
-		return gson.toJson(paramMap);
+		return JsonUtils.toJson(paramMap);
 	}
 	
 	/**
