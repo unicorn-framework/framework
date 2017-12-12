@@ -11,8 +11,7 @@ import org.unicorn.framework.base.AbstractService;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
-
-import com.google.gson.Gson;
+import org.unicorn.framework.util.json.JsonUtils;
 
 /**
  * 
@@ -41,7 +40,7 @@ public class GlobalExceptionHandler extends AbstractService {
 			resDto.setResCode(SysCode.SYS_FAIL.getCode());
 			resDto.setResInfo(SysCode.SYS_FAIL.getInfo());
 		}
-        error("异常信息:{}",new Gson().toJson(resDto),e);
+        error("异常信息:{}",JsonUtils.toJson(resDto),e);
 		return resDto;
 	}
 
