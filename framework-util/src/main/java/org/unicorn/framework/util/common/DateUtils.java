@@ -510,8 +510,8 @@ public class DateUtils {
      *
      * @return
      */
-    public static int unixTime() {
-        return (int) (System.currentTimeMillis() / 1000);
+    public static Long unixTime() {
+        return (Long) (System.currentTimeMillis() / 1000);
     }
 
     /**

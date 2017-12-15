@@ -68,12 +68,11 @@ public class HttpClient {
 
             response = httpClient.execute(httpPost);
             StatusLine statusLine = response.getStatusLine();
-            logger.info(String.format("request url: %s, params: %s, response status: %s",
-                    url, JsonUtils.toJson(params), statusLine.getStatusCode()));
+            logger.info(String.format("request url: %s, response status: %s",
+                    url, statusLine.getStatusCode()));
 
             HttpEntity entity = response.getEntity();
             result = EntityUtils.toString(entity, Consts.UTF_8);
-            logger.info(String.format("response data: %s", result));
 
             return result == null ? "" : result.trim();
 
