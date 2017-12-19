@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.unicorn.framework.mq.config.MQBaseAutoConfiguration,\
+org.unicorn.framework.mq.config.MQConsumerAutoConfiguration,\
+org.unicorn.framework.mq.config.MQProducerAutoConfiguration
