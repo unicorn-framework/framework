@@ -84,6 +84,7 @@ public class CoreHttpUtils {
 	public static String post(String requestUrl, Object body, String contentType, String encoding, int timeout) throws IOException {
 		return CoreHttpUtils.callHttp(requestUrl, null, body, contentType, CHARSET_UTF8, DEFAULT_TIMEOUT, "POST");
 	}
+	
 
 	public static String post(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
 		return CoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "POST");
@@ -92,6 +93,8 @@ public class CoreHttpUtils {
 	public static String post(String requestUrl, Map<String, String> headerMap, Object body, int timeout) throws IOException {
 		return CoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, timeout, "POST");
 	}
+	
+	
 
 	public static String put(String requestUrl, Object body) throws IOException {
 		return CoreHttpUtils.put(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);

@@ -10,7 +10,7 @@ public enum JmsACKStatus {
 	SENDED(1,"已发送"),
 	FINISH(2,"完成")
 	;
-	
+	 
 	
 	
 	

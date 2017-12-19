@@ -504,5 +504,29 @@ public class DateUtils {
 		}
 
 	}
+	
+	 /**
+     * 返回当前时间的秒数
+     *
+     * @return
+     */
+    public static Long unixTime() {
+        return (Long) (System.currentTimeMillis() / 1000);
+    }
+
+    /**
+     * 把秒转换为Date
+     *
+     * @param seconds
+     * @return
+     */
+    public static Date fromUnixTime(Integer seconds) {
+        return new Date(seconds * 1000L);
+    }
+
+    public static Date fromUnixTime(Long seconds) {
+        return new Date(seconds * 1000L);
+    }
+	
 
 }
