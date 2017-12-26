@@ -2,18 +2,18 @@ package org.framework.redis;
 
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.unicorn.framework.cache.Application;
+import org.unicorn.framework.Application;
 import org.unicorn.framework.cache.cache.CacheService;
 import org.unicorn.framework.cache.vo.User;
 
 import com.google.gson.Gson;
 
-import junit.framework.Assert;
 
 /**
  * 
@@ -31,10 +31,7 @@ public class TestRedis
 
 	@Test
 	public void test() throws Exception {
-//		stringRedisTemplate.opsForValue().set("aaa", "111");
-		
 		cacheService.put("aaa", "1111",1,TimeUnit.SECONDS, "test");
-		
 		Assert.assertEquals("1111", cacheService.get("aaa","test"));
 	}
 

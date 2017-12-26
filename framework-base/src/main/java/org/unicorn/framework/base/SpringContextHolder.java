@@ -10,7 +10,6 @@ package org.unicorn.framework.base;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 /**
  * Title: SpringContextHolder<br/>
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author xiebin
  *
  */
-@Component
+
 public class SpringContextHolder implements ApplicationContextAware {
     
     private static ApplicationContext applicationContext;

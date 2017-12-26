@@ -1,4 +1,4 @@
-package org.unicorn.framework.cache;
+package org.unicorn.framework;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
