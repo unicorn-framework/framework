@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 */
 @RestController
 @RequestMapping("/redis")
-public class SessionController {
+public class SessionTestController {
 	@RequestMapping("/uid/{userName}")
     String set(HttpSession session,@PathVariable("userName") String userName) {
         UUID uid = (UUID) session.getAttribute("uid");

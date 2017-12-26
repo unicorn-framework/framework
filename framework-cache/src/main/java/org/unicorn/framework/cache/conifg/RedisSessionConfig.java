@@ -8,6 +8,7 @@ import org.springframework.session.web.http.CookieHttpSessionStrategy;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
+import org.unicorn.framework.cache.cookies.CustomerCookieSerializer;
 import org.unicorn.framework.cache.session.CookieAndHeadHttpSessionStrategy;
 
 /**
@@ -27,7 +28,8 @@ public class RedisSessionConfig {
 		headerStrategy.setHeaderName("sid");
 		//cookie
 		CookieHttpSessionStrategy cookieStrategy=new CookieHttpSessionStrategy();
-	    DefaultCookieSerializer cookieSerializer=new DefaultCookieSerializer();
+		CustomerCookieSerializer cookieSerializer=new CustomerCookieSerializer();
+		cookieSerializer.setCookiePath("/");
 	    cookieSerializer.setCookieName("JBGSESSIONID");//cookies名称
 	    cookieStrategy.setCookieSerializer(cookieSerializer);
 	    //添加session策略
