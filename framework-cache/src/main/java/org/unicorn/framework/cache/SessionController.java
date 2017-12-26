@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/redis")
 public class SessionController {
-	@RequestMapping("/uid")
-    String set(HttpSession session) {
+	@RequestMapping("/uid/{userName}")
+    String set(HttpSession session,@PathVariable("userName") String userName) {
         UUID uid = (UUID) session.getAttribute("uid");
         if (uid == null) {
             uid = UUID.randomUUID();
         }
         session.setAttribute("uid", uid);
-        session.setAttribute("userName", "zs");
+        session.setAttribute("userName", userName);
         System.out.println(session.getAttribute("userName"));
         return session.getId();
     }
