@@ -28,8 +28,9 @@ public class RedisSessionConfig {
 		headerStrategy.setHeaderName("sid");
 		//cookie
 		CookieHttpSessionStrategy cookieStrategy=new CookieHttpSessionStrategy();
-		CustomerCookieSerializer cookieSerializer=new CustomerCookieSerializer();
-		cookieSerializer.setCookiePath("/");
+//		CustomerCookieSerializer cookieSerializer=new CustomerCookieSerializer();
+		DefaultCookieSerializer cookieSerializer=new DefaultCookieSerializer();
+//		cookieSerializer.setCookiePath("/");
 	    cookieSerializer.setCookieName("JBGSESSIONID");//cookies名称
 	    cookieStrategy.setCookieSerializer(cookieSerializer);
 	    //添加session策略
