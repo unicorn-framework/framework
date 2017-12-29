@@ -12,6 +12,17 @@ public class UnicornContext{
   
     };  
   
+    
+    public static RequestInfo  getRequestInfo(){
+    	RequestInfo requestInfo=null;
+    	Object obj=getValue("requestInfo");
+    	if(obj==null){
+    		requestInfo=RequestInfo.builder().build();
+    	}else{
+    		requestInfo=(RequestInfo)obj;
+    	}
+    	return requestInfo;
+    }
     /** 
      * 根据key获取值 
      * @param key 
