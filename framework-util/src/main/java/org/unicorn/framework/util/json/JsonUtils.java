@@ -133,12 +133,19 @@ public class JsonUtils {
 	}
 	
 	
+	public static <T,S> T fromJson(String json, Class<T> containCls,Class<S> clazz)throws JsonParseException, JsonMappingException, IOException {
+		
+		JavaType javaType = getCollectionType(containCls, clazz); 
+		return objectMapper.readValue(json, javaType);
+	}
+	
+	
+	
 	public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {   
 		        return objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);   
 	}   
 	
-	public static <T> List<T> fromJsonList(String json, Class<T> cls)
-			throws JsonParseException, JsonMappingException, IOException {
+	public static <T> List<T> fromJsonList(String json, Class<T> cls)throws JsonParseException, JsonMappingException, IOException {
 		JavaType javaType = getCollectionType(List.class, cls); 
 		return fromJson(json,javaType);
 	}
