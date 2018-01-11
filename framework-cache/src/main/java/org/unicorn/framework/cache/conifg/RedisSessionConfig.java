@@ -1,8 +1,13 @@
 
 package org.unicorn.framework.cache.conifg;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieHttpSessionStrategy;
 import org.springframework.session.web.http.DefaultCookieSerializer;
@@ -16,20 +21,34 @@ import org.unicorn.framework.cache.session.CookieAndHeadHttpSessionStrategy;
 *
 */
 @Configuration
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 86400*30)
+@EnableRedisHttpSession
+@Import(SessionPropertiesConfig.class)
 public class RedisSessionConfig {
+	
+	@Autowired
+	private SessionPropertiesConfig sessionPropertiesConfig;
+	
+	@Autowired
+    private RedisOperationsSessionRepository sessionRepository;
+
+    @PostConstruct
+    private void afterPropertiesSet() {
+        sessionRepository.setDefaultMaxInactiveInterval(sessionPropertiesConfig.getMaxInactiveIntervalInSeconds());
+        sessionRepository.setRedisKeyNamespace(sessionPropertiesConfig.getNamespace());
+    }
+	
 	@Bean
 	public HttpSessionStrategy cookieAndHeadHttpSessionStrategy(){
 		
 		CookieAndHeadHttpSessionStrategy strategy=new CookieAndHeadHttpSessionStrategy();
 		//header
 		HeaderHttpSessionStrategy headerStrategy=new HeaderHttpSessionStrategy();
-		headerStrategy.setHeaderName("sid");
+		headerStrategy.setHeaderName(sessionPropertiesConfig.getHeadName());
 		//cookie
 		CookieHttpSessionStrategy cookieStrategy=new CookieHttpSessionStrategy();
 		DefaultCookieSerializer cookieSerializer=new DefaultCookieSerializer();
 //		cookieSerializer.setCookiePath("/");
-	    cookieSerializer.setCookieName("JBGSESSIONID");//cookies名称
+	    cookieSerializer.setCookieName(sessionPropertiesConfig.getCookieName());//cookies名称
 	    cookieStrategy.setCookieSerializer(cookieSerializer);
 	    //添加session策略
 	    strategy.addHttpSessionStrategy(headerStrategy);
