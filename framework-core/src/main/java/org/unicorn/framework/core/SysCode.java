@@ -19,12 +19,6 @@ public class SysCode {
 
 	/** 成功 */
 	public static final ResBean SUCCESS = new ResBean("00000", "成功");
-	/**
-	 * 
-	 */
-	public static final ResBean SESSION_ERROR = new ResBean("40001", "session失效");
-	
-	
 	/** SYS_FAIL,系统未知错误 */
 	public static final ResBean SYS_FAIL = new ResBean("90000", "系统未知错误");
 
