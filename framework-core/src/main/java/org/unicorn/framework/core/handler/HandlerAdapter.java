@@ -1,7 +1,10 @@
 
 package org.unicorn.framework.core.handler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.unicorn.framework.base.SpringContextHolder;
 import org.unicorn.framework.core.SysCode;
@@ -27,4 +30,18 @@ public class HandlerAdapter  {
 		throw new PendingException(SysCode.NOT_FOUND_HANDLER,"没有找到对应的处理类");
 	}
 
+	
+	public static <T> List<T> getHandler(Class<T> clazz) throws PendingException{
+		List<T> list=new ArrayList<>();
+		Map<String, T> beanMaps=SpringContextHolder.getApplicationContext().getBeansOfType(clazz);
+		if(beanMaps==null||beanMaps.size()==0){
+			return list;
+		}
+		Set<String> beanNameSet=beanMaps.keySet();
+		for(String beanName:beanNameSet){
+			list.add(beanMaps.get(beanName));
+		}
+		return null;
+	}
+	
 }
