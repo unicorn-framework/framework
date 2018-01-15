@@ -26,7 +26,6 @@ public class ZuulInterceptorConfig  {
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
             String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-            System.out.println("hhh==="+sessionId);
             if (!Strings.isNullOrEmpty(sessionId)) {
                 requestTemplate.header("Cookie", sessionPropertiesConfig.getCookieName()+"=" + sessionId);
                 requestTemplate.header(sessionPropertiesConfig.getHeadName(),sessionId);
