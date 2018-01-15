@@ -23,9 +23,14 @@ public class HandlerAdapter  {
 		Map<String, IHandler> beanMaps=SpringContextHolder.getApplicationContext().getBeansOfType(IHandler.class);
 		for(String beanName:beanMaps.keySet()){
 			IHandler<S> handler=beanMaps.get(beanName);
-			if(handler.supports(s)){
-				return handler;
+			try{
+				if(handler.supports(s)){
+					return handler;
+				}
+			}catch(Exception e){
+				
 			}
+			
 		}
 		throw new PendingException(SysCode.NOT_FOUND_HANDLER,"没有找到对应的处理类");
 	}
