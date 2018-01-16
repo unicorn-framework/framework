@@ -18,11 +18,11 @@ import java.math.BigDecimal;
 public class BigDecimalUtil {  
   
 	 public static BigDecimal bigDecimal2RoundHalfUp(BigDecimal target){
-	    	return target.setScale(2,BigDecimal.ROUND_HALF_UP);
+	    	return target.setScale(0,BigDecimal.ROUND_HALF_UP);
 	 }
 	 
 	 public static BigDecimal bigDecimalDivideRoundHalfUp(BigDecimal divided,BigDecimal divide){
-	    	return divided.divide(divide,2,BigDecimal.ROUND_HALF_UP);
+	    	return divided.divide(divide,0,BigDecimal.ROUND_HALF_UP);
 	 }
 	 
 	 public static void main(String[] args) {
