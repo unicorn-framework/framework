@@ -1,6 +1,5 @@
 package org.unicorn.framework.core.exceptionHandler;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +11,7 @@ import org.unicorn.framework.base.AbstractService;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
+import org.unicorn.framework.core.exception.UnicornRuntimeException;
 import org.unicorn.framework.util.json.JsonUtils;
 
 /**
@@ -41,7 +41,15 @@ public class GlobalExceptionHandler extends AbstractService {
 			PendingException pe = (PendingException) e.getCause();
 			resDto.setResCode(pe.getCode());
 			resDto.setResInfo(pe.getMessage());
-		} else {
+		}else if(e.getCause() instanceof UnicornRuntimeException){
+			UnicornRuntimeException pe = (UnicornRuntimeException) e.getCause();
+			resDto.setResCode(pe.getCode());
+			resDto.setResInfo(pe.getMessage());
+		}else if(e instanceof UnicornRuntimeException){
+			UnicornRuntimeException pe = (UnicornRuntimeException) e;
+			resDto.setResCode(pe.getCode());
+			resDto.setResInfo(pe.getMessage());
+		}else {
 			resDto.setResCode(SysCode.SYS_FAIL.getCode());
 			resDto.setResInfo(SysCode.SYS_FAIL.getInfo());
 		}
