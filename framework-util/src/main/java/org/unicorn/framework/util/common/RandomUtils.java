@@ -55,6 +55,6 @@ public class RandomUtils {
     }
     
     public static String getFlowNum(String businessPrefix){
-    	return businessPrefix+"_"+ DateUtils.format(new Date(), "yyyyMMddHHmmss")+"_"+getCode(10,0);
+    	return businessPrefix+"_"+ DateUtils.format(new Date(), "yyyyMMddHHmmss")+"_"+getCode(5,0);
     }
 }
