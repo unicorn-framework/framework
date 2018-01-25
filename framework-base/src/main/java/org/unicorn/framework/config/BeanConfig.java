@@ -15,7 +15,4 @@ public class BeanConfig {
     public SpringContextHolder springContextHolder() {
 		return new  SpringContextHolder();
     }
-
-	
-	
 }
