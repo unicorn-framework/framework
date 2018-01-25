@@ -1,19 +1,19 @@
 
 package org.unicorn.framework.base;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
 *
 *@author xiebin
 *
 */
+@Slf4j
 public abstract class AbstractService {
 	
-	 private static final Logger log = LoggerFactory.getLogger("service");
+//	 private static final Logger log = LoggerFactory.getLogger("service");
 	 public Gson gson=new Gson();
 	 public void info(String message){
 		 log.info(message); 
