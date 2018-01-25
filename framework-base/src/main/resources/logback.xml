@@ -42,11 +42,11 @@
 		</encoder>
 	</appender>
 	
-	
-	
-	
-	 <root level="INFO">
+	 <root  level="INFO">
 		<appender-ref ref="console" />
 		<appender-ref ref="fileLog" />
 	</root>
+	
+	
+	
 </configuration>
