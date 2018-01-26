@@ -47,6 +47,11 @@
 		<appender-ref ref="fileLog" />
 	</root>
 	
-	
+	<springProfile name="goyouxuan,test,testNew">
+	   <logger name="com.jiabiango" level="INFO"/>
+	</springProfile>
+	<springProfile name="prod">
+	   <logger name="com.jiabiango" level="ERROR"/>
+	</springProfile>
 	
 </configuration>
