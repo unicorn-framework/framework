@@ -1,7 +1,5 @@
 package org.unicorn.framework.core.dto;
 
-import java.io.Serializable;
-
 /**
  * 
  * @author xiebin
