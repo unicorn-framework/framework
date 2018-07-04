@@ -38,5 +38,11 @@
 			   <groupId>org.springframework.cloud</groupId>  
 			   <artifactId>spring-cloud-starter-zuul</artifactId>  
         </dependency>
+        <dependency>
+			<groupId>com.netflix.feign</groupId>
+			<artifactId>feign-httpclient</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+        
   </dependencies>
 </project>
