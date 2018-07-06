@@ -1,4 +1,4 @@
-package org.unicorn.framework.enums.common;
+package org.unicorn.framework.base.enums.common;
 /**
  * 消息通讯类型
  * @author xiebin

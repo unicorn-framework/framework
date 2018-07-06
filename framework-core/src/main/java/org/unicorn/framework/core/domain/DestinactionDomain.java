@@ -2,7 +2,7 @@ package org.unicorn.framework.core.domain;
 
 import java.io.Serializable;
 
-import org.unicorn.framework.enums.jms.JmsCommunicationType;
+import org.unicorn.framework.base.enums.jms.JmsCommunicationType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

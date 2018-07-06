@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.unicorn.framework.base.AbstractService;
+import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
@@ -49,6 +49,9 @@ public class GlobalExceptionHandler extends AbstractService {
 			UnicornRuntimeException pe = (UnicornRuntimeException) e;
 			resDto.setResCode(pe.getCode());
 			resDto.setResInfo(pe.getMessage());
+		}else if(e instanceof Exception){
+			resDto.setResCode(SysCode.SESSION_ERROR.getCode());
+			resDto.setResInfo(SysCode.SESSION_ERROR.getInfo());
 		}else {
 			resDto.setResCode(SysCode.SYS_FAIL.getCode());
 			resDto.setResInfo(SysCode.SYS_FAIL.getInfo());

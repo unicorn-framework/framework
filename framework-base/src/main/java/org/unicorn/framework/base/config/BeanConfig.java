@@ -1,8 +1,8 @@
-package org.unicorn.framework.config;
+package org.unicorn.framework.base.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.unicorn.framework.base.SpringContextHolder;
+import org.unicorn.framework.base.base.SpringContextHolder;
 /**
  * 
  * @author xiebin

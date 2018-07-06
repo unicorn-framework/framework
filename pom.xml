@@ -130,12 +130,12 @@
 		<repository>
 			<id>releases</id>
 			<name>Gigold Nexus Repository</name>
-			<url>http://10.181.102.6:8082/repository/maven-snapshots/</url>
+			<url>http://10.181.102.6:8082/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
 			<name>Gigold Nexus Repository</name>
-			<url>http://10.181.102.6:8082/repository/maven-releases/</url>
+			<url>http://10.181.102.6:8082/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -220,6 +220,6 @@
 		<module>framework-orm</module>
 		<module>framework-drools</module>
 		<module>framework-mq</module>
-
+    <module>framework-shiro</module>
   </modules>
 </project>

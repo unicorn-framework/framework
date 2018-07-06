@@ -5,7 +5,7 @@
  * 
  *
  */
-package org.unicorn.framework.base;
+package org.unicorn.framework.base.base;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

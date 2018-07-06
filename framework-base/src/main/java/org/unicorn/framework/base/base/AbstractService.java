@@ -1,5 +1,5 @@
 
-package org.unicorn.framework.base;
+package org.unicorn.framework.base.base;
 
 import com.google.gson.Gson;
 

@@ -1,4 +1,4 @@
-package org.unicorn.framework.base;
+package org.unicorn.framework.base.base;
 
 import java.util.HashMap;
 import java.util.Map;

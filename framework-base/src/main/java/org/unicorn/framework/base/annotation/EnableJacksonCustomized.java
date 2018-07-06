@@ -1,4 +1,4 @@
-package org.unicorn.framework.annotation;
+package org.unicorn.framework.base.annotation;
 
 import java.lang.annotation.*;
 

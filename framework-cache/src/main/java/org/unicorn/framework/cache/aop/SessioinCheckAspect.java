@@ -11,7 +11,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.unicorn.framework.base.AbstractService;
+import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.constants.Constants;
 import org.unicorn.framework.core.exception.PendingException;

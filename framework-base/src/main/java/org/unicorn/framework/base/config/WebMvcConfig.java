@@ -1,4 +1,4 @@
-package org.unicorn.framework.config;
+package org.unicorn.framework.base.config;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

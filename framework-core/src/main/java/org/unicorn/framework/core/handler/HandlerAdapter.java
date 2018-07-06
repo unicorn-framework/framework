@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.unicorn.framework.base.SpringContextHolder;
+import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 

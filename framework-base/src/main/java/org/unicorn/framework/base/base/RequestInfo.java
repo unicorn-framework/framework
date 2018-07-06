@@ -5,7 +5,7 @@
  * 
  *
  */
-package org.unicorn.framework.base;
+package org.unicorn.framework.base.base;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package org.unicorn.framework.enums.jms;
+package org.unicorn.framework.base.enums.jms;
 /**
  * 消息通讯类型
  * @author xiebin

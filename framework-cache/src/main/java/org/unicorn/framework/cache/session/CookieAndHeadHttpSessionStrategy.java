@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.session.Session;
 import org.springframework.session.web.http.HttpSessionStrategy;
 import org.springframework.session.web.http.MultiHttpSessionStrategy;
-import org.unicorn.framework.base.AbstractService;
+import org.unicorn.framework.base.base.AbstractService;
 
 /**
  * 同时支持 header、cookies方式

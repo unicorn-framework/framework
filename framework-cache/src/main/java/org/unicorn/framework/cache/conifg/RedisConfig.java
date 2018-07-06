@@ -14,6 +14,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -27,7 +28,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
-	
 	@Bean
     public KeyGenerator keyGenerator() {
         return new KeyGenerator() {
@@ -52,7 +52,11 @@ public class RedisConfig extends CachingConfigurerSupport {
         rcm.setDefaultExpiration(60);//秒
         return rcm;
     }
-    
+    /**
+     * 字符串
+     * @param factory
+     * @return
+     */
     @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
         StringRedisTemplate template = new StringRedisTemplate(factory);
@@ -63,6 +67,21 @@ public class RedisConfig extends CachingConfigurerSupport {
         jackson2JsonRedisSerializer.setObjectMapper(om);
         template.setValueSerializer(jackson2JsonRedisSerializer);
         template.afterPropertiesSet();
+        return template;
+    }
+    /**
+     * 对象
+     * @param factory
+     * @return
+     */
+    @Bean
+    public RedisTemplate<String, ?> objectRedisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String,?> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
+        StringRedisSerializer serializer=new StringRedisSerializer();
+        template.setKeySerializer(serializer);
+        template.setValueSerializer(serializer);
+        template.setHashKeySerializer(serializer);
         return template;
     }
 }

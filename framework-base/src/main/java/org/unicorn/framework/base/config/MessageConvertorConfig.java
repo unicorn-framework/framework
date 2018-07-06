@@ -1,4 +1,4 @@
-package org.unicorn.framework.config;
+package org.unicorn.framework.base.config;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.unicorn.framework.annotation.EnableJacksonCustomized;
+import org.unicorn.framework.base.annotation.EnableJacksonCustomized;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
