@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,9 +50,9 @@ public class GlobalExceptionHandler extends AbstractService {
 			UnicornRuntimeException pe = (UnicornRuntimeException) e;
 			resDto.setResCode(pe.getCode());
 			resDto.setResInfo(pe.getMessage());
-		}else if(e instanceof Exception){
-			resDto.setResCode(SysCode.SESSION_ERROR.getCode());
-			resDto.setResInfo(SysCode.SESSION_ERROR.getInfo());
+		}else if(e instanceof UnauthorizedException){
+			resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
+			resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
 		}else {
 			resDto.setResCode(SysCode.SYS_FAIL.getCode());
 			resDto.setResInfo(SysCode.SYS_FAIL.getInfo());

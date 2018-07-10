@@ -23,6 +23,11 @@ public class SysCode {
 	 * 
 	 */
 	public static final ResBean SESSION_ERROR = new ResBean("40001", "session失效");
+	/**
+	 * 
+	 */
+	public static final ResBean UNAUTHOR__ERROR = new ResBean("40003", "无权限");
+	
 	
 	
 	/** SYS_FAIL,系统未知错误 */

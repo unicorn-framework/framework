@@ -13,6 +13,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		 <shiro.version>1.2.4</shiro.version>
 	</properties>
 	<dependencies>
 	   <dependency>
@@ -30,5 +31,12 @@
 			<artifactId>framework-util</artifactId>
 			<version>${module.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		
 	</dependencies>
 </project>

@@ -17,7 +17,7 @@ public class MapperScanConfig   {
     public MapperScannerConfigurer  mapperScannerConfigurer() {
 		MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage("com.jiabiango.dao");
+        mapperScannerConfigurer.setBasePackage("com.huanuo.internetofthings");
         return mapperScannerConfigurer;
     }
 }
