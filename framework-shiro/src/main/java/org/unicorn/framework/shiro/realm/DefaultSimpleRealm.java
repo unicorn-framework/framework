@@ -36,7 +36,7 @@ public class DefaultSimpleRealm extends AuthorizingRealm {
 		// TODO Auto-generated method stub
 		
 		 String username = (String) principals.getPrimaryPrincipal();
-		 System.out.println("hahahha===="+username);
+		 System.out.println("用户名===="+username);
 	        // 从数据库或者缓存中获得角色数据
 	        Set<String> roles = new HashSet<>();
 	        Set<String> permissions = new HashSet<>();
