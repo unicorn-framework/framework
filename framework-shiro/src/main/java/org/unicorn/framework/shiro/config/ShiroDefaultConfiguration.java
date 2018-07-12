@@ -5,23 +5,17 @@ import java.util.Map;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.unicorn.framework.shiro.cache.RedisShiroCacheManager;
 import org.unicorn.framework.shiro.realm.DefaultSimpleRealm;
@@ -32,22 +26,13 @@ import org.unicorn.framework.shiro.realm.DefaultSimpleRealm;
  *
  */
 @Configuration
-public class ShiroDefaultConfiguration implements ApplicationContextAware {
+@EnableConfigurationProperties(ShiroPropertiesConfig.class)
+public class ShiroDefaultConfiguration {
 	@Autowired
 	private RedisShiroCacheManager redisShiroCacheManager;
+	@Autowired
+	private ShiroPropertiesConfig shiroPropertiesConfig;
 	
-	protected ApplicationContext applicationContext;
-
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext =  applicationContext;
-	}
-
-	@Bean
-	@ConfigurationProperties(prefix = "unicorn.shiro")
-	public ShiroPropertiesConfig shiroPropertiesConfig() {
-		return new ShiroPropertiesConfig();
-	}
-
 	/**
 	 * 注册shiro过滤器
 	 * 
@@ -63,10 +48,10 @@ public class ShiroDefaultConfiguration implements ApplicationContextAware {
 		return filterRegistration;
 	}
 
-	@Bean(name = "lifecycleBeanPostProcessor")
+	/*@Bean(name = "lifecycleBeanPostProcessor")
 	public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
-	}
+	}*/
 
 	/**
 	 * 安全管理
@@ -85,7 +70,6 @@ public class ShiroDefaultConfiguration implements ApplicationContextAware {
 	 * @return
 	 */
 	public CacheManager getCacheManager(){
-		redisShiroCacheManager=applicationContext.getBean("redisShiroCacheManager",RedisShiroCacheManager.class);
 		return  redisShiroCacheManager;
 	}
 
@@ -129,9 +113,9 @@ public class ShiroDefaultConfiguration implements ApplicationContextAware {
 	public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
-		shiroFilterFactoryBean.setSuccessUrl(shiroPropertiesConfig().getSuccessUrl());
-		shiroFilterFactoryBean.setUnauthorizedUrl(shiroPropertiesConfig().getUnAuthorizedUrl());
-		shiroFilterFactoryBean.setLoginUrl(shiroPropertiesConfig().getLoginUrl());
+		shiroFilterFactoryBean.setSuccessUrl(shiroPropertiesConfig.getSuccessUrl());
+		shiroFilterFactoryBean.setUnauthorizedUrl(shiroPropertiesConfig.getUnAuthorizedUrl());
+		shiroFilterFactoryBean.setLoginUrl(shiroPropertiesConfig.getLoginUrl());
 		return shiroFilterFactoryBean;
 	}
 
@@ -153,7 +137,7 @@ public class ShiroDefaultConfiguration implements ApplicationContextAware {
 	 * @return
 	 */
 	@Bean
-	@DependsOn({ "lifecycleBeanPostProcessor" })
+//	@DependsOn({ "lifecycleBeanPostProcessor" })
 	public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
 		DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
 		advisorAutoProxyCreator.setProxyTargetClass(true);
