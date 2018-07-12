@@ -220,5 +220,6 @@
 		<module>framework-drools</module>
 		<module>framework-mq</module>
     <module>framework-shiro</module>
+    <module>framework-eureka</module>
   </modules>
 </project>
