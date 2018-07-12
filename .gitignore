@@ -13,3 +13,5 @@ framework-drools/.project
 framework-drools/.settings/
 framework-mq/.settings/
 framework-mq/.project
+*.project
+framework-gateway/.settings/

@@ -221,5 +221,6 @@
 		<module>framework-mq</module>
     <module>framework-shiro</module>
     <module>framework-eureka</module>
+    <module>framework-gateway</module>
   </modules>
 </project>
