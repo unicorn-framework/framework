@@ -1,5 +1,5 @@
-package ${package.Entity}.${table.entityPath};
-#foreach($pkg in ${importSet})
+package ${entityContext.pkg};
+#foreach($pkg in ${entityContext.importSet})
 import ${pkg};
 #end
 import java.io.Serializable;
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class ${table.entityName} implements Serializable {
+public class ${entityContext.name} implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

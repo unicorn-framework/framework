@@ -1,6 +1,6 @@
-package ${package.Service}.${table.entityPath};
+package ${serviceContext.pkg};
 
-import ${package.Entity}.${table.entityPath}.${entity};
+import ${entityContext.classImportPath};
 import org.unicorn.framework.core.exception.PendingException;
 import java.util.List;
 /**
@@ -11,7 +11,7 @@ import java.util.List;
  * @author ${author}
  * @since ${date}
  */
-public interface ${table.serviceName} {
+public interface ${serviceContext.name} {
 	/**
      * 根据主键删除记录
      * @param id
@@ -26,14 +26,14 @@ public interface ${table.serviceName} {
      * @return
      * @throws PendingException
      */
-   public  ${entity} save(${entity} record) throws PendingException;
+   public  ${entityContext.name} save(${entityContext.name} record) throws PendingException;
      /**
      * 根据主键查询记录
      * @param record
      * @return
      * @throws PendingException
      */
-    public ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} id) throws PendingException;
+    public ${entityContext.name} selectByPrimaryKey(${table.primaryTableField.propertyType} id) throws PendingException;
     
     /**
      * 根据条件查询记录列表
@@ -41,21 +41,21 @@ public interface ${table.serviceName} {
      * @return
      * @throws PendingException
      */
-    public  List<${entity}> selectList(${entity} record) throws PendingException;
+    public  List<${entityContext.name}> selectList(${entityContext.name} record) throws PendingException;
     /**
      * 根据主键列表查询记录
      * @param record
      * @return
      * @throws PendingException
      */
-    public  List<${entity}> selectListByIds(List<${table.primaryTableField.propertyType}> ids) throws PendingException;
+    public  List<${entityContext.name}> selectListByIds(List<${table.primaryTableField.propertyType}> ids) throws PendingException;
     /**
      * 根据条件查询一条记录
      * @param record
      * @return
      * @throws PendingException
      */
-    public  ${entity} selectOne(${entity} record) throws PendingException;
+    public  ${entityContext.name} selectOne(${entityContext.name} record) throws PendingException;
 
     /**
      * 根据主键修改记录
@@ -63,7 +63,7 @@ public interface ${table.serviceName} {
      * @return
      * @throws PendingException
      */
-    public ${entity} updateByPrimaryKey(${entity} record) throws PendingException;
+    public ${entityContext.name} updateByPrimaryKey(${entityContext.name} record) throws PendingException;
 
     
 }

@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,7 +18,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
-import org.assertj.core.util.Sets;
+import org.unicorn.framework.codegen.build.UnicornConfigBuilder;
 import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
 
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -29,8 +28,12 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
-
-public class UnicornAbstractGenerator {
+/**
+ * 
+ * @author xiebin
+ *
+ */
+public abstract class UnicornAbstractGenerator {
 	private static final Log logger = LogFactory.getLog(AutoGenerator.class);
 	private UnicornConfigBuilder config;
 	
@@ -64,10 +67,49 @@ public class UnicornAbstractGenerator {
 	 */
 	protected void initConfig() {
 		if (null == config) {
-			config = new UnicornConfigBuilder(packageInfo, dataSource, strategy, template, globalConfig);
+			config = new UnicornConfigBuilder(packageInfo, dataSource, strategy, getInitTemplate(), globalConfig);
 		}
 	}
 	
+	/**
+	 * 分析数据
+	 * @param config
+	 * @return
+	 */
+	public  Map<String, VelocityContext> analyzeData(UnicornConfigBuilder config) {
+		Map<String, VelocityContext> ctxData = new HashMap<>();
+		//获取表信息
+		List<UnicornTableInfo> tableList = config.getTableInfoList();
+		//获取包信息
+		String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		VelocityContext ctx;
+		for (UnicornTableInfo tableInfo : tableList) {
+			ctx = new VelocityContext();
+			//设置作者
+			ctx.put("author", config.getGlobalConfig().getAuthor());
+			//设置生成日期
+			ctx.put("date", date);
+			//设置表信息
+			ctx.put("table", tableInfo);
+			ctx.put("entity", tableInfo.getEntityName());
+			ctxData.put(tableInfo.getEntityName(), ctx);
+		}
+		setContextData(config,ctxData);
+		return ctxData;
+	}
+	
+	/**
+	 * 获取初始化模板
+	 * @return
+	 */
+	public abstract TemplateConfig getInitTemplate() ;
+	/**
+	 * 设置上下文信息
+	 * @param config
+	 * @param ctxData
+	 * @return
+	 */
+	public abstract Map<String, VelocityContext> setContextData(UnicornConfigBuilder config,Map<String, VelocityContext> ctxData);
 	/**
 	 * 生成代码
 	 */
@@ -83,6 +125,16 @@ public class UnicornAbstractGenerator {
 			batchOutput(ctx.getKey(), ctx.getValue());
 		}
 		// 打开输出目录
+		open();
+		logger.debug("==========================文件生成完成！！！==========================");
+	}
+	
+	
+	
+	/**
+	 * 打开输出目录
+	 */
+	private void open(){
 		if (config.getGlobalConfig().isOpen()) {
 			try {
 				String osName = System.getProperty("os.name");
@@ -99,58 +151,8 @@ public class UnicornAbstractGenerator {
 				e.printStackTrace();
 			}
 		}
-		logger.debug("==========================文件生成完成！！！==========================");
 	}
 	
-	/**
-	 * 分析数据
-	 *
-	 * @param config
-	 *            总配置信息
-	 * @return 解析数据结果集
-	 */
-	private Map<String, VelocityContext> analyzeData(UnicornConfigBuilder config) {
-		//获取表信息
-		List<UnicornTableInfo> tableList = config.getTableInfoList();
-		//获取包信息
-		Map<String, String> packageInfo = config.getPackageInfo();
-		Map<String, VelocityContext> ctxData = new HashMap<>();
-		 
-		String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-		VelocityContext ctx;
-		for (UnicornTableInfo tableInfo : tableList) {
-			ctx = new VelocityContext();
-			if (StringUtils.isNotEmpty(config.getSuperEntityClass())) {
-				// 父实体
-				tableInfo.setImportPackages(config.getSuperEntityClass());
-			} else {
-				tableInfo.setImportPackages("java.io.Serializable");
-			}
-			
-			ctx.put("package", packageInfo);
-			ctx.put("author", config.getGlobalConfig().getAuthor());
-			ctx.put("activeRecord", config.getGlobalConfig().isActiveRecord());
-			ctx.put("date", date);
-			ctx.put("table", tableInfo);
-			ctx.put("entity", tableInfo.getEntityName());
-			setImportSet(ctx,tableInfo);
-			ctxData.put(tableInfo.getEntityName(), ctx);
-		}
-		return ctxData;
-	}
-	
-	
-	public void setImportSet(VelocityContext ctx ,UnicornTableInfo tableInfo){
-		Set<String> importSet=Sets.newHashSet();
-		List<UnicornTableField> fieldList=tableInfo.getFields();
-		for(UnicornTableField field:fieldList){
-			String pkg=field.getColumnType().getPkg();
-			if(org.apache.commons.lang3.StringUtils.isNotBlank(pkg)){
-				importSet.add(pkg);
-			}
-		}
-		ctx.put("importSet", importSet);
-	}
 	/**
 	 * 处理输出目录
 	 *
@@ -179,47 +181,59 @@ public class UnicornAbstractGenerator {
 	private void batchOutput(String entityName, VelocityContext context) {
 		try {
 			UnicornTableInfo tableInfo = (UnicornTableInfo) context.get("table");
-			String subPkg=entityName.substring(0,1).toLowerCase()+entityName.substring(1);
 			Map<String, String> pathInfo = config.getPathInfo();
-			String entityFile = String.format((pathInfo.get(ConstVal.ENTITY_PATH) +File.separator+subPkg+ ConstVal.ENTITY_NAME), entityName);
-			String mapperFile = String.format((pathInfo.get(ConstVal.MAPPER_PATH) + File.separator+subPkg+File.separator
-					+ tableInfo.getMapperName() + ConstVal.JAVA_SUFFIX), entityName);
-			String xmlFile = String.format(
-					(pathInfo.get(ConstVal.XML_PATH) +File.separator+ subPkg+File.separator + tableInfo.getXmlName() + ConstVal.XML_SUFFIX),
-					entityName);
-			String serviceFile = String.format((pathInfo.get(ConstVal.SERIVCE_PATH) + File.separator+subPkg+File.separator
-					+ tableInfo.getServiceName() + ConstVal.JAVA_SUFFIX), entityName);
-			String implFile = String.format((pathInfo.get(ConstVal.SERVICEIMPL_PATH) + File.separator+subPkg+File.separator
-					+ tableInfo.getServiceImplName() + ConstVal.JAVA_SUFFIX), entityName);
-			String controllerFile = String.format((pathInfo.get(ConstVal.CONTROLLER_PATH) + File.separator+subPkg+File.separator
-					+ tableInfo.getControllerName() + ConstVal.JAVA_SUFFIX), entityName);
-
+			String entityFile=getFilePath(tableInfo,pathInfo.get(ConstVal.ENTITY_PATH),tableInfo.getEntityName(),ConstVal.JAVA_SUFFIX);
+			String mapperFile=getFilePath(tableInfo,pathInfo.get(ConstVal.MAPPER_PATH),tableInfo.getMapperName(),ConstVal.JAVA_SUFFIX);
+			String xmlFile=getFilePath(tableInfo,pathInfo.get(ConstVal.XML_PATH),tableInfo.getXmlName(),ConstVal.XML_SUFFIX);
+			String serviceFile=getFilePath(tableInfo,pathInfo.get(ConstVal.SERIVCE_PATH),tableInfo.getServiceName(),ConstVal.JAVA_SUFFIX);
+			String implFile=getFilePath(tableInfo,pathInfo.get(ConstVal.SERVICEIMPL_PATH),tableInfo.getServiceImplName(),ConstVal.JAVA_SUFFIX);
+			String controllerFile=getFilePath(tableInfo,pathInfo.get(ConstVal.CONTROLLER_PATH),tableInfo.getControllerName(),ConstVal.JAVA_SUFFIX);
 			TemplateConfig template = config.getTemplate();
-
-			// 根据override标识来判断是否需要创建文件
-			if (isCreate(entityFile)) {
-				vmToFile(context, template.getEntity(), entityFile);
-			}
-			if (isCreate(mapperFile)) {
-				vmToFile(context, template.getMapper(), mapperFile);
-			}
-			if (isCreate(xmlFile)) {
-				vmToFile(context, template.getXml(), xmlFile);
-			}
-			if (isCreate(serviceFile)) {
-				vmToFile(context, template.getService(), serviceFile);
-			}
-			if (isCreate(implFile)) {
-				vmToFile(context, template.getServiceImpl(), implFile);
-			}
-			if (isCreate(controllerFile)) {
-				vmToFile(context, template.getController(), controllerFile);
-			}
+            //创建entity文件
+			createFile(context,template.getEntity(),entityFile);
+			//创建mapper接口文件
+			createFile(context,template.getMapper(),mapperFile);
+			//创建mapper映射文件
+			createFile(context,template.getXml(),xmlFile);
+			//创建service接口文件
+			createFile(context,template.getService(),serviceFile);
+			//创建接口实现文件
+			createFile(context,template.getServiceImpl(),implFile);
+			//创建controller文件
+			createFile(context,template.getController(),controllerFile);
 		} catch (IOException e) {
 			logger.error("无法创建文件，请检查配置信息！", e);
 		}
 	}
-
+    /**
+     * 创建文件
+     * @param context
+     * @param templatePath
+     * @param filePath
+     * @throws IOException
+     */
+	public void createFile(VelocityContext context,String templatePath,String filePath) throws IOException{
+		// 根据override标识来判断是否需要创建文件
+		if (isCreate(filePath)) {
+			vmToFile(context, templatePath, filePath);
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * 获取文件路径
+	 * @param tableInfo
+	 * @param pathInfo
+	 * @param fileName
+	 * @param fileSuffix
+	 * @return
+	 */
+	private  String getFilePath(UnicornTableInfo tableInfo,String pathInfo,  String fileName,String fileSuffix){
+		return pathInfo +File.separator+tableInfo.getEntityPath()+File.separator+fileName+fileSuffix;
+		
+	}
 	/**
 	 * 检测文件是否存在
 	 *

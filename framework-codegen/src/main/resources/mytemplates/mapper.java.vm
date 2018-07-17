@@ -1,6 +1,6 @@
-package ${package.Mapper}.${table.entityPath};
+package ${mapperContext.pkg};
 
-import ${package.Entity}.${table.entityPath}.${table.entityName};
+import ${entityContext.classImportPath};
 import java.util.List;
 
 /**
@@ -11,7 +11,7 @@ import java.util.List;
  * @author ${author}
  * @since ${date}
  */
-public interface ${table.mapperName}  {
+public interface ${mapperContext.name}  {
    /**
      *
      * @mbggenerated ${date}
