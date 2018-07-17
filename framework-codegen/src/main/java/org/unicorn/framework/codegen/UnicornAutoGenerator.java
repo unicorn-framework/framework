@@ -2,6 +2,7 @@ package org.unicorn.framework.codegen;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
 
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;

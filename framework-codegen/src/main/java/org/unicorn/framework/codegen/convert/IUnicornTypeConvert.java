@@ -1,4 +1,6 @@
-package org.unicorn.framework.codegen;
+package org.unicorn.framework.codegen.convert;
+
+import org.unicorn.framework.codegen.mapper.UnicornDbCloumnType;
 
 public interface IUnicornTypeConvert {
 	/**

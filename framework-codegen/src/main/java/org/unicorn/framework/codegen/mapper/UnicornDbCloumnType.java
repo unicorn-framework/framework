@@ -1,4 +1,4 @@
-package org.unicorn.framework.codegen;
+package org.unicorn.framework.codegen.mapper;
 
 import java.util.HashMap;
 import java.util.Map;

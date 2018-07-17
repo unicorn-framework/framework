@@ -1,8 +1,11 @@
-package org.unicorn.framework.codegen;
+package org.unicorn.framework.codegen.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.unicorn.framework.codegen.convert.IUnicornTypeConvert;
+import org.unicorn.framework.codegen.convert.UnicornMysqlTypeConvert;
 
 import com.baomidou.mybatisplus.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;

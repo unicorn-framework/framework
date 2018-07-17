@@ -1,7 +1,14 @@
 package org.unicorn.framework.codegen;
 
+import org.unicorn.framework.codegen.mapper.UnicornDbCloumnType;
+
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
+/**
+ * 
+ * @author xiebin
+ *
+ */
 public class UnicornTableField {
 	    private boolean convert;
 	    private boolean keyFlag;

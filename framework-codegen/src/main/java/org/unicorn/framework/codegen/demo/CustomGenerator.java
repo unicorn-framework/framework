@@ -1,8 +1,8 @@
 package org.unicorn.framework.codegen.demo;
 
 import org.unicorn.framework.codegen.UnicornAutoGenerator;
-import org.unicorn.framework.codegen.UnicornDataSourceConfig;
-import org.unicorn.framework.codegen.UnicornMysqlTypeConvert;
+import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
+import org.unicorn.framework.codegen.convert.UnicornMysqlTypeConvert;
 
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;

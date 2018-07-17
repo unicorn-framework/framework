@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.Set;
 
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
+/**
+ * 
+ * @author xiebin
+ *
+ */
 public class UnicornTableInfo {
 	
 	 private boolean convert;

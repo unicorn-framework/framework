@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
+import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
+
 import com.baomidou.mybatisplus.generator.config.ConstVal;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;

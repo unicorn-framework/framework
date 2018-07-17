@@ -1,4 +1,4 @@
-package org.unicorn.framework.codegen;
+package org.unicorn.framework.codegen.config;
 
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 
