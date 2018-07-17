@@ -1,0 +1,130 @@
+package ${serviceImplContext.pkg};
+
+import ${entityContext.classImportPath};
+import ${mapperContext.classImportPath};
+import ${serviceContext.classImportPath};
+import org.springframework.stereotype.Service;
+import org.unicorn.framework.base.base.AbstractService;
+import org.unicorn.framework.core.exception.PendingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.unicorn.framework.core.SysCode;
+import java.util.List;
+
+/**
+ * <p>
+ * ${table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+public class ${serviceImplContext.name} extends AbstractService implements ${serviceContext.name} {
+  @Autowired
+  private ${mapperContext.name} ${mapperContext.beanName};
+  /**
+     * 根据主键删除记录
+     * @param id
+     * @return
+     * @throws PendingException
+     */
+  public void deleteByPrimaryKey(${table.primaryTableField.propertyType} id) throws PendingException{
+    try {
+			 ${mapperContext.beanName}.deleteByPrimaryKey(id);
+		} catch (Exception e) {
+			error("删除记录失败", e);
+			throw new PendingException(SysCode.DB_ERROR, "删除记录失败");
+	}
+    
+  }
+
+
+   /**
+     * 保存记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+   public  ${entity} save(${entity} record) throws PendingException{
+       try {
+			 ${mapperContext.beanName}.insertSelective(record);
+			 return record;
+		} catch (Exception e) {
+			error("新增记录失败", e);
+			throw new PendingException(SysCode.DB_ERROR, "新增记录失败");
+	}
+   }
+      /**
+     * 根据主键查询记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} id) throws PendingException{
+    try {
+			return ${mapperContext.beanName}.selectByPrimaryKey(id);
+		} catch (Exception e) {
+			error("查询记录失败", e);
+			throw new PendingException(SysCode.DB_ERROR, "查询记录失败");
+	}
+    }
+    
+     /**
+     * 根据条件查询记录列表
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public  List<${entity}> selectList(${entity} record) throws PendingException{
+       try {
+			return ${mapperContext.beanName}.selectList(record);
+		} catch (Exception e) {
+			error("查询列表失败", e);
+			throw new PendingException(SysCode.DB_ERROR, "查询列表失败");
+	}
+    }
+    /**
+     * 根据主键列表查询记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public  List<${entity}> selectListByIds(List<${table.primaryTableField.propertyType}> ids) throws PendingException{
+     try {
+			return ${mapperContext.beanName}.selectListByIds(ids);
+		} catch (Exception e) {
+			error("根据ID列表批量查询记录失败", e);
+			throw new PendingException(SysCode.DB_ERROR, "根据ID列表批量查询记录失败");
+	}
+    }
+   /**
+     * 根据条件查询一条记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public  ${entity} selectOne(${entity} record) throws PendingException{
+      try {
+			return ${mapperContext.beanName}.selectOne(record);
+		} catch (Exception e) {
+			error("查询单条记录失败", e);
+			throw new PendingException(SysCode.DB_ERROR, "查询单条记录失败");
+	}
+    }
+
+    /**
+     * 根据主键修改记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public ${entity} updateByPrimaryKey(${entity} record) throws PendingException{
+       try {
+			 ${mapperContext.beanName}.updateByPrimaryKey(record);
+			return record;
+		} catch (Exception e) {
+			error("根据主键更新单条记录失败", e);
+			throw new PendingException(SysCode.DB_ERROR, "根据主键更新单条记录失败");
+	}
+    }
+}

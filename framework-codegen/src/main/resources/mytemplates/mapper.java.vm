@@ -1,0 +1,66 @@
+package ${mapperContext.pkg};
+
+import ${entityContext.classImportPath};
+import java.util.List;
+
+/**
+ * <p>
+  * ${table.comment} Mapper 接口
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public interface ${mapperContext.name}  {
+   /**
+     *
+     * @mbggenerated ${date}
+     */
+    int deleteByPrimaryKey(${table.primaryTableField.propertyType} id);
+
+    /**
+     *
+     * @mbggenerated ${date}
+     */
+    int insert(${entity} record);
+
+    /**
+     *
+     * @mbggenerated ${date}
+     */
+    int insertSelective(${entity} record);
+
+    /**
+     *
+     * @mbggenerated ${date}
+     */
+    ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} id);
+    
+    /**
+    *
+    * @mbggenerated ${date}
+    */
+    public  List<${entity}> selectList(${entity} record);
+     /**
+    *
+    * @mbggenerated ${date}
+    */
+    public  List<${entity}> selectListByIds(List<${table.primaryTableField.propertyType}> ids);
+    /**
+    *
+    * @mbggenerated ${date}
+    */
+    public  ${entity} selectOne(${entity} record);
+
+    /**
+     *
+     * @mbggenerated ${date}
+     */
+    int updateByPrimaryKeySelective(${entity} record);
+
+    /**
+     *
+     * @mbggenerated ${date}
+     */
+    int updateByPrimaryKey(${entity} record);
+}

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${mapperContext.classImportPath}">
+
+	<!-- 通用查询映射结果 -->
+<resultMap id="BaseResultMap" type="${entityContext.classImportPath}">
+ ##生成主键排在第一位	
+ #foreach($field in ${table.fields})
+	#if(${field.keyFlag})
+	<!--主键-->
+	<id column="${field.name}" property="${field.propertyName}"  jdbcType="${field.columnType.jdbcType}"/>
+	#end
+ #end
+ ##生成普通字段
+ #foreach($field in ${table.fields})
+   #if(!${field.keyFlag})
+   <!--${field.comment}-->
+	<result column="${field.name}" property="${field.propertyName}"  jdbcType="${field.columnType.jdbcType}"/>
+   #end
+ #end
+</resultMap>
+#if(${baseColumnList})
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ${table.fieldNames}
+    </sql>
+
+#end
+
+<!-- 根据主键查询 -->
+<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="${table.primaryTableField.columnType.javaType}" >
+    select 
+    <include refid="Base_Column_List" />
+    from ${table.name}
+    where ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
+  </select>
+  
+ <!-- 根据主键列表查询list--> 
+<select id="selectListByIds" resultMap="BaseResultMap" parameterType="java.util.List" >
+    select 
+    <include refid="Base_Column_List" />
+    from ${table.name}
+    <where>
+      and ${table.primaryTableField.name} in
+     <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+      #{item}  
+     </foreach>  
+    </where>
+  </select>
+  
+  <!-- 查询list--> 
+<select id="selectList" resultMap="BaseResultMap" parameterType="${entityContext.classImportPath}" >
+    select 
+    <include refid="Base_Column_List" />
+    from ${table.name}
+    <where>
+      #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+       <if test="${field.propertyName} != null" >
+        and ${field.name}=#{${field.propertyName},jdbcType=${field.columnType.jdbcType}}
+      </if>
+      #end
+    #end 
+    </where>
+  </select>
+  
+  <!-- 查询单条记录--> 
+<select id="selectOne" resultMap="BaseResultMap" parameterType="${entityContext.classImportPath}" >
+    select 
+    <include refid="Base_Column_List" />
+    from ${table.name}
+    <where>
+      #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+       <if test="${field.propertyName} != null" >
+        and ${field.name}=#{${field.propertyName},jdbcType=${field.columnType.jdbcType}}
+      </if>
+      #end
+    #end 
+    </where>
+    limit 2
+  </select>
+  
+  <!-- 根据主键删除-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete ${table.name}
+   ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
+  </delete>
+  <!-- 新增记录-->
+  <insert id="insert" parameterType="${package.Entity}.${table.entityName}" >
+    <selectKey resultType="${table.primaryTableField.columnType.javaType}" keyProperty="${table.primaryTableField.name}" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ${table.name} (
+    #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+       ${field.name} #if(!${field.lastFlag}),#end
+       
+      #end
+    #end
+      )
+    values (
+    #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+       #{${field.propertyName},jdbcType=${field.columnType.jdbcType}} #if(!${field.lastFlag}),#end
+       
+      #end
+    #end
+      )
+  </insert>
+  
+  <!-- 新增记录-->
+  <insert id="insertSelective" parameterType="${entityContext.classImportPath}" >
+     <selectKey resultType="${table.primaryTableField.columnType.javaType}" keyProperty="${table.primaryTableField.name}" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert ${table.name}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+     #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+       <if test="${field.propertyName} != null" >
+        ${field.name},
+      </if>
+      #end
+    #end
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+     #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+       <if test="${field.propertyName} != null" >
+        #{${field.propertyName},jdbcType=${field.columnType.jdbcType}},
+      </if>
+      #end
+     #end
+    </trim>
+  </insert>
+  
+  <!-- 修改记录-->
+  <update id="updateByPrimaryKeySelective" parameterType="${entityContext.classImportPath}" >
+    update t_role
+    <set >
+     #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+       <if test="${field.propertyName} != null" >
+         ${field.name}=#{${field.propertyName},jdbcType=${field.columnType.jdbcType}},
+      </if>
+      #end
+     #end
+    </set>
+     where ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
+  </update>
+  
+  <!-- 新增记录-->
+  <update id="updateByPrimaryKey" parameterType="${entityContext.classImportPath}" >
+    update t_role
+    set 
+    #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+         ${field.name}=#{${field.propertyName},jdbcType=${field.columnType.jdbcType}},
+      #end
+     #end
+      where ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
+  </update>
+  
+</mapper>
