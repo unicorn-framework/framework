@@ -1,4 +1,4 @@
-package org.unicorn.framework.codegen;
+package org.unicorn.framework.codegen.build;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -141,8 +141,8 @@ public class UnicornTableInfo {
 	            // 收集导入包信息
 	            Set<String> pkgSet = new HashSet<>();
 	            for (UnicornTableField field : fields) {
-	                if (null != field.getColumnType() && null != field.getColumnType().getPkg()) {
-	                    pkgSet.add(field.getColumnType().getPkg());
+	                if (null != field.getColumnType() && null != field.getColumnType().getImportPkg()) {
+	                    pkgSet.add(field.getColumnType().getImportPkg());
 	                }
 	                if (field.isKeyFlag()) {
 	                    // 主键

@@ -1,4 +1,4 @@
-package org.unicorn.framework.codegen;
+package org.unicorn.framework.codegen.build;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,7 +18,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
-import org.unicorn.framework.codegen.build.UnicornConfigBuilder;
 import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
 
 import com.baomidou.mybatisplus.generator.AutoGenerator;

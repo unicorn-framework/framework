@@ -1,6 +1,6 @@
 package org.unicorn.framework.codegen.utils;
 
-import org.unicorn.framework.codegen.UnicornAutoGenerator;
+import org.unicorn.framework.codegen.build.UnicornAutoGenerator;
 import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
 import org.unicorn.framework.codegen.convert.UnicornMysqlTypeConvert;
 

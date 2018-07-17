@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.unicorn.framework.codegen.UnicornTableField;
-import org.unicorn.framework.codegen.UnicornTableInfo;
 import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
 import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
 

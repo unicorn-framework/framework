@@ -1,4 +1,4 @@
-package org.unicorn.framework.codegen;
+package org.unicorn.framework.codegen.build;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,6 @@ import org.unicorn.framework.codegen.bo.EntityContext;
 import org.unicorn.framework.codegen.bo.MapperContext;
 import org.unicorn.framework.codegen.bo.ServiceContext;
 import org.unicorn.framework.codegen.bo.ServiceImplContext;
-import org.unicorn.framework.codegen.build.UnicornConfigBuilder;
 import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
 
 import com.baomidou.mybatisplus.generator.config.ConstVal;
@@ -96,7 +95,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		Set<String> importSet=Sets.newHashSet();
 		List<UnicornTableField> fieldList=tableInfo.getFields();
 		for(UnicornTableField field:fieldList){
-			String pkg=field.getColumnType().getPkg();
+			String pkg=field.getColumnType().getImportPkg();
 			if(org.apache.commons.lang3.StringUtils.isNotBlank(pkg)){
 				importSet.add(pkg);
 			}

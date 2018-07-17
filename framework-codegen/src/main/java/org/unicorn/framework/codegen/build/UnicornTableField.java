@@ -1,5 +1,6 @@
-package org.unicorn.framework.codegen;
+package org.unicorn.framework.codegen.build;
 
+import org.unicorn.framework.codegen.mapper.DbCloumnTypeInfo;
 import org.unicorn.framework.codegen.mapper.UnicornDbCloumnType;
 
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
@@ -23,7 +24,7 @@ public class UnicornTableField {
 	    private String name;
 	    private String type;
 	    private String propertyName;
-	    private UnicornDbCloumnType columnType;
+	    private DbCloumnTypeInfo columnType;
 	    private String comment;
 
 	    public boolean isConvert() {
@@ -91,11 +92,11 @@ public class UnicornTableField {
 	        this.setConvert(strategyConfig);
 	    }
 
-	    public UnicornDbCloumnType getColumnType() {
+	    public DbCloumnTypeInfo getColumnType() {
 	        return columnType;
 	    }
 
-	    public void setColumnType(UnicornDbCloumnType columnType) {
+	    public void setColumnType(DbCloumnTypeInfo columnType) {
 	        this.columnType = columnType;
 	    }
 

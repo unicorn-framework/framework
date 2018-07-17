@@ -1,6 +1,6 @@
 package org.unicorn.framework.codegen.convert;
 
-import org.unicorn.framework.codegen.mapper.UnicornDbCloumnType;
+import org.unicorn.framework.codegen.mapper.DbCloumnTypeInfo;
 
 public interface IUnicornTypeConvert {
 	/**
@@ -12,5 +12,5 @@ public interface IUnicornTypeConvert {
      *            字段类型
      * @return
      */
-	UnicornDbCloumnType processTypeConvert(String fieldType);
+	DbCloumnTypeInfo processTypeConvert(String fieldType);
 }
