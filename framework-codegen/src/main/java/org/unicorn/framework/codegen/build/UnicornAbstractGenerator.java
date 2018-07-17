@@ -12,28 +12,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.unicorn.framework.codegen.config.UnicornConstVal;
 import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
+import org.unicorn.framework.codegen.config.UnicornGlobalConfig;
+import org.unicorn.framework.codegen.config.UnicornPackageConfig;
+import org.unicorn.framework.codegen.config.UnicornStrategyConfig;
+import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
 
-import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.ConstVal;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.TemplateConfig;
-import com.baomidou.mybatisplus.toolkit.StringUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 /**
  * 
  * @author xiebin
  *
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public abstract class UnicornAbstractGenerator {
-	private static final Log logger = LogFactory.getLog(AutoGenerator.class);
+	private static final Log logger = LogFactory.getLog(UnicornAbstractGenerator.class);
+	
 	private UnicornConfigBuilder config;
 	
 	/**
@@ -47,19 +55,19 @@ public abstract class UnicornAbstractGenerator {
 	/**
 	 * 数据库表配置
 	 */
-	private StrategyConfig strategy;
+	private UnicornStrategyConfig strategy;
 	/**
 	 * 包 相关配置
 	 */
-	private PackageConfig packageInfo;
+	private UnicornPackageConfig packageInfo;
 	/**
 	 * 模板 相关配置
 	 */
-	private TemplateConfig template;
+	private UnicornTemplateConfig template;
 	/**
 	 * 全局 相关配置
 	 */
-	private GlobalConfig globalConfig;
+	private UnicornGlobalConfig globalConfig;
 
 	/**
 	 * 初始化配置
@@ -101,7 +109,7 @@ public abstract class UnicornAbstractGenerator {
 	 * 获取初始化模板
 	 * @return
 	 */
-	public abstract TemplateConfig getInitTemplate() ;
+	public abstract UnicornTemplateConfig getInitTemplate() ;
 	/**
 	 * 设置上下文信息
 	 * @param config
@@ -181,13 +189,13 @@ public abstract class UnicornAbstractGenerator {
 		try {
 			UnicornTableInfo tableInfo = (UnicornTableInfo) context.get("table");
 			Map<String, String> pathInfo = config.getPathInfo();
-			String entityFile=getFilePath(tableInfo,pathInfo.get(ConstVal.ENTITY_PATH),tableInfo.getEntityName(),ConstVal.JAVA_SUFFIX);
-			String mapperFile=getFilePath(tableInfo,pathInfo.get(ConstVal.MAPPER_PATH),tableInfo.getMapperName(),ConstVal.JAVA_SUFFIX);
-			String xmlFile=getFilePath(tableInfo,pathInfo.get(ConstVal.XML_PATH),tableInfo.getXmlName(),ConstVal.XML_SUFFIX);
-			String serviceFile=getFilePath(tableInfo,pathInfo.get(ConstVal.SERIVCE_PATH),tableInfo.getServiceName(),ConstVal.JAVA_SUFFIX);
-			String implFile=getFilePath(tableInfo,pathInfo.get(ConstVal.SERVICEIMPL_PATH),tableInfo.getServiceImplName(),ConstVal.JAVA_SUFFIX);
-			String controllerFile=getFilePath(tableInfo,pathInfo.get(ConstVal.CONTROLLER_PATH),tableInfo.getControllerName(),ConstVal.JAVA_SUFFIX);
-			TemplateConfig template = config.getTemplate();
+			String entityFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.ENTITY_PATH),tableInfo.getEntityName(),UnicornConstVal.JAVA_SUFFIX);
+			String mapperFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.MAPPER_PATH),tableInfo.getMapperName(),UnicornConstVal.JAVA_SUFFIX);
+			String xmlFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.XML_PATH),tableInfo.getXmlName(),UnicornConstVal.XML_SUFFIX);
+			String serviceFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.SERIVCE_PATH),tableInfo.getServiceName(),UnicornConstVal.JAVA_SUFFIX);
+			String implFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.SERVICEIMPL_PATH),tableInfo.getServiceImplName(),UnicornConstVal.JAVA_SUFFIX);
+			String controllerFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.CONTROLLER_PATH),tableInfo.getControllerName(),UnicornConstVal.JAVA_SUFFIX);
+			UnicornTemplateConfig template = config.getTemplate();
             //创建entity文件
 			createFile(context,template.getEntity(),entityFile);
 			//创建mapper接口文件
@@ -258,7 +266,7 @@ public abstract class UnicornAbstractGenerator {
 			return;
 		}
 		VelocityEngine velocity = getVelocityEngine();
-		Template template = velocity.getTemplate(templatePath, ConstVal.UTF8);
+		Template template = velocity.getTemplate(templatePath, UnicornConstVal.UTF8);
 		File file = new File(outputFile);
 		if (!file.getParentFile().exists()) {
 			// 如果文件所在的目录不存在，则创建目录
@@ -268,7 +276,7 @@ public abstract class UnicornAbstractGenerator {
 			}
 		}
 		FileOutputStream fos = new FileOutputStream(outputFile);
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos, ConstVal.UTF8));
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos, UnicornConstVal.UTF8));
 		template.merge(context, writer);
 		writer.close();
 		logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
@@ -280,65 +288,15 @@ public abstract class UnicornAbstractGenerator {
 	private VelocityEngine getVelocityEngine() {
 		if (engine == null) {
 			Properties p = new Properties();
-			p.setProperty(ConstVal.VM_LOADPATH_KEY, ConstVal.VM_LOADPATH_VALUE);
+			p.setProperty(UnicornConstVal.VM_LOADPATH_KEY, UnicornConstVal.VM_LOADPATH_VALUE);
 			p.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, "");
-			p.setProperty(Velocity.ENCODING_DEFAULT, ConstVal.UTF8);
-			p.setProperty(Velocity.INPUT_ENCODING, ConstVal.UTF8);
-			p.setProperty(Velocity.OUTPUT_ENCODING, ConstVal.UTF8);
+			p.setProperty(Velocity.ENCODING_DEFAULT, UnicornConstVal.UTF8);
+			p.setProperty(Velocity.INPUT_ENCODING, UnicornConstVal.UTF8);
+			p.setProperty(Velocity.OUTPUT_ENCODING, UnicornConstVal.UTF8);
 			p.setProperty("file.resource.loader.unicode", "true");
 			engine = new VelocityEngine(p);
 		}
 		return engine;
-	}
-
-	
-
-	public UnicornDataSourceConfig getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(UnicornDataSourceConfig dataSource) {
-		this.dataSource = dataSource;
-	}
-
-	public StrategyConfig getStrategy() {
-		return strategy;
-	}
-
-	public void setStrategy(StrategyConfig strategy) {
-		this.strategy = strategy;
-	}
-
-	public PackageConfig getPackageInfo() {
-		return packageInfo;
-	}
-
-	public void setPackageInfo(PackageConfig packageInfo) {
-		this.packageInfo = packageInfo;
-	}
-
-	public TemplateConfig getTemplate() {
-		return template;
-	}
-
-	public void setTemplate(TemplateConfig template) {
-		this.template = template;
-	}
-
-	public UnicornConfigBuilder getConfig() {
-		return this.config;
-	}
-
-	public void setConfig(UnicornConfigBuilder config) {
-		this.config = config;
-	}
-
-	public GlobalConfig getGlobalConfig() {
-		return globalConfig;
-	}
-
-	public void setGlobalConfig(GlobalConfig globalConfig) {
-		this.globalConfig = globalConfig;
 	}
 
 }

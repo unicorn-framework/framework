@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import org.unicorn.framework.codegen.config.UnicornStrategyConfig;
+
 import com.baomidou.mybatisplus.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
 /**
@@ -35,7 +36,7 @@ public class UnicornTableInfo {
 	        return convert;
 	    }
 
-	    protected void setConvert(StrategyConfig strategyConfig) {
+	    protected void setConvert(UnicornStrategyConfig strategyConfig) {
 	        if (strategyConfig.containsTablePrefix(name)) {
 	            // 包含前缀
 	            this.convert = true;
@@ -44,7 +45,7 @@ public class UnicornTableInfo {
 	            this.convert = false;
 	        } else {
 	            // 转换字段
-	            if (StrategyConfig.DB_COLUMN_UNDERLINE) {
+	            if (UnicornStrategyConfig.DB_COLUMN_UNDERLINE) {
 	                // 包含大写处理
 	                if (StringUtils.containsUpperCase(name)) {
 	                    this.convert = true;
@@ -86,7 +87,7 @@ public class UnicornTableInfo {
 	        return entityName;
 	    }
 
-	    public void setEntityName(StrategyConfig strategyConfig, String entityName) {
+	    public void setEntityName(UnicornStrategyConfig strategyConfig, String entityName) {
 	        this.entityName = entityName;
 	        this.setConvert(strategyConfig);
 	    }

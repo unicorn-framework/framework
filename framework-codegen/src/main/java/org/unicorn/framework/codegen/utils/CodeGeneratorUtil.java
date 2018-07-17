@@ -2,20 +2,20 @@ package org.unicorn.framework.codegen.utils;
 
 import org.unicorn.framework.codegen.build.UnicornAutoGenerator;
 import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
+import org.unicorn.framework.codegen.config.UnicornGlobalConfig;
+import org.unicorn.framework.codegen.config.UnicornPackageConfig;
+import org.unicorn.framework.codegen.config.UnicornStrategyConfig;
 import org.unicorn.framework.codegen.convert.UnicornMysqlTypeConvert;
 
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 public class CodeGeneratorUtil {
-	public static void generator(String codePath, String author, UnicornDataSourceConfig dsc, StrategyConfig strategy,
-			PackageConfig pc) {
+	public static void generator(String codePath, String author, UnicornDataSourceConfig dsc, UnicornStrategyConfig strategy,
+			UnicornPackageConfig pc) {
 		UnicornAutoGenerator mpg = new UnicornAutoGenerator();
 		// 全局配置
-		GlobalConfig gc = new GlobalConfig();
+		UnicornGlobalConfig gc = new UnicornGlobalConfig();
 		gc.setOutputDir(codePath);
 		gc.setFileOverride(true);
 		gc.setActiveRecord(true);
@@ -52,12 +52,12 @@ public class CodeGeneratorUtil {
 		dsc.setUsername("huanuo");
 		dsc.setPassword("huanuo@2018");
 		// 策略配置
-		StrategyConfig strategy = new StrategyConfig();
+		UnicornStrategyConfig strategy = new UnicornStrategyConfig();
 		strategy.setTablePrefix(new String[] { "t_" });// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
 		strategy.setInclude(new String[] { "t_role", "t_user_info" }); // 需要生成的表
 		// 包配置
-		PackageConfig pc = new PackageConfig();
+		UnicornPackageConfig pc = new UnicornPackageConfig();
 		pc.setParent("com.xb.demo");
 		pc.setModuleName("test");
 		pc.setMapper("dao");

@@ -1,9 +1,8 @@
 package org.unicorn.framework.codegen.build;
 
+import org.unicorn.framework.codegen.config.UnicornStrategyConfig;
 import org.unicorn.framework.codegen.mapper.DbCloumnTypeInfo;
-import org.unicorn.framework.codegen.mapper.UnicornDbCloumnType;
 
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
 /**
  * 
@@ -31,12 +30,12 @@ public class UnicornTableField {
 	        return convert;
 	    }
 
-	    protected void setConvert(StrategyConfig strategyConfig) {
+	    protected void setConvert(UnicornStrategyConfig strategyConfig) {
 	        if (strategyConfig.isCapitalModeNaming(name)) {
 	            this.convert = false;
 	        } else {
 	            // 转换字段
-	            if (StrategyConfig.DB_COLUMN_UNDERLINE) {
+	            if (UnicornStrategyConfig.DB_COLUMN_UNDERLINE) {
 	                // 包含大写处理
 	                if (StringUtils.containsUpperCase(name)) {
 	                    this.convert = true;
@@ -87,7 +86,7 @@ public class UnicornTableField {
 	        return propertyName;
 	    }
 
-	    public void setPropertyName(StrategyConfig strategyConfig, String propertyName) {
+	    public void setPropertyName(UnicornStrategyConfig strategyConfig, String propertyName) {
 	        this.propertyName = propertyName;
 	        this.setConvert(strategyConfig);
 	    }

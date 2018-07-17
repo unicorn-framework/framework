@@ -11,10 +11,8 @@ import org.unicorn.framework.codegen.bo.EntityContext;
 import org.unicorn.framework.codegen.bo.MapperContext;
 import org.unicorn.framework.codegen.bo.ServiceContext;
 import org.unicorn.framework.codegen.bo.ServiceImplContext;
+import org.unicorn.framework.codegen.config.UnicornConstVal;
 import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
-
-import com.baomidou.mybatisplus.generator.config.ConstVal;
-import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 
 /**
  * 
@@ -44,7 +42,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 	public void setControllerContext(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		ControllerContext controllerContext=new ControllerContext();
 		controllerContext.setName(tableInfo.getControllerName());
-		String pkg=config.getPackageInfo().get(ConstVal.CONTROLLER)+"."+tableInfo.getEntityPath();
+		String pkg=config.getPackageInfo().get(UnicornConstVal.CONTROLLER)+"."+tableInfo.getEntityPath();
 		controllerContext.setPkg(pkg);
 		controllerContext.setClassImportPath(pkg+"."+tableInfo.getControllerName());
 		context.put("controllerContext", controllerContext);
@@ -53,7 +51,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 	public void setServiceImpl(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		ServiceImplContext serviceImplContext=new ServiceImplContext();
 		serviceImplContext.setName(tableInfo.getServiceImplName());
-		String pkg=config.getPackageInfo().get(ConstVal.SERVICEIMPL)+"."+tableInfo.getEntityPath();
+		String pkg=config.getPackageInfo().get(UnicornConstVal.SERVICEIMPL)+"."+tableInfo.getEntityPath();
 		serviceImplContext.setPkg(pkg);
 		serviceImplContext.setClassImportPath(pkg+"."+tableInfo.getServiceImplName());
 		context.put("serviceImplContext", serviceImplContext);
@@ -61,7 +59,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 	public void setService(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		ServiceContext serviceContext=new ServiceContext();
 		serviceContext.setName(tableInfo.getServiceName());
-		String pkg=config.getPackageInfo().get(ConstVal.SERIVCE)+"."+tableInfo.getEntityPath();
+		String pkg=config.getPackageInfo().get(UnicornConstVal.SERIVCE)+"."+tableInfo.getEntityPath();
 		serviceContext.setPkg(pkg);
 		serviceContext.setClassImportPath(pkg+"."+tableInfo.getServiceName());
 		serviceContext.setBeanName(serviceContext.getName().substring(0,1).toLowerCase()+serviceContext.getName().substring(1));
@@ -73,7 +71,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		
 		MapperContext mapperContext=new MapperContext();
 		mapperContext.setName(tableInfo.getMapperName());
-		String pkg=config.getPackageInfo().get(ConstVal.MAPPER)+"."+tableInfo.getEntityPath();
+		String pkg=config.getPackageInfo().get(UnicornConstVal.MAPPER)+"."+tableInfo.getEntityPath();
 		mapperContext.setPkg(pkg);
 		mapperContext.setClassImportPath(pkg+"."+tableInfo.getMapperName());
 		mapperContext.setBeanName(mapperContext.getName().substring(0,1).toLowerCase()+mapperContext.getName().substring(1));
@@ -83,7 +81,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 	
 	public void setEntity(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		EntityContext entityContext=new EntityContext();
-		String pkg=config.getPackageInfo().get(ConstVal.ENTITY)+"."+tableInfo.getEntityPath();
+		String pkg=config.getPackageInfo().get(UnicornConstVal.ENTITY)+"."+tableInfo.getEntityPath();
 		entityContext.setName(tableInfo.getEntityName());
 		entityContext.setPkg(pkg);
 		entityContext.setImportSet(getImportSet(tableInfo));
@@ -103,7 +101,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		return importSet;
 	}
 	@Override
-	public TemplateConfig getInitTemplate() {
+	public UnicornTemplateConfig getInitTemplate() {
 		return new UnicornTemplateConfig();
 	}
 
