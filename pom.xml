@@ -222,5 +222,6 @@
     <module>framework-shiro</module>
     <module>framework-eureka</module>
     <module>framework-gateway</module>
+    <module>framework-codegen</module>
   </modules>
 </project>

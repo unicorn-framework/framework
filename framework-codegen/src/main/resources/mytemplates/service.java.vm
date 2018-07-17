@@ -1,0 +1,69 @@
+package ${package.Service}.${table.entityPath};
+
+import ${package.Entity}.${table.entityPath}.${entity};
+import org.unicorn.framework.core.exception.PendingException;
+import java.util.List;
+/**
+ * <p>
+ * ${table.comment} 服务类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public interface ${table.serviceName} {
+	/**
+     * 根据主键删除记录
+     * @param id
+     * @return
+     * @throws PendingException
+     */
+   public void deleteByPrimaryKey(${table.primaryTableField.propertyType} id) throws PendingException;
+
+    /**
+     * 保存记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+   public  ${entity} save(${entity} record) throws PendingException;
+     /**
+     * 根据主键查询记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} id) throws PendingException;
+    
+    /**
+     * 根据条件查询记录列表
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public  List<${entity}> selectList(${entity} record) throws PendingException;
+    /**
+     * 根据主键列表查询记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public  List<${entity}> selectListByIds(List<${table.primaryTableField.propertyType}> ids) throws PendingException;
+    /**
+     * 根据条件查询一条记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public  ${entity} selectOne(${entity} record) throws PendingException;
+
+    /**
+     * 根据主键修改记录
+     * @param record
+     * @return
+     * @throws PendingException
+     */
+    public ${entity} updateByPrimaryKey(${entity} record) throws PendingException;
+
+    
+}
