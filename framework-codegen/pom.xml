@@ -42,5 +42,11 @@
 			<artifactId>framework-core</artifactId>
 			<version>${module.version}</version>
 		</dependency>
+		<!--pagehelper -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>1.1.0</version>
+		</dependency>
   </dependencies>
 </project>

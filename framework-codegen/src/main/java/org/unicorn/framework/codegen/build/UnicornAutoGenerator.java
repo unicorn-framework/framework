@@ -6,11 +6,8 @@ import java.util.Set;
 
 import org.apache.velocity.VelocityContext;
 import org.assertj.core.util.Sets;
-import org.unicorn.framework.codegen.bo.ControllerContext;
+import org.unicorn.framework.codegen.bo.ClassBaseContext;
 import org.unicorn.framework.codegen.bo.EntityContext;
-import org.unicorn.framework.codegen.bo.MapperContext;
-import org.unicorn.framework.codegen.bo.ServiceContext;
-import org.unicorn.framework.codegen.bo.ServiceImplContext;
 import org.unicorn.framework.codegen.config.UnicornConstVal;
 import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
 
@@ -32,15 +29,25 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 			UnicornTableInfo tableInfo=(UnicornTableInfo)context.get("table");
 			setEntity(context,tableInfo,config);
 			setMapper(context,tableInfo,config);
-			setService(context,tableInfo,config);
 			setServiceImpl(context,tableInfo,config);
 			setControllerContext(context,tableInfo,config);
+			setDtoContext(context,tableInfo,config);
 		}
 		 return ctxData;
 	}
 	
+	public void setDtoContext(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
+		ClassBaseContext dtoContext=new ClassBaseContext();
+		dtoContext.setName(tableInfo.getPageRequestDto());
+		String pkg=config.getPackageInfo().get(UnicornConstVal.DTO)+"."+tableInfo.getEntityPath();
+		dtoContext.setPkg(pkg);
+		dtoContext.setClassImportPath(pkg+"."+tableInfo.getPageRequestDto());
+		dtoContext.setBeanName(dtoContext.getName().substring(0,1).toLowerCase()+dtoContext.getName().substring(1));
+		context.put("dtoContext", dtoContext);
+	}
+	
 	public void setControllerContext(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
-		ControllerContext controllerContext=new ControllerContext();
+		ClassBaseContext controllerContext=new ClassBaseContext();
 		controllerContext.setName(tableInfo.getControllerName());
 		String pkg=config.getPackageInfo().get(UnicornConstVal.CONTROLLER)+"."+tableInfo.getEntityPath();
 		controllerContext.setPkg(pkg);
@@ -49,27 +56,18 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 	}
 	
 	public void setServiceImpl(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
-		ServiceImplContext serviceImplContext=new ServiceImplContext();
+		ClassBaseContext serviceImplContext=new ClassBaseContext();
 		serviceImplContext.setName(tableInfo.getServiceImplName());
 		String pkg=config.getPackageInfo().get(UnicornConstVal.SERVICEIMPL)+"."+tableInfo.getEntityPath();
 		serviceImplContext.setPkg(pkg);
 		serviceImplContext.setClassImportPath(pkg+"."+tableInfo.getServiceImplName());
+		serviceImplContext.setBeanName(serviceImplContext.getName().substring(0,1).toLowerCase()+serviceImplContext.getName().substring(1));
 		context.put("serviceImplContext", serviceImplContext);
 	}
-	public void setService(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
-		ServiceContext serviceContext=new ServiceContext();
-		serviceContext.setName(tableInfo.getServiceName());
-		String pkg=config.getPackageInfo().get(UnicornConstVal.SERIVCE)+"."+tableInfo.getEntityPath();
-		serviceContext.setPkg(pkg);
-		serviceContext.setClassImportPath(pkg+"."+tableInfo.getServiceName());
-		serviceContext.setBeanName(serviceContext.getName().substring(0,1).toLowerCase()+serviceContext.getName().substring(1));
-		context.put("serviceContext", serviceContext);
-	}
-	
 	
 	public void setMapper(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		
-		MapperContext mapperContext=new MapperContext();
+		ClassBaseContext mapperContext=new ClassBaseContext();
 		mapperContext.setName(tableInfo.getMapperName());
 		String pkg=config.getPackageInfo().get(UnicornConstVal.MAPPER)+"."+tableInfo.getEntityPath();
 		mapperContext.setPkg(pkg);
@@ -86,6 +84,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		entityContext.setPkg(pkg);
 		entityContext.setImportSet(getImportSet(tableInfo));
 		entityContext.setClassImportPath(pkg+"."+tableInfo.getEntityName());
+		entityContext.setBeanName(entityContext.getName().substring(0,1).toLowerCase()+entityContext.getName().substring(1));
 		context.put("entityContext", entityContext);
 	}
 	

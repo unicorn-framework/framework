@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
  * @author ${author}
  * @since ${date}
  */
- @Data
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

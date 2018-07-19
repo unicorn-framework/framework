@@ -192,9 +192,9 @@ public abstract class UnicornAbstractGenerator {
 			String entityFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.ENTITY_PATH),tableInfo.getEntityName(),UnicornConstVal.JAVA_SUFFIX);
 			String mapperFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.MAPPER_PATH),tableInfo.getMapperName(),UnicornConstVal.JAVA_SUFFIX);
 			String xmlFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.XML_PATH),tableInfo.getXmlName(),UnicornConstVal.XML_SUFFIX);
-			String serviceFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.SERIVCE_PATH),tableInfo.getServiceName(),UnicornConstVal.JAVA_SUFFIX);
 			String implFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.SERVICEIMPL_PATH),tableInfo.getServiceImplName(),UnicornConstVal.JAVA_SUFFIX);
 			String controllerFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.CONTROLLER_PATH),tableInfo.getControllerName(),UnicornConstVal.JAVA_SUFFIX);
+			String dtoFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.DTO_PATH),tableInfo.getPageRequestDto(),UnicornConstVal.JAVA_SUFFIX);
 			UnicornTemplateConfig template = config.getTemplate();
             //创建entity文件
 			createFile(context,template.getEntity(),entityFile);
@@ -202,12 +202,12 @@ public abstract class UnicornAbstractGenerator {
 			createFile(context,template.getMapper(),mapperFile);
 			//创建mapper映射文件
 			createFile(context,template.getXml(),xmlFile);
-			//创建service接口文件
-			createFile(context,template.getService(),serviceFile);
 			//创建接口实现文件
 			createFile(context,template.getServiceImpl(),implFile);
 			//创建controller文件
 			createFile(context,template.getController(),controllerFile);
+			//创建dto文件
+			createFile(context,template.getDto(),dtoFile);
 		} catch (IOException e) {
 			logger.error("无法创建文件，请检查配置信息！", e);
 		}

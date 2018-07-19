@@ -144,9 +144,9 @@ public class UnicornConfigBuilder  {
         packageInfo.put(UnicornConstVal.ENTITY, joinPackage(config.getParent(), config.getEntity()));
         packageInfo.put(UnicornConstVal.MAPPER, joinPackage(config.getParent(), config.getMapper()));
         packageInfo.put(UnicornConstVal.XML, joinPackage(config.getParent(), config.getXml()));
-        packageInfo.put(UnicornConstVal.SERIVCE, joinPackage(config.getParent(), config.getService()));
         packageInfo.put(UnicornConstVal.SERVICEIMPL, joinPackage(config.getParent(), config.getServiceImpl()));
         packageInfo.put(UnicornConstVal.CONTROLLER, joinPackage(config.getParent(), config.getController()));
+        packageInfo.put(UnicornConstVal.DTO, joinPackage(config.getParent(), config.getDto()));
 
         // 生成路径信息
         pathInfo = new HashMap<>();
@@ -159,14 +159,14 @@ public class UnicornConfigBuilder  {
         if (StringUtils.isNotEmpty(template.getXml())) {
             pathInfo.put(UnicornConstVal.XML_PATH, joinPath(outputDir, packageInfo.get(UnicornConstVal.XML)));
         }
-        if (StringUtils.isNotEmpty(template.getService())) {
-            pathInfo.put(UnicornConstVal.SERIVCE_PATH, joinPath(outputDir, packageInfo.get(UnicornConstVal.SERIVCE)));
-        }
         if (StringUtils.isNotEmpty(template.getServiceImpl())) {
             pathInfo.put(UnicornConstVal.SERVICEIMPL_PATH, joinPath(outputDir, packageInfo.get(UnicornConstVal.SERVICEIMPL)));
         }
         if (StringUtils.isNotEmpty(template.getController())) {
             pathInfo.put(UnicornConstVal.CONTROLLER_PATH, joinPath(outputDir, packageInfo.get(UnicornConstVal.CONTROLLER)));
+        }
+        if (StringUtils.isNotEmpty(template.getDto())) {
+            pathInfo.put(UnicornConstVal.DTO_PATH, joinPath(outputDir, packageInfo.get(UnicornConstVal.DTO)));
         }
     }
 
@@ -226,6 +226,7 @@ public class UnicornConfigBuilder  {
     private List<UnicornTableInfo> processTable(List<UnicornTableInfo> tableList, NamingStrategy strategy, String[] tablePrefix) {
         for (UnicornTableInfo tableInfo : tableList) {
             tableInfo.setEntityName(strategyConfig, NamingStrategy.capitalFirst(processName(tableInfo.getName(), strategy, tablePrefix)));
+           
             if (StringUtils.isNotEmpty(globalConfig.getMapperName())) {
                 tableInfo.setMapperName(String.format(globalConfig.getMapperName(), tableInfo.getEntityName()));
             } else {
@@ -236,11 +237,6 @@ public class UnicornConfigBuilder  {
             } else {
                 tableInfo.setXmlName(tableInfo.getEntityName() + UnicornConstVal.MAPPER);
             }
-            if (StringUtils.isNotEmpty(globalConfig.getServiceName())) {
-                tableInfo.setServiceName(String.format(globalConfig.getServiceName(), tableInfo.getEntityName()));
-            } else {
-                tableInfo.setServiceName("I" + tableInfo.getEntityName() + UnicornConstVal.SERIVCE);
-            }
             if (StringUtils.isNotEmpty(globalConfig.getServiceImplName())) {
                 tableInfo.setServiceImplName(String.format(globalConfig.getServiceImplName(), tableInfo.getEntityName()));
             } else {
@@ -250,6 +246,11 @@ public class UnicornConfigBuilder  {
                 tableInfo.setControllerName(String.format(globalConfig.getControllerName(), tableInfo.getEntityName()));
             } else {
                 tableInfo.setControllerName(tableInfo.getEntityName() + UnicornConstVal.CONTROLLER);
+            }
+            if (StringUtils.isNotEmpty(globalConfig.getPageDtoName())) {
+                tableInfo.setPageRequestDto(String.format(globalConfig.getPageDtoName(), tableInfo.getEntityName()));
+            } else {
+                tableInfo.setPageRequestDto(tableInfo.getEntityName() + UnicornConstVal.DTO);
             }
         }
         return tableList;

@@ -19,13 +19,11 @@
    #end
  #end
 </resultMap>
-#if(${baseColumnList})
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         ${table.fieldNames}
     </sql>
 
-#end
 
 <!-- 根据主键查询 -->
 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="${table.primaryTableField.columnType.javaType}" >
@@ -87,7 +85,7 @@
    ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
   </delete>
   <!-- 新增记录-->
-  <insert id="insert" parameterType="${package.Entity}.${table.entityName}" >
+  <insert id="insert" parameterType="${entityContext.classImportPath}" >
     <selectKey resultType="${table.primaryTableField.columnType.javaType}" keyProperty="${table.primaryTableField.name}" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>

@@ -6,7 +6,7 @@ public class UnicornPackageConfig {
 	 /**
      * 父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
      */
-    private String parent = "com.baomidou";
+    private String parent = "org.unicorn.frameworker";
 
     /**
      * 父包模块名。
@@ -16,7 +16,7 @@ public class UnicornPackageConfig {
     /**
      * Entity包名
      */
-    private String entity = "entity";
+    private String entity = "bo";
 
     /**
      * Service包名
@@ -26,21 +26,26 @@ public class UnicornPackageConfig {
     /**
      * Service Impl包名
      */
-    private String serviceImpl = "service.impl";
+    private String serviceImpl = "service";
     /**
      * Mapper包名
      */
-    private String mapper = "mapper";
+    private String mapper = "dao";
 
     /**
      * Mapper XML包名
      */
-    private String xml = "mapper.xml";
+    private String xml = "dao";
 
     /**
      * Controller包名
      */
-    private String controller = "web";
+    private String controller = "controller";
+    /**
+     * dto包名
+     */
+    private String dto = "dto";
+    
 
     public String getParent() {
         if (StringUtils.isNotEmpty(moduleName)) {
@@ -111,4 +116,13 @@ public class UnicornPackageConfig {
     public void setController(String controller) {
         this.controller = controller;
     }
+
+	public String getDto() {
+		return dto;
+	}
+
+	public void setDto(String dto) {
+		this.dto = dto;
+	}
+    
 }

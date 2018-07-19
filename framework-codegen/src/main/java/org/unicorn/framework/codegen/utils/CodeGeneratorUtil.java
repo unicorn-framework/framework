@@ -11,25 +11,10 @@ import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 public class CodeGeneratorUtil {
-	public static void generator(String codePath, String author, UnicornDataSourceConfig dsc, UnicornStrategyConfig strategy,
+	public static void generator(UnicornGlobalConfig gc,UnicornDataSourceConfig dsc, UnicornStrategyConfig strategy,
 			UnicornPackageConfig pc) {
 		UnicornAutoGenerator mpg = new UnicornAutoGenerator();
 		// 全局配置
-		UnicornGlobalConfig gc = new UnicornGlobalConfig();
-		gc.setOutputDir(codePath);
-		gc.setFileOverride(true);
-		gc.setActiveRecord(true);
-		gc.setEnableCache(true);// XML 二级缓存
-		gc.setBaseResultMap(true);// XML ResultMap
-		gc.setBaseColumnList(true);// XML columList
-		gc.setAuthor(author);
-
-		// 自定义文件命名，注意 %s 会自动填充表实体属性！
-		gc.setMapperName("%sMapper");
-		gc.setXmlName("%sMapper");
-		gc.setServiceName("%sService");
-		gc.setServiceImplName("%sServiceImpl");
-		gc.setControllerName("%sController");
 		mpg.setGlobalConfig(gc);
 		// 数据源配置
 		mpg.setDataSource(dsc);
@@ -60,11 +45,12 @@ public class CodeGeneratorUtil {
 		UnicornPackageConfig pc = new UnicornPackageConfig();
 		pc.setParent("com.xb.demo");
 		pc.setModuleName("test");
-		pc.setMapper("dao");
-		pc.setXml("dao");
-		pc.setEntity("bo");
-
-		CodeGeneratorUtil.generator("D:\\workspace\\unicorm-framework\\framework-codegen\\src\\main\\java", "xiebin",
-				dsc, strategy, pc);
+		
+		UnicornGlobalConfig gc = new UnicornGlobalConfig();
+		gc.setOutputDir("D:\\workspace\\unicorm-framework\\framework-codegen\\src\\main\\java");
+		gc.setAuthor("xiebin");
+		gc.setFileOverride(true);
+		
+		CodeGeneratorUtil.generator(gc,dsc, strategy, pc);
 	}
 }

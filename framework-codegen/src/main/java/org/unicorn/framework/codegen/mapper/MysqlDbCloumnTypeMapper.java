@@ -27,7 +27,7 @@ public class MysqlDbCloumnTypeMapper {
 		_MAP.put("BIT", new DbCloumnTypeInfo("BIT", null,"java.lang.Boolean"));
 		_MAP.put("DATE", new DbCloumnTypeInfo("DATE", "java.util.Date","java.util.Date"));
 		_MAP.put("TIME", new DbCloumnTypeInfo("TIME", "java.sql.Time","java.sql.Time"));
-		_MAP.put("TIMESTAMP", new DbCloumnTypeInfo("DATE", "java.util.Date","java.util.Date"));
+		_MAP.put("TIMESTAMP", new DbCloumnTypeInfo("TIMESTAMP", "java.util.Date","java.util.Date"));
 		_MAP.put("DATETIME", new DbCloumnTypeInfo("DATETIME", "java.util.Date","java.util.Date"));
 		_MAP.put("BLOB", new DbCloumnTypeInfo("BLOB", "java.sql.Blob", "java.sql.Blob"));
 		_MAP.put("CLOB", new DbCloumnTypeInfo("CLOB", "java.sql.Clob", "java.sql.Clob"));
