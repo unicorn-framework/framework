@@ -45,7 +45,7 @@ public class CodeGeneratorUtil {
 		UnicornPackageConfig pc = new UnicornPackageConfig();
 		pc.setParent("com.xb.demo");
 		pc.setModuleName("test");
-		
+		//全局配置
 		UnicornGlobalConfig gc = new UnicornGlobalConfig();
 		gc.setOutputDir("D:\\workspace\\unicorm-framework\\framework-codegen\\src\\main\\java");
 		gc.setAuthor("xiebin");
