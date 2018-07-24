@@ -219,9 +219,9 @@
 		<module>framework-orm</module>
 		<module>framework-drools</module>
 		<module>framework-mq</module>
-    <module>framework-shiro</module>
-    <module>framework-eureka</module>
-    <module>framework-gateway</module>
-    <module>framework-codegen</module>
+        <module>framework-shiro</module>
+        <module>framework-register-center</module>
+        <module>framework-gateway</module>
+        <module>framework-codegen</module>
   </modules>
 </project>

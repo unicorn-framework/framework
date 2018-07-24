@@ -8,8 +8,8 @@
 		<artifactId>unicorn-framework</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>framework-eureka</artifactId>
-	<name>framework-eureka</name>
+	<artifactId>framework-register-center</artifactId>
+	<name>framework-register-center</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
