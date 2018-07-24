@@ -43,12 +43,13 @@ public class UnicornGlobalConfig {
 	/**
 	 * 各层文件名称方式，例如： %Action 生成 UserAction
 	 */
-	private String mapperName;
-	private String xmlName;
-	private String serviceName;
-	private String serviceImplName;
-	private String controllerName;
+	private String mapperName="%sMapper";
+	private String xmlName="%sMapper";
+	private String serviceImplName="%sService";
+	private String controllerName="%sController";
+	private String pageDtoName="%sPageRequestDto";
 
+	
 	public String getOutputDir() {
 		return outputDir;
 	}
@@ -129,14 +130,6 @@ public class UnicornGlobalConfig {
 		this.xmlName = xmlName;
 	}
 
-	public String getServiceName() {
-		return serviceName;
-	}
-
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
-
 	public String getServiceImplName() {
 		return serviceImplName;
 	}
@@ -151,6 +144,14 @@ public class UnicornGlobalConfig {
 
 	public void setControllerName(String controllerName) {
 		this.controllerName = controllerName;
+	}
+
+	public String getPageDtoName() {
+		return pageDtoName;
+	}
+
+	public void setPageDtoName(String pageDtoName) {
+		this.pageDtoName = pageDtoName;
 	}
 
 }

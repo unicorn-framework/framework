@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ServiceImplContext {
+public class ClassBaseContext {
 	private String name;
 	private String pkg;
 	private String classImportPath;
+	private String beanName;
 
 }

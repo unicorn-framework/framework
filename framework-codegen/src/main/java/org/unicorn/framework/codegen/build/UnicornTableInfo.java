@@ -27,6 +27,7 @@ public class UnicornTableInfo {
 	    private String serviceName;
 	    private String serviceImplName;
 	    private String controllerName;
+	    private String pageRequestDto;
 
 	    private List<UnicornTableField> fields;
 	    private List<String> importPackages = new ArrayList<>();
@@ -220,6 +221,14 @@ public class UnicornTableInfo {
  
 	public void setPrimaryTableField(UnicornTableField primaryTableField) {
 		this.primaryTableField = primaryTableField;
+	}
+
+	public String getPageRequestDto() {
+		return pageRequestDto;
+	}
+
+	public void setPageRequestDto(String pageRequestDto) {
+		this.pageRequestDto = pageRequestDto;
 	}
 	
 	

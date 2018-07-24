@@ -2,14 +2,15 @@ package ${serviceImplContext.pkg};
 
 import ${entityContext.classImportPath};
 import ${mapperContext.classImportPath};
-import ${serviceContext.classImportPath};
+import ${dtoContext.classImportPath};
 import org.springframework.stereotype.Service;
 import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.core.exception.PendingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.unicorn.framework.core.SysCode;
 import java.util.List;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 /**
  * <p>
  * ${table.comment} 服务实现类
@@ -19,7 +20,7 @@ import java.util.List;
  * @since ${date}
  */
 @Service
-public class ${serviceImplContext.name} extends AbstractService implements ${serviceContext.name} {
+public class ${serviceImplContext.name} extends AbstractService {
   @Autowired
   private ${mapperContext.name} ${mapperContext.beanName};
   /**
@@ -83,6 +84,27 @@ public class ${serviceImplContext.name} extends AbstractService implements ${ser
 			throw new PendingException(SysCode.DB_ERROR, "查询列表失败");
 	}
     }
+    
+    /** 
+	 * 分页查询${table.comment}信息
+	 * 
+	 * @param ${entityContext.beanName}PageRequestDto
+	 * @return
+	 * @throws PendingException
+	 */
+	public PageInfo<${entity}> get${entity}ByPage(${dtoContext.name} ${dtoContext.beanName})
+			throws PendingException {
+		try {
+			PageHelper.startPage(${dtoContext.beanName}.getPageNo(),${dtoContext.beanName}.getPageSize());
+			List<${entity}> list=${mapperContext.beanName}.selectList(${dtoContext.beanName}.get${entityContext.name}());
+			PageInfo<${entity}> pageInfo = new PageInfo<>(list);
+			return pageInfo;
+		}catch (Exception e) {
+			error("分页查询${table.comment}失败", e);
+			throw new PendingException(SysCode.DB_ERROR, "分页查询${table.comment}失败");
+		}
+	}
+    
     /**
      * 根据主键列表查询记录
      * @param record

@@ -34,7 +34,6 @@
             <artifactId>drools-templates</artifactId>
             <version>7.0.0.Final</version>
         </dependency>
-
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
