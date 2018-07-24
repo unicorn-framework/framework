@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * RocketMQ的配置参数
  */
 @Data
-@ConfigurationProperties(prefix = "rocketmq")
+@ConfigurationProperties(prefix = "unicorn.rocketmq")
 public class MQProperties {
     /**
      * config name server address
