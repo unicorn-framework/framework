@@ -2,7 +2,6 @@ package org.unicorn.framework.mq.trace.common;
 
 
 import org.apache.rocketmq.common.message.MessageType;
-import org.unicorn.framework.util.common.MixUtils;
 
 /**
  * @author xiebin

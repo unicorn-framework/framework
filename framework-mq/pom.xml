@@ -18,7 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.unicorn</groupId>
-			<artifactId>framework-core</artifactId>
+			<artifactId>framework-base</artifactId>
 			<version>${module.version}</version>
 		</dependency>
 		<dependency>
