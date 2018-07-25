@@ -22,13 +22,13 @@ public interface ${mapperContext.name}  {
      *
      * @mbggenerated ${date}
      */
-    int insert(${entity} record);
+    int insert(${entity} ${mapperContext.beanName});
 
     /**
      *
      * @mbggenerated ${date}
      */
-    int insertSelective(${entity} record);
+    int insertSelective(${entity} ${mapperContext.beanName});
 
     /**
      *
@@ -40,7 +40,7 @@ public interface ${mapperContext.name}  {
     *
     * @mbggenerated ${date}
     */
-    public  List<${entity}> selectList(${entity} record);
+    public  List<${entity}> selectList(${entity} ${mapperContext.beanName});
      /**
     *
     * @mbggenerated ${date}
@@ -50,17 +50,17 @@ public interface ${mapperContext.name}  {
     *
     * @mbggenerated ${date}
     */
-    public  ${entity} selectOne(${entity} record);
+    public  ${entity} selectOne(${entity} ${mapperContext.beanName});
 
     /**
      *
      * @mbggenerated ${date}
      */
-    int updateByPrimaryKeySelective(${entity} record);
+    int updateByPrimaryKeySelective(${entity} ${mapperContext.beanName});
 
     /**
      *
      * @mbggenerated ${date}
      */
-    int updateByPrimaryKey(${entity} record);
+    int updateByPrimaryKey(${entity} ${mapperContext.beanName});
 }
