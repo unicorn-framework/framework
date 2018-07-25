@@ -180,12 +180,12 @@ public abstract class UnicornAbstractGenerator {
 	
 	
 	/**
-	 * 合成上下文与模板
+	 * 合成上下文与模板 留给定制开发的钩子
 	 *
 	 * @param context
 	 *            vm上下文
 	 */
-	private void batchOutput(String entityName, VelocityContext context) {
+	public void batchOutput(String entityName, VelocityContext context) {
 		try {
 			UnicornTableInfo tableInfo = (UnicornTableInfo) context.get("table");
 			Map<String, String> pathInfo = config.getPathInfo();
