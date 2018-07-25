@@ -40,16 +40,17 @@ public class CodeGeneratorUtil {
 		UnicornStrategyConfig strategy = new UnicornStrategyConfig();
 		strategy.setTablePrefix(new String[] { "t_" });// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-		strategy.setInclude(new String[] { "t_role", "t_user_info" }); // 需要生成的表
+		strategy.setInclude(new String[] {"t_user_info" }); // 需要生成的表
 		// 包配置
 		UnicornPackageConfig pc = new UnicornPackageConfig();
 		pc.setParent("com.xb.demo");
 		pc.setModuleName("test");
 		//全局配置
 		UnicornGlobalConfig gc = new UnicornGlobalConfig();
-		gc.setOutputDir("D:\\workspace\\unicorm-framework\\framework-codegen\\src\\main\\java");
+		gc.setOutputDir("D:\\workspace\\unicorn-framework\\framework-codegen\\src\\main\\java");
 		gc.setAuthor("xiebin");
 		gc.setFileOverride(true);
+		gc.setOpen(false);
 		
 		CodeGeneratorUtil.generator(gc,dsc, strategy, pc);
 	}

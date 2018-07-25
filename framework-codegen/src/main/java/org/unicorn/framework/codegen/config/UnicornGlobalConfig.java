@@ -12,14 +12,14 @@ public class UnicornGlobalConfig {
 	private boolean fileOverride = false;
 
 	/**
-	 * 是否打开输出目录
+	 * 是否打开输出目录 默认不打开
 	 */
-	private boolean open = true;
+	private boolean open = false;
 
 	/**
 	 * 是否在xml中添加二级缓存配置
 	 */
-	private boolean enableCache = true;
+	private boolean enableCache = false;
 
 	/**
 	 * 开发人员
@@ -41,7 +41,7 @@ public class UnicornGlobalConfig {
 	 */
 	private boolean baseColumnList = false;
 	/**
-	 * 各层文件名称方式，例如： %Action 生成 UserAction
+	 * 各层文件名称方式，例如： %Controller 生成 UserController
 	 */
 	private String mapperName="%sMapper";
 	private String xmlName="%sMapper";

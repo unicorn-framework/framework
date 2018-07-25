@@ -42,14 +42,14 @@ public class ${serviceImplContext.name} extends AbstractService {
 
    /**
      * 保存记录
-     * @param record
+     * @param ${entityContext.beanName}
      * @return
      * @throws PendingException
      */
-   public  ${entity} save(${entity} record) throws PendingException{
+   public  ${entity} save(${entity} ${entityContext.beanName}) throws PendingException{
        try {
-			 ${mapperContext.beanName}.insertSelective(record);
-			 return record;
+			 ${mapperContext.beanName}.insertSelective(${entityContext.beanName});
+			 return ${entityContext.beanName};
 		} catch (Exception e) {
 			error("新增记录失败", e);
 			throw new PendingException(SysCode.DB_ERROR, "新增记录失败");
@@ -57,7 +57,7 @@ public class ${serviceImplContext.name} extends AbstractService {
    }
       /**
      * 根据主键查询记录
-     * @param record
+     * @param id
      * @return
      * @throws PendingException
      */
@@ -72,13 +72,13 @@ public class ${serviceImplContext.name} extends AbstractService {
     
      /**
      * 根据条件查询记录列表
-     * @param record
+     * @param ${entityContext.beanName}
      * @return
      * @throws PendingException
      */
-    public  List<${entity}> selectList(${entity} record) throws PendingException{
+    public  List<${entity}> selectList(${entity} ${entityContext.beanName}) throws PendingException{
        try {
-			return ${mapperContext.beanName}.selectList(record);
+			return ${mapperContext.beanName}.selectList(${entityContext.beanName});
 		} catch (Exception e) {
 			error("查询列表失败", e);
 			throw new PendingException(SysCode.DB_ERROR, "查询列表失败");
@@ -107,7 +107,7 @@ public class ${serviceImplContext.name} extends AbstractService {
     
     /**
      * 根据主键列表查询记录
-     * @param record
+     * @param ids
      * @return
      * @throws PendingException
      */
@@ -121,13 +121,13 @@ public class ${serviceImplContext.name} extends AbstractService {
     }
    /**
      * 根据条件查询一条记录
-     * @param record
+     * @param ${entityContext.beanName}
      * @return
      * @throws PendingException
      */
-    public  ${entity} selectOne(${entity} record) throws PendingException{
+    public  ${entity} selectOne(${entity} ${entityContext.beanName}) throws PendingException{
       try {
-			return ${mapperContext.beanName}.selectOne(record);
+			return ${mapperContext.beanName}.selectOne(${entityContext.beanName});
 		} catch (Exception e) {
 			error("查询单条记录失败", e);
 			throw new PendingException(SysCode.DB_ERROR, "查询单条记录失败");
@@ -136,14 +136,14 @@ public class ${serviceImplContext.name} extends AbstractService {
 
     /**
      * 根据主键修改记录
-     * @param record
+     * @param ${entityContext.beanName}
      * @return
      * @throws PendingException
      */
-    public ${entity} updateByPrimaryKey(${entity} record) throws PendingException{
+    public ${entity} updateByPrimaryKey(${entity} ${entityContext.beanName}) throws PendingException{
        try {
-			 ${mapperContext.beanName}.updateByPrimaryKey(record);
-			return record;
+			 ${mapperContext.beanName}.updateByPrimaryKey(${entityContext.beanName});
+			return ${entityContext.beanName};
 		} catch (Exception e) {
 			error("根据主键更新单条记录失败", e);
 			throw new PendingException(SysCode.DB_ERROR, "根据主键更新单条记录失败");

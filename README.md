@@ -42,7 +42,7 @@ spring.redis.timeout=0
 #启用redis存储session
 spring.session.store-type=redis
 session共享配置
-  #session配置
+#session配置
 #session过期时间设置
 unicorn.session.maxInactiveIntervalInSeconds=1800
 #响应头部名称设置
