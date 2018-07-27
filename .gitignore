@@ -16,3 +16,4 @@ framework-mq/.project
 *.project
 framework-gateway/.settings/
 framework-codegen/.settings/
+framework-register-center/.settings/
