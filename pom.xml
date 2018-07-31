@@ -223,5 +223,6 @@
         <module>framework-register-center</module>
         <module>framework-gateway</module>
         <module>framework-codegen</module>
+    <module>framework-api-doc</module>
   </modules>
 </project>
