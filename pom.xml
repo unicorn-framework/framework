@@ -224,5 +224,6 @@
         <module>framework-gateway</module>
         <module>framework-codegen</module>
     <module>framework-api-doc</module>
+    <module>framework-websocket</module>
   </modules>
 </project>
