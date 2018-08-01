@@ -67,7 +67,7 @@ public class LngAndLatUtil {
         Map<String,Double> map=LngAndLatUtil.getLngAndLat("长沙园林生态园");
         System.out.println("经度："+map.get("lng")+"---纬度："+map.get("lat"));
         
-        System.out.println(CoodinateCovertorUtil.bd_decrypt(new  LngLat(map.get("lng"),map.get("lat"))));  
+        System.out.println(CoodinateCovertorUtil.bd09ToGcj02(new  LngLat(map.get("lng"),map.get("lat"))));  
     }
 	
 }
