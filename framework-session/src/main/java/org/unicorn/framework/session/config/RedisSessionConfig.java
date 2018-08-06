@@ -66,6 +66,10 @@ public class RedisSessionConfig {
 		HeaderHttpSessionStrategy headerStrategy=new HeaderHttpSessionStrategy();
 		headerStrategy.setHeaderName(sessionPropertiesConfig.getHeadName());
 		return headerStrategy;
+		
+//		UnicornHttpSessionStrategy headerStrategy=new UnicornHttpSessionStrategy();
+//		headerStrategy.setHeaderName(sessionPropertiesConfig.getHeadName());
+//		return headerStrategy;
 	}
 }
 

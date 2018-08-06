@@ -17,7 +17,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 public class ShiroRedisCache<K, V> implements Cache<K, V> {
 	//shoir 权限缓存前缀
-	private String cacheKeyPrefix = "shiro_authorization:";
+	private String cacheKeyPrefix = "unicorn:shiro:authorization:";
 	private String cacheKey;
 	private Long timeOut;
 	private RedisTemplate<String, ?> redisTemplate;

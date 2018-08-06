@@ -5,17 +5,19 @@ unicorn-framework结合springboot、springcloud整合了redis、mybatis、drools
 1、framework-base：框架的集成部分，包括上下文的管理，请求信息的封装等
 2、framework-core：框架的核心，定义了一些列框架元素，包括注解、异常定义、异常处理、返回码等。
 3、framework-util：框架提供的一些工具类
-4、framework-cache：框架基于redis提供分布式缓存、分布式锁、分布式应用session共享等
-5、framework-config-server：框架基于springcloud提供分布式配置服务的能力
-6、framework-eureka：框架基于springcloud、eureka提供注册中心
-7、framework-gateway：框架基于springcloud、zuul提供网关能力
-8、framework-mq：框架基于rocketMq提供异步消息机制
-9、framework-orm：框架基于mybatis提供数据操作能力
-10、framework-drools：规则引擎、提供应用解决复杂规则开发的能力
-11、framework-shiro：权限认证
-12、framework-elastic-job：分布式任务调度
-13、framework-oss：基于阿里云的对象存储服务
-14、framework-codegen：基于麒麟框架写的代码生成，方便使用者快速生成项目，并自动生成CRUD等基础功能，解放使用者宝贵的精力去投入业务开发
+4、framework-cache：框架基于redis提供分布式缓存、分布式锁
+5、framework-session:框架基于 spring-session 、redis 提供分布式应用session共享等
+6、framework-config-server：框架基于springcloud提供分布式配置服务的能力
+7、framework-eureka：框架基于springcloud、eureka提供注册中心
+8、framework-gateway：框架基于springcloud、zuul提供网关能力
+9、framework-mq：框架基于rocketMq提供异步消息机制
+10、framework-orm：框架基于mybatis提供数据操作能力
+11、framework-drools：规则引擎、提供应用解决复杂规则开发的能力
+12、framework-shiro：权限认证
+13、framework-elastic-job：分布式任务调度
+14、framework-oss：基于阿里云的对象存储服务
+15、framework-codegen：基于麒麟框架写的代码生成，方便使用者快速生成项目，并自动生成CRUD等基础功能，解放使用者宝贵的精力去投入业务开发
+16、framework-api-doc :基于swagger的接口文档
 三、使用
 1、framework-cache
 配置
@@ -41,6 +43,7 @@ spring.redis.pool.min-idle=0
 spring.redis.timeout=0 
 #启用redis存储session
 spring.session.store-type=redis
+2、framework-session
 session共享配置
 #session配置
 #session过期时间设置
@@ -52,7 +55,7 @@ unicorn.session.cookieName=huanuo
 #session命名空间设置
 unicorn.session.namespace=internet
 
-2、framework-mq
+3、framework-mq
 配置
 #rocketmq nameserverAddress设置
  unicorn.rocketmq.nameServerAddress=nameServerAddress
