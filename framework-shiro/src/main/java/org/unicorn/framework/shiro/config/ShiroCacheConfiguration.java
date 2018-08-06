@@ -1,19 +1,15 @@
 package org.unicorn.framework.shiro.config;
 
-import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -23,21 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Configuration
 @ConditionalOnProperty(name="enable",prefix="unicorn.shiro.cache",havingValue="true")
-public class ShiroCacheConfiguration extends CachingConfigurerSupport implements ApplicationContextAware {
-
-	protected ApplicationContext applicationContext;
-
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext =  applicationContext;
-	}
-	
-	@Bean
-	@ConfigurationProperties(prefix = "unicorn.shiro.cache")
-	public ShiroCachePropertiesConfig shiroCachePropertiesConfig() {
-		return new ShiroCachePropertiesConfig();
-	}
-	
-	
+public class ShiroCacheConfiguration extends CachingConfigurerSupport{
 	 /**
      * 对象
      * @param factory

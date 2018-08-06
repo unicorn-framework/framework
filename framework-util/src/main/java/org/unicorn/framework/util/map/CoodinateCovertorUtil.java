@@ -9,10 +9,10 @@ import java.math.BigDecimal;
  *
  */
 public class CoodinateCovertorUtil {
-	private static double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+
 	public static double pi = 3.1415926535897932384626;
 	public static double a = 6378140.0;// 1975年国际椭球体长半轴
-	public static double ee = 0.0033528131778969143;// 1975年国际椭球体扁率
+	public static double ee = 0.00669342162296594323;
 
 	/**
 	 * 1、WGS－84:大地坐标系/原始坐标系 2、GCJ-02:火星坐标系 3、BD-09:百度坐标系
@@ -29,7 +29,7 @@ public class CoodinateCovertorUtil {
 	 * @return 保留小数位后的数
 	 */
 	static double dataDigit(int digit, double in) {
-		return new BigDecimal(in).setScale(7, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return new BigDecimal(in).setScale(14, BigDecimal.ROUND_HALF_UP).doubleValue();
 
 	}
 
@@ -43,8 +43,8 @@ public class CoodinateCovertorUtil {
 	 */
 	public static LngLat gcj02ToBd09(LngLat lngLat_gd) {
 		double x = lngLat_gd.getLongitude(), y = lngLat_gd.getLatitude();
-		double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
-		double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
+		double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * pi);
+		double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * pi);
 		return new LngLat(dataDigit(6, z * Math.cos(theta) + 0.0065), dataDigit(6, z * Math.sin(theta) + 0.006));
 
 	}
@@ -58,8 +58,8 @@ public class CoodinateCovertorUtil {
 	 */
 	public static LngLat bd09ToGcj02(LngLat lngLat_bd) {
 		double x = lngLat_bd.getLongitude() - 0.0065, y = lngLat_bd.getLatitude() - 0.006;
-		double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
-		double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
+		double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * pi);
+		double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * pi);
 		return new LngLat(dataDigit(6, z * Math.cos(theta)), dataDigit(6, z * Math.sin(theta)));
 
 	}
@@ -86,10 +86,48 @@ public class CoodinateCovertorUtil {
 	 */
 	public static LngLat gcj02ToWgs84(LngLat lngLat) {
 		LngLat gps = transform(lngLat);
-        double lontitude = lngLat.getLongitude() * 2 - gps.getLongitude();
-        double latitude = lngLat.getLatitude() * 2 - gps.getLatitude();
-        return new LngLat(lontitude, latitude);
+		double lontitude = lngLat.getLongitude() * 2 - gps.getLongitude();
+		double latitude = lngLat.getLatitude() * 2 - gps.getLatitude();
+		return new LngLat(lontitude, latitude);
 
+	}
+
+	/**
+	 * wgs坐标转换成gcj02坐标
+	 * 
+	 * @param lngLat_bd
+	 *            wgs
+	 * @return gcj02坐标
+	 */
+	public static LngLat wgs84ToGcj02(LngLat lngLat) {
+		if (outOfChina(lngLat)) {
+			return null;
+		}
+		Double lat = lngLat.getLatitude();
+		Double lon = lngLat.getLongitude();
+
+		double dLat = transformLat(lon - 105.0, lat - 35.0);
+		double dLon = transformLon(lon - 105.0, lat - 35.0);
+		double radLat = lat / 180.0 * pi;
+		double magic = Math.sin(radLat);
+		magic = 1 - ee * magic * magic;
+		double sqrtMagic = Math.sqrt(magic);
+		dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * pi);
+		dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * pi);
+		double mgLat = lat + dLat;
+		double mgLon = lon + dLon;
+		return new LngLat(mgLat, mgLon);
+	}
+
+	/**
+	 * wgs坐标转换成百度坐标
+	 * 
+	 * @param lngLat_bd
+	 *            wgs
+	 * @return 百度坐标
+	 */
+	public static LngLat wgs84ToBd09(LngLat lngLat) {
+		return gcj02ToBd09(wgs84ToGcj02(lngLat));
 	}
 
 	private static LngLat transform(LngLat lngLat) {
@@ -131,49 +169,12 @@ public class CoodinateCovertorUtil {
 		return lngLat.getLatitude() < 0.8293 || lngLat.getLatitude() > 55.8271;
 	}
 
-	/**
-	 * 
-	 * @author xiebin
-	 *
-	 */
-	static class LngLat {
-		private double longitude;// 经度
-		private double latitude;// 维度
-
-		public LngLat() {
-		}
-
-		public LngLat(double longitude, double latitude) {
-			this.longitude = longitude;
-			this.latitude = latitude;
-		}
-
-		public double getLongitude() {
-			return longitude;
-		}
-
-		public void setLongitude(double longitude) {
-			this.longitude = longitude;
-		}
-
-		public double getLatitude() {
-			return latitude;
-		}
-
-		public void setLatitude(double latitude) {
-			this.latitude = latitude;
-		}
-
-		@Override
-		public String toString() {
-			return "LngLat{" + "longitude=" + longitude + ", lantitude=" + latitude + '}';
-		}
-	}
 
 	// 测试代码
 	public static void main(String[] args) {
 		LngLat lngLat_bd = new LngLat(112.960195000, 28.232849000);
-		 System.out.println(bd09ToGcj02(lngLat_bd));
+		// System.out.println(bd09ToGcj02(lngLat_bd));
 		// System.out.println(bd_encrypt(new LngLat(113.002878, 28.028143)));
+		System.out.println(gcj02ToBd09(new LngLat(113.0865016967535, 28.245168062859907)));
 	}
 }

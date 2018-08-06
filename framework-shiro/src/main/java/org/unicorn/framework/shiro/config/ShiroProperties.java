@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper=false)
 @Component  
 @ConfigurationProperties(prefix = "unicorn.shiro")   
-public class ShiroPropertiesConfig   {
+public class ShiroProperties   {
 	    /**
 	     * 未授权跳转地址
 	     */
@@ -31,11 +31,27 @@ public class ShiroPropertiesConfig   {
 	     * 系统登陆地址
 	     */
 	    private String loginUrl="/login";
+	    /**
+	     * 系统登出地址
+	     */
+	    private String logOutUrl="/logout";
 	    
 	    /**
 	     * 系统登陆成功首页
 	     */
 	    private String successUrl="http://www.baidu.com";
+	    
+	    /**
+	     * 加密方式 默认加密方式
+	     */
+	    private String hashAlgorithmName="MD5";
+	    
+	    /**
+	     * hash次数 默认两次
+	     */
+	    private int hashCount=2;
+	    
+	    
 		 
 }
 

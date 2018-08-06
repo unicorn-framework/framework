@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -12,12 +14,16 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.filter.DelegatingFilterProxy;
-import org.unicorn.framework.shiro.cache.RedisShiroCacheManager;
+import org.unicorn.framework.cache.conifg.RedisConfig;
+import org.unicorn.framework.shiro.cache.ShiroRedisCache;
 import org.unicorn.framework.shiro.realm.DefaultSimpleRealm;
 
 /**
@@ -26,12 +32,16 @@ import org.unicorn.framework.shiro.realm.DefaultSimpleRealm;
  *
  */
 @Configuration
-@EnableConfigurationProperties(ShiroPropertiesConfig.class)
+@EnableConfigurationProperties({ShiroProperties.class,ShiroCacheProperties.class})
+@Import(RedisConfig.class)
+@ConditionalOnBean(name={"objectShiroRedisTemplate"})
 public class ShiroDefaultConfiguration {
 	@Autowired
-	private RedisShiroCacheManager redisShiroCacheManager;
+	private RedisTemplate<String, ?> objectRedisTemplate;
 	@Autowired
-	private ShiroPropertiesConfig shiroPropertiesConfig;
+	private ShiroProperties shiroProperties;
+	@Autowired
+	private ShiroCacheProperties shiroCacheProperties;
 	
 	/**
 	 * 注册shiro过滤器
@@ -52,7 +62,26 @@ public class ShiroDefaultConfiguration {
 	public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
 	}*/
+    /**
+     * 缓存管理
+     * @return
+     */
+	@Bean
+	public CacheManager redisShiroCacheManager(){
+		//自定义实现 -redis
+		return new CacheManager() {
+			@Override
+			public <K, V> Cache<K, V> getCache(String name) throws CacheException {
+				ShiroRedisCache<K,V> shiroRedisCache=new ShiroRedisCache<K, V>( name);
+				shiroRedisCache.setRedisTemplate( objectRedisTemplate);
+				shiroRedisCache.setTimeOut(shiroCacheProperties.getAuthorizationCacheSeconds());
+				return shiroRedisCache;
+			}
 
+		};
+	}
+	
+	
 	/**
 	 * 安全管理
 	 * 
@@ -66,11 +95,11 @@ public class ShiroDefaultConfiguration {
 		return securityManager;
 	}
 	/**
-	 * shiro緩存管理
+	 * shiro緩存管理   可继承扩展
 	 * @return
 	 */
 	public CacheManager getCacheManager(){
-		return  redisShiroCacheManager;
+		return  redisShiroCacheManager();
 	}
 
 	/**
@@ -91,9 +120,8 @@ public class ShiroDefaultConfiguration {
 	 */
 	public HashedCredentialsMatcher hashedCredentialsMatcher() {
 		HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-		hashedCredentialsMatcher.setHashAlgorithmName("md5");// 散列算法:这里使用MD5算法;
-		hashedCredentialsMatcher.setHashIterations(2);// 散列的次数，比如散列两次，相当于
-														// md5(md5(""));
+		hashedCredentialsMatcher.setHashAlgorithmName(shiroProperties.getHashAlgorithmName());// 散列算法:这里使用MD5算法;
+		hashedCredentialsMatcher.setHashIterations(shiroProperties.getHashCount());// 散列的次数，比如散列两次，相当于// md5(md5(""));
 		return hashedCredentialsMatcher;
 	}
 
@@ -113,9 +141,9 @@ public class ShiroDefaultConfiguration {
 	public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
-		shiroFilterFactoryBean.setSuccessUrl(shiroPropertiesConfig.getSuccessUrl());
-		shiroFilterFactoryBean.setUnauthorizedUrl(shiroPropertiesConfig.getUnAuthorizedUrl());
-		shiroFilterFactoryBean.setLoginUrl(shiroPropertiesConfig.getLoginUrl());
+		shiroFilterFactoryBean.setSuccessUrl(shiroProperties.getSuccessUrl());
+		shiroFilterFactoryBean.setUnauthorizedUrl(shiroProperties.getUnAuthorizedUrl());
+		shiroFilterFactoryBean.setLoginUrl(shiroProperties.getLoginUrl());
 		return shiroFilterFactoryBean;
 	}
 
@@ -126,7 +154,7 @@ public class ShiroDefaultConfiguration {
 	public void loadShiroFilterChain(ShiroFilterFactoryBean shiroFilterFactoryBean) {
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 		// filterChainDefinitionMap.put("/static/**", "anon");
-		filterChainDefinitionMap.put("/logout", "logout");
+		filterChainDefinitionMap.put(shiroProperties.getLogOutUrl(), "logout");
 		filterChainDefinitionMap.put("/**", "authc");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 	}

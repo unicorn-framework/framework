@@ -63,6 +63,9 @@ public class UnicornCoreHttpUtils<T> {
 	public static Map<String,Object> get(String requestUrl, Map<String, String> headerMap, Object body) throws IOException {
 		return UnicornCoreHttpUtils.callHttp(requestUrl, headerMap, body, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "GET");
 	}
+	public static Map<String,Object> get(String requestUrl, Map<String, String> headerMap) throws IOException {
+		return UnicornCoreHttpUtils.callHttp(requestUrl, headerMap, null, null, CHARSET_UTF8, DEFAULT_TIMEOUT, "GET");
+	}
 
 	public static Map<String,Object> post(String requestUrl, Object body) throws IOException {
 		return UnicornCoreHttpUtils.post(requestUrl, body, CHARSET_UTF8, DEFAULT_TIMEOUT);
@@ -174,6 +177,7 @@ public class UnicornCoreHttpUtils<T> {
 					conn.setRequestProperty(entry.getKey(), entry.getValue());
 				}
 			}
+			
 			conn.connect();
 			if (null != body) {
 				String outputStr = null;
@@ -199,7 +203,12 @@ public class UnicornCoreHttpUtils<T> {
 				buffer.append(str);
 			}
 			result = buffer.toString();
-
+			
+			Map<String,List<String>> headMap=conn.getHeaderFields();
+			for(String headName:headMap.keySet()){
+				System.out.println(headName+"===>"+headMap.get(headName));
+			}
+			
 		} catch (IOException ex) {
 			int status=conn.getResponseCode();
  			logger.error("接口调用失败:url==>{},响应码===>{}",requestUrl,conn.getResponseCode());

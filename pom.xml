@@ -225,5 +225,6 @@
         <module>framework-codegen</module>
     <module>framework-api-doc</module>
     <module>framework-websocket</module>
+    <module>framework-session</module>
   </modules>
 </project>
