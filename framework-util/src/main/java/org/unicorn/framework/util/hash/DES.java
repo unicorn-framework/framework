@@ -10,17 +10,18 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
-import org.apache.log4j.Logger;
 import org.unicorn.framework.util.radix.BytesToString;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * DES加解密工具类
  *
  * @author xiebin
  */
+@Slf4j
 public class DES {
 
-    private static Logger logger = Logger.getLogger(DES.class);
 
     public static void main(String[] args) {  
           
@@ -61,7 +62,7 @@ public class DES {
             byte[] result=cipher.doFinal(contentBytes);  
             return result;  
         } catch (Exception e) {  
-        	 logger.error(e, e);
+        	 log.error("加密错误", e);
         }  
         return null;  
     }  
@@ -95,7 +96,7 @@ public class DES {
             byte[] result=cipher.doFinal(contentBytes);  
             return result;  
         } catch (Exception e) {  
-        	 logger.error(e, e);
+        	 log.error("解密错误", e);
         }  
         return null;  
     }  

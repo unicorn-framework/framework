@@ -9,16 +9,16 @@ import java.security.MessageDigest;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * hmac算法
  *
  * @author xiebin
  */
+@Slf4j
 public class HMAC {
 
-    private static Logger logger = Logger.getLogger(HMAC.class);
 
     public final static String SHA1 = "HmacSHA1";
 
@@ -99,7 +99,7 @@ public class HMAC {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             resultString = byteArrayToHexString(md.digest(origin));
         } catch (Exception e) {
-            logger.error(e, e);
+            log.error("SHA-1加密失败", e);
         }
         return resultString;
     }
@@ -119,7 +119,7 @@ public class HMAC {
             mac.init(spec);
             resultString = byteArrayToHexString(mac.doFinal(origin.getBytes()));
         } catch (Exception e) {
-            logger.error(e, e);
+            log.error("加密失败", e);
         }
         return resultString;
     }
