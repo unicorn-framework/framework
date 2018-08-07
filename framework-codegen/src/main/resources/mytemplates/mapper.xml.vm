@@ -18,6 +18,7 @@
 	<result column="${field.name}" property="${field.propertyName}"  jdbcType="${field.columnType.jdbcType}"/>
    #end
  #end
+
 </resultMap>
 
 <sql id="Example_Where_Clause" >
