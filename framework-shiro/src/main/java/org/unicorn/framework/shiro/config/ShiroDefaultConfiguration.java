@@ -34,7 +34,6 @@ import org.unicorn.framework.shiro.realm.DefaultSimpleRealm;
 @Configuration
 @EnableConfigurationProperties({ShiroProperties.class,ShiroCacheProperties.class})
 @Import(RedisConfig.class)
-@ConditionalOnBean(name={"objectShiroRedisTemplate"})
 public class ShiroDefaultConfiguration {
 	@Autowired
 	private RedisTemplate<String, ?> objectRedisTemplate;
@@ -71,8 +70,8 @@ public class ShiroDefaultConfiguration {
 		//自定义实现 -redis
 		return new CacheManager() {
 			@Override
-			public <K, V> Cache<K, V> getCache(String name) throws CacheException {
-				ShiroRedisCache<K,V> shiroRedisCache=new ShiroRedisCache<K, V>( name);
+			public Cache<String,Object> getCache(String name) throws CacheException {
+				ShiroRedisCache<String,Object> shiroRedisCache=new ShiroRedisCache<String,Object>( name);
 				shiroRedisCache.setRedisTemplate( objectRedisTemplate);
 				shiroRedisCache.setTimeOut(shiroCacheProperties.getAuthorizationCacheSeconds());
 				return shiroRedisCache;

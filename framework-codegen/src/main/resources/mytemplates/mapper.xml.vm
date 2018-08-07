@@ -81,8 +81,9 @@
   
   <!-- 根据主键删除-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete ${table.name}
-   ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
+    delete 
+    from ${table.name} 
+    where  ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
   </delete>
   <!-- 新增记录-->
   <insert id="insert" parameterType="${entityContext.classImportPath}" >
@@ -92,18 +93,20 @@
     insert into ${table.name} (
     #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
+      
        ${field.name} #if(!${field.lastFlag}),#end
-       
       #end
     #end
+      
       )
     values (
     #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
-       #{${field.propertyName},jdbcType=${field.columnType.jdbcType}} #if(!${field.lastFlag}),#end
-       
+      
+       #{${field.propertyName},jdbcType=${field.columnType.jdbcType}}  #if($velocityCount != ${table.fields.size()}),#end   
       #end
     #end
+      
       )
   </insert>
   
@@ -154,9 +157,11 @@
     set 
     #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
-         ${field.name}=#{${field.propertyName},jdbcType=${field.columnType.jdbcType}},
+      
+         ${field.name}=#{${field.propertyName},jdbcType=${field.columnType.jdbcType}}  #if($velocityCount != ${table.fields.size()}),#end   
       #end
      #end
+      
       where ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
   </update>
   

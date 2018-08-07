@@ -8,7 +8,7 @@ unicorn-framework结合springboot、springcloud整合了redis、mybatis、drools
 4、framework-cache：框架基于redis提供分布式缓存、分布式锁
 5、framework-session:框架基于 spring-session 、redis 提供分布式应用session共享等
 6、framework-config-server：框架基于springcloud提供分布式配置服务的能力
-7、framework-eureka：框架基于springcloud、eureka提供注册中心
+7、framework-register-center：框架基于springcloud、eureka提供注册中心
 8、framework-gateway：框架基于springcloud、zuul提供网关能力
 9、framework-mq：框架基于rocketMq提供异步消息机制
 10、framework-orm：框架基于mybatis提供数据操作能力
@@ -18,6 +18,7 @@ unicorn-framework结合springboot、springcloud整合了redis、mybatis、drools
 14、framework-oss：基于阿里云的对象存储服务
 15、framework-codegen：基于麒麟框架写的代码生成，方便使用者快速生成项目，并自动生成CRUD等基础功能，解放使用者宝贵的精力去投入业务开发
 16、framework-api-doc :基于swagger的接口文档
+17、framework-websoket:基于webscoket的长连接
 三、使用
 1、framework-cache
 配置
