@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${mapperContext.classImportPath}">
 
-	<!-- 通用查询映射结果 -->
+<!-- 通用查询映射结果 -->
 <resultMap id="BaseResultMap" type="${entityContext.classImportPath}">
  ##生成主键排在第一位	
  #foreach($field in ${table.fields})
@@ -19,19 +19,93 @@
    #end
  #end
 </resultMap>
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        ${table.fieldNames}
-    </sql>
 
+<sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+ </sql>
+ <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+ </sql>
 
-<!-- 根据主键查询 -->
-<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="${table.primaryTableField.columnType.javaType}" >
+ <!-- 通用查询结果列 -->
+ <sql id="Base_Column_List">
+     ${table.fieldNames}
+ </sql>
+ <!--根据Example查询 -->
+ <select id="selectListByExample" resultMap="BaseResultMap" parameterType="${entityContext.classImportPath}Example" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ${table.name}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+ </select>
+
+ <!-- 根据主键查询 -->
+ <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="${table.primaryTableField.columnType.javaType}" >
     select 
     <include refid="Base_Column_List" />
     from ${table.name}
     where ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
-  </select>
+ </select>
   
  <!-- 根据主键列表查询list--> 
 <select id="selectListByIds" resultMap="BaseResultMap" parameterType="java.util.List" >
@@ -44,9 +118,9 @@
       #{item}  
      </foreach>  
     </where>
-  </select>
+ </select>
   
-  <!-- 查询list--> 
+ <!-- 查询list--> 
 <select id="selectList" resultMap="BaseResultMap" parameterType="${entityContext.classImportPath}" >
     select 
     <include refid="Base_Column_List" />
@@ -54,15 +128,24 @@
     <where>
       #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
-       <if test="${field.propertyName} != null" >
+      
+      <if test="${field.propertyName} != null" >
         and ${field.name}=#{${field.propertyName},jdbcType=${field.columnType.jdbcType}}
       </if>
       #end
     #end 
     </where>
-  </select>
-  
-  <!-- 查询单条记录--> 
+ </select>
+ <!--根据Example查询记录数 --> 
+ <select id="countByExample" parameterType="${entityContext.classImportPath}Example" resultType="java.lang.Integer" >
+    select count(1) from ${table.name}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+ </select>
+
+
+<!-- 查询单条记录--> 
 <select id="selectOne" resultMap="BaseResultMap" parameterType="${entityContext.classImportPath}" >
     select 
     <include refid="Base_Column_List" />
@@ -70,48 +153,62 @@
     <where>
       #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
-       <if test="${field.propertyName} != null" >
+
+      <if test="${field.propertyName} != null" >
         and ${field.name}=#{${field.propertyName},jdbcType=${field.columnType.jdbcType}}
       </if>
       #end
     #end 
+
     </where>
     limit 2
-  </select>
+</select>  
   
-  <!-- 根据主键删除-->
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+<!-- 根据主键删除-->
+<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete 
     from ${table.name} 
     where  ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
-  </delete>
-  <!-- 新增记录-->
-  <insert id="insert" parameterType="${entityContext.classImportPath}" >
+</delete>
+  
+<!-- 根据Example删除-->
+<delete id="deleteByExample" parameterType="${entityContext.classImportPath}Example" >
+    delete 
+    from ${table.name} 
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+</delete>
+
+
+<!-- 新增记录-->
+<insert id="insert" parameterType="${entityContext.classImportPath}" >
     <selectKey resultType="${table.primaryTableField.columnType.javaType}" keyProperty="${table.primaryTableField.name}" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into ${table.name} (
     #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
-      
-       ${field.name} #if(!${field.lastFlag}),#end
+       
+       ${field.name} #if($velocityCount != ${table.fields.size()}),#end  
       #end
     #end
-      
+    
       )
     values (
     #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
-      
+       
        #{${field.propertyName},jdbcType=${field.columnType.jdbcType}}  #if($velocityCount != ${table.fields.size()}),#end   
       #end
     #end
-      
+    
       )
-  </insert>
-  
-  <!-- 新增记录-->
-  <insert id="insertSelective" parameterType="${entityContext.classImportPath}" >
+</insert>
+
+
+<!-- 新增记录-->
+<insert id="insertSelective" parameterType="${entityContext.classImportPath}" >
      <selectKey resultType="${table.primaryTableField.columnType.javaType}" keyProperty="${table.primaryTableField.name}" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -119,7 +216,8 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
      #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
-       <if test="${field.propertyName} != null" >
+
+      <if test="${field.propertyName} != null" >
         ${field.name},
       </if>
       #end
@@ -128,32 +226,65 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
      #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
-       <if test="${field.propertyName} != null" >
+
+      <if test="${field.propertyName} != null" >
         #{${field.propertyName},jdbcType=${field.columnType.jdbcType}},
       </if>
       #end
      #end
+
     </trim>
-  </insert>
+</insert> 
+
+<!-- 批量插入 -->
+<insert id ="batchInsert" parameterType="java.util.List" >
+
+    <selectKey resultType="${table.primaryTableField.columnType.javaType}" keyProperty="${table.primaryTableField.name}" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert ${table.name} (
+    #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+       
+       ${field.name} #if($velocityCount != ${table.fields.size()}),#end  
+      #end
+    #end
+    
+      )
+      values
+      <foreach collection ="list" item="record" index= "index" separator =",">
+         <trim prefix=" (" suffix=")" suffixOverrides="," >
+          #foreach($field in ${table.fields})
+            #if(!${field.keyFlag})
+
+              #{record.${field.propertyName},jdbcType=${field.columnType.jdbcType}} #if($velocityCount != ${table.fields.size()}),#end  
+            #end
+         #end
+        
+        </trim>
+   </foreach >
+</insert >
   
-  <!-- 修改记录-->
-  <update id="updateByPrimaryKeySelective" parameterType="${entityContext.classImportPath}" >
-    update t_role
+<!-- 根据主键修改记录-->
+<update id="updateByPrimaryKeySelective" parameterType="${entityContext.classImportPath}" >
+    update ${table.name}
     <set >
      #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
-       <if test="${field.propertyName} != null" >
+
+      <if test="${field.propertyName} != null" >
          ${field.name}=#{${field.propertyName},jdbcType=${field.columnType.jdbcType}},
       </if>
       #end
      #end
+
     </set>
      where ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
-  </update>
+</update>
   
-  <!-- 新增记录-->
-  <update id="updateByPrimaryKey" parameterType="${entityContext.classImportPath}" >
-    update t_role
+<!--根据主键修改记录-->
+<update id="updateByPrimaryKey" parameterType="${entityContext.classImportPath}" >
+    update ${table.name}
     set 
     #foreach($field in ${table.fields})
       #if(!${field.keyFlag})
@@ -163,6 +294,41 @@
      #end
       
       where ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}
-  </update>
+</update>
+  
+<!-- 根据Example修改记录-->
+<update id="updateByExampleSelective" parameterType="map" >
+    update ${table.name}
+    <set >
+     #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+       
+       <if test="record.${field.propertyName} != null" >
+         ${field.name}=#{record.${field.propertyName},jdbcType=${field.columnType.jdbcType}},
+      </if>
+      #end
+     #end
+
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+</update>
+  
+<!--根据Example修改记录-->
+<update id="updateByExample" parameterType="map" >
+    update ${table.name}
+    set 
+    #foreach($field in ${table.fields})
+      #if(!${field.keyFlag})
+        
+         ${field.name}=#{record.${field.propertyName},jdbcType=${field.columnType.jdbcType}}  #if($velocityCount != ${table.fields.size()}),#end   
+      #end
+     #end
+    
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if> 
+</update>
   
 </mapper>

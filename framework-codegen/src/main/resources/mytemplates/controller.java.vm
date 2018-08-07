@@ -17,7 +17,7 @@ import ${superControllerClassPackage};
 
 /**
  * <p>
- * ${table.comment} 前端控制器
+ * ${table.comment}控制器
  * </p>
  *
  * @author ${author}
@@ -39,7 +39,7 @@ public class ${controllerContext.name} {
 	 * @return
 	 * @throws PendingException
 	 */
-	@RequestMapping(value = { "/save}" }, method = { RequestMethod.POST })
+	@RequestMapping(value = { "/save" }, method = { RequestMethod.POST })
 	public ResponseDto<?> save(@RequestBody ${entityContext.name}  ${entityContext.beanName}) throws PendingException {
 		return new ResponseDto<>(${serviceImplContext.beanName}.save(${entityContext.beanName}));
 	}

@@ -189,15 +189,26 @@ public abstract class UnicornAbstractGenerator {
 		try {
 			UnicornTableInfo tableInfo = (UnicornTableInfo) context.get("table");
 			Map<String, String> pathInfo = config.getPathInfo();
+			//实体类路径
 			String entityFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.ENTITY_PATH),tableInfo.getEntityName(),UnicornConstVal.JAVA_SUFFIX);
+			//实体对应的Example类路径
+			String entityExampleFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.ENTITY_PATH),tableInfo.getEntityName()+"Example",UnicornConstVal.JAVA_SUFFIX);
+			//DAO接口文件路径
 			String mapperFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.MAPPER_PATH),tableInfo.getMapperName(),UnicornConstVal.JAVA_SUFFIX);
+			//映射文件路径
 			String xmlFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.XML_PATH),tableInfo.getXmlName(),UnicornConstVal.XML_SUFFIX);
+			//service实现类路径
 			String implFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.SERVICEIMPL_PATH),tableInfo.getServiceImplName(),UnicornConstVal.JAVA_SUFFIX);
+			//controller文件路径
 			String controllerFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.CONTROLLER_PATH),tableInfo.getControllerName(),UnicornConstVal.JAVA_SUFFIX);
+			//dto类路径
 			String dtoFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.DTO_PATH),tableInfo.getPageRequestDto(),UnicornConstVal.JAVA_SUFFIX);
+			
 			UnicornTemplateConfig template = config.getTemplate();
             //创建entity文件
 			createFile(context,template.getEntity(),entityFile);
+			 //创建entityExample文件
+			createFile(context,template.getEntityExample(),entityExampleFile);
 			//创建mapper接口文件
 			createFile(context,template.getMapper(),mapperFile);
 			//创建mapper映射文件
