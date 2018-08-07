@@ -1,5 +1,5 @@
 
-package org.unicorn.framework.cache.conifg;
+package org.unicorn.framework.session.config;
 
 import javax.annotation.PostConstruct;
 
@@ -9,11 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
-import org.springframework.session.web.http.CookieHttpSessionStrategy;
-import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
-import org.unicorn.framework.cache.session.CookieAndHeadHttpSessionStrategy;
 
 /**
 *
@@ -40,21 +37,39 @@ public class RedisSessionConfig {
 	@Bean
 	public HttpSessionStrategy cookieAndHeadHttpSessionStrategy(){
 		
-		CookieAndHeadHttpSessionStrategy strategy=new CookieAndHeadHttpSessionStrategy();
-		//header
-		HeaderHttpSessionStrategy headerStrategy=new HeaderHttpSessionStrategy();
-		headerStrategy.setHeaderName(sessionPropertiesConfig.getHeadName());
-		//cookie
-		CookieHttpSessionStrategy cookieStrategy=new CookieHttpSessionStrategy();
-		DefaultCookieSerializer cookieSerializer=new DefaultCookieSerializer();
-//		cookieSerializer.setCookiePath("/");
-	    cookieSerializer.setCookieName(sessionPropertiesConfig.getCookieName());//cookies名称
-	    cookieStrategy.setCookieSerializer(cookieSerializer);
-	    //添加session策略
-	    strategy.addHttpSessionStrategy(headerStrategy);
-	    strategy.addHttpSessionStrategy(cookieStrategy);
-	    return strategy;
+		return getHttpSessionStrategy();
+		
+		
+		
+//		CookieAndHeadHttpSessionStrategy strategy=new CookieAndHeadHttpSessionStrategy();
+//		//header
+//		HeaderHttpSessionStrategy headerStrategy=new HeaderHttpSessionStrategy();
+//		headerStrategy.setHeaderName(sessionPropertiesConfig.getHeadName());
+//		//cookie
+//		CookieHttpSessionStrategy cookieStrategy=new CookieHttpSessionStrategy();
+//		DefaultCookieSerializer cookieSerializer=new DefaultCookieSerializer();
+////		cookieSerializer.setCookiePath("/");
+//	    cookieSerializer.setCookieName(sessionPropertiesConfig.getCookieName());//cookies名称
+//	    cookieStrategy.setCookieSerializer(cookieSerializer);
+//	    //添加session策略
+//	    strategy.addHttpSessionStrategy(headerStrategy);
+//	    strategy.addHttpSessionStrategy(cookieStrategy);
+//	    return strategy;
 	}
 	
+	/**
+	 * 获取session策略 默认 head
+	 * @return
+	 */
+	
+	public  HttpSessionStrategy getHttpSessionStrategy(){
+		HeaderHttpSessionStrategy headerStrategy=new HeaderHttpSessionStrategy();
+		headerStrategy.setHeaderName(sessionPropertiesConfig.getHeadName());
+		return headerStrategy;
+		
+//		UnicornHttpSessionStrategy headerStrategy=new UnicornHttpSessionStrategy();
+//		headerStrategy.setHeaderName(sessionPropertiesConfig.getHeadName());
+//		return headerStrategy;
+	}
 }
 

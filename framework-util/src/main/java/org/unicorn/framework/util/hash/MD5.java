@@ -11,17 +11,18 @@ import java.io.InputStream;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 
-import org.apache.log4j.Logger;
 import org.unicorn.framework.util.radix.BytesToString;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * md5算法
  *
  * @author xiebin
  */
+@Slf4j
 public class MD5 {
 
-    private static Logger logger = Logger.getLogger(MD5.class);
 
     /**
      * 将字节数组算出16进制MD5串
@@ -34,7 +35,7 @@ public class MD5 {
             MessageDigest md = MessageDigest.getInstance("MD5");
             resultString = BytesToString.byteArrayToHexString(md.digest(origin));
         } catch (Exception e) {
-            logger.error(e, e);
+            log.error("MD5加密失败", e);
         }
         return resultString;
     }
@@ -70,7 +71,7 @@ public class MD5 {
             fr = new FileInputStream(Files);
             resultString = Encode16(fr);
         } catch (Exception e) {
-            logger.error(e, e);
+        	 log.error("MD5加密失败", e);
         } finally {
             try {
                 fr.close();
@@ -97,7 +98,7 @@ public class MD5 {
             }
             resultString = BytesToString.byteArrayToHexString(md.digest());
         } catch (Exception e) {
-            logger.error(e, e);
+        	 log.error("MD5加密失败", e);
         }
         return resultString;
     }

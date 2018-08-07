@@ -11,17 +11,18 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.log4j.Logger;
 import org.unicorn.framework.util.radix.BytesToString;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * SHA1的算法
  *
  * @author xiebin
  */
+@Slf4j
 public class SHA1 {
 
-    private static Logger logger = Logger.getLogger(SHA1.class);
 
     /**
      * 将字节数组算出16进制SHA串
@@ -46,7 +47,7 @@ public class SHA1 {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             return md.digest(origin);
         } catch (NoSuchAlgorithmException e) {
-            logger.error(e, e);
+            log.error("SHA-1", e);
         }
         return null;
     }
@@ -89,7 +90,7 @@ public class SHA1 {
             }
             resultString = BytesToString.byteArrayToHexString(md.digest());
         } catch (Exception e) {
-            logger.error(e, e);
+        	  log.error("SHA-1", e);
         } finally {
             if (mdfile != null) {
                 try {

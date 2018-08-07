@@ -1,4 +1,4 @@
-package org.unicorn.framework.cache.session;
+package org.unicorn.framework.session;
 
 import java.util.ArrayList;
 import java.util.List;

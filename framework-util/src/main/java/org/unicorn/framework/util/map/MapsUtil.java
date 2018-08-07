@@ -10,9 +10,40 @@ public class MapsUtil {
 	 * @param longitude 维度
 	 * @return
 	 */
-	public CoordinateRange getCoordinateRange(Double dis,Double latitude,Double longitude ){
+	public static CoordinateRange getCoordinateRange(Double dis,Double latitude,Double longitude ){
 		CoordinateRange coordinateRange=new CoordinateRange();
         double dlng =  2*Math.asin(Math.sin(dis/(2*R))/Math.cos(latitude*Math.PI/180));  
+        dlng = dlng*180/Math.PI;//角度转为弧度  
+        double dlat = dis/R;  
+        dlat = dlat*180/Math.PI;      
+        double minlat =latitude-dlat;  
+        double maxlat = latitude+dlat;  
+        double minlng = longitude -dlng;  
+        double maxlng = longitude + dlng;  
+        coordinateRange.setMinlat(minlat);
+        coordinateRange.setMaxlat(maxlat);
+        coordinateRange.setMinlng(minlng);
+        coordinateRange.setMaxlng(maxlng);
+		return coordinateRange;
+	}
+	
+	
+	/**
+	 * 返回中心点dis半径范围内外接矩形的四个点经纬度范围
+	 * @param dis 单位km 默认1公里
+	 * @param latitude  经度
+	 * @param longitude 维度
+	 * @return
+	 */
+	public static CoordinateRange getCoordinateRange(Double dis,LngLat lngLat){
+		if(dis==null||dis==0){
+			dis=1d;
+		}
+		CoordinateRange coordinateRange=new CoordinateRange();
+		double latitude=lngLat.getLatitude();
+		double longitude=lngLat.getLongitude();
+        double dlng =  2*Math.asin(Math.sin(dis/(2*R))/Math.cos(latitude*Math.PI/180));  
+        
         dlng = dlng*180/Math.PI;//角度转为弧度  
         double dlat = dis/R;  
         dlat = dlat*180/Math.PI;      
@@ -60,47 +91,5 @@ public class MapsUtil {
 		System.out.println(MapsUtil.getDistance(29.610970488661984,106.5763428005899,29.615467,106.581515));
 //		System.out.println(JsonUtils.toJson(MapsUtil.getCoordinateRange(0.5d,29.615467,106.581515)));
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	static class CoordinateRange{
-		private Double minlat;
-		private Double maxlat;
-		private Double minlng;
-		private Double maxlng;
-		public Double getMinlat() {
-			return minlat;
-		}
-		public void setMinlat(Double minlat) {
-			this.minlat = minlat;
-		}
-		public Double getMaxlat() {
-			return maxlat;
-		}
-		public void setMaxlat(Double maxlat) {
-			this.maxlat = maxlat;
-		}
-		public Double getMinlng() {
-			return minlng;
-		}
-		public void setMinlng(Double minlng) {
-			this.minlng = minlng;
-		}
-		public Double getMaxlng() {
-			return maxlng;
-		}
-		public void setMaxlng(Double maxlng) {
-			this.maxlng = maxlng;
-		}
-		
-		
-		
-	}
-
 }
 

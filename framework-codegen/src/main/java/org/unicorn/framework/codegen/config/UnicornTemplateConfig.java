@@ -17,6 +17,8 @@ public class UnicornTemplateConfig extends TemplateConfig{
     private String controller ="/mytemplates/controller.java.vm";
     
     private String dto ="/mytemplates/dto.java.vm";
+    
+    private String entityExample ="/mytemplates/entityExample.java.vm";
 
     public String getEntity() {
         return entity;
@@ -67,4 +69,14 @@ public class UnicornTemplateConfig extends TemplateConfig{
 		this.dto = dto;
 	}
 
+	public String getEntityExample() {
+		return entityExample;
+	}
+
+	public void setEntityExample(String entityExample) {
+		this.entityExample = entityExample;
+	}
+
+	
+	
 }

@@ -1,5 +1,5 @@
 
-package org.unicorn.framework.cache.conifg;
+package org.unicorn.framework.session.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

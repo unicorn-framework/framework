@@ -1,5 +1,5 @@
 
-package org.unicorn.framework.cache.aop;
+package org.unicorn.framework.session.aop;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,7 +25,7 @@ import org.unicorn.framework.core.exception.PendingException;
 @Component
 public class SessioinCheckAspect extends AbstractService {
 
-	@Pointcut("@annotation(org.unicorn.framework.cache.annoation.SessionCheck)")
+	@Pointcut("@annotation(org.unicorn.framework.session.annoation.SessionCheck)")
 	public void controllerPointCut() {
 	}
 	

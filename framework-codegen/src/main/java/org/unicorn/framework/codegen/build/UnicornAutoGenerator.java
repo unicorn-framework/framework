@@ -36,6 +36,9 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		 return ctxData;
 	}
 	
+	
+	
+	
 	public void setDtoContext(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		ClassBaseContext dtoContext=new ClassBaseContext();
 		dtoContext.setName(tableInfo.getPageRequestDto());

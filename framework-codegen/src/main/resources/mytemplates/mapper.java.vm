@@ -1,6 +1,8 @@
 package ${mapperContext.pkg};
 
 import ${entityContext.classImportPath};
+import ${entityContext.classImportPath}Example;
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
@@ -17,30 +19,51 @@ public interface ${mapperContext.name}  {
      * @mbggenerated ${date}
      */
     int deleteByPrimaryKey(${table.primaryTableField.propertyType} id);
+     /**
+     *
+     * @mbggenerated ${date}
+     */
+    int deleteByExample(${entity}Example ${entityContext.beanName}Example);
 
     /**
      *
      * @mbggenerated ${date}
      */
-    int insert(${entity} ${mapperContext.beanName});
+    int insert(${entity} ${entityContext.beanName});
 
     /**
      *
      * @mbggenerated ${date}
      */
-    int insertSelective(${entity} ${mapperContext.beanName});
+    int insertSelective(${entity} ${entityContext.beanName});
+    
+    /**
+    *
+    * @mbggenerated ${date}
+    */
+    int batchInsertSelective(List<JasperStatus> jasperStatusList);
 
     /**
      *
      * @mbggenerated ${date}
      */
     ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} id);
+    /**
+    *
+    * @mbggenerated ${date}
+    */
+    public  List<${entity}> selectListByExample(${entity}Example ${entityContext.beanName}Example);
+     /**
+    *
+    * @mbggenerated ${date}
+    */
+    public  Integer countByExample(${entity}Example ${entityContext.beanName}Example);
     
     /**
     *
     * @mbggenerated ${date}
     */
-    public  List<${entity}> selectList(${entity} ${mapperContext.beanName});
+    public  List<${entity}> selectList(${entity} ${entityContext.beanName});
      /**
     *
     * @mbggenerated ${date}
@@ -50,17 +73,29 @@ public interface ${mapperContext.name}  {
     *
     * @mbggenerated ${date}
     */
-    public  ${entity} selectOne(${entity} ${mapperContext.beanName});
+    public  ${entity} selectOne(${entity} ${entityContext.beanName});
 
     /**
      *
      * @mbggenerated ${date}
      */
-    int updateByPrimaryKeySelective(${entity} ${mapperContext.beanName});
+    int updateByPrimaryKeySelective(${entity} ${entityContext.beanName});
 
     /**
      *
      * @mbggenerated ${date}
      */
-    int updateByPrimaryKey(${entity} ${mapperContext.beanName});
+    int updateByPrimaryKey(${entity} ${entityContext.beanName});
+    
+    /**
+     *
+     * @mbggenerated ${date}
+     */
+    int updateByExampleSelective(@Param("record") ${entity} ${entityContext.beanName}, @Param("example") ${entity}Example ${entityContext.beanName}Example);
+
+    /**
+     *
+     * @mbggenerated ${date}
+     */
+    int updateByExample(@Param("record") ${entity} ${entityContext.beanName}, @Param("example") ${entity}Example ${entityContext.beanName}Example);
 }

@@ -22,10 +22,14 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @Component
 @ConfigurationProperties(prefix = "unicorn.shiro.cache")
-public class ShiroCachePropertiesConfig {
+public class ShiroCacheProperties {
 	/**
-	 * 是否开启自定义缓存
+	 * 是否开启shiro缓存
 	 */
-	private boolean enable = false;
+	private boolean enable;
+	/**
+     * 用户权限缓存时间 单位：秒
+     */
+    private Long authorizationCacheSeconds;
 
 }

@@ -8,18 +8,25 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializer;
-
+/**
+ * 
+ * @author xiebin
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class ShiroRedisCache<K, V> implements Cache<K, V> {
-	private String cacheKeyPrefix = "shiro_login:";
+	//shoir 权限缓存前缀
+	private String cacheKeyPrefix = "unicorn:shiro:authorization:";
 	private String cacheKey;
-	private RedisTemplate<String, Object> redisTemplate;
+	private Long timeOut;
+	private RedisTemplate<String, ?> redisTemplate;
 
-	public RedisTemplate<String, Object> getRedisTemplate() {
+	public RedisTemplate<String, ?> getRedisTemplate() {
 		return redisTemplate;
 	}
 
-	public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+	public void setRedisTemplate(RedisTemplate<String, ?> redisTemplate) {
 		this.redisTemplate = redisTemplate;
 	}
 
@@ -39,7 +46,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 	public V put(K key, V value) throws CacheException {
 		BoundHashOperations<String, K, V> hash = redisTemplate.boundHashOps(cacheKey);
 		Object k = hashKey(key);
-		hash.expire(1800, TimeUnit.SECONDS);
+		hash.expire(timeOut, TimeUnit.SECONDS);
 		hash.put((K) k, value);
 		return value;
 	}
@@ -47,7 +54,6 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 	@Override
 	public V remove(K key) throws CacheException {
 		BoundHashOperations<String, K, V> hash = redisTemplate.boundHashOps(cacheKey);
-
 		Object k = hashKey(key);
 		V value = hash.get(k);
 		hash.delete(k);
@@ -81,4 +87,14 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 		
 		return String.valueOf(key);
 	}
+
+	public Long getTimeOut() {
+		return timeOut;
+	}
+
+	public void setTimeOut(Long timeOut) {
+		this.timeOut = timeOut;
+	}
+	
+	
 }
