@@ -82,7 +82,7 @@ public class ${serviceImplContext.name} extends AbstractService {
 		} catch (Exception e) {
 			error("查询列表失败", e);
 			throw new PendingException(SysCode.DB_ERROR, "查询列表失败");
-	}
+	  }
     }
     
     /** 
@@ -128,6 +128,25 @@ public class ${serviceImplContext.name} extends AbstractService {
     public  ${entity} selectOne(${entity} ${entityContext.beanName}) throws PendingException{
       try {
 			return ${mapperContext.beanName}.selectOne(${entityContext.beanName});
+		} catch (Exception e) {
+			error("查询单条记录失败", e);
+			throw new PendingException(SysCode.DB_ERROR, "查询单条记录失败");
+	}
+    }
+    
+     /**
+     * 根据条件查询一条记录 没有记录则抛异常
+     * @param ${entityContext.beanName}
+     * @return
+     * @throws PendingException
+     */
+    public  ${entity} mustGet(${entity} ${entityContext.beanName}) throws PendingException{
+      try {
+            ${entity} ${entityContext.beanName} = ${mapperContext.beanName}.selectOne(${entityContext.beanName});
+			if(${entityContext.beanName}==null){
+			   throw new PendingException(SysCode.DB_ERROR, "没有查询到相关记录");
+			}
+			return ${entityContext.beanName};
 		} catch (Exception e) {
 			error("查询单条记录失败", e);
 			throw new PendingException(SysCode.DB_ERROR, "查询单条记录失败");
