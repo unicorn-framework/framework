@@ -40,6 +40,11 @@ public class ${entityContext.name}Example implements Serializable {
      * 查询条件列表
      */
     protected List<Criteria> oredCriteria;
+    
+    /**
+     * limit
+     */
+    protected String limit;
 
     /**
      *
