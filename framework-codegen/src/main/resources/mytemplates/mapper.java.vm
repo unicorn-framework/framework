@@ -41,7 +41,7 @@ public interface ${mapperContext.name}  {
     *
     * @mbggenerated ${date}
     */
-    int batchInsertSelective(List<JasperStatus> jasperStatusList);
+    int batchInsertSelective(List<${entity}> ${entityContext.beanName}List);
 
     /**
      *

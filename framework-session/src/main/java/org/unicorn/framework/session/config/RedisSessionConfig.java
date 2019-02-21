@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.session.data.redis.RedisOperationsSessionRepository;
+import org.springframework.session.data.redis.config.ConfigureRedisAction;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
@@ -33,7 +34,10 @@ public class RedisSessionConfig {
         sessionRepository.setDefaultMaxInactiveInterval(sessionPropertiesConfig.getMaxInactiveIntervalInSeconds());
         sessionRepository.setRedisKeyNamespace(sessionPropertiesConfig.getNamespace());
     }
-	
+	@Bean
+	public static ConfigureRedisAction configureRedisAction() {
+		return ConfigureRedisAction.NO_OP;
+	}
 	@Bean
 	public HttpSessionStrategy cookieAndHeadHttpSessionStrategy(){
 		
