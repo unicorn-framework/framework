@@ -31,7 +31,7 @@ public class DataSourceConfig {
     }
 
 	@Bean
-	@Primary
+	//@Primary
     @ConfigurationProperties(prefix="spring.unicorn.datasource")
     public DataSource busDataSource() {
         return DataSourceBuilder.create().type(com.alibaba.druid.pool.DruidDataSource.class).build();
