@@ -1,5 +1,6 @@
 package org.unicorn.framework.mybatis.config.sharding;
 
+import com.google.common.collect.Maps;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -14,9 +15,9 @@ public class UnicornDataSourceBaseProperties {
     /**
      *
      */
-    private Map<String,Map<String,String>>  master;
+    private Map<String,Map<String,String>>  master= Maps.newHashMap();
     /**
      *
      */
-    private Map<String,Map<String,String>>  slave;
+    private Map<String,Map<String,String>>  slave= Maps.newHashMap();
 }

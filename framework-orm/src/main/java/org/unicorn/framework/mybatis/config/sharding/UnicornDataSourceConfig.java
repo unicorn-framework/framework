@@ -43,7 +43,7 @@ public class UnicornDataSourceConfig {
         Map<String, DataSource> dataSourceMap = shardingDataSourceMap();
         DataSourceRule dataSourceRule = new DataSourceRule(dataSourceMap, "ds0");
         DataSource dataSource = dataSourceMap.get("ds0");
-                //ShardingDataSourceFactory.createDataSource(shardingRule(dataSourceRule));
+        //ShardingDataSourceFactory.createDataSource(shardingRule(dataSourceRule));
         return dataSource;
     }
 
@@ -63,6 +63,7 @@ public class UnicornDataSourceConfig {
             //创建主库
             DataSource masterDataSource = createDataSource(masterDataSourceProperties);
             List<DataSource> slaveDataSourceList = Lists.newArrayList();
+
             slaveKeySet.forEach(slaveDbName -> {
                 if (slaveDbName.startsWith(masterDbName + "_")) {
                     //获取 slaveDbName对应的数据库配置信息
