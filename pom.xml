@@ -52,6 +52,7 @@
 		<lombok.version>1.16.10</lombok.version>
 		<httpclient.version>4.5</httpclient.version>
 		<httpmime.version>4.5</httpmime.version>
+		<neuxs.path>218.76.8.40:18081</neuxs.path>
 	</properties>
 
 	<dependencies>
@@ -110,34 +111,34 @@
 	</dependencies>
 
 <!-- 设定主仓库，按设定顺序进行查找。 -->
-	<!--<repositories>-->
-		<!--<repository>-->
-			<!--<id>releases</id>-->
-			<!--<name>Team Nexus Repository</name>-->
-			<!--<url>http://10.181.102.6:8082/repository/maven-releases/</url>-->
-		<!--</repository>-->
+	<repositories>
+		<repository>
+			<id>releases</id>
+			<name>Team Nexus Repository</name>
+			<url>http://${neuxs.path}/repository/maven-releases/</url>
+		</repository>
 
-		<!--<repository>-->
-			<!--<id>snapshots</id>-->
-			<!--<name>Team Nexus Repository</name>-->
-			<!--<url>http://10.181.102.6:8082/repository/maven-snapshots/</url>-->
-		<!--</repository>-->
-	<!--</repositories>-->
+		<repository>
+			<id>snapshots</id>
+			<name>Team Nexus Repository</name>
+			<url>http://${neuxs.path}/repository/maven-snapshots/</url>
+		</repository>
+	</repositories>
 
 
-	<!--&lt;!&ndash; 设定发布位置，mvn deploy时用到，不设置时会报错 &ndash;&gt;-->
-	<!--<distributionManagement>-->
-		<!--<repository>-->
-			<!--<id>releases</id>-->
-			<!--<name>Gigold Nexus Repository</name>-->
-			<!--<url>http://10.181.102.6:8082/repository/maven-releases/</url>-->
-		<!--</repository>-->
-		<!--<snapshotRepository>-->
-			<!--<id>snapshots</id>-->
-			<!--<name>Gigold Nexus Repository</name>-->
-			<!--<url>http://10.181.102.6:8082/repository/maven-snapshots/</url>-->
-		<!--</snapshotRepository>-->
-	<!--</distributionManagement>-->
+	<!-- 设定发布位置，mvn deploy时用到，不设置时会报错 -->
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Gigold Nexus Repository</name>
+			<url>http://${neuxs.path}/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Gigold Nexus Repository</name>
+			<url>http://${neuxs.path}/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 
 	<build>
