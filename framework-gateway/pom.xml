@@ -23,5 +23,9 @@
 			   <groupId>org.springframework.cloud</groupId>  
 			   <artifactId>spring-cloud-starter-zuul</artifactId>  
         </dependency>
+      <dependency>
+          <groupId>com.netflix.servo</groupId>
+          <artifactId>servo-core</artifactId>
+      </dependency>
   </dependencies>
 </project>
