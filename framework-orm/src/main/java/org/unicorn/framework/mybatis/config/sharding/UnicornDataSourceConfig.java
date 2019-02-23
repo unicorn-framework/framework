@@ -63,7 +63,7 @@ public class UnicornDataSourceConfig {
             //创建主库
             DataSource masterDataSource = createDataSource(masterDataSourceProperties);
             List<DataSource> slaveDataSourceList = Lists.newArrayList();
-
+            //遍历从库
             slaveKeySet.forEach(slaveDbName -> {
                 if (slaveDbName.startsWith(masterDbName + "_")) {
                     //获取 slaveDbName对应的数据库配置信息
@@ -74,9 +74,15 @@ public class UnicornDataSourceConfig {
                     }
                 }
             });
-            DataSource[] slaveDataSourceArr = slaveDataSourceList.stream().toArray(DataSource[]::new);
-            DataSource masterSlaveDataSource = MasterSlaveDataSourceFactory.createDataSource(masterDbName, masterDataSource, null, slaveDataSourceArr);
-            shardingDataSourceMap.put(masterDbName, masterSlaveDataSource);
+            //如果没有配置从库
+            if (slaveDataSourceList.isEmpty()) {
+                shardingDataSourceMap.put(masterDbName, masterDataSource);
+            } else {
+                //如果配置了从库，则构建主从数据源
+                DataSource[] slaveDataSourceArr = slaveDataSourceList.stream().toArray(DataSource[]::new);
+                DataSource masterSlaveDataSource = MasterSlaveDataSourceFactory.createDataSource(masterDbName, masterDataSource, null, slaveDataSourceArr);
+                shardingDataSourceMap.put(masterDbName, masterSlaveDataSource);
+            }
         });
         return shardingDataSourceMap;
     }
