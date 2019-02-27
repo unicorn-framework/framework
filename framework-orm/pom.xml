@@ -14,6 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sharding-jdbc-core>2.0.3</sharding-jdbc-core>
+		<sharding-jdbc-spring-namespace>3.0.0</sharding-jdbc-spring-namespace>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -27,24 +28,7 @@
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
 			<version>1.1.0</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>${mybatis-spring.version}</version>
-		</dependency>
-		<!--生成代码插件 -->
-		<dependency>
-			<groupId>org.mybatis.generator</groupId>
-			<artifactId>mybatis-generator-core</artifactId>
-			<version>${mybatis-generator-core.version}</version>
-		</dependency>
-		<!-- mybatis ORM框架 -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>${mybatis.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -57,24 +41,18 @@
 		</dependency>
 
 		<!--<dependency>-->
-			<!--<groupId>com.dangdang</groupId>-->
+			<!--<groupId>io.shardingjdbc</groupId>-->
 			<!--<artifactId>sharding-jdbc-core</artifactId>-->
 			<!--<version>${sharding-jdbc-core}</version>-->
 		<!--</dependency>-->
+
+
+		<!-- https://mvnrepository.com/artifact/io.shardingsphere/sharding-core -->
 		<dependency>
-			<groupId>io.shardingjdbc</groupId>
-			<artifactId>sharding-jdbc-core</artifactId>
-			<version>${sharding-jdbc-core}</version>
+			<groupId>io.shardingsphere</groupId>
+			<artifactId>sharding-jdbc-spring-namespace</artifactId>
+			<version>${sharding-jdbc-spring-namespace}</version>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>com.dangdang</groupId>-->
-			<!--<artifactId>sharding-jdbc-config-spring</artifactId>-->
-			<!--<version>${sharding-jdbc-core}</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>com.dangdang</groupId>-->
-			<!--<artifactId>sharding-jdbc-self-id-generator</artifactId>-->
-			<!--<version>${sharding-jdbc-core}</version>-->
-		<!--</dependency>-->
+
 	</dependencies>
 </project>

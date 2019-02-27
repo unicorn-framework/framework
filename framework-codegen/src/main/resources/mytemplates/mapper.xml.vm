@@ -216,7 +216,7 @@
      <selectKey resultType="${table.primaryTableField.columnType.javaType}" keyProperty="${table.primaryTableField.name}" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert ${table.name}
+    insert into ${table.name}
     <trim prefix="(" suffix=")" suffixOverrides="," >
      #foreach($field in ${table.fields})
       #if(!${field.keyFlag})

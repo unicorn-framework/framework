@@ -1,12 +1,12 @@
 package org.unicorn.framework.mybatis.config.sharding;
 
 import com.google.common.collect.Maps;
-import io.shardingjdbc.core.api.MasterSlaveDataSourceFactory;
-import io.shardingjdbc.core.api.ShardingDataSourceFactory;
-import io.shardingjdbc.core.api.config.MasterSlaveRuleConfiguration;
-import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
-import io.shardingjdbc.core.api.config.TableRuleConfiguration;
-import io.shardingjdbc.core.api.config.strategy.InlineShardingStrategyConfiguration;
+import io.shardingsphere.api.config.MasterSlaveRuleConfiguration;
+import io.shardingsphere.api.config.ShardingRuleConfiguration;
+import io.shardingsphere.api.config.TableRuleConfiguration;
+import io.shardingsphere.api.config.strategy.InlineShardingStrategyConfiguration;
+import io.shardingsphere.shardingjdbc.api.MasterSlaveDataSourceFactory;
+import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.MutablePropertyValues;
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author xiebin
@@ -107,7 +106,7 @@ public class UnicornDataSourceConfig {
                 //设置从库名称
                 masterSlaveRuleConfiguration.setSlaveDataSourceNames(slaveDataSourceNameList);
                 try {
-                    DataSource masterSlaveDataSource = MasterSlaveDataSourceFactory.createDataSource(masterSlaveMap, masterSlaveRuleConfiguration, Maps.newConcurrentMap());
+                    DataSource masterSlaveDataSource = MasterSlaveDataSourceFactory.createDataSource(masterSlaveMap, masterSlaveRuleConfiguration, Maps.newConcurrentMap(),new Properties());
                     shardingDataSourceMap.put(masterDbName, masterSlaveDataSource);
                 } catch (Exception e) {
                     log.error("创建主从数据源失败", e);
@@ -184,6 +183,7 @@ public class UnicornDataSourceConfig {
             TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration();
             //设置逻辑表名 db0.t_order_0,db0.t_order_1,db1.t_order_0,db1.t_order_1,db2.t_order_0,db2.t_order_1
             tableRuleConfig.setLogicTable(logicTableName);
+            tableRuleConfig.setKeyGeneratorColumnName("id");
             //设置实际表名及所在数据节点
             tableRuleConfig.setActualDataNodes(unicornShardingRuleProperties.getActualDataNodes());
             // 配置分库策略（Groovy表达式配置db规则）
