@@ -14,7 +14,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sharding-jdbc-core>2.0.3</sharding-jdbc-core>
-		<sharding-jdbc-spring-namespace>3.0.0.M1</sharding-jdbc-spring-namespace>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -40,18 +39,10 @@
 			<version>${druid.version}</version>
 		</dependency>
 
-		<!--<dependency>-->
-			<!--<groupId>io.shardingjdbc</groupId>-->
-			<!--<artifactId>sharding-jdbc-core</artifactId>-->
-			<!--<version>${sharding-jdbc-core}</version>-->
-		<!--</dependency>-->
-
-
-		<!-- https://mvnrepository.com/artifact/io.shardingsphere/sharding-core -->
 		<dependency>
-			<groupId>io.shardingsphere</groupId>
-			<artifactId>sharding-jdbc-spring-namespace</artifactId>
-			<version>${sharding-jdbc-spring-namespace}</version>
+			<groupId>io.shardingjdbc</groupId>
+			<artifactId>sharding-jdbc-core</artifactId>
+			<version>${sharding-jdbc-core}</version>
 		</dependency>
 
 	</dependencies>

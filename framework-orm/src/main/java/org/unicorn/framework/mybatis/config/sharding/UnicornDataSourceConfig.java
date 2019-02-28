@@ -1,12 +1,12 @@
 package org.unicorn.framework.mybatis.config.sharding;
 
 import com.google.common.collect.Maps;
-import io.shardingsphere.core.api.MasterSlaveDataSourceFactory;
-import io.shardingsphere.core.api.config.MasterSlaveRuleConfiguration;
-import io.shardingsphere.core.api.config.ShardingRuleConfiguration;
-import io.shardingsphere.core.api.config.TableRuleConfiguration;
-import io.shardingsphere.core.api.config.strategy.InlineShardingStrategyConfiguration;
-import io.shardingsphere.jdbc.spring.datasource.SpringShardingDataSource;
+import io.shardingjdbc.core.api.MasterSlaveDataSourceFactory;
+import io.shardingjdbc.core.api.ShardingDataSourceFactory;
+import io.shardingjdbc.core.api.config.MasterSlaveRuleConfiguration;
+import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
+import io.shardingjdbc.core.api.config.TableRuleConfiguration;
+import io.shardingjdbc.core.api.config.strategy.InlineShardingStrategyConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.MutablePropertyValues;
@@ -50,9 +50,7 @@ public class UnicornDataSourceConfig {
     public DataSource buildDataSource() {
         Map<String, DataSource> dataSourceMap = shardingDataSourceMap();
         try {
-//            DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration(), Maps.newConcurrentMap(), new Properties());
-            SpringShardingDataSource dataSource=new SpringShardingDataSource(dataSourceMap,shardingRuleConfiguration(),Maps.newConcurrentMap(), new Properties());
-            return dataSource;
+            return  ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration(), Maps.newConcurrentMap(), new Properties());
         } catch (Exception e) {
             log.error("创建分片数据源失败", e);
         }
@@ -99,13 +97,13 @@ public class UnicornDataSourceConfig {
                 shardingDataSourceMap.put(masterDbName, masterDataSource);
             } else {
                 //如果当前配置了从库，则构建主从数据源 主从名称、主库名、从库名称
-                MasterSlaveRuleConfiguration masterSlaveRuleConfiguration = new MasterSlaveRuleConfiguration(masterDbName,masterDbName,slaveDataSourceNameList);
-//                //设置主从名称
-//                masterSlaveRuleConfiguration.setName(masterDbName);
-//                //设置主库名称
-//                masterSlaveRuleConfiguration.setMasterDataSourceName(masterDbName);
-//                //设置从库名称
-//                masterSlaveRuleConfiguration.setSlaveDataSourceNames(slaveDataSourceNameList);
+                MasterSlaveRuleConfiguration masterSlaveRuleConfiguration = new MasterSlaveRuleConfiguration();
+                //设置主从名称
+                masterSlaveRuleConfiguration.setName(masterDbName);
+                //设置主库名称
+                masterSlaveRuleConfiguration.setMasterDataSourceName(masterDbName);
+                //设置从库名称
+                masterSlaveRuleConfiguration.setSlaveDataSourceNames(slaveDataSourceNameList);
                 try {
                     DataSource masterSlaveDataSource = MasterSlaveDataSourceFactory.createDataSource(masterSlaveMap, masterSlaveRuleConfiguration, Maps.newConcurrentMap());
                     shardingDataSourceMap.put(masterDbName, masterSlaveDataSource);
