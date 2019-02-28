@@ -14,7 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sharding-jdbc-core>2.0.3</sharding-jdbc-core>
-		<sharding-jdbc-spring-namespace>3.0.0</sharding-jdbc-spring-namespace>
+		<sharding-jdbc-spring-namespace>3.0.0.M1</sharding-jdbc-spring-namespace>
 	</properties>
 	<dependencies>
 		<dependency>
