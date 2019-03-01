@@ -13,7 +13,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sharding-jdbc-core>2.0.3</sharding-jdbc-core>
+		<sharding-jdbc-spring-namespace>3.1.0</sharding-jdbc-spring-namespace>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -40,9 +40,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.shardingjdbc</groupId>
-			<artifactId>sharding-jdbc-core</artifactId>
-			<version>${sharding-jdbc-core}</version>
+			<groupId>io.shardingsphere</groupId>
+			<artifactId>sharding-jdbc-spring-namespace</artifactId>
+			<version>${sharding-jdbc-spring-namespace}</version>
 		</dependency>
 
 	</dependencies>

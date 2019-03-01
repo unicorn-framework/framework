@@ -1,12 +1,11 @@
 package org.unicorn.framework.mybatis.config.sharding;
 
 import com.google.common.collect.Maps;
-import io.shardingjdbc.core.api.MasterSlaveDataSourceFactory;
-import io.shardingjdbc.core.api.ShardingDataSourceFactory;
-import io.shardingjdbc.core.api.config.MasterSlaveRuleConfiguration;
-import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
-import io.shardingjdbc.core.api.config.TableRuleConfiguration;
-import io.shardingjdbc.core.api.config.strategy.InlineShardingStrategyConfiguration;
+import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
+import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
+import io.shardingsphere.api.config.rule.TableRuleConfiguration;
+import io.shardingsphere.api.config.strategy.InlineShardingStrategyConfiguration;
+import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 @Slf4j
 @Configuration
@@ -60,21 +62,12 @@ public class UnicornDataSourceConfig {
             DataSource datasource=createDataSource(masterDbMap.get(dataSourceName));
             dataSourceMap.put(dataSourceName,datasource);
         });
-
-        //主从数据源配置
-        Set<String> masterSlaveRuleSet = unicornDataSourceRuleProperties.getMasterSlaveRule().keySet();
-        masterSlaveRuleSet.forEach(masterDataSourceName -> {
-            MasterSlaveRuleConfiguration masterSlaveRuleConfiguration = unicornDataSourceRuleProperties.getMasterSlaveRule().get(masterDataSourceName);
-            try {
-                DataSource dataSource = MasterSlaveDataSourceFactory.createDataSource(dataSourceMap, masterSlaveRuleConfiguration, Maps.newHashMap());
-                dataSourceMap.put(masterDataSourceName, dataSource);
-            } catch (Exception e) {
-                log.error("创建主从数据源失败", e);
-            }
-
-        });
         //分片配置
         ShardingRuleConfiguration shardingRuleConfiguration = unicornDataSourceRuleProperties.getShardingRule();
+        //主从数据源配置
+        List<MasterSlaveRuleConfiguration> masterSlaveRuleConfigurationList=unicornDataSourceRuleProperties.getMasterSlaveRule();
+        //主从配置
+        shardingRuleConfiguration.setMasterSlaveRuleConfigs(masterSlaveRuleConfigurationList);
         List<TableRuleConfiguration> tableRuleList = new ArrayList<>(shardingRuleConfiguration.getTableRuleConfigs());
         tableRuleList.forEach(tableRuleConfiguration -> {
             //获取分片属性
