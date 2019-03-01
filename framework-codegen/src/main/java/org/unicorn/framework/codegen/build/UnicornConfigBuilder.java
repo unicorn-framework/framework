@@ -390,8 +390,8 @@ public class UnicornConfigBuilder  {
                     field.setKeyFlag(true);
                     if (isKeyIdentity(results)) {
                         field.setKeyIdentityFlag(true);
-                        tableInfo.setPrimaryTableField(field);
                     }
+                    tableInfo.setPrimaryTableField(field);
                     haveId = true;
                 } else {
                     field.setKeyFlag(false);
