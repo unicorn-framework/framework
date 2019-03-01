@@ -8,7 +8,6 @@ import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
 import io.shardingjdbc.core.api.config.TableRuleConfiguration;
 import io.shardingjdbc.core.api.config.strategy.InlineShardingStrategyConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.util.Lists;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -19,27 +18,32 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
-/**
- * @author xiebin
- */
 @Slf4j
 @Configuration
-@EnableConfigurationProperties({UnicornDataSourceBaseProperties.class, UnicornDataSourcePoolProperties.class, UnicornDataTableRuleProperties.class})
+@EnableConfigurationProperties({UnicornDataSourceBaseProperties.class,UnicornDataSourceRuleProperties.class, UnicornDataSourcePoolProperties.class, UnicornDataTableRuleProperties.class})
 public class UnicornDataSourceConfig {
-
+    /**
+     * 数据源规则
+     */
     @Autowired
-    protected UnicornDataSourceBaseProperties unicornShardingDataSourceProperties;
-
+    private UnicornDataSourceRuleProperties unicornDataSourceRuleProperties;
+    /**
+     * 数据源基本属性
+     */
     @Autowired
-    protected UnicornDataSourcePoolProperties unicornDataSourcePoolProperties;
-
+    private UnicornDataSourceBaseProperties unicornDataSourceBaseProperties;
+    /**
+     * 数据库连接池属性
+     */
     @Autowired
-    protected UnicornDataTableRuleProperties unicornDataTableRuleProperties;
+    private UnicornDataSourcePoolProperties unicornDataSourcePoolProperties;
+    /**
+     * 分表规则
+     */
+    @Autowired
+    private UnicornDataTableRuleProperties unicornDataTableRuleProperties;
 
     @Primary
     @Bean(name = "unicornDataSource")
@@ -48,72 +52,55 @@ public class UnicornDataSourceConfig {
     }
 
     public DataSource buildDataSource() {
-        Map<String, DataSource> dataSourceMap = shardingDataSourceMap();
+        //存储所有的数据源信息
+        Map<String, DataSource> dataSourceMap = Maps.newHashMap();
+        //获取数据源配置
+        Map<String, Map<String, String>> masterDbMap = unicornDataSourceBaseProperties.getDatasource();
+        masterDbMap.keySet().forEach(dataSourceName->{
+            DataSource datasource=createDataSource(masterDbMap.get(dataSourceName));
+            dataSourceMap.put(dataSourceName,datasource);
+        });
+
+        //主从数据源配置
+        Set<String> masterSlaveRuleSet = unicornDataSourceRuleProperties.getMasterSlaveRule().keySet();
+        masterSlaveRuleSet.forEach(masterDataSourceName -> {
+            MasterSlaveRuleConfiguration masterSlaveRuleConfiguration = unicornDataSourceRuleProperties.getMasterSlaveRule().get(masterDataSourceName);
+            try {
+                DataSource dataSource = MasterSlaveDataSourceFactory.createDataSource(dataSourceMap, masterSlaveRuleConfiguration, Maps.newHashMap());
+                dataSourceMap.put(masterDataSourceName, dataSource);
+            } catch (Exception e) {
+                log.error("创建主从数据源失败", e);
+            }
+
+        });
+        //分片配置
+        ShardingRuleConfiguration shardingRuleConfiguration = unicornDataSourceRuleProperties.getShardingRule();
+        List<TableRuleConfiguration> tableRuleList = new ArrayList<>(shardingRuleConfiguration.getTableRuleConfigs());
+        tableRuleList.forEach(tableRuleConfiguration -> {
+            //获取分片属性
+            UnicornShardingRuleProperties unicornShardingRuleProperties=unicornDataTableRuleProperties.getTableRule().get(tableRuleConfiguration.getLogicTable());
+            //配置分库策略（Groovy表达式配置db规则）
+            tableRuleConfiguration.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getDataSourceShardingCloumnName(), unicornShardingRuleProperties.getDataSourceShardingAlgorithmExpression()));
+            // 配置分表策略（Groovy表达式配置表路由规则）
+            tableRuleConfiguration.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getTableShardingCloumnName(), unicornShardingRuleProperties.getTableShardingAlgorithmExpression()));
+        });
         try {
-            return  ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration(), Maps.newConcurrentMap(), new Properties());
+            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, Maps.newConcurrentMap(), new Properties());
         } catch (Exception e) {
             log.error("创建分片数据源失败", e);
         }
         return null;
     }
 
-    @Bean
-    public Map<String, DataSource> shardingDataSourceMap() {
-        Map<String, DataSource> shardingDataSourceMap = Maps.newHashMap();
-        //存储所有的主库信息
-        Map<String, Map<String, String>> masterDbMap = unicornShardingDataSourceProperties.getMaster();
-        //存储所有的从库信息
-        Map<String, Map<String, String>> slaveDbMap = unicornShardingDataSourceProperties.getSlave();
-        //获取主库配置 集合大小表示配置了多少个主库
-        Set<String> masterKeySet = masterDbMap.keySet();
-        //获取从库配置，集合大小表示总共有多少从库
-        Set<String> slaveKeySet = slaveDbMap.keySet();
-        masterKeySet.forEach(masterDbName -> {
-            //用来存储当前主从库数据源
-            Map<String, DataSource> masterSlaveMap = Maps.newHashMap();
-            //获取 masterDbName对应的数据库配置信息
-            Map<String, String> masterDataSourceProperties = masterDbMap.get(masterDbName);
-            //创建主库
-            DataSource masterDataSource = createDataSource(masterDataSourceProperties);
-            //存储主库数据源
-            masterSlaveMap.put(masterDbName, masterDataSource);
-            //存储当前主库所有从库名
-            List<String> slaveDataSourceNameList = Lists.newArrayList();
-            //遍历从库
-            slaveKeySet.forEach(slaveDbName -> {
-                //获取当前出库对应的从库
-                if (slaveDbName.startsWith(masterDbName + "_")) {
-                    //获取 slaveDbName对应的数据库配置信息
-                    Map<String, String> slaveDataSourceProperties = slaveDbMap.get(slaveDbName);
-                    DataSource slaveDataSource = createDataSource(slaveDataSourceProperties);
-                    if (slaveDataSource != null) {
-                        masterSlaveMap.put(slaveDbName, slaveDataSource);
-                        slaveDataSourceNameList.add(slaveDbName);
-                    }
-                }
-            });
-            //如果当前主库没有配置从库
-            if (slaveDataSourceNameList.isEmpty()) {
-                shardingDataSourceMap.put(masterDbName, masterDataSource);
-            } else {
-                //如果当前配置了从库，则构建主从数据源 主从名称、主库名、从库名称
-                MasterSlaveRuleConfiguration masterSlaveRuleConfiguration = new MasterSlaveRuleConfiguration();
-                //设置主从名称
-                masterSlaveRuleConfiguration.setName(masterDbName);
-                //设置主库名称
-                masterSlaveRuleConfiguration.setMasterDataSourceName(masterDbName);
-                //设置从库名称
-                masterSlaveRuleConfiguration.setSlaveDataSourceNames(slaveDataSourceNameList);
-                try {
-                    DataSource masterSlaveDataSource = MasterSlaveDataSourceFactory.createDataSource(masterSlaveMap, masterSlaveRuleConfiguration, Maps.newConcurrentMap());
-                    shardingDataSourceMap.put(masterDbName, masterSlaveDataSource);
-                } catch (Exception e) {
-                    log.error("创建主从数据源失败", e);
-                }
-
-            }
-        });
-        return shardingDataSourceMap;
+    /**
+     * 获取map属性
+     *
+     * @param map
+     * @param proName
+     * @return
+     */
+    public String getProperties(Map<String, String> map, String proName) {
+        return map.get(proName);
     }
 
     /**
@@ -145,17 +132,6 @@ public class UnicornDataSourceConfig {
     }
 
     /**
-     * 获取map属性
-     *
-     * @param map
-     * @param proName
-     * @return
-     */
-    public String getProperties(Map<String, String> map, String proName) {
-        return map.get(proName);
-    }
-
-    /**
      * 数据源绑定属性
      *
      * @param result
@@ -167,34 +143,4 @@ public class UnicornDataSourceConfig {
         //将数据源属性绑定
         new RelaxedDataBinder(datasource).bind(mproperties);
     }
-
-    /**
-     * 分片规则 分库分表
-     *
-     * @return ShardingRuleConfiguration
-     */
-    public ShardingRuleConfiguration shardingRuleConfiguration() {
-        // 配置分片规则
-        ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-        List<String> logicTableNameList = unicornDataTableRuleProperties.getLogicTableNames();
-        logicTableNameList.forEach(logicTableName -> {
-            UnicornShardingRuleProperties unicornShardingRuleProperties = unicornDataTableRuleProperties.getTableRule().get(logicTableName);
-            TableRuleConfiguration tableRuleConfig = new TableRuleConfiguration();
-            //设置逻辑表名 db0.t_order_0,db0.t_order_1,db1.t_order_0,db1.t_order_1,db2.t_order_0,db2.t_order_1
-            tableRuleConfig.setLogicTable(logicTableName);
-            tableRuleConfig.setKeyGeneratorColumnName("id");
-            //设置实际表名及所在数据节点
-            tableRuleConfig.setActualDataNodes(unicornShardingRuleProperties.getActualDataNodes());
-            // 配置分库策略（Groovy表达式配置db规则）
-            tableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getDataSourceShardingCloumnName(), unicornShardingRuleProperties.getDataSourceShardingAlgorithmExpression()));
-            // 配置分表策略（Groovy表达式配置表路由规则）
-            tableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getTableShardingCloumnName(), unicornShardingRuleProperties.getTableShardingAlgorithmExpression()));
-            //将规则添加到分片规则配置中
-            shardingRuleConfig.getTableRuleConfigs().add(tableRuleConfig);
-        });
-
-
-        return shardingRuleConfig;
-    }
-
 }

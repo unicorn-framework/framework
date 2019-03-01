@@ -11,12 +11,8 @@ import java.util.Map;
  * @author xiebin
  */
 @Data
-@ConfigurationProperties(prefix = "unicorn.sharding")
+@ConfigurationProperties(prefix = "unicorn.jdbc.sharding")
 public class UnicornDataTableRuleProperties {
-    /**
-     * 逻辑表列表
-     */
-    private List<String> logicTableNames;
     /**
      * 配置分表信息     逻辑表=logicName
      *                 逻辑表=dtaNodes
