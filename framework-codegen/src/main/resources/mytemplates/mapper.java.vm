@@ -3,99 +3,134 @@ package ${mapperContext.pkg};
 import ${entityContext.classImportPath};
 import ${entityContext.classImportPath}Example;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
  * <p>
-  * ${table.comment} Mapper 接口
+ * ${table.comment} Mapper 接口
  * </p>
  *
  * @author ${author}
  * @since ${date}
  */
 public interface ${mapperContext.name}  {
-   /**
-     *
-     * @mbggenerated ${date}
-     */
-    int deleteByPrimaryKey(${table.primaryTableField.propertyType} id);
-     /**
-     *
-     * @mbggenerated ${date}
-     */
-    int deleteByExample(${entity}Example ${entityContext.beanName}Example);
 
-    /**
-     *
-     * @mbggenerated ${date}
-     */
-    int insert(${entity} ${entityContext.beanName});
+        /**
+         * 根据主键删除记录
+         * @param ${table.primaryTableField.propertyName}
+         * @return
+         * @mbggenerated ${date}
+         */
+        int deleteByPrimaryKey(${table.primaryTableField.propertyType} ${table.primaryTableField.propertyName});
+        /**
+         * 根据主键删除记录
+         * @param  ${entityContext.beanName}Example
+         * @return
+         * @mbggenerated ${date}
+         */
+        int deleteByExample(${entity}Example ${entityContext.beanName}Example);
 
-    /**
-     *
-     * @mbggenerated ${date}
-     */
-    int insertSelective(${entity} ${entityContext.beanName});
-    
-    /**
-    *
-    * @mbggenerated ${date}
-    */
-    int batchInsertSelective(List<${entity}> ${entityContext.beanName}List);
+        /**
+         * 插入记录
+         * @param  ${entityContext.beanName}
+         * @return
+         * @mbggenerated ${date}
+         */
+        int insert(${entity} ${entityContext.beanName});
 
-    /**
-     *
-     * @mbggenerated ${date}
-     */
-    ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} id);
-    /**
-    *
-    * @mbggenerated ${date}
-    */
-    public  List<${entity}> selectListByExample(${entity}Example ${entityContext.beanName}Example);
-     /**
-    *
-    * @mbggenerated ${date}
-    */
-    public  Integer countByExample(${entity}Example ${entityContext.beanName}Example);
-    
-    /**
-    *
-    * @mbggenerated ${date}
-    */
-    public  List<${entity}> selectList(${entity} ${entityContext.beanName});
-     /**
-    *
-    * @mbggenerated ${date}
-    */
-    public  List<${entity}> selectListByIds(List<${table.primaryTableField.propertyType}> ids);
-    /**
-    *
-    * @mbggenerated ${date}
-    */
-    public  ${entity} selectOne(${entity} ${entityContext.beanName});
+        /**
+         * 插入可选字段记录
+         * @param  ${entityContext.beanName}
+         * @return
+         * @mbggenerated ${date}
+         */
+        int insertSelective(${entity} ${entityContext.beanName});
 
-    /**
-     *
-     * @mbggenerated ${date}
-     */
-    int updateByPrimaryKeySelective(${entity} ${entityContext.beanName});
+        /**
+         * 批量插入记录
+         * @param  ${entityContext.beanName}List
+         * @return
+         * @mbggenerated ${date}
+         */
+        int batchInsertSelective(List<${entity}> ${entityContext.beanName}List);
 
-    /**
-     *
-     * @mbggenerated ${date}
-     */
-    int updateByPrimaryKey(${entity} ${entityContext.beanName});
-    
-    /**
-     *
-     * @mbggenerated ${date}
-     */
-    int updateByExampleSelective(@Param("record") ${entity} ${entityContext.beanName}, @Param("example") ${entity}Example ${entityContext.beanName}Example);
+        /**
+         * 根据主键查询
+         * @param  ${table.primaryTableField.propertyName}
+         * @return ${entityContext.beanName}
+         * @mbggenerated ${date}
+         */
+        ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} ${table.primaryTableField.propertyName});
+       /**
+       * 根据条件查询
+       * @param  ${entityContext.beanName}Example
+       * @return
+       * @mbggenerated ${date}
+       */
+        List<${entity}> selectListByExample(${entity}Example ${entityContext.beanName}Example);
+        /**
+         * 根据条件统计
+         * @param  ${entityContext.beanName}Example
+         * @return
+         * @mbggenerated ${date}
+         */
+        Integer countByExample(${entity}Example ${entityContext.beanName}Example);
 
-    /**
-     *
-     * @mbggenerated ${date}
-     */
-    int updateByExample(@Param("record") ${entity} ${entityContext.beanName}, @Param("example") ${entity}Example ${entityContext.beanName}Example);
+        /**
+         * 根据条件查询列表
+         * @param  ${entityContext.beanName}
+         * @return
+         * @mbggenerated ${date}
+         */
+        List<${entity}> selectList(${entity} ${entityContext.beanName});
+        /**
+         * 根据主键批量查询
+         * @param  ${table.primaryTableField.propertyName}s
+         * @return
+         * @mbggenerated ${date}
+         */
+        List<${entity}> selectListByIds(List<${table.primaryTableField.propertyType}> ${table.primaryTableField.propertyName}s);
+        /**
+         * 根据条件查询单条记录
+         * @param  ${entityContext.beanName}
+         * @return
+         * @mbggenerated ${date}
+         */
+       ${entity} selectOne(${entity} ${entityContext.beanName});
+
+        /**
+         * 更新记录
+         * @param  ${entityContext.beanName}
+         * @return
+         * @mbggenerated ${date}
+         */
+        int updateByPrimaryKeySelective(${entity} ${entityContext.beanName});
+
+        /**
+         * 根据主键更新记录
+         * @param  ${entityContext.beanName}
+         * @return
+         * @mbggenerated ${date}
+         */
+        int updateByPrimaryKey(${entity} ${entityContext.beanName});
+
+        /**
+         * 根据条件更新记录
+         * @param  ${entityContext.beanName}
+         * @param  ${entityContext.beanName}Example
+         * @return
+         * @mbggenerated ${date}
+         */
+        int updateByExampleSelective(@Param("record") ${entity} ${entityContext.beanName},@Param("example") ${entity}Example ${entityContext.beanName}Example);
+
+        /**
+         * 根据条件更新记录
+         * @param  ${entityContext.beanName}
+         * @param  ${entityContext.beanName}Example
+         * @return
+         * @mbggenerated ${date}
+         */
+        int updateByExample(@Param("record") ${entity} ${entityContext.beanName},@Param("example") ${entity}Example ${entityContext.beanName}Example);
+
 }

@@ -1,20 +1,21 @@
 package ${entityContext.pkg};
 
-#foreach($pkg in ${entityContext.importSet})
-import ${pkg};
-#end
+    #foreach($pkg in ${entityContext.importSet})
+    import ${pkg};
+    #end
 
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 /**
  * <p>
  * ${table.comment} Example类 用于查询
- 
  * </p>
  *
  * @author ${author}
@@ -23,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Builder
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class ${entityContext.name}Example implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
@@ -40,7 +41,7 @@ public class ${entityContext.name}Example implements Serializable {
      * 查询条件列表
      */
     protected List<Criteria> oredCriteria;
-    
+
     /**
      * limit
      */
@@ -53,7 +54,7 @@ public class ${entityContext.name}Example implements Serializable {
         oredCriteria = new ArrayList<Criteria>();
     }
 
-   
+
     /**
      *
      */
@@ -101,10 +102,10 @@ public class ${entityContext.name}Example implements Serializable {
     /**
      *
      */
-    protected abstract static class GeneratedCriteria {
+    protected abstract static class BaseGeneratedCriteria {
         protected List<Criterion> criteria;
 
-        protected GeneratedCriteria() {
+        protected BaseGeneratedCriteria() {
             super();
             criteria = new ArrayList<Criterion>();
         }
@@ -142,88 +143,89 @@ public class ${entityContext.name}Example implements Serializable {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-      #foreach($field in ${table.fields})
-         
-         public Criteria and${field.capitalName}IsNull() {
-            addCriterion("${field.name} is null");
-            return (Criteria) this;
-         }	
-         
-          public Criteria and${field.capitalName}IsNotNull() {
-            addCriterion("${field.name} is not null");
-            return (Criteria) this;
-          }
-          
+        #foreach($field in ${table.fields})
 
-          public Criteria and${field.capitalName}EqualTo(${field.propertyType} value) {
-            addCriterion("${field.name} =", value, "${field.propertyName}");
-            return (Criteria) this;
-          }
-          
+            public Criteria and${field.capitalName}IsNull() {
+                addCriterion("${field.name} is null");
+                return (Criteria) this;
+            }
 
-          public Criteria and${field.capitalName}NotEqualTo(${field.propertyType} value) {
-            addCriterion("${field.name} <>", value, "${field.propertyName}");
-            return (Criteria) this;
-          }
-           public Criteria and${field.capitalName}GreaterThan(${field.propertyType} value) {
-            addCriterion("${field.name} >", value, "${field.propertyName}");
-            return (Criteria) this;
-        }
+            public Criteria and${field.capitalName}IsNotNull() {
+                addCriterion("${field.name} is not null");
+                return (Criteria) this;
+            }
 
-        public Criteria and${field.capitalName}GreaterThanOrEqualTo(${field.propertyType} value) {
-            addCriterion("${field.name} >=", value, "${field.propertyName}");
-            return (Criteria) this;
-        }
 
-        public Criteria and${field.capitalName}LessThan(${field.propertyType} value) {
-            addCriterion("${field.name} <", value, "${field.propertyName}");
-            return (Criteria) this;
-        }
+            public Criteria and${field.capitalName}EqualTo(${field.propertyType} value) {
+                addCriterion("${field.name} =", value, "${field.propertyName}");
+                return (Criteria) this;
+            }
 
-        public Criteria and${field.capitalName}LessThanOrEqualTo(${field.propertyType} value) {
-            addCriterion("${field.name} <=", value, "${field.propertyName}");
-            return (Criteria) this;
-        }
 
-        public Criteria and${field.capitalName}In(List<${field.propertyType}> values) {
-            addCriterion("${field.name} in", values, "${field.propertyName}");
-            return (Criteria) this;
-        }
+            public Criteria and${field.capitalName}NotEqualTo(${field.propertyType} value) {
+                addCriterion("${field.name} <>", value, "${field.propertyName}");
+                return (Criteria) this;
+            }
 
-        public Criteria and${field.capitalName}NotIn(List<${field.propertyType}> values) {
-            addCriterion("${field.name} not in", values, "${field.propertyName}");
-            return (Criteria) this;
-        }
+            public Criteria and${field.capitalName}GreaterThan(${field.propertyType} value) {
+                addCriterion("${field.name} >", value, "${field.propertyName}");
+                return (Criteria) this;
+            }
 
-        public Criteria and${field.capitalName}Between(${field.propertyType} value1, ${field.propertyType} value2) {
-            addCriterion("${field.name} between", value1, value2, "${field.propertyName}");
-            return (Criteria) this;
-        }
+            public Criteria and${field.capitalName}GreaterThanOrEqualTo(${field.propertyType} value) {
+                addCriterion("${field.name} >=", value, "${field.propertyName}");
+                return (Criteria) this;
+            }
 
-        public Criteria and${field.capitalName}NotBetween(${field.propertyType}  value1, ${field.propertyType}  value2) {
-            addCriterion("${field.name} not between", value1, value2, "${field.propertyName}");
-            return (Criteria) this;
-        }
-        #if(${field.propertyType} == "String")
-        
-        public Criteria and${field.capitalName}Like(${field.propertyType} value) {
-            addCriterion("${field.name} like", value, "${field.propertyName}");
-            return (Criteria) this;
-        }
+            public Criteria and${field.capitalName}LessThan(${field.propertyType} value) {
+                addCriterion("${field.name} <", value, "${field.propertyName}");
+                return (Criteria) this;
+            }
 
-        public Criteria and${field.capitalName}NotLike(String value) {
-            addCriterion("${field.name} not like", value, "${field.propertyName}");
-            return (Criteria) this;
-        }
-       
+            public Criteria and${field.capitalName}LessThanOrEqualTo(${field.propertyType} value) {
+                addCriterion("${field.name} <=", value, "${field.propertyName}");
+                return (Criteria) this;
+            }
+
+            public Criteria and${field.capitalName}In(List<${field.propertyType}> values) {
+                addCriterion("${field.name} in", values, "${field.propertyName}");
+                return (Criteria) this;
+            }
+
+            public Criteria and${field.capitalName}NotIn(List<${field.propertyType}> values) {
+                addCriterion("${field.name} not in", values, "${field.propertyName}");
+                return (Criteria) this;
+            }
+
+            public Criteria and${field.capitalName}Between(${field.propertyType} value1, ${field.propertyType} value2) {
+                addCriterion("${field.name} between", value1, value2, "${field.propertyName}");
+                return (Criteria) this;
+            }
+
+            public Criteria and${field.capitalName}NotBetween(${field.propertyType} value1, ${field.propertyType} value2) {
+                addCriterion("${field.name} not between", value1, value2, "${field.propertyName}");
+                return (Criteria) this;
+            }
+            #if(${field.propertyType} == "String")
+
+                public Criteria and${field.capitalName}Like(${field.propertyType} value) {
+                    addCriterion("${field.name} like", value, "${field.propertyName}");
+                    return (Criteria) this;
+                }
+
+                public Criteria and${field.capitalName}NotLike(String value) {
+                    addCriterion("${field.name} not like", value, "${field.propertyName}");
+                    return (Criteria) this;
+                }
+
+            #end
         #end
-      #end
     }
 
     /**
      *
      */
-    public static class Criteria extends GeneratedCriteria {
+    public static class Criteria extends BaseGeneratedCriteria {
 
         protected Criteria() {
             super();

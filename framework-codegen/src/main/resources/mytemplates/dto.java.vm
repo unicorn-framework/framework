@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.unicorn.framework.core.dto.AbstractRequestPageDto;
 import org.unicorn.framework.core.exception.PendingException;
+
 /**
  * <p>
  * ${table.comment}
@@ -19,19 +20,19 @@ import org.unicorn.framework.core.exception.PendingException;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class ${entityContext.name}PageRequestDto extends AbstractRequestPageDto {
 
     private static final long serialVersionUID = 1L;
     /**
      * ${table.comment}
      */
-	private ${entityContext.name} ${entityContext.beanName};
-	
-	@Override
-	public void vaildatioinThrowException() throws PendingException {
-		// TODO Auto-generated method stub
-		
-	}
+    private ${entityContext.name} ${entityContext.beanName};
+
+    @Override
+    public void vaildatioinThrowException() throws PendingException {
+        // TODO Auto-generated method stub
+
+    }
 
 }
