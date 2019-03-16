@@ -1,0 +1,27 @@
+#security:
+#  oauth2:
+#    client:
+#      client-id: unicorn
+#      client-secret: unicorn
+#server:
+#  session:
+#    timeout: 60
+#  port: 19090
+#spring:
+#  session:
+#    store-type: redis
+#  redis:
+#    host: 192.168.1.138
+#    port: 6379
+#logging:
+#  level: debug
+#unicorn:
+#  security:
+#    oauth2:
+#      storeType: redis
+#      clients[0]:
+#        clientId: unicorn
+#        clientSecret: unicorn
+#      clients[1]:
+#              clientId: unicorn1
+#              clientSecret: unicorn1
