@@ -16,13 +16,13 @@ import java.util.Map;
  * @author xiebin
  * @since 1.0
  */
-public class CustomOauthExceptionSerializer extends StdSerializer<CustomOauthException> {
-    public CustomOauthExceptionSerializer() {
-        super(CustomOauthException.class);
+public class UnicornOauthExceptionSerializer extends StdSerializer<UnicornOauthException> {
+    public UnicornOauthExceptionSerializer() {
+        super(UnicornOauthException.class);
     }
 
     @Override
-    public void serialize(CustomOauthException value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(UnicornOauthException value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         gen.writeStartObject();

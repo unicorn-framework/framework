@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author xiebin
  */
-public class AuthExceptionEntryPoint implements AuthenticationEntryPoint {
+public class UnicornAuthExceptionEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,AuthenticationException authException)  throws ServletException {
         response.setContentType("application/json");

@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
  * @since 1.0
  */
 @Component("customWebResponseExceptionTranslator")
-public class CustomWebResponseExceptionTranslator implements WebResponseExceptionTranslator {
+public class UnicornWebResponseExceptionTranslator implements WebResponseExceptionTranslator {
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception e) throws Exception {
 
         OAuth2Exception oAuth2Exception = (OAuth2Exception) e;
         return ResponseEntity
                 .status(oAuth2Exception.getHttpErrorCode())
-                .body(new CustomOauthException(oAuth2Exception.getMessage()));
+                .body(new UnicornOauthException(oAuth2Exception.getMessage()));
     }
 }
