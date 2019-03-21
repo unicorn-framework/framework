@@ -1,15 +1,10 @@
 package org.unicorn.framework.codegen.build;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.unicorn.framework.codegen.config.UnicornStrategyConfig;
-
 import com.baomidou.mybatisplus.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
+import org.unicorn.framework.codegen.config.UnicornStrategyConfig;
+
+import java.util.*;
 /**
  * 
  * @author xiebin
@@ -203,7 +198,8 @@ public class UnicornTableInfo {
 	     */
 	    private String cov2col(UnicornTableField field) {
 	        if (null != field) {
-	            return field.isConvert() ? field.getName() + " AS " + field.getPropertyName() : field.getName();
+//	            return field.isConvert() ? field.getName() + " AS " + field.getPropertyName() : field.getName();
+				return field.getName();
 	        }
 	        return StringUtils.EMPTY;
 	    }

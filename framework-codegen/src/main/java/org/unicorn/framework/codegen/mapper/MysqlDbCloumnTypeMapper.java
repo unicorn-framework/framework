@@ -14,8 +14,8 @@ public class MysqlDbCloumnTypeMapper {
 		_MAP.put("VARCHAR", new DbCloumnTypeInfo("VARCHAR", null,"java.lang.String"));
 		_MAP.put("CHAR", new DbCloumnTypeInfo("CHAR", null,"java.lang.String"));
 		_MAP.put("LONGVARCHAR", new DbCloumnTypeInfo("LONGVARCHAR", null,"java.lang.String"));
-		_MAP.put("TEXT", new DbCloumnTypeInfo("TEXT", null,"java.lang.String"));
-		_MAP.put("LONGTEXT", new DbCloumnTypeInfo("TEXT", null,"java.lang.String"));
+		_MAP.put("TEXT", new DbCloumnTypeInfo("VARCHAR", null,"java.lang.String"));
+		_MAP.put("LONGTEXT", new DbCloumnTypeInfo("VARCHAR", null,"java.lang.String"));
 		_MAP.put("TINYINT", new DbCloumnTypeInfo("INTEGER", null,"java.lang.Integer"));
 		_MAP.put("SMALLINT", new DbCloumnTypeInfo("INTEGER", null,"java.lang.Integer"));
 		_MAP.put("INT", new DbCloumnTypeInfo("INTEGER", null,"java.lang.Integer"));

@@ -61,13 +61,13 @@ public interface ${mapperContext.name}  {
          * @return ${entityContext.beanName}
          * @mbggenerated ${date}
          */
-        ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} ${table.primaryTableField.propertyName});
-       /**
-       * 根据条件查询
-       * @param  ${entityContext.beanName}Example
-       * @return
-       * @mbggenerated ${date}
-       */
+    ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} ${table.primaryTableField.propertyName});
+        /**
+         * 根据条件查询
+         * @param  ${entityContext.beanName}Example
+         * @return
+         * @mbggenerated ${date}
+         */
         List<${entity}> selectListByExample(${entity}Example ${entityContext.beanName}Example);
         /**
          * 根据条件统计
@@ -97,7 +97,7 @@ public interface ${mapperContext.name}  {
          * @return
          * @mbggenerated ${date}
          */
-       ${entity} selectOne(${entity} ${entityContext.beanName});
+    ${entity} selectOne(${entity} ${entityContext.beanName});
 
         /**
          * 更新记录
@@ -133,4 +133,4 @@ public interface ${mapperContext.name}  {
          */
         int updateByExample(@Param("record") ${entity} ${entityContext.beanName},@Param("example") ${entity}Example ${entityContext.beanName}Example);
 
-}
+        }
