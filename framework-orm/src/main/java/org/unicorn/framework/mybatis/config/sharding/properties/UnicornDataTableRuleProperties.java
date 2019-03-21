@@ -1,10 +1,9 @@
-package org.unicorn.framework.mybatis.config.sharding;
+package org.unicorn.framework.mybatis.config.sharding.properties;
 
 import com.google.common.collect.Maps;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.List;
 import java.util.Map;
 
 /**

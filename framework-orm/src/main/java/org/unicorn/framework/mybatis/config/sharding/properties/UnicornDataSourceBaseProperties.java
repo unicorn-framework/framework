@@ -1,4 +1,4 @@
-package org.unicorn.framework.mybatis.config.sharding;
+package org.unicorn.framework.mybatis.config.sharding.properties;
 
 import com.google.common.collect.Maps;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package org.unicorn.framework.mybatis.config.sharding;
+package org.unicorn.framework.mybatis.config.sharding.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

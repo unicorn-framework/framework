@@ -1,14 +1,12 @@
-package org.unicorn.framework.mybatis.config.sharding;
+package org.unicorn.framework.mybatis.config.sharding.properties;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author  xiebin

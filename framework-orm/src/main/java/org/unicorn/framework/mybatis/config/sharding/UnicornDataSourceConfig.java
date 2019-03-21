@@ -15,6 +15,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.unicorn.framework.mybatis.config.sharding.properties.*;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.Properties;
 
 @Slf4j
 @Configuration
-@EnableConfigurationProperties({UnicornDataSourceBaseProperties.class,UnicornDataSourceRuleProperties.class, UnicornDataSourcePoolProperties.class, UnicornDataTableRuleProperties.class})
+@EnableConfigurationProperties({UnicornDataSourceBaseProperties.class, UnicornDataSourceRuleProperties.class, UnicornDataSourcePoolProperties.class, UnicornDataTableRuleProperties.class})
 public class UnicornDataSourceConfig {
     /**
      * 数据源规则
