@@ -1,17 +1,9 @@
 package org.unicorn.framework.codegen.build;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,19 +11,13 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
-import org.unicorn.framework.codegen.config.UnicornConstVal;
-import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
-import org.unicorn.framework.codegen.config.UnicornGlobalConfig;
-import org.unicorn.framework.codegen.config.UnicornPackageConfig;
-import org.unicorn.framework.codegen.config.UnicornStrategyConfig;
-import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
+import org.unicorn.framework.codegen.config.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 /**
- * 
+ *
  * @author xiebin
  *
  */
@@ -41,9 +27,9 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public abstract class UnicornAbstractGenerator {
 	private static final Log logger = LogFactory.getLog(UnicornAbstractGenerator.class);
-	
+
 	private UnicornConfigBuilder config;
-	
+
 	/**
      * velocity引擎
      */
@@ -77,7 +63,7 @@ public abstract class UnicornAbstractGenerator {
 			config = new UnicornConfigBuilder(packageInfo, dataSource, strategy, getInitTemplate(), globalConfig);
 		}
 	}
-	
+
 	/**
 	 * 分析数据
 	 * @param config
@@ -104,7 +90,7 @@ public abstract class UnicornAbstractGenerator {
 		setContextData(config,ctxData);
 		return ctxData;
 	}
-	
+
 	/**
 	 * 获取初始化模板
 	 * @return
@@ -135,9 +121,9 @@ public abstract class UnicornAbstractGenerator {
 		open();
 		logger.debug("==========================文件生成完成！！！==========================");
 	}
-	
-	
-	
+
+
+
 	/**
 	 * 打开输出目录
 	 */
@@ -159,7 +145,7 @@ public abstract class UnicornAbstractGenerator {
 			}
 		}
 	}
-	
+
 	/**
 	 * 处理输出目录
 	 *
@@ -177,8 +163,8 @@ public abstract class UnicornAbstractGenerator {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * 合成上下文与模板 留给定制开发的钩子
 	 *
@@ -203,7 +189,7 @@ public abstract class UnicornAbstractGenerator {
 			String controllerFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.CONTROLLER_PATH),tableInfo.getControllerName(),UnicornConstVal.JAVA_SUFFIX);
 			//dto类路径
 			String dtoFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.DTO_PATH),tableInfo.getPageRequestDto(),UnicornConstVal.JAVA_SUFFIX);
-			
+
 			UnicornTemplateConfig template = config.getTemplate();
             //创建entity文件
 			createFile(context,template.getEntity(),entityFile);
@@ -236,10 +222,10 @@ public abstract class UnicornAbstractGenerator {
 			vmToFile(context, templatePath, filePath);
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * 获取文件路径
 	 * @param tableInfo
@@ -250,7 +236,7 @@ public abstract class UnicornAbstractGenerator {
 	 */
 	private  String getFilePath(UnicornTableInfo tableInfo,String pathInfo,  String fileName,String fileSuffix){
 		return pathInfo +File.separator+tableInfo.getEntityPath()+File.separator+fileName+fileSuffix;
-		
+
 	}
 	/**
 	 * 检测文件是否存在
@@ -261,7 +247,7 @@ public abstract class UnicornAbstractGenerator {
 		File file = new File(filePath);
 		return !file.exists() || config.getGlobalConfig().isFileOverride();
 	}
-	
+
 	/**
 	 * 将模板转化成为文件
 	 *
@@ -292,7 +278,7 @@ public abstract class UnicornAbstractGenerator {
 		writer.close();
 		logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
 	}
-	
+
 	/**
 	 * 设置模版引擎，主要指向获取模版路径
 	 */

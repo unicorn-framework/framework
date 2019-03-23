@@ -76,7 +76,7 @@ public class UnicornTableInfo {
 	        StringBuilder ep = new StringBuilder();
 	        ep.append(entityName.substring(0, 1).toLowerCase());
 	        ep.append(entityName.substring(1));
-	        return ep.toString();
+	        return ep.toString().toLowerCase();
 	    }
 
 	    public String getEntityName() {

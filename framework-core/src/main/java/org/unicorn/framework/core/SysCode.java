@@ -27,7 +27,11 @@ public class SysCode {
 	 * 
 	 */
 	public static final ResBean UNAUTHOR__ERROR = new ResBean("40003", "无权限");
-	
+
+	/**
+	 *
+	 */
+	public static final ResBean BAD_CREADENTIAL = new ResBean("40002", "无效凭证");
 	
 	
 	/** SYS_FAIL,系统未知错误 */

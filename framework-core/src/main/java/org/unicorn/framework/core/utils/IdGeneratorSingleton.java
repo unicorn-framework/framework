@@ -44,7 +44,7 @@ public class IdGeneratorSingleton {
 
     static {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2019, Calendar.JANUARY, 1);
+        calendar.set(1969, Calendar.JANUARY, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
