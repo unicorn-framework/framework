@@ -5,11 +5,10 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.unicorn.framework.core.SysCode;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
 
 /**
  *
@@ -24,19 +23,11 @@ public class UnicornOauthExceptionSerializer extends StdSerializer<UnicornOauthE
     @Override
     public void serialize(UnicornOauthException value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-
         gen.writeStartObject();
-        gen.writeStringField("error", String.valueOf(value.getHttpErrorCode()));
-        gen.writeStringField("message", value.getMessage());
-        gen.writeStringField("path", request.getServletPath());
-        gen.writeStringField("timestamp", String.valueOf(new Date().getTime()));
-        if (value.getAdditionalInformation()!=null) {
-            for (Map.Entry<String, String> entry : value.getAdditionalInformation().entrySet()) {
-                String key = entry.getKey();
-                String add = entry.getValue();
-                gen.writeStringField(key, add);
-            }
-        }
+        gen.writeStringField("resCode", SysCode.SYS_FAIL.getCode());
+        gen.writeStringField("resInfo", value.getMessage());
+        gen.writeStringField("url", request.getServletPath());
+        gen.writeStringField("data", null);
         gen.writeEndObject();
     }
 }
