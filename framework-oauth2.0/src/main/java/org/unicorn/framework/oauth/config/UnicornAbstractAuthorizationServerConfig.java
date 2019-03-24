@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.unicorn.framework.oauth.handler.UnicornAccessDeniedHandler;
 
@@ -21,17 +22,16 @@ import org.unicorn.framework.oauth.handler.UnicornAccessDeniedHandler;
 @Configuration
 @EnableAuthorizationServer
 @ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "authorizationServer", havingValue = "true")
-public abstract class UnicornAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+public abstract class UnicornAbstractAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
-    @Autowired
-    private ClientDetailsService clientDetailsService;
-
     @Autowired
     private TokenStore tokenStore;
+
+    @Autowired
+    private TokenEnhancer unicornTokenEnhancer;
 
     @Autowired
     private WebResponseExceptionTranslator customWebResponseExceptionTranslator;
@@ -41,7 +41,8 @@ public abstract class UnicornAuthorizationServerConfig extends AuthorizationServ
         endpoints.tokenStore(tokenStore)
                 .exceptionTranslator(customWebResponseExceptionTranslator)
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService());
+                .userDetailsService(userDetailsService())
+                .tokenEnhancer(unicornTokenEnhancer);
 
     }
 
