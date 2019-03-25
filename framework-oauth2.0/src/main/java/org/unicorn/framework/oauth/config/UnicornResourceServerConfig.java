@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
+        http.exceptionHandling().authenticationEntryPoint(new UnicornAuthExceptionEntryPoint()).and()
                 .requestMatchers()
                 .and()
                 .authorizeRequests()

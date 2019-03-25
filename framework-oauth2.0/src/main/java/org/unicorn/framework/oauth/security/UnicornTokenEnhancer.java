@@ -30,17 +30,17 @@ public class UnicornTokenEnhancer implements TokenEnhancer {
                                      OAuth2Authentication authentication) {
         if (accessToken instanceof DefaultOAuth2AccessToken) {
             DefaultOAuth2AccessToken token = ((DefaultOAuth2AccessToken) accessToken);
-
-
-            UnicornUser user = (UnicornUser) authentication.getPrincipal();
             Map<String, Object> additionalInformation = new HashMap<String, Object>();
             additionalInformation.put("clientId", authentication.getOAuth2Request().getClientId());
-            additionalInformation.put("userInfo", user);
+            if(authentication.getPrincipal() instanceof UnicornUser){
+                UnicornUser user = (UnicornUser) authentication.getPrincipal();
+                additionalInformation.put("userInfo", user);
+            }
             OAuth2RefreshToken refreshToken = token.getRefreshToken();
             if (refreshToken instanceof DefaultOAuth2RefreshToken) {
-                token.setRefreshToken(new DefaultOAuth2RefreshToken(getNewToken(authentication.getOAuth2Request().getClientId(), user.getId())));
+                token.setRefreshToken(new DefaultOAuth2RefreshToken(getNewToken()));
             }
-            token.setValue(getNewToken(authentication.getOAuth2Request().getClientId(), user.getId()));
+            token.setValue(getNewToken());
             token.setAdditionalInformation(additionalInformation);
             return token;
         }
@@ -53,7 +53,7 @@ public class UnicornTokenEnhancer implements TokenEnhancer {
      * @param userId
      * @return
      */
-    private String getNewToken(String clientId, Long userId) {
-        return oAuth2Properties.getTokenPrefix() + ":" + UUID.randomUUID().toString().replace("-", "") + ":" + clientId + ":" + userId;
+    private String getNewToken() {
+        return oAuth2Properties.getTokenPrefix() + ":" + UUID.randomUUID().toString().replaceAll("-","");
     }
 }
