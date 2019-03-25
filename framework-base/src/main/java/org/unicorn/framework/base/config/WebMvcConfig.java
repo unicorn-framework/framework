@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -41,9 +42,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
         ObjectMapper objectMapper = new ObjectMapper();
         //注册xss解析器
-        SimpleModule xssModule = new SimpleModule("XssStringJsonSerializer");
-        xssModule.addSerializer(new XssStringJsonSerializer());
-        objectMapper.registerModule(xssModule);
+        SimpleModule simpleModule = new SimpleModule("XssStringJsonSerializer");
+        simpleModule.addSerializer(new XssStringJsonSerializer());
+        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+        objectMapper.registerModule(simpleModule);
         DeserializationConfig dc = objectMapper.getDeserializationConfig();
         // 设置反序列化日期格式、忽略不存在get、set的属性
         objectMapper.setConfig(dc.with(new SimpleDateFormat(SDF_PARTTERN)).without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));

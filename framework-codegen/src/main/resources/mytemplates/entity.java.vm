@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 /**
  * <p>
  * ${table.comment}
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+@ApiModel(value = "${table.comment}对象", description = "${table.comment}对象")
 public class ${entityContext.name} implements Serializable{
 
 private static final long serialVersionUID=1L;
@@ -32,6 +35,7 @@ private static final long serialVersionUID=1L;
      * ${field.comment}
      */
     #end
+@ApiModelProperty(value = "${field.comment}", name = "${field.comment}")
 private ${field.propertyType} ${field.propertyName};
 
 #end

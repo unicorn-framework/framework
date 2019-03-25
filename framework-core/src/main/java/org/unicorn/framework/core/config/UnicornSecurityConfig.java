@@ -1,4 +1,4 @@
-package org.unicorn.framework.oauth.config;
+package org.unicorn.framework.core.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
