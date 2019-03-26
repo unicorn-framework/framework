@@ -5,6 +5,7 @@ import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;
 import io.shardingsphere.api.config.strategy.InlineShardingStrategyConfiguration;
+import io.shardingsphere.core.constant.properties.ShardingPropertiesConstant;
 import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.MutablePropertyValues;
@@ -79,7 +80,9 @@ public class UnicornDataSourceConfig {
             tableRuleConfiguration.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getTableShardingCloumnName(), unicornShardingRuleProperties.getTableShardingAlgorithmExpression()));
         });
         try {
-            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, Maps.newConcurrentMap(), new Properties());
+            Properties pro=new Properties();
+            pro.put(ShardingPropertiesConstant.SQL_SHOW.getKey(),unicornDataSourceBaseProperties.isShowSql());
+            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, Maps.newConcurrentMap(), pro);
         } catch (Exception e) {
             log.error("创建分片数据源失败", e);
         }

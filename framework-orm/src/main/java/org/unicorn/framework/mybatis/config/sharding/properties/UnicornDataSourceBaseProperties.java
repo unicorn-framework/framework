@@ -16,6 +16,8 @@ public class UnicornDataSourceBaseProperties {
      * 配置数据源
      */
     private Map<String,Map<String,String>>  datasource= Maps.newHashMap();
-
-
+    /**
+     * 是否显示sql
+     */
+    private boolean showSql=false;
 }
