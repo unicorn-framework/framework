@@ -1,18 +1,6 @@
 
 package org.unicorn.framework.util.http;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -27,6 +15,12 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.unicorn.framework.util.json.JsonUtils;
+
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
 *
@@ -199,7 +193,7 @@ public class HttpClientUtils {
      * @param paramsMap 
      * @return 
      */  
-    public String httpPost(String url, Map<String, String> paramsMap,  
+    public  String httpPost(String url, Map<String, String> paramsMap,
             Map<String, String> headMap) {  
         String responseContent = null;  
         CloseableHttpClient httpclient = HttpClients.createDefault();  
@@ -362,7 +356,27 @@ public class HttpClientUtils {
             strBuf.append(new String(buffer, 0, r, "UTF-8"));  
         }  
         return strBuf.toString();  
-    }  
-    
+    }
+
+    public static void main(String []args){
+        String url="http://localhost:18081/oauth/token";
+        Map<String, String> paramters =new HashMap<>();
+        paramters.put("grant_type", "password");
+        paramters.put("username", "admin");
+        paramters.put("password", "123456");
+        HttpClientUtils ss=new  HttpClientUtils();
+        Map<String, String> headmap =new HashMap<>();
+        headmap.put("Authorization", "Basic YmFja3N0YWdlOmJhY2tzdGFnZQ==");
+        try{
+            System.out.println(JsonUtils.toJson(ss.httpPost(url,paramters,headmap)));
+        }catch(Exception e){
+
+        }
+
+
+
+    }
+
+
 }
 

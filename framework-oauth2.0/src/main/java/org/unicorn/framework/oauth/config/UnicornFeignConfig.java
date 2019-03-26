@@ -18,6 +18,9 @@ public class UnicornFeignConfig implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(attributes==null){
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
         Enumeration<String> headNames = request.getHeaderNames();
         while (headNames.hasMoreElements()) {
