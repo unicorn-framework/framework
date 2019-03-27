@@ -16,7 +16,7 @@ public class OAuth2Properties {
      */
     private String jwtSigningKey = "unicorn";
 
-    private OAuth2ClientProperties[] clients = {};
+    private OAuth2ClientProperties client ;
 
     private String tokenPrefix="unicorn";
     private String accessTokenUrl;
