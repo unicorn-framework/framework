@@ -2,8 +2,6 @@ package org.unicorn.framework.core.exceptionHandler;
 
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,15 +54,9 @@ public class GlobalExceptionHandler extends AbstractService {
         } else if (e instanceof UnauthenticatedException) {
             resDto.setResCode(SysCode.SESSION_ERROR.getCode());
             resDto.setResInfo(SysCode.SESSION_ERROR.getInfo());
-        } else if (e instanceof AccessDeniedException) {
-            resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
-            resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
-        }else if (e instanceof BadCredentialsException) {
-            resDto.setResCode(SysCode.BAD_CREADENTIAL.getCode());
-            resDto.setResInfo(SysCode.BAD_CREADENTIAL.getInfo());
-        } else {
+        }  else {
             resDto.setResCode(SysCode.SYS_FAIL.getCode());
-            resDto.setResInfo(SysCode.SYS_FAIL.getInfo());
+            resDto.setResInfo(e.getMessage());
         }
         error("异常信息:{}", JsonUtils.toJson(resDto), e);
         return resDto;

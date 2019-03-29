@@ -3,6 +3,7 @@ package org.unicorn.framwork.oss.config;
 import java.io.Serializable;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
@@ -13,16 +14,13 @@ import lombok.NoArgsConstructor;
 
 /**
  * oss存储服务Dto类
- * 
+ *
  * @author xiebin
  */
-@Builder
+
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
-@Component
-@ConfigurationProperties(prefix="oss")
+@Configuration
+@ConfigurationProperties(prefix="unicorn.oss")
 public class OssBucketConfig implements Serializable {
 
 	private static final long serialVersionUID = -1;
@@ -39,17 +37,17 @@ public class OssBucketConfig implements Serializable {
 	private String bucketName;
 
 	/**
-	 * 
+	 *
 	 */
 	private String accessKeyId;
 
 	/**
-	 * 
+	 *
 	 */
 	private String accessKeySecret;
 
 	/**
-	 * 
+	 *
 	 */
 	private String endPoint;
 
@@ -59,6 +57,6 @@ public class OssBucketConfig implements Serializable {
 	 */
 	private String accessPrefix;
 
-   
-		
+
+
 }

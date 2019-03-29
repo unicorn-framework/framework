@@ -1,6 +1,7 @@
 package org.unicorn.framework.base.config.xss;
 
 import org.springframework.stereotype.Component;
+import org.unicorn.framework.base.base.UnicornRequestContextHolder;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -20,6 +21,7 @@ public class XssFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        UnicornRequestContextHolder.setRequest((HttpServletRequest) servletRequest);
         HttpServletRequest request = (HttpServletRequest)servletRequest;
         filterChain.doFilter(new XssHttpServletRequestWrapper(request),servletResponse);
     }
