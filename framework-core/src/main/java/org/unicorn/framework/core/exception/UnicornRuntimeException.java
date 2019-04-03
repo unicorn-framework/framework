@@ -28,9 +28,9 @@ public class UnicornRuntimeException extends RuntimeException{
     
     public UnicornRuntimeException(){}
     
-    public UnicornRuntimeException(UnicornException goException) { 
-        super(goException.getMessage());
-        this.code = goException.getCode();
+    public UnicornRuntimeException(UnicornException unicornException) {
+        super(unicornException.getMessage());
+        this.code = unicornException.getCode();
     }
 
     public UnicornRuntimeException(String code, String message) { 

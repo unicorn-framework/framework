@@ -38,6 +38,12 @@ public class ResponseDto<T> {
         this.resInfo = resCode.getInfo();
     }
 
+    public ResponseDto(ResBean resCode, String  message) {
+        this.resCode = resCode.getCode();
+        this.data = null;
+        this.resInfo = message;
+    }
+
     public String getResCode() {
         return resCode;
     }
@@ -69,6 +75,7 @@ public class ResponseDto<T> {
     public void setUrl(String url) {
         this.url = url;
     }
+
     @ApiModelProperty(value = "请求是否成功", name = "请求是否成功")
     public boolean isSuccess() {
         return this.getResCode().equals(SysCode.SUCCESS.getCode());
