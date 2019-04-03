@@ -16,7 +16,7 @@ public class UnicornPackageConfig {
     /**
      * Entity包名
      */
-    private String entity = "bo";
+    private String entity = "article";
 
     /**
      * Service包名
