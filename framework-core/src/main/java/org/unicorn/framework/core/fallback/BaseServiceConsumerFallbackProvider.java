@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
 import org.springframework.cloud.netflix.zuul.filters.route.ZuulFallbackProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,13 +20,13 @@ import org.unicorn.framework.util.json.JsonUtils;
  * @author xiebin
  *
  */
-public abstract class BaseServiceConsumerFallbackProvider implements ZuulFallbackProvider {
+public abstract class BaseServiceConsumerFallbackProvider implements FallbackProvider {
 
 	@Override
 	public abstract String getRoute() ;
 
 	@Override
-	public ClientHttpResponse fallbackResponse() {
+	public ClientHttpResponse fallbackResponse(Throwable cause) {
 		 return new ClientHttpResponse() {
 	            @Override
 	            public HttpStatus getStatusCode() throws IOException {

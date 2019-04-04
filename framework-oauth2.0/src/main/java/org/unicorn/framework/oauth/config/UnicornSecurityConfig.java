@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 /**
  * 安全配置
@@ -25,6 +27,7 @@ public class UnicornSecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers().antMatchers("/**").and()
                 .authorizeRequests()
                 .antMatchers("/**").permitAll();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override

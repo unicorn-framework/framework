@@ -1,4 +1,4 @@
-package org.unicorn.framework.core.exceptionHandler;
+package org.unicorn.framework.core.exceptionhandler;
 
 import com.netflix.client.ClientException;
 import com.netflix.hystrix.exception.HystrixTimeoutException;

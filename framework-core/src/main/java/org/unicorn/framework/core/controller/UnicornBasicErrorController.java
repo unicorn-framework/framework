@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.unicorn.framework.core.SysCode;
+import org.unicorn.framework.core.exception.PendingException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -42,8 +44,6 @@ public class UnicornBasicErrorController implements ErrorController {
         this.errorAttributes = errorAttributes;
     }
 
-
-
     /**
      * 定义500的错误JSON信息
      * @param request
@@ -51,12 +51,15 @@ public class UnicornBasicErrorController implements ErrorController {
      */
     @RequestMapping
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> error500(HttpServletRequest request) throws Throwable {
+    public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) throws Throwable {
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        if(statusCode==404){
+            throw new PendingException(SysCode.URL_NOT_EXIST);
+        }
         RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         //获取并将异常抛出去
-         throw getError(requestAttributes);
+        throw getError(requestAttributes);
     }
-
 
     /**
      * 获取异常对象

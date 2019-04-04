@@ -31,6 +31,11 @@ public class SysCode {
 	/**
 	 *
 	 */
+	public static final ResBean URL_NOT_EXIST = new ResBean("40004", "接口不存在");
+
+	/**
+	 *
+	 */
 	public static final ResBean BAD_CREADENTIAL = new ResBean("40002", "无效凭证");
 	
 	

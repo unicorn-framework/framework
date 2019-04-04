@@ -1,4 +1,4 @@
-package org.unicorn.framework.core.exceptionHandler;
+package org.unicorn.framework.core.exceptionhandler;
 
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;

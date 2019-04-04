@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * @author  xiebin
+ * @author xiebin
  */
 @Configuration
 @EnableConfigurationProperties(OAuth2Properties.class)
@@ -32,7 +32,7 @@ public class UnicornTokenEnhancer implements TokenEnhancer {
             DefaultOAuth2AccessToken token = ((DefaultOAuth2AccessToken) accessToken);
             Map<String, Object> additionalInformation = new HashMap<String, Object>();
             additionalInformation.put("clientId", authentication.getOAuth2Request().getClientId());
-            if(authentication.getPrincipal() instanceof UnicornUser){
+            if (authentication.getPrincipal() instanceof UnicornUser) {
                 UnicornUser user = (UnicornUser) authentication.getPrincipal();
                 additionalInformation.put("userInfo", user);
             }
@@ -49,11 +49,12 @@ public class UnicornTokenEnhancer implements TokenEnhancer {
 
     /**
      * 生成token的规则
+     *
      * @param clientId
      * @param userId
      * @return
      */
     private String getNewToken() {
-        return oAuth2Properties.getTokenPrefix() + ":" + UUID.randomUUID().toString().replaceAll("-","");
+        return oAuth2Properties.getTokenPrefix() + ":" + UUID.randomUUID().toString().replaceAll("-", "");
     }
 }
