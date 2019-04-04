@@ -15,7 +15,8 @@ public class ResponseDto<T> {
     private String resInfo;
     @ApiModelProperty(value = "请求URL", name = "请求URL")
     private String url;
-
+    @ApiModelProperty(value = "请求是否成功", name = "请求是否成功")
+    private boolean success;
     public ResponseDto() {
         this.resCode = SysCode.SUCCESS.getCode();
         this.resInfo = SysCode.SUCCESS.getInfo();
@@ -76,7 +77,7 @@ public class ResponseDto<T> {
         this.url = url;
     }
 
-    @ApiModelProperty(value = "请求是否成功", name = "请求是否成功")
+
     public boolean isSuccess() {
         return this.getResCode().equals(SysCode.SUCCESS.getCode());
     }

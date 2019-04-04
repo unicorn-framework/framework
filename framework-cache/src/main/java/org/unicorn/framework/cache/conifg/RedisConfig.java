@@ -19,6 +19,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.unicorn.framework.cache.cache.redis.UnicornRedisCacheManager;
 
 /**
 *
@@ -29,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 	@Bean
+    @Override
     public KeyGenerator keyGenerator() {
         return new KeyGenerator() {
             @Override
@@ -47,9 +49,9 @@ public class RedisConfig extends CachingConfigurerSupport {
     @SuppressWarnings("rawtypes")
     @Bean
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
-        RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
-        //设置缓存过期时间
-        rcm.setDefaultExpiration(60);//秒
+        RedisCacheManager rcm = new UnicornRedisCacheManager(redisTemplate);
+        //设置缓存过期时间 秒
+        rcm.setDefaultExpiration(60);
         return rcm;
     }
     /**

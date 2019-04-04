@@ -5,12 +5,14 @@ import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
-
+@Component
 @Slf4j
 public class UnicornPropertiesHandler implements PropertySourceLoader {
     @Override
