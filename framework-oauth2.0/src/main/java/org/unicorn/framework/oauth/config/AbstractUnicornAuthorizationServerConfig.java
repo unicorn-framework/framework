@@ -2,8 +2,12 @@ package org.unicorn.framework.oauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -22,7 +26,7 @@ import org.unicorn.framework.oauth.handler.UnicornAccessDeniedHandler;
 @Configuration
 @EnableAuthorizationServer
 @ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "authorizationServer", havingValue = "true")
-public abstract class UnicornAbstractAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+public abstract class AbstractUnicornAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -41,7 +45,7 @@ public abstract class UnicornAbstractAuthorizationServerConfig extends Authoriza
         endpoints.tokenStore(tokenStore)
                 .exceptionTranslator(customWebResponseExceptionTranslator)
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService())
+//                .userDetailsService(userDetailsService())
                 .tokenEnhancer(unicornTokenEnhancer);
 
     }
@@ -65,12 +69,9 @@ public abstract class UnicornAbstractAuthorizationServerConfig extends Authoriza
                 .checkTokenAccess("isAuthenticated()");
     }
 
-    /**
-     * 用户明细服务
-     *
-     * @return
-     */
-    public abstract UserDetailsService userDetailsService();
+
+
+
 
     /**
      * 客户端明细服务
