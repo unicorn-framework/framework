@@ -132,7 +132,6 @@ public class RedisCacheImpl  implements CacheService {
 								conn.expire(k, timeToLive);
 						conn.exec();
 					} catch (Exception e) {
-//						warn(e.getMessage(), e);
 						conn.discard();
 					}
 					return null;
