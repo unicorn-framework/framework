@@ -15,6 +15,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.base.base.UnicornContext;
 import org.unicorn.framework.util.json.JsonUtils;
@@ -51,7 +52,10 @@ public class LogAspect extends AbstractService {
 		Object args[]=pjp.getArgs();
 		for(Object arg:args){
 			if(arg instanceof Serializable){
-				info("请求报文 :{} ", JsonUtils.toJson(arg));
+				if(!(request instanceof MultipartHttpServletRequest)){
+					info("请求报文 :{} ", JsonUtils.toJson(arg));
+				}
+
 			}
 		}
 	}
