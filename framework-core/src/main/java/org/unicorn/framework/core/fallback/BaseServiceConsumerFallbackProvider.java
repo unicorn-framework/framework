@@ -24,6 +24,8 @@ public abstract class BaseServiceConsumerFallbackProvider implements FallbackPro
 	@Override
 	public abstract String getRoute() ;
 
+
+
 	@Override
 	public ClientHttpResponse fallbackResponse(Throwable cause) {
 		 return new ClientHttpResponse() {
