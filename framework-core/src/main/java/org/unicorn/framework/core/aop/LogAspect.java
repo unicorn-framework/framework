@@ -1,11 +1,6 @@
 
 package org.unicorn.framework.core.aop;
 
-import java.io.Serializable;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,10 +10,13 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.base.base.UnicornContext;
 import org.unicorn.framework.util.json.JsonUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 /**
  * 
@@ -39,7 +37,6 @@ public class LogAspect extends AbstractService {
 	public void before(JoinPoint  pjp) {
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		HttpServletRequest request = attributes.getRequest();
-        HttpSession session=request.getSession();
 		long beginTime = System.currentTimeMillis();
 		UnicornContext.setValue("beginTime", beginTime);
 		MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -52,7 +49,7 @@ public class LogAspect extends AbstractService {
 		Object args[]=pjp.getArgs();
 		for(Object arg:args){
 			if(arg instanceof Serializable){
-				if(!(request instanceof MultipartHttpServletRequest)){
+				if(!(arg instanceof MultipartFile)){
 					info("请求报文 :{} ", JsonUtils.toJson(arg));
 				}
 
