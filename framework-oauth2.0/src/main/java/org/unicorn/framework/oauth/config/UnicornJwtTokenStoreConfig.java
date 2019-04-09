@@ -29,6 +29,7 @@ public class UnicornJwtTokenStoreConfig {
      *
      * @return
      */
+
     @Bean
     public TokenStore jwtTokenStore() {
         return new JwtTokenStore(jwtAccessTokenConverter());
@@ -43,7 +44,8 @@ public class UnicornJwtTokenStoreConfig {
     @ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "storeType", havingValue = "jwt")
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-        accessTokenConverter.setSigningKey(oAuth2Properties.getJwtSigningKey());//生成签名的key
+        //生成签名的key
+        accessTokenConverter.setSigningKey(oAuth2Properties.getJwtSigningKey());
         return accessTokenConverter;
     }
 
