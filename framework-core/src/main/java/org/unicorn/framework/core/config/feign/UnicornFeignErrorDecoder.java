@@ -12,6 +12,7 @@ import org.unicorn.framework.util.json.JsonUtils;
 import java.io.IOException;
 
 /**
+ * 接口提供方抛出的异常进行转换
  * feign客户端调用时异常转化处理
  * 对于restful抛出的4xx的错误，也许大部分是业务异常，并不是服务提供方的异常，
  * 因此在进行feign client调用的时候，需要进行errorDecoder去处理，

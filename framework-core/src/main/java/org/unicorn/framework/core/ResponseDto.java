@@ -33,6 +33,11 @@ public class ResponseDto<T> {
         this.resInfo = resCode.getInfo();
     }
 
+    public ResponseDto(String resCode,String resInfo) {
+        this.resCode = resCode;
+        this.resInfo = resInfo;
+    }
+
     public ResponseDto(ResBean resCode, T data) {
         this.resCode = resCode.getCode();
         this.data = data;
