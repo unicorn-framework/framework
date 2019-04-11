@@ -1,14 +1,13 @@
 package org.unicorn.framework.elastic.parser;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
+import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.elastic.annotation.ElasticJobConf;
 import org.unicorn.framework.elastic.base.JobAttributeTag;
 import org.unicorn.framework.elastic.dynamic.bean.Job;
@@ -24,9 +23,7 @@ import java.util.Map;
  * @author xiebin
  *
  */
-public class JobConfParser  implements ApplicationContextAware {
-	
-	private Logger logger = LoggerFactory.getLogger(JobConfParser.class);
+public class JobConfParser extends AbstractService implements ApplicationContextAware {
 
 	private String prefix = "unicorn.elastic.job.";
 	
@@ -41,7 +38,9 @@ public class JobConfParser  implements ApplicationContextAware {
 		//获取ElasticJobConf注解的类
 		Map<String, Object> beanMap = ctx.getBeansWithAnnotation(ElasticJobConf.class);
 		for (Object confBean : beanMap.values()) {
+			//根据配置构造job对象
 			Job job=job(confBean);
+			//添加job
 			jobService.addJob(job);
 		}
 		//开启任务监听,当有任务添加时，监听zk中的数据增加，自动在其他节点也初始化该任务
