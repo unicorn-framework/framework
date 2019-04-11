@@ -19,37 +19,18 @@
 	<dependencies>
 		 <dependency>
 			<groupId>org.unicorn</groupId>
-			<artifactId>framework-base</artifactId>
+			<artifactId>framework-core</artifactId>
 			<version>${module.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-core</artifactId>
-			<version>1.0.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.curator</groupId>
-					<artifactId>curator-client</artifactId>
-				</exclusion>
-			</exclusions>
+			<artifactId>elastic-job-lite-core</artifactId>
+			<version>2.1.5</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.curator/curator-client -->
-		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-client</artifactId>
-			<version>2.10.0</version>
-		</dependency>
-
 		<dependency>
 			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-spring</artifactId>
-			<version>1.0.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-beans</artifactId>
-				</exclusion>
-			</exclusions>
+			<artifactId>elastic-job-lite-spring</artifactId>
+			<version>2.1.5</version>
 		</dependency>
 	</dependencies>
 </project>
