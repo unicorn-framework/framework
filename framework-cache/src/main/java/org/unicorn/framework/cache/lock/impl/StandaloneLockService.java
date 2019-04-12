@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.cache.lock.LockService;
 /**
- * 
+ * 基于JDK Lock
  * @author xiebin
  *
  */

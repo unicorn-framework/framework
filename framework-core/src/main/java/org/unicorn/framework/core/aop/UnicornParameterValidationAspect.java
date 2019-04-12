@@ -28,7 +28,7 @@ public class UnicornParameterValidationAspect extends AbstractService {
 	@Before("controllerPointCut()")
 	public void before(JoinPoint  pjp) throws PendingException {
 		//获取所有参数数组
-		Object args[]=pjp.getArgs();
+		Object [] args=pjp.getArgs();
 		for(Object arg:args){
 			if(arg instanceof AbstractRequestDto){
 				AbstractRequestDto requestDto=(AbstractRequestDto) arg;

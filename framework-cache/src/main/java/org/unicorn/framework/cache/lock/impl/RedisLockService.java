@@ -15,13 +15,14 @@ import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.cache.lock.LockService;
 /**
- * 
+ * 分布式锁
  * @author xiebin
  *
  */
 @Component("lockService")
 @Primary
 public class RedisLockService implements LockService {
+
 
     private static final String NAMESPACE = "unicorn-lock:";
     private static final Logger log = LoggerFactory.getLogger(RedisLockService.class);
@@ -43,10 +44,12 @@ public class RedisLockService implements LockService {
     public boolean tryLock(String name) {
         String key = NAMESPACE + name;
         String value = instanceId;
-        boolean success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
-        if (success)
-            stringRedisTemplate.expire(key, this.timeout, TimeUnit.SECONDS);
-        return success;
+        try{
+            stringRedisTemplate.opsForValue().set(key,value,this.timeout,TimeUnit.SECONDS);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
 
     @Override
