@@ -28,7 +28,7 @@ public class Job  extends AbstractRequestDto {
 	/**
 	 * 作业类型（SIMPLE，DATAFLOW，SCRIPT）
 	 */
-	@ApiModelProperty(value = "job类型", name = "job类型",example = "SIMPLE、DATAFLOW、SCRIPT")
+	@ApiModelProperty(value = "job类型", name = "job类型",example = "SimpleJob、DataflowJob、ScriptJob")
 	private String jobType;
 	
 	/**

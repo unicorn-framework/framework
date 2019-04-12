@@ -16,17 +16,17 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public String getHeader(String name) {
-        return StringEscapeUtils.escapeHtml4(super.getHeader(name));
+        return JsoupUtil.clean(super.getHeader(name));
     }
 
     @Override
     public String getQueryString() {
-        return StringEscapeUtils.escapeHtml4(super.getQueryString());
+        return JsoupUtil.clean(super.getQueryString());
     }
 
     @Override
     public String getParameter(String name) {
-        return StringEscapeUtils.escapeHtml4(super.getParameter(name));
+        return JsoupUtil.clean(super.getParameter(name));
     }
 
     @Override
@@ -36,11 +36,10 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
             int length = values.length;
             String[] escapseValues = new String[length];
             for (int i = 0; i < length; i++) {
-                escapseValues[i] = StringEscapeUtils.escapeHtml4(values[i]);
+                escapseValues[i] = JsoupUtil.clean(values[i]);
             }
             return escapseValues;
         }
         return super.getParameterValues(name);
     }
-
 }
