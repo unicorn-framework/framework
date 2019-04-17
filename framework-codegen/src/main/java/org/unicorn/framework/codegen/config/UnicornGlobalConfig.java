@@ -1,5 +1,8 @@
 package org.unicorn.framework.codegen.config;
 
+/**
+ * @author  xiebin
+ */
 public class UnicornGlobalConfig {
 	/**
 	 * 生成文件的输出目录【默认 D 盘根目录】

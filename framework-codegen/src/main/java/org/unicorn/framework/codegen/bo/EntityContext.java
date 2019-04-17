@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
+/**
+ * @author  xiebin
+ */
 public class EntityContext extends ClassBaseContext {
   private Set<String> importSet;
 

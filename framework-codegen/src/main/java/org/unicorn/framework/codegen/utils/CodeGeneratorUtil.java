@@ -9,7 +9,9 @@ import org.unicorn.framework.codegen.convert.UnicornMysqlTypeConvert;
 
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-
+/**
+ * @author  xiebin
+ */
 public class CodeGeneratorUtil {
 	public static void generator(UnicornGlobalConfig gc,UnicornDataSourceConfig dsc, UnicornStrategyConfig strategy,
 			UnicornPackageConfig pc) {

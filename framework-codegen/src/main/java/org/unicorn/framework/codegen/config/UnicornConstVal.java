@@ -3,6 +3,9 @@ package org.unicorn.framework.codegen.config;
 import java.io.File;
 import java.nio.charset.Charset;
 
+/**
+ * @author xiebin
+ */
 public class UnicornConstVal {
 	public static final String MODULENAME = "ModuleName";
 

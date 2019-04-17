@@ -2,7 +2,9 @@ package org.unicorn.framework.codegen.mapper;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * @author  xiebin
+ */
 public enum UnicornDbCloumnType {
 	VARCHAR("VARCHAR", null,"java.lang.String"),
 	CHAR("CHAR", null,"java.lang.String"),

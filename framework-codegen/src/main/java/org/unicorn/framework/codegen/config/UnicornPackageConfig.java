@@ -2,6 +2,9 @@ package org.unicorn.framework.codegen.config;
 
 import com.baomidou.mybatisplus.toolkit.StringUtils;
 
+/**
+ * @author  xiebin
+ */
 public class UnicornPackageConfig {
 	 /**
      * 父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
@@ -26,7 +29,7 @@ public class UnicornPackageConfig {
     /**
      * Service Impl包名
      */
-    private String serviceImpl = "service";
+    private String serviceImpl = "service.base";
     /**
      * Mapper包名
      */
@@ -40,7 +43,7 @@ public class UnicornPackageConfig {
     /**
      * Controller包名
      */
-    private String controller = "controller";
+    private String controller = "controller.base";
     /**
      * dto包名
      */

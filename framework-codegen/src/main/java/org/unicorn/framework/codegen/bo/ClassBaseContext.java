@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+/**
+ * @author  xiebin
+ */
 public class ClassBaseContext {
 	private String name;
 	private String pkg;

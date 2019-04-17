@@ -8,6 +8,9 @@ import lombok.EqualsAndHashCode;
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
+/**
+ * @author  xiebin
+ */
 public class DbCloumnTypeInfo {
 	 /**
      * jdbc类型

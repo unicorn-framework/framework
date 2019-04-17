@@ -2,6 +2,9 @@ package org.unicorn.framework.codegen.convert;
 
 import org.unicorn.framework.codegen.mapper.DbCloumnTypeInfo;
 
+/**
+ * @author  xiebin
+ */
 public interface IUnicornTypeConvert {
 	/**
      * <p>

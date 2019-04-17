@@ -10,6 +10,9 @@ import org.unicorn.framework.codegen.convert.UnicornMysqlTypeConvert;
 import com.baomidou.mybatisplus.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 
+/**
+ * @author xiebin
+ */
 public class UnicornDataSourceConfig {
 	 /**
      * 数据库类型
