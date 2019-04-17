@@ -1,6 +1,6 @@
-package ${entityContext.pkg};
-    #foreach($pkg in ${entityContext.importSet})
-    import ${pkg};
+package ${!entityContext.pkg};
+    #foreach($pkg in ${!entityContext.importSet})
+    import ${!pkg};
     #end
 import java.io.Serializable;
 
@@ -13,30 +13,30 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 /**
  * <p>
- * ${table.comment}
+ * ${!table.comment}
  * </p>
  *
- * @author ${author}
- * @since ${date}
+ * @author ${!author}
+ * @since ${!date}
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "${table.comment}对象", description = "${table.comment}对象")
-public class ${entityContext.name} implements Serializable{
+@ApiModel(value = "${!table.comment}对象", description = "${!table.comment}对象")
+public class ${!entityContext.name} implements Serializable{
 
 private static final long serialVersionUID=1L;
 
-#foreach($field in ${table.fields})
+#foreach($field in ${!table.fields})
     #if("$!field.comment" != "")
     /**
-     * ${field.comment}
+     * ${!field.comment}
      */
     #end
-@ApiModelProperty(value = "${field.comment}", name = "${field.comment}")
-private ${field.propertyType} ${field.propertyName};
+@ApiModelProperty(value = "${!field.comment}", name = "${!field.comment}")
+private ${!field.propertyType} ${!field.propertyName};
 
 #end
 

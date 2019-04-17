@@ -1,5 +1,5 @@
-package ${dtoContext.pkg};
-import ${entityContext.classImportPath};
+package ${!dtoContext.pkg};
+import ${!entityContext.classImportPath};
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,24 +10,24 @@ import org.unicorn.framework.core.exception.PendingException;
 
 /**
  * <p>
- * ${table.comment}
+ * ${!table.comment}
  * </p>
  *
- * @author ${author}
- * @since ${date}
+ * @author ${!author}
+ * @since ${!date}
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ${entityContext.name}PageRequestDto extends AbstractRequestPageDto {
+public class ${!entityContext.name}PageRequestDto extends AbstractRequestPageDto {
 
     private static final long serialVersionUID = 1L;
     /**
-     * ${table.comment}
+     * ${!table.comment}
      */
-    private ${entityContext.name} ${entityContext.beanName};
+    private ${!entityContext.name} ${!entityContext.beanName};
 
     @Override
     public void vaildatioinThrowException() throws PendingException {

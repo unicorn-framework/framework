@@ -1,4 +1,4 @@
-package ${controllerContext.pkg};
+package ${!controllerContext.pkg};
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,103 +12,105 @@ import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.base.base.AbstractBaseController;
 import com.github.pagehelper.PageInfo;
-import ${serviceImplContext.classImportPath};
-import ${dtoContext.classImportPath};
-import ${entityContext.classImportPath};
+import ${!serviceImplContext.classImportPath};
+import ${!dtoContext.classImportPath};
+import ${!entityContext.classImportPath};
 import org.springframework.beans.factory.annotation.Autowired;
-#if(${superControllerClassPackage})
-import ${superControllerClassPackage};
+#if(${!superControllerClassPackage})
+import ${!superControllerClassPackage};
 #end
 
 /**
  * <p>
- * ${table.comment}控制器
+ * ${!table.comment}控制器
  * </p>
  *
- * @author ${author}
- * @since ${date}
+ * @author ${!author}
+ * @since ${!date}
  */
 @RestController
-@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/${table.entityPath}")
-@Api(value = "${table.comment}模块", tags = {"${table.comment}模块"})
-#if(${superControllerClass})
-public class ${controllerContext.name} extends ${superControllerClass} {
+@RequestMapping("#if(${!package.ModuleName})/${!package.ModuleName}#end/${!table.entityPath}")
+@Api(value = "${!table.comment}模块", tags = {"${!table.comment}模块"})
+#if(${!superControllerClass})
+public class $ {!controllerContext.name
+} extends ${!superControllerClass}{
 #else
-public class ${controllerContext.name} extends AbstractBaseController{
+public class $ {!controllerContext.name
+} extends AbstractBaseController{
 #end
 @Autowired
-private ${serviceImplContext.name} ${serviceImplContext.beanName};
+private ${!serviceImplContext.name}${!serviceImplContext.beanName};
 
 /**
  * 新增记录
- * @param ${entityContext.beanName}
+ * @param ${!entityContext.beanName}
  * @return
  * @throws PendingException
  */
 @ApiOperation("新增记录")
 @RequestMapping(value = {"/save"}, method = {RequestMethod.POST})
-public ResponseDto<${entityContext.name}> save(@RequestBody ${entityContext.name}  ${entityContext.beanName})throws PendingException{
-        return new ResponseDto<>(${serviceImplContext.beanName}.save(${entityContext.beanName}));
+public ResponseDto<${!entityContext.name}>save(@RequestBody ${!entityContext.name}${!entityContext.beanName})throws PendingException{
+        return new ResponseDto<>(${!serviceImplContext.beanName}.save(${!entityContext.beanName}));
         }
 
 /**
  * 根据主键删除
- * @param ${entityContext.beanName}
+ * @param ${!table.primaryTableField.propertyName}
  * @return
  * @throws PendingException
  */
 @ApiOperation("根据主键删除记录")
-@RequestMapping(value = {"/delete/{${table.primaryTableField.propertyName}}"}, method = {RequestMethod.GET})
-public ResponseDto<?> delete(@ApiParam(name = "id", value = "主键id", required = true) @PathVariable("${table.primaryTableField.propertyName}") ${table.primaryTableField.propertyType}  ${table.primaryTableField.propertyName})throws PendingException{
-    ${serviceImplContext.beanName}.deleteByPrimaryKey(${table.primaryTableField.propertyName});
+@RequestMapping(value = {"/delete/{${!table.primaryTableField.propertyName}}"}, method = {RequestMethod.GET})
+public ResponseDto<?> delete(@ApiParam(name = "id", value = "主键id", required = true) @PathVariable("${!table.primaryTableField.propertyName}") ${!table.primaryTableField.propertyType}${!table.primaryTableField.propertyName})throws PendingException{
+        ${!serviceImplContext.beanName}.deleteByPrimaryKey(${!table.primaryTableField.propertyName});
         return new ResponseDto<>();
         }
 
 /**
  * 编辑记录
- * @param ${entityContext.beanName}
+ * @param ${!entityContext.beanName}
  * @return
  * @throws PendingException
  */
 @ApiOperation("编辑记录")
 @RequestMapping(value = {"/edit"}, method = {RequestMethod.POST})
-public ResponseDto<${entityContext.name}> edit(@RequestBody ${entityContext.name}  ${entityContext.beanName})throws PendingException{
-        return new ResponseDto<>(${serviceImplContext.beanName}.updateByPrimaryKey(${entityContext.beanName}));
+public ResponseDto<${!entityContext.name}>edit(@RequestBody ${!entityContext.name}${!entityContext.beanName})throws PendingException{
+        return new ResponseDto<>(${!serviceImplContext.beanName}.updateByPrimaryKey(${!entityContext.beanName}));
         }
 
 /**
  * 根据主键查询
- * @param ${entityContext.beanName}
+ * @param ${!entityContext.beanName}
  * @return
  * @throws PendingException
  */
 @ApiOperation("根据主键获取记录")
-@RequestMapping(value = {"/{${table.primaryTableField.propertyName}}"}, method = {RequestMethod.GET})
-public ResponseDto<${entityContext.name}> queryByPrimaryKey(@ApiParam(name = "id", value = "主键id", required = true) @PathVariable("${table.primaryTableField.propertyName}") ${table.primaryTableField.propertyType}  ${table.primaryTableField.propertyName})throws PendingException{
-        return new ResponseDto<>(${serviceImplContext.beanName}.selectByPrimaryKey( ${table.primaryTableField.propertyName}));
+@RequestMapping(value = {"/{${!table.primaryTableField.propertyName}}"}, method = {RequestMethod.GET})
+public ResponseDto<${!entityContext.name}>queryByPrimaryKey(@ApiParam(name = "id", value = "主键id", required = true) @PathVariable("${!table.primaryTableField.propertyName}") ${!table.primaryTableField.propertyType}${!table.primaryTableField.propertyName})throws PendingException{
+        return new ResponseDto<>(${!serviceImplContext.beanName}.selectByPrimaryKey(${!table.primaryTableField.propertyName}));
         }
 
 /**
  * 根据条件查询单条信息
- * @param ${entityContext.beanName}
+ * @param ${!entityContext.beanName}
  * @return
  * @throws PendingException
  */
 @ApiOperation("根据条件获取单条记录")
 @RequestMapping(value = {"/query"}, method = {RequestMethod.POST})
-public ResponseDto<${entityContext.name}> query(@RequestBody ${entityContext.name}  ${entityContext.beanName})throws PendingException{
-        return new ResponseDto<>(${serviceImplContext.beanName}.selectOne( ${entityContext.beanName}));
+public ResponseDto<${!entityContext.name}>query(@RequestBody ${!entityContext.name}${!entityContext.beanName})throws PendingException{
+        return new ResponseDto<>(${!serviceImplContext.beanName}.selectOne(${!entityContext.beanName}));
         }
 
 /**
  * 根据条件查询-分页
- * @param ${entityContext.beanName}
+ * @param ${!entityContext.beanName}
  * @return
  * @throws PendingException
  */
 @ApiOperation("根据条件分页查询")
 @RequestMapping(value = {"/query/page"}, method = {RequestMethod.POST})
-public ResponseDto<PageInfo<${entityContext.name}>>query(@RequestBody ${dtoContext.name} ${dtoContext.beanName})throws PendingException{
-        return new ResponseDto<>(${serviceImplContext.beanName}.get${entity}ByPage( ${dtoContext.beanName}));
+public ResponseDto<PageInfo<${!entityContext.name}>>query(@RequestBody ${!dtoContext.name}${!dtoContext.beanName})throws PendingException{
+        return new ResponseDto<>(${!serviceImplContext.beanName}.get${!entity}ByPage(${!dtoContext.beanName}));
         }
-        }
+}
