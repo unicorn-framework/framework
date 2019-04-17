@@ -45,7 +45,6 @@ public abstract class AbstractUnicornAuthorizationServerConfig extends Authoriza
         endpoints.tokenStore(tokenStore)
                 .exceptionTranslator(customWebResponseExceptionTranslator)
                 .authenticationManager(authenticationManager)
-//                .userDetailsService(userDetailsService())
                 .tokenEnhancer(unicornTokenEnhancer);
 
     }

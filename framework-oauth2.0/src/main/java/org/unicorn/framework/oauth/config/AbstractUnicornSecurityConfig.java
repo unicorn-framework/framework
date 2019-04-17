@@ -1,6 +1,7 @@
 package org.unicorn.framework.oauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -15,11 +16,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.unicorn.framework.oauth.filter.PermitAuthenticationFilter;
+import org.unicorn.framework.oauth.properties.OAuth2Properties;
+
+import javax.servlet.Filter;
 
 /**
  * 安全配置
- * @author  xiebin
+ *
+ * @author xiebin
  * @ EnableWebSecurity 启用web安全
  */
 @Configuration
@@ -27,11 +34,13 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public abstract class AbstractUnicornSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private   PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http .csrf().disable();
+        http.csrf().disable();
         http.httpBasic().disable();
+
         http
                 .requestMatchers().antMatchers("/**").and()
                 .authorizeRequests()
@@ -48,12 +57,13 @@ public abstract class AbstractUnicornSecurityConfig extends WebSecurityConfigure
 
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         return authenticationProvider;
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
@@ -69,7 +79,7 @@ public abstract class AbstractUnicornSecurityConfig extends WebSecurityConfigure
     public abstract UserDetailsService userDetailsService();
 
 
-    public static void main(String []args){
+    public static void main(String[] args) {
         System.out.println(new BCryptPasswordEncoder().encode("123456"));
     }
 }

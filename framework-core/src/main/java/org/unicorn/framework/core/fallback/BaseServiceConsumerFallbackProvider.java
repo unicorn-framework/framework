@@ -1,5 +1,6 @@
 package org.unicorn.framework.core.fallback;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.nio.charset.Charset;
  * @author xiebin
  *
  */
+@Slf4j
 public abstract class BaseServiceConsumerFallbackProvider implements FallbackProvider {
 
 	@Override
@@ -52,6 +54,7 @@ public abstract class BaseServiceConsumerFallbackProvider implements FallbackPro
 	            @Override
 	            public InputStream getBody() throws IOException {
 	            	ResponseDto<?> dto=new ResponseDto<>(SysCode.MICRO_SERVICE_ERROR);
+	            	log.warn(SysCode.MICRO_SERVICE_ERROR.getInfo(),cause);
 	                return new ByteArrayInputStream(JsonUtils.toJson(dto).getBytes());
 	            }
 	 

@@ -3,6 +3,9 @@ package org.unicorn.framework.oauth.properties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  *
  * @author xieibn
@@ -15,9 +18,22 @@ public class OAuth2Properties {
      * 默认 jwt签名key
      */
     private String jwtSigningKey = "unicorn";
-
+    /**
+     * 客户端配置
+     */
     private OAuth2ClientProperties client ;
-
+    /**
+     * token前缀
+     */
     private String tokenPrefix="unicorn";
-    private String accessTokenUrl;
+    /**
+     * 不需要验证的接口  ant风格
+     */
+    private List<String> permitAlls=  Arrays.asList("/**/open/**","/ver/**");
+
+    /**
+     * 头部名称
+     */
+    private String headName="Authorization";
+
  }

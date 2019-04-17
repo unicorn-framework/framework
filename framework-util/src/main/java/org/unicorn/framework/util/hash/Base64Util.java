@@ -4,7 +4,8 @@
  */
 package org.unicorn.framework.util.hash;
 
-import org.apache.tomcat.util.codec.binary.Base64;
+
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Base64加解密工具类
