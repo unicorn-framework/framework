@@ -221,9 +221,9 @@ public  Integer countByExample(${entity}Example ${entityContext.beanName}Example
  * @return
  * @throws PendingException
  */
-public ${entity} updateByPrimaryKey(${entity} ${entityContext.beanName})throws PendingException{
+public ${entity} updateByPrimaryKeySelective(${entity} ${entityContext.beanName})throws PendingException{
         try{
-    ${mapperContext.beanName}.updateByPrimaryKey(${entityContext.beanName});
+    ${mapperContext.beanName}.updateByPrimaryKeySelective(${entityContext.beanName});
         return ${entityContext.beanName};
         }catch(Exception e){
         error("根据主键更新单条记录失败",e);
