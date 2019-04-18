@@ -29,7 +29,7 @@ public class OAuth2Properties {
     /**
      * 不需要验证的接口  ant风格
      */
-    private List<String> permitAlls=  Arrays.asList("/**/open/**","/ver/**");
+    private List<String> permitAlls=  Arrays.asList("/**/open/**","/ver/**","/login");
 
     /**
      * 头部名称
