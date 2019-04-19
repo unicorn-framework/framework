@@ -21,7 +21,6 @@ public class XssFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        UnicornRequestContextHolder.setRequest((HttpServletRequest) servletRequest);
         HttpServletRequest request = (HttpServletRequest)servletRequest;
         filterChain.doFilter(request,servletResponse);
     }
