@@ -1,4 +1,4 @@
-package org.unicorn.framework.oauth.config;
+package org.unicorn.framework.core.config.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -6,13 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.unicorn.framework.base.base.UnicornRequestContextHolder;
-import org.unicorn.framework.util.json.JsonUtils;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
-import java.util.Enumeration;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -21,6 +17,10 @@ import java.util.Map;
 @Configuration
 @Slf4j
 public class UnicornFeignConfig implements RequestInterceptor {
+    /**
+     * token 头部名
+     */
+    public static final String TOKEN_HEADER_NAME="Authorization";
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
@@ -28,9 +28,13 @@ public class UnicornFeignConfig implements RequestInterceptor {
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
                     .getRequestAttributes();
             HttpServletRequest request = attributes.getRequest();
-            requestTemplate.header("Authorization", request.getHeader("Authorization"));
-        }catch(Exception e){
-            log.error("requestTemplate设置错误",e);
+            String authorization = request.getHeader(TOKEN_HEADER_NAME);
+            Map<String, Collection<String>> headerMap=requestTemplate.request().headers();
+            if(!headerMap.containsKey(TOKEN_HEADER_NAME)){
+                requestTemplate.header(TOKEN_HEADER_NAME, authorization);
+            }
+        } catch (Exception e) {
+            log.error("requestTemplate设置错误", e);
         }
     }
 }
