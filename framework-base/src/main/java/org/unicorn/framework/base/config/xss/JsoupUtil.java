@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
+import org.springframework.web.util.HtmlUtils;
 
 /**
  * @author  xiebin
@@ -29,6 +30,12 @@ public class JsoupUtil {
         if(StringUtils.isNotBlank(content)){
             content = content.trim();
         }
-        return Jsoup.clean(content, "", whitelist, outputSettings);
+
+        return HtmlUtils.htmlUnescape(Jsoup.clean(content, "", whitelist, outputSettings));
+    }
+
+    public static void main(String [] args){
+        System.out.println(JsoupUtil.clean("hh&"));
+        System.out.println(HtmlUtils.htmlUnescape(JsoupUtil.clean("hh&")));
     }
 }
