@@ -36,6 +36,6 @@ public class JsoupUtil {
 
     public static void main(String [] args){
         System.out.println(JsoupUtil.clean("hh&"));
-        System.out.println(HtmlUtils.htmlUnescape(JsoupUtil.clean("hh&")));
+        System.out.println(HtmlUtils.htmlUnescape(JsoupUtil.clean("<script>alert('XSS');</script>")));
     }
 }
