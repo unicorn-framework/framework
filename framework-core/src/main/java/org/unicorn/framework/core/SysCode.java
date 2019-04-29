@@ -27,6 +27,10 @@ public class SysCode {
 	 * 
 	 */
 	public static final ResBean UNAUTHOR__ERROR = new ResBean("40003", "无权限");
+	/**
+	 *
+	 */
+	public static final ResBean THROWS_EXCEPTION_MESSSGE = new ResBean("66666", "异常");
 
 	/**
 	 *

@@ -1,8 +1,5 @@
 package org.unicorn.framework.core.exceptionhandler;
 
-import com.netflix.hystrix.exception.HystrixRuntimeException;
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -10,8 +7,6 @@ import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
-import org.unicorn.framework.core.exception.PendingException;
-import org.unicorn.framework.core.exception.UnicornRuntimeException;
 import org.unicorn.framework.util.json.JsonUtils;
 
 import javax.servlet.http.HttpServletRequest;
