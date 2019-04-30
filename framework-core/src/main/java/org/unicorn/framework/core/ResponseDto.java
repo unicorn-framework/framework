@@ -1,5 +1,6 @@
 package org.unicorn.framework.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.unicorn.framework.core.exception.PendingException;
@@ -85,8 +86,12 @@ public class ResponseDto<T> {
 
 
     public boolean isSuccess() throws PendingException {
+        return this.getResCode().equals(SysCode.SUCCESS.getCode());
+    }
+    @JsonIgnore
+    public boolean isSuccessThrowException() throws PendingException {
         if(!this.getResCode().equals(SysCode.SUCCESS.getCode())){
-           throw new PendingException(resCode,resInfo);
+            throw new PendingException(resCode,resInfo);
         }
         return this.getResCode().equals(SysCode.SUCCESS.getCode());
     }

@@ -53,8 +53,9 @@ public class SysCode {
 	
 	/** DROOS_VALUE_ZERO_ERROR  规则计算值为0*/
 	public static final ResBean DROOS_VALUE_ZERO_ERROR = new ResBean("90010", "微服务调用超时");
-	
-	
+
+	/** 文件超出大小 **/
+	public static final ResBean FILE_UPLOAD_TOO_BIG = new ResBean("99010", "上传文件超出限制大小");
 	
 	/** SYS_FAIL,系统未知错误 */
 	public static final ResBean CODEUNDEFINED = new ResBean("99999", "系统未知错误");
