@@ -56,7 +56,9 @@ public class OssBucketConfig implements Serializable {
 	 * 访问前缀
 	 */
 	private String accessPrefix;
-
-
+	/**
+	 * 上传文件最大值 默认1024KB
+	 */
+     private Long maxSizeKb=1l;
 
 }
