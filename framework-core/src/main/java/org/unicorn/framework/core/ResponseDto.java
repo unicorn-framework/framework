@@ -2,6 +2,7 @@ package org.unicorn.framework.core;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.unicorn.framework.core.exception.PendingException;
 
 /**
  * @author xiebin
@@ -83,7 +84,10 @@ public class ResponseDto<T> {
     }
 
 
-    public boolean isSuccess() {
+    public boolean isSuccess() throws PendingException {
+        if(!this.getResCode().equals(SysCode.SUCCESS.getCode())){
+           throw new PendingException(resCode,resInfo);
+        }
         return this.getResCode().equals(SysCode.SUCCESS.getCode());
     }
 }
