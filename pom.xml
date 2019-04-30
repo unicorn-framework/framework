@@ -241,5 +241,6 @@
         <module>framework-websocket</module>
         <module>framework-session</module>
         <module>framework-transaction</module>
+        <module>framework-transaction-manager</module>
     </modules>
 </project>

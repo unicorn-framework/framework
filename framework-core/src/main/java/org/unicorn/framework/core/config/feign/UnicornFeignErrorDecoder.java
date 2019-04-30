@@ -7,6 +7,7 @@ import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.unicorn.framework.core.ResponseDto;
+import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.util.json.JsonUtils;
 
@@ -27,18 +28,20 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String methodKey, Response response) {
+        String message=null;
         try {
             if(response.status() >= 400 && response.status() <= 499){
 
                 return new HystrixBadRequestException("400错误");
             }
-            // 这里直接拿到我们抛出的异常信息
-            String message = Util.toString(response.body().asReader());
+            // 这里直接拿到feign服务端抛出的异常信息
+            message = Util.toString(response.body().asReader());
+            log.info("feign 异常信息===》"+message);
             ResponseDto  responseDto=JsonUtils.fromJson(message, ResponseDto.class);
             return  new PendingException(responseDto.getResCode(),responseDto.getResInfo());
         } catch (Exception e) {
             log.error("feign错误",e);
+            return  new PendingException(SysCode.SYS_FAIL,message);
         }
-        return decode(methodKey, response);
     }
 }
