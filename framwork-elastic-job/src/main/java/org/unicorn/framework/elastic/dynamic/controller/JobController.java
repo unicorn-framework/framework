@@ -1,5 +1,8 @@
 package org.unicorn.framework.elastic.dynamic.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.unicorn.framework.core.ResponseDto;
@@ -15,6 +18,7 @@ import org.unicorn.framework.elastic.dynamic.service.JobService;
  *
  * @author xieibn
  */
+@Api(value = "动态job模块", tags = {"动态job模块"})
 @RestController
 public class JobController {
 
@@ -27,6 +31,7 @@ public class JobController {
      * @param job 任务信息
      * @return
      */
+    @ApiOperation("动态添加job")
     @RequestMapping(value="/job",method = RequestMethod.POST)
     public ResponseDto<String> addJob(@RequestBody Job job) throws PendingException {
         try {
@@ -44,6 +49,7 @@ public class JobController {
      * @param jobName 任务名称
      * @throws Exception
      */
+    @ApiOperation("根据任务名称动态删除任务")
     @GetMapping("/job/remove/{jobName}")
     public ResponseDto<String> removeJob(@PathVariable("jobName") String jobName) {
         try {
