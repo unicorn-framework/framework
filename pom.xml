@@ -225,21 +225,19 @@
         <module>framework-base</module>
         <module>framework-util</module>
         <module>framework-core</module>
-        <module>framwork-elastic-job</module>
-        <module>framwork-oss</module>
+        <module>framework-elastic-job</module>
+        <module>framework-oss</module>
         <module>framework-config-server</module>
         <module>framework-cache</module>
         <module>framework-orm</module>
         <module>framework-drools</module>
         <module>framework-mq</module>
-        <module>framework-shiro</module>
         <module>framework-register-center</module>
         <module>framework-gateway</module>
         <module>framework-oauth2.0</module>
         <module>framework-codegen</module>
         <module>framework-api-doc</module>
         <module>framework-websocket</module>
-        <module>framework-session</module>
         <module>framework-transaction</module>
         <module>framework-transaction-manager</module>
     </modules>
