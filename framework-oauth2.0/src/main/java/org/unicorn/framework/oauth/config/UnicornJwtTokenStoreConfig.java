@@ -1,6 +1,7 @@
 package org.unicorn.framework.oauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.unicorn.framework.oauth.security.UnironJwtTokenEnhancer;
  * @since 1.0
  */
 @Configuration
+@ConditionalOnExpression("${unicorn.security.oauth2.authorizationServer:false}")
 @ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "storeType", havingValue = "jwt")
 public class UnicornJwtTokenStoreConfig {
 
@@ -41,7 +43,6 @@ public class UnicornJwtTokenStoreConfig {
      * @return
      */
     @Bean
-    @ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "storeType", havingValue = "jwt")
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
         //生成签名的key
