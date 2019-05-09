@@ -23,7 +23,7 @@ public class UnicornWebResponseExceptionTranslator implements WebResponseExcepti
                     .body(new UnicornOauthException(oAuth2Exception.getMessage()));
         }else{
             return ResponseEntity
-                    .status(400)
+                    .status(200)
                     .body(new UnicornOauthException(e.getMessage()));
         }
 

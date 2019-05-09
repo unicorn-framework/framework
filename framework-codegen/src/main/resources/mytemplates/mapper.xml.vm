@@ -174,7 +174,7 @@
     </select>
 
     <!-- 根据主键删除-->
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete 
     from ${table.name} 
     where  ${table.primaryTableField.name} = #{${table.primaryTableField.propertyName},jdbcType=${table.primaryTableField.columnType.jdbcType}}

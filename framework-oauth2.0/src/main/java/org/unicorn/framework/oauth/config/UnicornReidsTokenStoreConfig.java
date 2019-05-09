@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.unicorn.framework.oauth.store.UnicornRedisTokenStore;
 
 /**
@@ -14,7 +15,7 @@ import org.unicorn.framework.oauth.store.UnicornRedisTokenStore;
  * @since 1.0
  */
 @Configuration
-@ConditionalOnExpression("${unicorn.security.oauth2.authorizationServer:false}")
+//@ConditionalOnExpression("${unicorn.security.oauth2.authorizationServer:false}")
 @ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "storeType", havingValue = "redis")
 public class UnicornReidsTokenStoreConfig {
     /**
@@ -31,6 +32,6 @@ public class UnicornReidsTokenStoreConfig {
 
     @Bean
     public TokenStore redisTokenStore() {
-        return new UnicornRedisTokenStore(redisConnectionFactory);
+        return new RedisTokenStore(redisConnectionFactory);
     }
 }
