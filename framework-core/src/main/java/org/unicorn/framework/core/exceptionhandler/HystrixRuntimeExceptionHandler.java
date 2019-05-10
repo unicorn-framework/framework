@@ -4,6 +4,7 @@ import com.netflix.hystrix.exception.HystrixRuntimeException;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
+import org.unicorn.framework.core.constants.Constants;
 import org.unicorn.framework.core.exception.PendingException;
 
 /**
@@ -28,7 +29,7 @@ public class HystrixRuntimeExceptionHandler implements IExceptionHandler {
             if(hre.getFallbackException().getCause().getCause() instanceof  PendingException){
                 PendingException pe = (PendingException) hre.getFallbackException().getCause().getCause();
                 resDto.setResCode(pe.getCode());
-                resDto.setResInfo(pe.getMessage());
+                resDto.setResInfo(Constants.TIME_OUT_INFO);
             }
         }else {
             resDto.setResCode(SysCode.SYS_FAIL.getCode());

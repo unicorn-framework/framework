@@ -32,7 +32,7 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
         try {
             if(response.status() >= 400 && response.status() <= 499){
 
-                return new HystrixBadRequestException("400错误");
+                return new HystrixBadRequestException("请求参数错误");
             }
             // 这里直接拿到feign服务端抛出的异常信息
             message = Util.toString(response.body().asReader());

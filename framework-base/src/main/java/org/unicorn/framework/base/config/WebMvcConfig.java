@@ -43,7 +43,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         ObjectMapper objectMapper = new ObjectMapper();
         //注册xss解析器
         SimpleModule simpleModule = new SimpleModule("XssStringJsonSerializer");
-        simpleModule.addSerializer(new XssStringJsonSerializer());
+//        simpleModule.addSerializer(new XssStringJsonSerializer());
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
         simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
         objectMapper.registerModule(simpleModule);
