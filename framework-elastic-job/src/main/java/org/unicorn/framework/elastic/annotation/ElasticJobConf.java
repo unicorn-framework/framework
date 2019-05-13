@@ -32,7 +32,7 @@ public @interface ElasticJobConf {
 	 * cron表达式，用于控制作业触发时间
 	 * @return
 	 */
-	String cron() default "";
+	String cron() default "0 0 0 1 1 ? 2039";
 	
 	/**
 	 * 作业分片总数
