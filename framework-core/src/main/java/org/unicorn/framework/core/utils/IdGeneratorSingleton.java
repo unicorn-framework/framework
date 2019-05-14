@@ -36,7 +36,16 @@ public class IdGeneratorSingleton {
     private static final long WORKER_ID_MAX_VALUE = 1L << WORKER_ID_BITS;
 
 
-    private static long workerId;
+    public long getWorkerId() {
+        return workerId;
+    }
+
+    private  long workerId=1;
+
+    public void setWorkerId(long workerId) {
+        this.workerId=workerId;
+    }
+
     /**
      * 最大回拨时间 毫秒 默认10毫秒
      */
@@ -44,7 +53,7 @@ public class IdGeneratorSingleton {
 
     static {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(1969, Calendar.JANUARY, 1);
+        calendar.set(2019, Calendar.JANUARY, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -59,10 +68,10 @@ public class IdGeneratorSingleton {
     private long lastMilliseconds;
 
 
-    public static void setWorkerId(final long workerId) {
-        Preconditions.checkArgument(workerId >= 0L && workerId < WORKER_ID_MAX_VALUE);
-        IdGeneratorSingleton.workerId = workerId;
-    }
+//    public static void setWorkerId(final long workerId) {
+//        Preconditions.checkArgument(workerId >= 0L && workerId < WORKER_ID_MAX_VALUE);
+//        IdGeneratorSingleton.workerId = workerId;
+//    }
 
 
     public static void setMaxTolerateTimeDifferenceMilliseconds(final int maxTolerateTimeDifferenceMilliseconds) {
@@ -81,6 +90,10 @@ public class IdGeneratorSingleton {
     }
 
     public static IdGeneratorSingleton getInstance() {
+        return SingletonHolder.instance;
+    }
+    public static IdGeneratorSingleton getInstance(long workerId) {
+        SingletonHolder.instance.setWorkerId(workerId);
         return SingletonHolder.instance;
     }
 
@@ -132,7 +145,7 @@ public class IdGeneratorSingleton {
      */
     public  static void main(String [] args){
       for(int i=0;i<1000;i++){
-         System.out.println(IdGeneratorSingleton.getInstance().generateKey());
+         System.out.println(IdGeneratorSingleton.getInstance(2).generateKey());
       }
     }
 }
