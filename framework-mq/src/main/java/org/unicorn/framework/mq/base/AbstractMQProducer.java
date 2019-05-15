@@ -353,7 +353,7 @@ public abstract class AbstractMQProducer {
     
     
     /**
-     * 发送消息
+     * 发送事务消息
      * @param msgObj msgObj
      * @throws MQException 消息异常
      */
@@ -373,7 +373,7 @@ public abstract class AbstractMQProducer {
     
     
     /**
-     * 发送消息
+     * 发送事务消息
      * @param topic
      * @param tag
      * @param msgObj msgObj
@@ -394,7 +394,7 @@ public abstract class AbstractMQProducer {
     
     
     /**
-     * 发送消息
+     * 发送事务消息
      * @param topic
      * @param tag
      * @param msgObj 

@@ -41,6 +41,7 @@ public class MQConsumerAutoConfiguration extends MQBaseAutoConfiguration {
 
     @PostConstruct
     public void init() throws Exception {
+        //获取MQSonsumer注解的类
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(MQConsumer.class);
         if(!CollectionUtils.isEmpty(beans) && mqProperties.getTraceEnabled()) {
             initAsyncAppender();
