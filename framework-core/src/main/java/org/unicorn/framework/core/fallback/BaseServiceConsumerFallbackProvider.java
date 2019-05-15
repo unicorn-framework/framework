@@ -54,6 +54,7 @@ public abstract class BaseServiceConsumerFallbackProvider implements FallbackPro
 	            @Override
 	            public InputStream getBody() throws IOException {
 	            	ResponseDto<?> dto=new ResponseDto<>(SysCode.MICRO_SERVICE_ERROR);
+					dto.setTip(true);
 	            	log.error(SysCode.MICRO_SERVICE_ERROR.getInfo(),cause);
 	                return new ByteArrayInputStream(JsonUtils.toJson(dto).getBytes());
 	            }
