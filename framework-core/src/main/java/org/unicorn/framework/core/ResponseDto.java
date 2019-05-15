@@ -19,6 +19,16 @@ public class ResponseDto<T> {
     private String url;
     @ApiModelProperty(value = "请求是否成功", name = "请求是否成功")
     private boolean success;
+
+    public boolean isTip() {
+        return tip;
+    }
+
+    public void setTip(boolean tip) {
+        this.tip = tip;
+    }
+
+    private boolean tip=false;
     public ResponseDto() {
         this.resCode = SysCode.SUCCESS.getCode();
         this.resInfo = SysCode.SUCCESS.getInfo();

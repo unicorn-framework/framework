@@ -44,7 +44,7 @@ public class RedisCacheClient   implements CacheClient {
 		try {
 			redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
 		} catch (Exception e) {
-			throw new PendingException(SysCode.CACHE_CONNECT_FAIL.getCode(), "set Value(key="+key+") to Cache has an Exception",e);
+			throw new PendingException(SysCode.REDIS_SYS_FAIL.getCode(), "set Value(key="+key+") to Cache has an Exception",e);
 		}
 	}
 
