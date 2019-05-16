@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author xiebin
+ */
 @Component("customAccessDeniedHandler")
 public class UnicornAccessDeniedHandler implements AccessDeniedHandler {
 

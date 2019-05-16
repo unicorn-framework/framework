@@ -17,7 +17,7 @@ public class UnicornErrorAttributes extends DefaultErrorAttributes {
     public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes,
                                                   boolean includeStackTrace) {
         Map<String, Object> errorAttributes = new LinkedHashMap<String, Object>();
-        errorAttributes.put("resCode","9000");
+        errorAttributes.put("resCode","90000");
         return errorAttributes;
     }
 
