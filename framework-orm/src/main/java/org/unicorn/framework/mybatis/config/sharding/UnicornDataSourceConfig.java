@@ -1,5 +1,6 @@
 package org.unicorn.framework.mybatis.config.sharding;
 
+import com.alibaba.fescar.rm.datasource.DataSourceProxy;
 import com.google.common.collect.Maps;
 import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
@@ -62,7 +63,8 @@ public class UnicornDataSourceConfig {
         Map<String, Map<String, String>> masterDbMap = unicornDataSourceBaseProperties.getDatasource();
         masterDbMap.keySet().forEach(dataSourceName->{
             DataSource datasource=createDataSource(masterDbMap.get(dataSourceName));
-            dataSourceMap.put(dataSourceName,datasource);
+
+            dataSourceMap.put(dataSourceName,new DataSourceProxy(datasource));
         });
         //分片配置
         ShardingRuleConfiguration shardingRuleConfiguration = unicornDataSourceRuleProperties.getShardingRule();

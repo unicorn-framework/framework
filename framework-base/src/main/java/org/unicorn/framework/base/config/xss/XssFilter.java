@@ -1,7 +1,6 @@
 package org.unicorn.framework.base.config.xss;
 
 import org.springframework.stereotype.Component;
-import org.unicorn.framework.base.base.UnicornRequestContextHolder;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
