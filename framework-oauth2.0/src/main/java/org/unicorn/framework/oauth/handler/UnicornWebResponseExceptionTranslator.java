@@ -2,6 +2,7 @@ package org.unicorn.framework.oauth.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component("customWebResponseExceptionTranslator")
 @Slf4j
 public class UnicornWebResponseExceptionTranslator implements WebResponseExceptionTranslator {
+    private static final String USER_PASSWORD_ERROR="无效凭证";
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception e) throws Exception {
         log.error("异常:",e);
@@ -20,8 +22,12 @@ public class UnicornWebResponseExceptionTranslator implements WebResponseExcepti
             OAuth2Exception oAuth2Exception = (OAuth2Exception) e;
             return ResponseEntity
                     .status(oAuth2Exception.getHttpErrorCode())
-                    .body(new UnicornOauthException(oAuth2Exception.getMessage()));
-        }else{
+                    .body(new UnicornOauthException(USER_PASSWORD_ERROR));
+        }else if(e  instanceof InvalidGrantException){
+            return ResponseEntity
+                    .status(200)
+                    .body(new UnicornOauthException(USER_PASSWORD_ERROR));
+        }else {
             return ResponseEntity
                     .status(200)
                     .body(new UnicornOauthException(e.getMessage()));
