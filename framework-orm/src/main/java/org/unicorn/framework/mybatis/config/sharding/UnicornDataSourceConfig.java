@@ -1,6 +1,5 @@
 package org.unicorn.framework.mybatis.config.sharding;
 
-import com.alibaba.fescar.rm.datasource.DataSourceProxy;
 import com.google.common.collect.Maps;
 import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
@@ -25,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * @author xiebin
+ */
 @Slf4j
 @Configuration
 @EnableConfigurationProperties({UnicornDataSourceBaseProperties.class, UnicornDataSourceRuleProperties.class, UnicornDataSourcePoolProperties.class, UnicornDataTableRuleProperties.class})
@@ -61,29 +63,28 @@ public class UnicornDataSourceConfig {
         Map<String, DataSource> dataSourceMap = Maps.newHashMap();
         //获取数据源配置
         Map<String, Map<String, String>> masterDbMap = unicornDataSourceBaseProperties.getDatasource();
-        masterDbMap.keySet().forEach(dataSourceName->{
-            DataSource datasource=createDataSource(masterDbMap.get(dataSourceName));
-
-            dataSourceMap.put(dataSourceName,new DataSourceProxy(datasource));
+        masterDbMap.keySet().forEach(dataSourceName -> {
+            DataSource datasource = createDataSource(masterDbMap.get(dataSourceName));
+            dataSourceMap.put(dataSourceName, datasource);
         });
         //分片配置
         ShardingRuleConfiguration shardingRuleConfiguration = unicornDataSourceRuleProperties.getShardingRule();
         //主从数据源配置
-        List<MasterSlaveRuleConfiguration> masterSlaveRuleConfigurationList=unicornDataSourceRuleProperties.getMasterSlaveRule();
+        List<MasterSlaveRuleConfiguration> masterSlaveRuleConfigurationList = unicornDataSourceRuleProperties.getMasterSlaveRule();
         //主从配置
         shardingRuleConfiguration.setMasterSlaveRuleConfigs(masterSlaveRuleConfigurationList);
         List<TableRuleConfiguration> tableRuleList = new ArrayList<>(shardingRuleConfiguration.getTableRuleConfigs());
         tableRuleList.forEach(tableRuleConfiguration -> {
             //获取分片属性
-            UnicornShardingRuleProperties unicornShardingRuleProperties=unicornDataTableRuleProperties.getTableRule().get(tableRuleConfiguration.getLogicTable());
+            UnicornShardingRuleProperties unicornShardingRuleProperties = unicornDataTableRuleProperties.getTableRule().get(tableRuleConfiguration.getLogicTable());
             //配置分库策略（Groovy表达式配置db规则）
             tableRuleConfiguration.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getDataSourceShardingCloumnName(), unicornShardingRuleProperties.getDataSourceShardingAlgorithmExpression()));
             // 配置分表策略（Groovy表达式配置表路由规则）
             tableRuleConfiguration.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getTableShardingCloumnName(), unicornShardingRuleProperties.getTableShardingAlgorithmExpression()));
         });
         try {
-            Properties pro=new Properties();
-            pro.put(ShardingPropertiesConstant.SQL_SHOW.getKey(),unicornDataSourceBaseProperties.isShowSql());
+            Properties pro = new Properties();
+            pro.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), unicornDataSourceBaseProperties.isShowSql());
             return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, Maps.newConcurrentMap(), pro);
         } catch (Exception e) {
             log.error("创建分片数据源失败", e);
