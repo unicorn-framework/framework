@@ -27,7 +27,7 @@ public class FescarAutoConfiguration {
     @Bean
     public GlobalTransactionScanner globalTransactionScanner(Environment environment) {
         String applicationName = environment.getProperty("spring.application.name");
-        String groupName = environment.getProperty("fescar.group.name");
+        String groupName = environment.getProperty("unicorn.fescar.group.name");
         if (applicationName == null) {
             return new GlobalTransactionScanner(groupName == null ? "my_test_tx_group" : groupName);
         } else {

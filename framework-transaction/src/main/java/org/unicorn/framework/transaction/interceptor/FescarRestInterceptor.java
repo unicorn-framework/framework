@@ -17,7 +17,7 @@ import java.util.Collections;
 /**
  * 将上下文中的XID放到请求头中
  *
- * @author zxiebin
+ * @author xiebin
  * @date 2019-4-8 13:38:08
  */
 public class FescarRestInterceptor implements RequestInterceptor, ClientHttpRequestInterceptor {
