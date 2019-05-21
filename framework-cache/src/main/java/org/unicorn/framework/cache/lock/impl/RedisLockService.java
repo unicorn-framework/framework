@@ -1,8 +1,5 @@
 package org.unicorn.framework.cache.lock.impl;
 
-import java.util.Collections;
-import java.util.concurrent.TimeUnit;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,9 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.cache.lock.LockService;
+
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 /**
  * 分布式锁
  * @author xiebin
@@ -29,8 +29,8 @@ public class RedisLockService implements LockService {
 
     private RedisTemplate<String, String> stringRedisTemplate;
 
-    @Value("${lockService.timeout:300}")
-    private int timeout = 300;
+    @Value("${lockService.timeout:1000}")
+    private int timeout = 1000;
 
     @Value("${instance.id:locks}")
     private String instanceId;
@@ -42,16 +42,16 @@ public class RedisLockService implements LockService {
 
     @Override
     public boolean tryLock(String name) {
-        String key = NAMESPACE + name;
-        String value = instanceId;
-        try{
-            stringRedisTemplate.opsForValue().set(key,value,this.timeout,TimeUnit.SECONDS);
-            return true;
-        }catch(Exception e){
-            return false;
-        }
+       return tryLock(name,this.timeout, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * 尝试获取锁
+     * @param name key
+     * @param timeout  锁定时间
+     * @param unit
+     * @return
+     */
     @Override
     public boolean tryLock(String name, long timeout, TimeUnit unit) {
         if (timeout <= 0)
@@ -71,8 +71,9 @@ public class RedisLockService implements LockService {
                 break;
             success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
         }
+        //缺陷 如果此时reids宕机则无法释放锁而造成死锁
         if (success)
-            stringRedisTemplate.expire(key, this.timeout, TimeUnit.SECONDS);
+            stringRedisTemplate.expire(key, this.timeout, unit);
         return success;
     }
 
