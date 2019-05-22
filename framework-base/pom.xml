@@ -33,12 +33,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-feign</artifactId>
         </dependency>
-        <!-- httpclient -->
-        <!--<dependency>-->
-            <!--<groupId>com.netflix.feign</groupId>-->
-            <!--<artifactId>feign-httpclient</artifactId>-->
-            <!--<version>RELEASE</version>-->
-        <!--</dependency>-->
 
         <!-- okhttp -->
         <dependency>
