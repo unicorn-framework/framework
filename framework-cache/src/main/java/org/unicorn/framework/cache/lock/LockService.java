@@ -25,7 +25,7 @@ public interface LockService {
 	 * @return
 	 * @throws PendingException
 	 */
-	 boolean tryLock(String name, Long timeout, TimeUnit unit)throws PendingException;
+	 boolean tryLock(String name, int timeout, TimeUnit unit)throws PendingException;
 
 	/**
 	 * 尝试获取锁
@@ -37,7 +37,7 @@ public interface LockService {
 	 * @return
 	 * @throws PendingException
 	 */
-	 boolean tryLock(String name, Long tryTimeout, TimeUnit tryTimeoutUnit,Long lockTimeout, TimeUnit lockTimeoutUnit)throws PendingException;
+	 boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit,int lockTimeout, TimeUnit lockTimeoutUnit)throws PendingException;
 
 	/**
 	 * 一直阻塞获取锁
@@ -53,7 +53,7 @@ public interface LockService {
 	 * @param lockTimeUnit
 	 * @throws PendingException
 	 */
-	 void lock(String name,Long lockTime ,TimeUnit lockTimeUnit)throws PendingException;
+	 void lock(String name,int lockTime ,TimeUnit lockTimeUnit)throws PendingException;
 
 	/**
 	 * 释放锁

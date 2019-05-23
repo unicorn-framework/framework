@@ -34,12 +34,12 @@ public class RedisLockService implements LockService {
      * 尝试获取锁的超时时间 单位毫秒
      */
     @Value("${unicorn.lock.tryTimeout:300}")
-    private Long tryTimeout = 300L;
+    private int tryTimeout = 300;
     /**
      * 获取锁后锁定时间 单位秒
      */
     @Value("${unicorn.lock.lockTime:60}")
-    private Long lockTime = 60L;
+    private int lockTime = 60;
 
     @Value("${instance.id:locks}")
     private String instanceId;
@@ -69,7 +69,7 @@ public class RedisLockService implements LockService {
      * @return
      */
     @Override
-    public boolean tryLock(String name, Long tryTimeout, TimeUnit tryTimeoutUnit) throws PendingException {
+    public boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit) throws PendingException {
         return tryLock(name, tryTimeout, tryTimeoutUnit, this.lockTime, TimeUnit.SECONDS);
     }
 
@@ -84,7 +84,7 @@ public class RedisLockService implements LockService {
      * @return
      */
     @Override
-    public boolean tryLock(String name, Long tryTimeout, TimeUnit tryTimeoutUnit, Long lockTimeout, TimeUnit lockTimeoutUnit) throws PendingException {
+    public boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit, int lockTimeout, TimeUnit lockTimeoutUnit) throws PendingException {
         String key = NAMESPACE + name;
         String value = instanceId;
         boolean success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
@@ -114,7 +114,7 @@ public class RedisLockService implements LockService {
 
 
     @Override
-    public void lock(String name, Long lockTime, TimeUnit lockTimeUnit) {
+    public void lock(String name, int lockTime, TimeUnit lockTimeUnit) {
         String key = NAMESPACE + name;
         String value = instanceId;
         boolean success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
