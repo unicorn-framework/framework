@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component("customWebResponseExceptionTranslator")
 @Slf4j
 public class UnicornWebResponseExceptionTranslator implements WebResponseExceptionTranslator {
-    private static final String USER_PASSWORD_ERROR="无效凭证";
+    private static final String USER_PASSWORD_ERROR="用户信息错误";
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception e) throws Exception {
         log.error("异常:",e);

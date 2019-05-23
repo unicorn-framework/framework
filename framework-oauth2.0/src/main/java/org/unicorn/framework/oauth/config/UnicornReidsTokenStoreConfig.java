@@ -15,7 +15,6 @@ import org.unicorn.framework.oauth.store.UnicornRedisTokenStore;
  * @since 1.0
  */
 @Configuration
-//@ConditionalOnExpression("${unicorn.security.oauth2.authorizationServer:false}")
 @ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "storeType", havingValue = "redis")
 public class UnicornReidsTokenStoreConfig {
     /**
