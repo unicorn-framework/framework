@@ -32,7 +32,7 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
         try {
             if(response.status() >= 400 && response.status() <= 499){
                 if(methodKey.contains("AuthTokenClient#postAccessToken(String,Map)")){
-                    return new HystrixBadRequestException("无效凭证，登录授权失败");
+                    return new HystrixBadRequestException("用户信息错误");
                 }
                 return new HystrixBadRequestException("请求参数错误");
             }
