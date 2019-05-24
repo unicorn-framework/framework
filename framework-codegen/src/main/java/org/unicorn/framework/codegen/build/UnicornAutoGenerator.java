@@ -1,7 +1,7 @@
 package org.unicorn.framework.codegen.build;
 
+import com.google.common.collect.Sets;
 import org.apache.velocity.VelocityContext;
-import org.assertj.core.util.Sets;
 import org.unicorn.framework.codegen.bo.ClassBaseContext;
 import org.unicorn.framework.codegen.bo.EntityContext;
 import org.unicorn.framework.codegen.config.UnicornConstVal;
@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 
+ *
  * @author xiebin
  *
  */
 public class UnicornAutoGenerator extends UnicornAbstractGenerator {
-	
+
 	/**
 	 * 设置上下文
 	 */
@@ -33,12 +33,12 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 			setControllerContext(context,tableInfo,config);
 			setDtoContext(context,tableInfo,config);
 		}
-		 return ctxData;
+		return ctxData;
 	}
-	
-	
-	
-	
+
+
+
+
 	public void setDtoContext(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		ClassBaseContext dtoContext=new ClassBaseContext();
 		dtoContext.setName(tableInfo.getPageRequestDto());
@@ -48,7 +48,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		dtoContext.setBeanName(dtoContext.getName().substring(0,1).toLowerCase()+dtoContext.getName().substring(1));
 		context.put("dtoContext", dtoContext);
 	}
-	
+
 	public void setControllerContext(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		ClassBaseContext controllerContext=new ClassBaseContext();
 		controllerContext.setName(tableInfo.getControllerName());
@@ -57,7 +57,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		controllerContext.setClassImportPath(pkg+"."+tableInfo.getControllerName());
 		context.put("controllerContext", controllerContext);
 	}
-	
+
 	public void setServiceImpl(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		ClassBaseContext serviceImplContext=new ClassBaseContext();
 		serviceImplContext.setName(tableInfo.getServiceImplName());
@@ -67,9 +67,9 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		serviceImplContext.setBeanName(serviceImplContext.getName().substring(0,1).toLowerCase()+serviceImplContext.getName().substring(1));
 		context.put("serviceImplContext", serviceImplContext);
 	}
-	
+
 	public void setMapper(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
-		
+
 		ClassBaseContext mapperContext=new ClassBaseContext();
 		mapperContext.setName(tableInfo.getMapperName());
 		String pkg=config.getPackageInfo().get(UnicornConstVal.MAPPER)+"."+tableInfo.getEntityPath().toLowerCase();
@@ -78,8 +78,8 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		mapperContext.setBeanName(mapperContext.getName().substring(0,1).toLowerCase()+mapperContext.getName().substring(1));
 		context.put("mapperContext", mapperContext);
 	}
-	
-	
+
+
 	public void setEntity(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		EntityContext entityContext=new EntityContext();
 		String pkg=config.getPackageInfo().get(UnicornConstVal.ENTITY)+"."+tableInfo.getEntityPath().toLowerCase();
@@ -90,9 +90,9 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		entityContext.setBeanName(entityContext.getName().substring(0,1).toLowerCase()+entityContext.getName().substring(1));
 		context.put("entityContext", entityContext);
 	}
-	
+
 	public Set<String> getImportSet(UnicornTableInfo tableInfo){
-		Set<String> importSet=Sets.newHashSet();
+		Set<String> importSet= Sets.newHashSet();
 		List<UnicornTableField> fieldList=tableInfo.getFields();
 		for(UnicornTableField field:fieldList){
 			String pkg=field.getColumnType().getImportPkg();

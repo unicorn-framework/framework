@@ -11,13 +11,14 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.cache.lock.LockService;
+import org.unicorn.framework.core.exception.PendingException;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 /**
  * 分布式锁
- * @author xiebin
  *
+ * @author xiebin
  */
 @Component("lockService")
 @Primary
@@ -28,9 +29,16 @@ public class RedisLockService implements LockService {
     private static final Logger log = LoggerFactory.getLogger(RedisLockService.class);
 
     private RedisTemplate<String, String> stringRedisTemplate;
-
-    @Value("${lockService.timeout:1000}")
-    private int timeout = 1000;
+    /**
+     * 尝试获取锁的超时时间 单位毫秒
+     */
+    @Value("${unicorn.lock.tryTimeout:300}")
+    private int tryTimeout = 300;
+    /**
+     * 获取锁后锁定时间 单位秒
+     */
+    @Value("${unicorn.lock.lockTime:60}")
+    private int lockTime = 60;
 
     @Value("${instance.id:locks}")
     private String instanceId;
@@ -40,26 +48,46 @@ public class RedisLockService implements LockService {
         this.stringRedisTemplate = stringRedisTemplate;
     }
 
-    @Override
-    public boolean tryLock(String name) {
-       return tryLock(name,this.timeout, TimeUnit.MILLISECONDS);
-    }
-
     /**
      * 尝试获取锁
-     * @param name key
-     * @param timeout  锁定时间
-     * @param unit
+     *
+     * @param name
      * @return
      */
     @Override
-    public boolean tryLock(String name, long timeout, TimeUnit unit) {
-        if (timeout <= 0)
-            return tryLock(name);
+    public boolean tryLock(String name) throws PendingException {
+        return tryLock(name, this.tryTimeout, TimeUnit.MILLISECONDS, this.lockTime, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 尝试获取锁 可设置尝试时间
+     *
+     * @param name
+     * @param tryTimeout
+     * @param tryTimeoutUnit
+     * @return
+     */
+    @Override
+    public boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit) throws PendingException {
+        return tryLock(name, tryTimeout, tryTimeoutUnit, this.lockTime, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 尝试获取锁 可设置尝试时间、锁定时间
+     *
+     * @param name
+     * @param tryTimeout
+     * @param tryTimeoutUnit
+     * @param lockTimeout
+     * @param lockTimeoutUnit
+     * @return
+     */
+    @Override
+    public boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit, int lockTimeout, TimeUnit lockTimeoutUnit) throws PendingException {
         String key = NAMESPACE + name;
         String value = instanceId;
         boolean success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
-        long millisTimeout = unit.toMillis(timeout);
+        long millisTimeout = tryTimeoutUnit.toMillis(tryTimeout);
         long start = System.currentTimeMillis();
         while (!success) {
             try {
@@ -67,18 +95,25 @@ public class RedisLockService implements LockService {
             } catch (InterruptedException e) {
                 return false;
             }
-            if ((System.currentTimeMillis() - start) >= millisTimeout)
+            if ((System.currentTimeMillis() - start) >= millisTimeout) {
                 break;
+            }
             success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
         }
-        //缺陷 如果此时reids宕机则无法释放锁而造成死锁
-        if (success)
-            stringRedisTemplate.expire(key, this.timeout, unit);
+        stringRedisTemplate.expire(key, lockTimeout, lockTimeoutUnit);
         return success;
     }
 
+
+
     @Override
     public void lock(String name) {
+        lock(name, this.lockTime, TimeUnit.SECONDS);
+    }
+
+
+    @Override
+    public void lock(String name, int lockTime, TimeUnit lockTimeUnit) {
         String key = NAMESPACE + name;
         String value = instanceId;
         boolean success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
@@ -89,11 +124,13 @@ public class RedisLockService implements LockService {
                 e.printStackTrace();
             }
             success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
-            if (success)
-                stringRedisTemplate.expire(key, this.timeout, TimeUnit.SECONDS);
+            if (success) {
+                stringRedisTemplate.expire(key, lockTime, lockTimeUnit);
+            }
         }
 
     }
+
 
     @Override
     public void unlock(String name) {
@@ -102,8 +139,9 @@ public class RedisLockService implements LockService {
         String str = "if redis.call(\"get\",KEYS[1]) == ARGV[1] then return redis.call(\"del\",KEYS[1]) else return 0 end";
         RedisScript<Long> script = new DefaultRedisScript<Long>(str, Long.class);
         Long ret = stringRedisTemplate.execute(script, Collections.singletonList(key), value);
-        if (ret == 0)
+        if (ret == 0) {
             log.warn("Lock [{}] is not hold by instance [{}]", name, value);
+        }
     }
 
 }
