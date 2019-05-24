@@ -253,7 +253,7 @@
     </insert>
 
     <!-- 批量插入 -->
-    <insert id="batchInsert" parameterType="java.util.List">
+    <insert id="batchInsertSelective" parameterType="java.util.List">
 
         #if(${table.primaryTableField.keyIdentityFlag})
             <selectKey resultType="${table.primaryTableField.columnType.javaType}"
@@ -264,8 +264,10 @@
         insert ${table.name} (
         #foreach($field in ${table.fields})
             #if(!${field.keyIdentityFlag})
-
-                ${field.name} #if($velocityCount != ${table.fields.size()}),#end
+                <if test="${field.propertyName} != null">
+                    ${field.name},
+                </if>
+                #if($velocityCount != ${table.fields.size()}),#end
             #end
         #end
 
@@ -275,8 +277,10 @@
             <trim prefix=" (" suffix=")" suffixOverrides=",">
                 #foreach($field in ${table.fields})
                     #if(!${field.keyIdentityFlag})
-                        #{record.${field.propertyName},jdbcType=${field.columnType.jdbcType}
-                        } #if($velocityCount != ${table.fields.size()}),#end
+                        <if test="${field.propertyName} != null">
+                            #{${field.propertyName},jdbcType=${field.columnType.jdbcType}}
+                        </if>
+                        #if($velocityCount != ${table.fields.size()}),#end
                     #end
                 #end
 
