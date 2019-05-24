@@ -26,10 +26,8 @@ public abstract class BaseServiceConsumerFallbackProvider implements FallbackPro
 	@Override
 	public abstract String getRoute() ;
 
-
-
 	@Override
-	public ClientHttpResponse fallbackResponse(Throwable cause) {
+	public ClientHttpResponse fallbackResponse(String route,Throwable cause) {
 		 return new ClientHttpResponse() {
 	            @Override
 	            public HttpStatus getStatusCode() throws IOException {

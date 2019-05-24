@@ -1,2 +1,2 @@
-org.springframework.boot.env.PropertySourceLoader=\
-  org.unicorn.framework.base.handler.UnicornPropertiesHandler
+#org.springframework.boot.env.PropertySourceLoader=\
+#  org.unicorn.framework.base.handler.UnicornPropertiesHandler
