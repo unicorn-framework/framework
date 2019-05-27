@@ -3,6 +3,7 @@ package org.unicorn.framework.oauth.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public abstract class AbstractUnicornSecurityConfig extends WebSecurityConfigurerAdapter {
+public abstract class AbstractUnicornSecurityConfig extends WebSecurityConfigurerAdapter  {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -45,6 +46,12 @@ public abstract class AbstractUnicornSecurityConfig extends WebSecurityConfigure
         web.ignoring().antMatchers("/static/**");
         web.ignoring().antMatchers("*.html");
 
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
 
