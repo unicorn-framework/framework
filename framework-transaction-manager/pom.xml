@@ -14,17 +14,17 @@
 		<lcn.last.version>4.1.0</lcn.last.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>com.codingapi</groupId>
-			<artifactId>tx-manager</artifactId>
-			<version>${lcn.last.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.codingapi</groupId>-->
+			<!--<artifactId>tx-manager</artifactId>-->
+			<!--<version>${lcn.last.version}</version>-->
+			<!--<exclusions>-->
+				<!--<exclusion>-->
+					<!--<groupId>org.slf4j</groupId>-->
+					<!--<artifactId>*</artifactId>-->
+				<!--</exclusion>-->
+			<!--</exclusions>-->
+		<!--</dependency>-->
 
 	</dependencies>
 </project>
