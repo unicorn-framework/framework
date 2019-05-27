@@ -17,14 +17,14 @@
     </properties>
     <dependencies>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-actuator</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-logging</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-hystrix</artifactId>
@@ -33,12 +33,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-feign</artifactId>
         </dependency>
-        <!-- httpclient -->
-        <!--<dependency>-->
-            <!--<groupId>com.netflix.feign</groupId>-->
-            <!--<artifactId>feign-httpclient</artifactId>-->
-            <!--<version>RELEASE</version>-->
-        <!--</dependency>-->
 
         <!-- okhttp -->
         <dependency>

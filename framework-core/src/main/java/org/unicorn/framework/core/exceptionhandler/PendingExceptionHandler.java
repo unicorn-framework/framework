@@ -1,13 +1,10 @@
 package org.unicorn.framework.core.exceptionhandler;
 
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.core.exception.UnicornRuntimeException;
-
-import java.sql.SQLException;
 
 /**
  * @author xiebin
@@ -23,8 +20,6 @@ public class PendingExceptionHandler implements IExceptionHandler {
         } else if (e.getCause() instanceof UnicornRuntimeException) {
             return true;
         } else if (e instanceof UnicornRuntimeException) {
-            return true;
-        } else if (e instanceof UnauthorizedException) {
             return true;
         }
         return false;
