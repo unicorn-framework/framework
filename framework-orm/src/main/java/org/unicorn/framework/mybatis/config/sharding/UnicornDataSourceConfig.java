@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.bind.RelaxedDataBinder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -141,6 +142,6 @@ public class UnicornDataSourceConfig {
         //数据源属性
         MutablePropertyValues mproperties = new MutablePropertyValues(properties);
         //将数据源属性绑定
-        new DataBinder(datasource).bind(mproperties);
+        new RelaxedDataBinder(datasource).bind(mproperties);
     }
 }

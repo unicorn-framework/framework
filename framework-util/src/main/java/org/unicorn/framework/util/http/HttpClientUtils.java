@@ -315,6 +315,53 @@ public class HttpClientUtils {
         return respStr;
     }
 
+
+    /**
+     * 上传文件
+     *
+     * @param serverUrl       服务器地址
+     * @param localFilePath   本地文件路径
+     * @param serverFieldName
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public static String uploadBatchFileImpl(String serverUrl, String [] localFilePaths,String serverFieldName, Map<String, String> params)
+            throws Exception {
+        String respStr = null;
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        try {
+            HttpPost httppost = new HttpPost(serverUrl);
+            MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder
+                    .create();
+            for(String localFilePath:localFilePaths){
+                FileBody binFileBody = new FileBody(new File(localFilePath));
+                // add the file params
+                multipartEntityBuilder.addPart(serverFieldName, binFileBody);
+            }
+            // 设置上传的其他参数
+            setUploadParams(multipartEntityBuilder, params);
+
+            HttpEntity reqEntity = multipartEntityBuilder.build();
+            httppost.setEntity(reqEntity);
+
+            CloseableHttpResponse response = httpclient.execute(httppost);
+            try {
+                System.out.println(response.getStatusLine());
+                HttpEntity resEntity = response.getEntity();
+                respStr = getRespString(resEntity);
+                EntityUtils.consume(resEntity);
+            } finally {
+                response.close();
+            }
+        } finally {
+            httpclient.close();
+        }
+        System.out.println("resp=" + respStr);
+        return respStr;
+    }
+
+
     /**
      * 设置上传文件时所附带的其他参数
      *
@@ -355,12 +402,15 @@ public class HttpClientUtils {
     }
 
     public static void main(String[] args) {
-        String url = "http://localhost:18082/oss/upload?storagePrefix=test";
+        String url = "http://beta.hntrgf.com.cn/gf-oss-service/oss/upload/batch?storagePrefix=test";
         Map<String, String> param = new HashMap<>();
-        String filePath="D:\\config\\gf-config\\logo28.png";
+        String filePaths[]=new String[]{
+                "D:\\config\\gf-config\\logo28.png",
+                "D:\\config\\gf-config\\1.jpg"
+        };
         param.put("storagePrefix", "test");
         try {
-            System.out.println(JsonUtils.toJson(HttpClientUtils.uploadFileImpl(url, filePath, "file", new HashMap<>())));
+            System.out.println(JsonUtils.toJson(HttpClientUtils.uploadBatchFileImpl(url, filePaths, "files", new HashMap<>())));
         } catch (Exception e) {
 
         }
