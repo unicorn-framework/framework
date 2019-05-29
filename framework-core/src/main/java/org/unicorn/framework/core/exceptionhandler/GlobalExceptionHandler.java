@@ -22,6 +22,7 @@ public class GlobalExceptionHandler extends AbstractService {
     List<String> resCodeList=Lists.newArrayList();
     {
         resCodeList.add(SysCode.SESSION_ERROR.getCode());
+        resCodeList.add(SysCode.URL_NOT_EXIST.getCode());
     }
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
@@ -40,8 +41,7 @@ public class GlobalExceptionHandler extends AbstractService {
             }
         }
         error("异常信息:{}", JsonUtils.toJson(resDto), e);
-        String  resCode=resDto.getResCode();
-        if(!resCodeList.contains(resCode)){
+        if(!resCodeList.contains(resDto.getResCode())){
             //设置为展示resInfo信息
             resDto.setTip(true);
         }

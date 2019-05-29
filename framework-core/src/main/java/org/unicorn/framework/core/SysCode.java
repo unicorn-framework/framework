@@ -130,6 +130,11 @@ public class SysCode {
      */
     public static final ResBean NOT_FOUND_HANDLER = new ResBean("99905", DEFAULT_RES_INFO);
 
+    /**
+     * api limit
+     */
+    public static final ResBean API_LIMIT_ERROR = new ResBean("99906", "接口调用超过次数");
+
 
     //===================9开头的为系统异常  end==================================
 
