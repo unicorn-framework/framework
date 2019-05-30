@@ -101,7 +101,10 @@ public class RedisLockService implements LockService {
             }
             success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
         }
-        stringRedisTemplate.expire(key, lockTimeout, lockTimeoutUnit);
+        if(success){
+            stringRedisTemplate.expire(key, lockTimeout, lockTimeoutUnit);
+        }
+
         return success;
     }
 
