@@ -1,4 +1,4 @@
-package org.unicorn.framework.core.fallback;
+package org.unicorn.framework.gateway.fallback;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
