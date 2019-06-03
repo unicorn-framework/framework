@@ -1,7 +1,12 @@
 package org.unicorn.framework.mybatis.config.sharding;
 
-import com.alibaba.fescar.rm.datasource.DataSourceProxy;
 import com.google.common.collect.Maps;
+import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
+import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
+import io.shardingsphere.api.config.rule.TableRuleConfiguration;
+import io.shardingsphere.api.config.strategy.InlineShardingStrategyConfiguration;
+import io.shardingsphere.core.constant.properties.ShardingPropertiesConstant;
+import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +16,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.validation.DataBinder;
-import org.unicorn.framework.mybatis.config.sharding.properties.UnicornDataSourceBaseProperties;
-import org.unicorn.framework.mybatis.config.sharding.properties.UnicornDataSourcePoolProperties;
-import org.unicorn.framework.mybatis.config.sharding.properties.UnicornDataSourceRuleProperties;
-import org.unicorn.framework.mybatis.config.sharding.properties.UnicornDataTableRuleProperties;
+import org.unicorn.framework.mybatis.config.sharding.properties.*;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author xiebin
@@ -60,32 +65,31 @@ public class UnicornDataSourceConfig {
         Map<String, Map<String, String>> masterDbMap = unicornDataSourceBaseProperties.getDatasource();
         masterDbMap.keySet().forEach(dataSourceName -> {
             DataSource datasource = createDataSource(masterDbMap.get(dataSourceName));
-            dataSourceMap.put(dataSourceName, new DataSourceProxy(datasource));
+            dataSourceMap.put(dataSourceName, datasource);
         });
-        return dataSourceMap.get("ds0");
-//        //分片配置
-//        ShardingRuleConfiguration shardingRuleConfiguration = unicornDataSourceRuleProperties.getShardingRule();
-//        //主从数据源配置
-//        List<MasterSlaveRuleConfiguration> masterSlaveRuleConfigurationList = unicornDataSourceRuleProperties.getMasterSlaveRule();
-//        //主从配置
-//        shardingRuleConfiguration.setMasterSlaveRuleConfigs(masterSlaveRuleConfigurationList);
-//        List<TableRuleConfiguration> tableRuleList = new ArrayList<>(shardingRuleConfiguration.getTableRuleConfigs());
-//        tableRuleList.forEach(tableRuleConfiguration -> {
-//            //获取分片属性
-//            UnicornShardingRuleProperties unicornShardingRuleProperties = unicornDataTableRuleProperties.getTableRule().get(tableRuleConfiguration.getLogicTable());
-//            //配置分库策略（Groovy表达式配置db规则）
-//            tableRuleConfiguration.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getDataSourceShardingCloumnName(), unicornShardingRuleProperties.getDataSourceShardingAlgorithmExpression()));
-//            // 配置分表策略（Groovy表达式配置表路由规则）
-//            tableRuleConfiguration.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getTableShardingCloumnName(), unicornShardingRuleProperties.getTableShardingAlgorithmExpression()));
-//        });
-//        try {
-//            Properties pro = new Properties();
-//            pro.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), unicornDataSourceBaseProperties.isShowSql());
-//            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, Maps.newConcurrentMap(), pro);
-//        } catch (Exception e) {
-//            log.error("创建分片数据源失败", e);
-//        }
-//        return null;
+        //分片配置
+        ShardingRuleConfiguration shardingRuleConfiguration = unicornDataSourceRuleProperties.getShardingRule();
+        //主从数据源配置
+        List<MasterSlaveRuleConfiguration> masterSlaveRuleConfigurationList = unicornDataSourceRuleProperties.getMasterSlaveRule();
+        //主从配置
+        shardingRuleConfiguration.setMasterSlaveRuleConfigs(masterSlaveRuleConfigurationList);
+        List<TableRuleConfiguration> tableRuleList = new ArrayList<>(shardingRuleConfiguration.getTableRuleConfigs());
+        tableRuleList.forEach(tableRuleConfiguration -> {
+            //获取分片属性
+            UnicornShardingRuleProperties unicornShardingRuleProperties = unicornDataTableRuleProperties.getTableRule().get(tableRuleConfiguration.getLogicTable());
+            //配置分库策略（Groovy表达式配置db规则）
+            tableRuleConfiguration.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getDataSourceShardingCloumnName(), unicornShardingRuleProperties.getDataSourceShardingAlgorithmExpression()));
+            // 配置分表策略（Groovy表达式配置表路由规则）
+            tableRuleConfiguration.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getTableShardingCloumnName(), unicornShardingRuleProperties.getTableShardingAlgorithmExpression()));
+        });
+        try {
+            Properties pro = new Properties();
+            pro.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), unicornDataSourceBaseProperties.isShowSql());
+            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, Maps.newConcurrentMap(), pro);
+        } catch (Exception e) {
+            log.error("创建分片数据源失败", e);
+        }
+        return null;
     }
 
     /**

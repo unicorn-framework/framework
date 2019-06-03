@@ -23,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author xiebin
  * @ EnableWebSecurity 启用web安全
  */
-@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public abstract class AbstractUnicornSecurityConfig extends WebSecurityConfigurerAdapter  {

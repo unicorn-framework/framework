@@ -46,16 +46,16 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>com.alibaba.fescar</groupId>
-			<artifactId>fescar-tm</artifactId>
-			<version>${fescar.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba.fescar</groupId>
-			<artifactId>fescar-spring</artifactId>
-			<version>${fescar.version}</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.alibaba.fescar</groupId>-->
+			<!--<artifactId>fescar-tm</artifactId>-->
+			<!--<version>${fescar.version}</version>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>com.alibaba.fescar</groupId>-->
+			<!--<artifactId>fescar-spring</artifactId>-->
+			<!--<version>${fescar.version}</version>-->
+		<!--</dependency>-->
 
 
 
