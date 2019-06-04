@@ -1,6 +1,5 @@
 package org.unicorn.framework.core.exceptionhandler;
 
-import com.netflix.client.ClientException;
 import com.netflix.hystrix.exception.HystrixTimeoutException;
 import feign.RetryableException;
 import org.unicorn.framework.core.SysCode;
@@ -17,8 +16,6 @@ public class UnicornHystrixExceptionHandler {
             throw (PendingException) throwable;
         }else if(throwable instanceof HystrixTimeoutException){
             throw new PendingException(SysCode.SYS_FAIL, "调用超时");
-        }else if(throwable.getCause() instanceof ClientException){
-            throw new PendingException(SysCode.SYS_FAIL, "没有找到可用的服务");
         }else if(throwable.getCause() instanceof RetryableException){
             throw new PendingException(SysCode.SYS_FAIL, "没有找到可用的服务");
         }else {
