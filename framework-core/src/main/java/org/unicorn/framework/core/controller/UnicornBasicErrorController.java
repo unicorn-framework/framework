@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -49,7 +50,14 @@ public class UnicornBasicErrorController  {
      */
     @GetMapping(value = "/error")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) throws Throwable {
+    public ResponseEntity<Map<String, Object>> getError(HttpServletRequest request) throws Throwable {
+        handlerException(request);
+        return null;
+    }
+
+
+
+    public void handlerException(HttpServletRequest request)throws Throwable{
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
         if(statusCode==404){
             throw new PendingException(SysCode.URL_NOT_EXIST);
@@ -60,6 +68,17 @@ public class UnicornBasicErrorController  {
         RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         //获取并将异常抛出去
         throw getError(requestAttributes);
+    }
+    /**
+     * 定义500的错误JSON信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/error")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> postError(HttpServletRequest request) throws Throwable {
+        handlerException(request);
+        return null;
     }
 
     /**
