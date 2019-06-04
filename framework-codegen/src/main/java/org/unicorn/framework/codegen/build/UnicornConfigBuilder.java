@@ -1,33 +1,21 @@
 package org.unicorn.framework.codegen.build;
 
+import com.baomidou.mybatisplus.generator.config.rules.DbType;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.config.rules.QuerySQL;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringUtils;
+import org.unicorn.framework.codegen.config.*;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.unicorn.framework.codegen.config.UnicornConstVal;
-import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
-import org.unicorn.framework.codegen.config.UnicornGlobalConfig;
-import org.unicorn.framework.codegen.config.UnicornPackageConfig;
-import org.unicorn.framework.codegen.config.UnicornStrategyConfig;
-import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
-
-import com.baomidou.mybatisplus.generator.config.rules.DbType;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.config.rules.QuerySQL;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

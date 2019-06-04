@@ -1,7 +1,8 @@
 package org.unicorn.framework.codegen.build;
 
-import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.VelocityContext;
+import org.assertj.core.util.Sets;
 import org.unicorn.framework.codegen.bo.ClassBaseContext;
 import org.unicorn.framework.codegen.bo.EntityContext;
 import org.unicorn.framework.codegen.config.UnicornConstVal;
@@ -96,7 +97,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		List<UnicornTableField> fieldList=tableInfo.getFields();
 		for(UnicornTableField field:fieldList){
 			String pkg=field.getColumnType().getImportPkg();
-			if(org.apache.commons.lang3.StringUtils.isNotBlank(pkg)){
+			if(StringUtils.isNotBlank(pkg)){
 				importSet.add(pkg);
 			}
 		}

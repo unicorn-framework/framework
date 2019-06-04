@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.Template;
@@ -262,6 +262,7 @@ public abstract class UnicornAbstractGenerator {
 		if (StringUtils.isEmpty(templatePath)) {
 			return;
 		}
+
 		VelocityEngine velocity = getVelocityEngine();
 		Template template = velocity.getTemplate(templatePath, UnicornConstVal.UTF8);
 		File file = new File(outputFile);

@@ -16,11 +16,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.unicorn</groupId>
-            <artifactId>framework-base</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${springfox.version}</version>

@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.3.RELEASE</version>
+        <version>2.0.6.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -33,6 +33,59 @@
                 <version>Finchley.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-oauth2.0</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-orm</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-codegen</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-api-doc</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-register-center</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-config-server</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-mq</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-gateway</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-cache</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-elastic-job</artifactId>
+                <version>${module.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

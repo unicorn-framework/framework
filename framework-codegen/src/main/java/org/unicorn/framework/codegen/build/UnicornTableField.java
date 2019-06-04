@@ -104,7 +104,7 @@ public class UnicornTableField {
 	        if (null != columnType) {
 	        	javaType= columnType.getJavaType();
 	        }
-	        if(org.apache.commons.lang3.StringUtils.isNotBlank(javaType)){
+	        if(StringUtils.isEmpty(javaType)){
 	        	javaType=javaType.replaceAll(".*\\.", "");
 	        }
 	        return javaType;
