@@ -1,9 +1,11 @@
 package org.unicorn.framework.core.exceptionhandler;
 
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.unicorn.framework.base.base.AbstractBaseController;
 import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.core.ResponseDto;
@@ -13,12 +15,14 @@ import org.unicorn.framework.util.json.JsonUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @author xiebin
  */
 @ControllerAdvice
-public class GlobalExceptionHandler extends AbstractService {
+@Slf4j
+public class GlobalExceptionHandler {
     List<String> resCodeList=Lists.newArrayList();
     {
         resCodeList.add(SysCode.SESSION_ERROR.getCode());
@@ -40,16 +44,11 @@ public class GlobalExceptionHandler extends AbstractService {
                 break;
             }
         }
-        error("异常信息:{}", JsonUtils.toJson(resDto), e);
+        log.error("异常信息:{}", JsonUtils.toJson(resDto), e);
         if(!resCodeList.contains(resDto.getResCode())){
             //设置为展示resInfo信息
             resDto.setTip(true);
         }
         return resDto;
     }
-public static void  main(String args[]){
-        System.out.println("71001".compareTo("71001"));
-    }
-
-
 }
