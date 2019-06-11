@@ -1,8 +1,10 @@
 package ${entityContext.pkg};
-    #foreach($pkg in ${entityContext.importSet})
-    import ${pkg};
-    #end
+
+#foreach($pkg in ${entityContext.importSet})
+import ${pkg};
+#end
 import java.io.Serializable;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
 /**
  * <p>
  * ${table.comment}
@@ -25,18 +28,23 @@ import io.swagger.annotations.ApiModelProperty;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "${table.comment}对象", description = "${table.comment}对象")
+@Table(name = "${table.name}")
 public class ${entityContext.name} implements Serializable{
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID=1L;
 
 #foreach($field in ${table.fields})
     #if("$!field.comment" != "")
-    /**
+/**
      * ${field.comment}
      */
     #end
+#if("$!field.keyFlag" == true)
+@Id
+    @Column(name = "${field.name}")
+    #end
 @ApiModelProperty(value = "${field.comment}", name = "${field.comment}")
-private ${field.propertyType} ${field.propertyName};
+    private ${field.propertyType} ${field.propertyName};
 
 #end
 

@@ -18,79 +18,6 @@
         <relativePath/>
     </parent>
 
-    <dependencyManagement>
-        <dependencies>
-            <!--<dependency>-->
-                <!--<groupId>io.spring.platform</groupId>-->
-                <!--<artifactId>platform-bom</artifactId>-->
-                <!--<version>Cairo-SR5</version>-->
-                <!--<type>pom</type>-->
-                <!--<scope>import</scope>-->
-            <!--</dependency>-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Greenwich.SR1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-oauth2.0</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-orm</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-codegen</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-api-doc</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-register-center</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-config-server</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-mq</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-gateway</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-cache</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-elastic-job</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <env.version>SNAPSHOT</env.version>
@@ -100,10 +27,10 @@
         <spring-boot-starter-parent.version>1.8</spring-boot-starter-parent.version>
         <mybatis.version>3.4.1</mybatis.version>
         <mybatis-spring.version>1.3.1</mybatis-spring.version>
-        <druid.version>1.1.15</druid.version>
+        <druid.version>1.1.16</druid.version>
         <commons-codec.version>1.9</commons-codec.version>
         <mybatis-generator-core.version>1.3.2</mybatis-generator-core.version>
-        <mybatis-spring-boot-starter.version>1.2.2</mybatis-spring-boot-starter.version>
+        <mybatis-spring-boot-starter.version>1.3.2</mybatis-spring-boot-starter.version>
         <elastic-job-core.version>1.0.1</elastic-job-core.version>
         <elastic-job-spring.version>1.0.1</elastic-job-spring.version>
         <aliyun-sdk-oss.version>2.8.3</aliyun-sdk-oss.version>
@@ -113,7 +40,7 @@
         <lombok.version>1.16.10</lombok.version>
         <httpclient.version>4.5</httpclient.version>
         <httpmime.version>4.5</httpmime.version>
-        <neuxs.path>218.76.8.40:18081/nexus/content</neuxs.path>
+        <neuxs.path>218.76.8.40:18081/nexus/content/repositories</neuxs.path>
     </properties>
 
     <dependencies>

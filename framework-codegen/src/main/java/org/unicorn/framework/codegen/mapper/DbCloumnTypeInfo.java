@@ -26,4 +26,11 @@ public class DbCloumnTypeInfo {
      * java类型
      */
     private final String javaType;
+
+    public String getSimpleJdbcType() {
+        if (javaType != null) {
+            return javaType.substring(javaType.lastIndexOf(".")+1,javaType.length());
+        }
+        return jdbcType;
+    }
 }
