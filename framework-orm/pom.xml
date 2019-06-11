@@ -45,6 +45,11 @@
 			<version>${sharding-jdbc-spring-namespace}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>tk.mybatis</groupId>
+			<artifactId>mapper-spring-boot-starter</artifactId>
+            <version>2.1.5</version>
+		</dependency>
 
 		<!--<dependency>-->
 			<!--<groupId>com.alibaba.fescar</groupId>-->
