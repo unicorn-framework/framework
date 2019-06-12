@@ -6,8 +6,8 @@
 		<artifactId>unicorn-framework</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>framework-transaction</artifactId>
-	<name>framework-transaction</name>
+	<artifactId>framework-transaction-manager</artifactId>
+	<name>framework-transaction-manager</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,24 +15,8 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.unicorn</groupId>
-			<artifactId>framework-orm</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.unicorn</groupId>
-			<artifactId>framework-core</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>com.codingapi.txlcn</groupId>
-			<artifactId>txlcn-tc</artifactId>
-			<version>${lcn.last.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.codingapi.txlcn</groupId>
-			<artifactId>txlcn-txmsg-netty</artifactId>
+			<artifactId>txlcn-tm</artifactId>
 			<version>${lcn.last.version}</version>
 		</dependency>
 	</dependencies>

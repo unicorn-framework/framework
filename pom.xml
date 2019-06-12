@@ -21,11 +21,11 @@
     <dependencyManagement>
         <dependencies>
             <!--<dependency>-->
-                <!--<groupId>io.spring.platform</groupId>-->
-                <!--<artifactId>platform-bom</artifactId>-->
-                <!--<version>Cairo-SR5</version>-->
-                <!--<type>pom</type>-->
-                <!--<scope>import</scope>-->
+            <!--<groupId>io.spring.platform</groupId>-->
+            <!--<artifactId>platform-bom</artifactId>-->
+            <!--<version>Cairo-SR5</version>-->
+            <!--<type>pom</type>-->
+            <!--<scope>import</scope>-->
             <!--</dependency>-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -39,7 +39,21 @@
                 <artifactId>framework-oauth2.0</artifactId>
                 <version>${module.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-transaction</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-transaction-manager</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-core</artifactId>
+                <version>${module.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.unicorn</groupId>
                 <artifactId>framework-orm</artifactId>
@@ -265,5 +279,6 @@
         <module>framework-api-doc</module>
         <module>framework-websocket</module>
         <module>framework-transaction</module>
+        <module>framework-transaction-manager</module>
     </modules>
 </project>
