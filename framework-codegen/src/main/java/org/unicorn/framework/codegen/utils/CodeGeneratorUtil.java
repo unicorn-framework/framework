@@ -34,23 +34,22 @@ public class CodeGeneratorUtil {
 		dsc.setDbType(DbType.MYSQL);
 		dsc.setTypeConvert(new UnicornMysqlTypeConvert());
 		dsc.setDriverName("com.mysql.jdbc.Driver");
-		dsc.setUrl(
-				"jdbc:mysql://10.181.102.6:3306/internet_of_things?useUnicode=true&amp;characterEncoding=UTF-8&amp;generateSimpleParameterMetadata=true");
-		dsc.setUsername("huanuo");
-		dsc.setPassword("huanuo@2018");
+		dsc.setUrl("jdbc:mysql://192.168.1.135:3306/l_order?useUnicode=true&characterEncoding=UTF-8&generateSimpleParameterMetadata=true");
+		dsc.setUsername("tianrangf");
+		dsc.setPassword("tianrangf@2019");
 		// 策略配置
 		UnicornStrategyConfig strategy = new UnicornStrategyConfig();
 		strategy.setTablePrefix(new String[] { "t_" });// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-		strategy.setInclude(new String[] {"t_user_info" }); // 需要生成的表
+		strategy.setInclude(new String[] {"t_order_details" }); // 需要生成的表
 		// 包配置
 		UnicornPackageConfig pc = new UnicornPackageConfig();
-		pc.setParent("com.xb.demo");
+		pc.setParent("com.gf.order");
 		pc.setModuleName("test");
 		//全局配置
 		UnicornGlobalConfig gc = new UnicornGlobalConfig();
-		gc.setOutputDir("D:\\workspace\\unicorn-framework\\framework-codegen\\src\\main\\java");
-		gc.setAuthor("xiebin");
+		gc.setOutputDir("D:\\company\\local-project\\wx-auth\\src\\main\\java");
+		gc.setAuthor("zz");
 		gc.setFileOverride(true);
 		gc.setOpen(false);
 		

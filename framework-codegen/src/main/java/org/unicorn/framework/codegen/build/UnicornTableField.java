@@ -102,7 +102,7 @@ public class UnicornTableField {
 	    public String getPropertyType() {
 	    	String javaType=null;
 	        if (null != columnType) {
-	        	javaType= columnType.getJavaType();
+	        	javaType= columnType.getSimpleJdbcType();
 	        }
 	        if(StringUtils.isEmpty(javaType)){
 	        	javaType=javaType.replaceAll(".*\\.", "");

@@ -24,6 +24,10 @@ import org.unicorn.framework.core.exception.PendingException;
 public class ${entityContext.name}PageRequestDto extends AbstractRequestPageDto {
 
     private static final long serialVersionUID = 1L;
+
+    public int getPageNum(){
+        return super.getPageNo();
+    }
     /**
      * ${table.comment}
      */

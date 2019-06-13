@@ -1,8 +1,7 @@
 package ${entityContext.pkg};
 
-    #foreach($pkg in ${entityContext.importSet})
-    import ${pkg};
-    #end
+#foreach($pkg in ${entityContext.importSet})
+import ${pkg};#end
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,10 +82,27 @@ public class ${entityContext.name}Example implements Serializable {
     }
 
     /**
+    *
+    * @param exception 当参数为空时，是否抛出异常
+    * @return
+    */
+    public Criteria createCriteria(boolean exception) {
+        Criteria criteria = createCriteriaInternal(exception);
+        if (oredCriteria.size() == 0) {
+            oredCriteria.add(criteria);
+        }
+        return criteria;
+    }
+    /**
      *
      */
     protected Criteria createCriteriaInternal() {
         Criteria criteria = new Criteria();
+        return criteria;
+    }
+
+    protected Criteria createCriteriaInternal(boolean exception) {
+        Criteria criteria = new Criteria(exception);
         return criteria;
     }
 
@@ -105,9 +121,15 @@ public class ${entityContext.name}Example implements Serializable {
     protected abstract static class BaseGeneratedCriteria {
         protected List<Criterion> criteria;
 
+        protected boolean exception;
+
         protected BaseGeneratedCriteria() {
-            super();
+            this(true);
             criteria = new ArrayList<Criterion>();
+        }
+
+        public BaseGeneratedCriteria(boolean exception) {
+            this.exception = exception;
         }
 
         public boolean isValid() {
@@ -124,21 +146,30 @@ public class ${entityContext.name}Example implements Serializable {
 
         protected void addCriterion(String condition) {
             if (condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
+                if (exception) {
+                    throw new RuntimeException("Value for condition cannot be null");
+                }
+                return;
             }
             criteria.add(new Criterion(condition));
         }
 
         protected void addCriterion(String condition, Object value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
+            if (condition == null) {
+                if (exception) {
+                    throw new RuntimeException("Value for " + property + " cannot be null");
+                }
+                return;
             }
             criteria.add(new Criterion(condition, value));
         }
 
         protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
+            if (condition == null) {
+                if (exception) {
+                    throw new RuntimeException("Between values for " + property + " cannot be null");
+                }
+                return;
             }
             criteria.add(new Criterion(condition, value1, value2));
         }
@@ -229,6 +260,10 @@ public class ${entityContext.name}Example implements Serializable {
 
         protected Criteria() {
             super();
+        }
+
+        public Criteria(boolean exception) {
+            super(exception);
         }
     }
 
