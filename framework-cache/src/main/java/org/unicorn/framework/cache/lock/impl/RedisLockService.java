@@ -103,6 +103,7 @@ public class RedisLockService implements LockService {
         if(success){
             stringRedisTemplate.expire(key, lockTimeout, lockTimeoutUnit);
         }
+
         return success;
     }
 

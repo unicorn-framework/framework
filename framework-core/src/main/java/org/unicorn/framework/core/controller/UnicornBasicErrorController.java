@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -23,9 +23,8 @@ import java.util.Map;
  * @author  xiebin
  */
 @Controller
-@RequestMapping("${server.error.path:${error.path:/error}}")
 @EnableConfigurationProperties({ServerProperties.class})
-public class UnicornBasicErrorController implements ErrorController {
+public class UnicornBasicErrorController  {
 
     private ErrorAttributes errorAttributes;
 
@@ -49,16 +48,37 @@ public class UnicornBasicErrorController implements ErrorController {
      * @param request
      * @return
      */
-    @RequestMapping
+    @GetMapping(value = "/error")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) throws Throwable {
+    public ResponseEntity<Map<String, Object>> getError(HttpServletRequest request) throws Throwable {
+        handlerException(request);
+        return null;
+    }
+
+
+
+    public void handlerException(HttpServletRequest request)throws Throwable{
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
         if(statusCode==404){
             throw new PendingException(SysCode.URL_NOT_EXIST);
         }
+        if (statusCode==429) {
+            throw new PendingException(SysCode.API_LIMIT_ERROR);
+        }
         RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         //获取并将异常抛出去
         throw getError(requestAttributes);
+    }
+    /**
+     * 定义500的错误JSON信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/error")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> postError(HttpServletRequest request) throws Throwable {
+        handlerException(request);
+        return null;
     }
 
     /**
@@ -79,14 +99,5 @@ public class UnicornBasicErrorController implements ErrorController {
         return (T) requestAttributes.getAttribute(name, RequestAttributes.SCOPE_REQUEST);
     }
 
-    /**
-     * 实现错误路径,暂时无用
-     * @see ExceptionMvcAutoConfiguration#containerCustomizer()
-     * @return
-     */
-    @Override
-    public String getErrorPath() {
-        return "";
-    }
 
 }
