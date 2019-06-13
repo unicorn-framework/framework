@@ -39,6 +39,10 @@ public class PendingException extends UnicornException {
         super(resCode.getCode(), message);
         this.code = resCode.getCode();
     }
+    public PendingException(ResBean resCode, String message,Throwable throwable) {
+        super(resCode.getCode(), message,throwable);
+        this.code = resCode.getCode();
+    }
 
 
 }
