@@ -46,9 +46,6 @@ public class GlobalExceptionHandler {
         }
         log.error("异常信息:{}", JsonUtils.toJson(resDto), e);
         if(!resCodeList.contains(resDto.getResCode())){
-            if(resDto.getResInfo().length()>20){
-                resDto.setResInfo("请稍后重试");
-            }
             //设置为展示resInfo信息
             resDto.setTip(true);
         }
