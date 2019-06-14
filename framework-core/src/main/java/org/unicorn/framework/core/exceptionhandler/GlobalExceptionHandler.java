@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseDto<String> jsonErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         //初始化返回
-        ResponseDto<String> resDto = new ResponseDto<>(SysCode.SYS_FAIL,e.getMessage());
+        ResponseDto<String> resDto = new ResponseDto<>(SysCode.SYS_FAIL);
         resDto.setUrl(req.getRequestURL().toString());
         //将异常交给对应的异常分析处理器处理
         Map<String, IExceptionHandler> beanMap=SpringContextHolder.getApplicationContext().getBeansOfType(IExceptionHandler.class);
@@ -44,6 +44,8 @@ public class GlobalExceptionHandler {
                 break;
             }
         }
+
+
         log.error("异常信息:{}", JsonUtils.toJson(resDto), e);
         if(!resCodeList.contains(resDto.getResCode())){
             //设置为展示resInfo信息
