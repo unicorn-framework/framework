@@ -27,7 +27,7 @@ public class PendingExceptionHandler implements IExceptionHandler {
 
     @Override
     public ResponseDto<String> handler(Exception e) {
-        ResponseDto resDto = new ResponseDto(SysCode.SYS_FAIL, e.getMessage());
+        ResponseDto resDto = new ResponseDto(SysCode.SYS_FAIL);
         if (e instanceof PendingException) {
             PendingException pe = (PendingException) e;
             resDto.setResCode(pe.getCode());

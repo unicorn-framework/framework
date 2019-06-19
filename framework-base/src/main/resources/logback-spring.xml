@@ -39,12 +39,12 @@
 			<pattern>${log.pattern}</pattern>
 		</encoder>
 	</appender>
-	
-	
+
+	<!-- 输出到文件 -->
 	<appender name="file-error-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--如果只是想要 Info 级别的日志，只是过滤 info 还是会输出 Error 日志，因为 Error 的级别高， 所以我们使用下面的策略，可以避免输出 Error 的日志 -->
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
-			<!--过滤 Error -->
+			<!--过滤 INFO -->
 			<level>ERROR</level>
 			<!--匹配到就允许-->
 			<onMatch>ACCEPT</onMatch>
@@ -73,12 +73,7 @@
 
 	<root level="INFO">
 		<appender-ref ref="console" />
-	</root>
-	<logger name="info" level="${log.level}" additivity="false">
 		<appender-ref ref="file-info-log" />
-	</logger>
-	<logger name="error" level="${log.level}" additivity="false">
 		<appender-ref ref="file-error-log" />
-	</logger>
-
+	</root>
 </configuration>
