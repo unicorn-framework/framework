@@ -15,7 +15,7 @@ import org.unicorn.framework.oauth.store.UnicornRedisTokenStore;
  * @since 1.0
  */
 @Configuration
-@ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "storeType", havingValue = "redis")
+@ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "store-type", havingValue = "redis")
 public class UnicornReidsTokenStoreConfig {
     /**
      * redis连接工厂

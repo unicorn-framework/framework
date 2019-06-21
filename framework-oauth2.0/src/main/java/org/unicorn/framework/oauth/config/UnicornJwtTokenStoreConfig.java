@@ -18,8 +18,7 @@ import org.unicorn.framework.oauth.security.UnironJwtTokenEnhancer;
  * @since 1.0
  */
 @Configuration
-@ConditionalOnExpression("${unicorn.security.oauth2.authorizationServer:false}")
-@ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "storeType", havingValue = "jwt")
+@ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "store-type", havingValue = "jwt")
 public class UnicornJwtTokenStoreConfig {
 
 
