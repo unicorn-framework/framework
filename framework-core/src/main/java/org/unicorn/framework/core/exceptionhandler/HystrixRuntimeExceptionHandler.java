@@ -18,7 +18,9 @@ public class HystrixRuntimeExceptionHandler implements IExceptionHandler {
     }
 
     @Override
-    public ResponseDto<String> handler(Exception e) {
-        return new ResponseDto<>(SysCode.SYS_FAIL);
+    public ResponseDto<String> handler(Exception e,String url) {
+        ResponseDto  resDto =new ResponseDto<>(SysCode.HYSTRIX_EXCEPTION_MESSSGE);
+        resDto.setUrl(url);
+        return resDto;
     }
 }

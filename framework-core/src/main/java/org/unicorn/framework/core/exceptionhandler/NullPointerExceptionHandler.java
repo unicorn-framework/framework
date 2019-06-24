@@ -15,7 +15,9 @@ public class NullPointerExceptionHandler implements IExceptionHandler {
     }
 
     @Override
-    public ResponseDto<String> handler(Exception e) {
-        return new ResponseDto<>(SysCode.SYS_NULL_POINT);
+    public ResponseDto<String> handler(Exception e,String url) {
+        ResponseDto  resDto =new ResponseDto<>(SysCode.SYS_NULL_POINT);
+        resDto.setUrl(url);
+        return resDto;
     }
 }

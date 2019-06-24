@@ -17,7 +17,9 @@ public class SqlExceptionHandler implements IExceptionHandler {
     }
 
     @Override
-    public ResponseDto<String> handler(Exception e) {
-        return new ResponseDto<>(SysCode.DB_ERROR);
+    public ResponseDto<String> handler(Exception e,String url) {
+        ResponseDto  resDto =new ResponseDto<>(SysCode.DB_ERROR);
+        resDto.setUrl(url);
+        return resDto;
     }
 }

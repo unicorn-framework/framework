@@ -98,8 +98,20 @@ public class SysCode {
      * 入参为空
      */
     public static final ResBean PARA_NULL = new ResBean("99998", DEFAULT_RES_INFO);
+    /**
+     * hystrix异常
+     */
+    public static final ResBean HYSTRIX_EXCEPTION_MESSSGE = new ResBean("99000", DEFAULT_RES_INFO);
 
+    /**
+     * hystrix异常
+     */
+    public static final ResBean HYSTRIX_BAD_REQUEST_EXCEPTION = new ResBean("99001", DEFAULT_RES_INFO);
 
+    /**
+     * 类型转换异常
+     */
+    public static final ResBean CLASS_CAST_EXCEPTION = new ResBean("99002", DEFAULT_RES_INFO);
     /**
      * 外部系统接口调用错误
      **/
