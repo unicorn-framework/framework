@@ -20,6 +20,11 @@ public class HystrixRuntimeExceptionHandler implements IExceptionHandler {
     @Override
     public ResponseDto<String> handler(Exception e,String url) {
         ResponseDto  resDto =new ResponseDto<>(SysCode.HYSTRIX_EXCEPTION_MESSSGE);
+        if(e.getCause() instanceof  PendingException){
+            PendingException pe=(PendingException)e.getCause();
+            resDto.setResCode(pe.getCode());
+            resDto.setResInfo(pe.getMessage());
+        }
         resDto.setUrl(url);
         return resDto;
     }
