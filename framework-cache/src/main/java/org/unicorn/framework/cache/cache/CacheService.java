@@ -1,6 +1,7 @@
 package org.unicorn.framework.cache.cache;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +32,8 @@ public interface CacheService {
 	public boolean containsKey(String key, String namespace);
 
 	public boolean putIfAbsent(String key, Object value, int timeToLive, TimeUnit timeUnit, String namespace);
+
+	public boolean putIfAbsent(String key, Object value, Date expireDate, String namespace);
 
 	public long increment(String key, long delta, int timeToLive, TimeUnit timeUnit, String namespace);
 
