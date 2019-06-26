@@ -1,5 +1,6 @@
 package org.unicorn.framework.api.doc.controller;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.Map;
  */
 @RestController
 @ApiIgnore
+@ConditionalOnProperty(name = "spring.swagger.enabled", havingValue = "true", matchIfMissing = true)
 public class CustomSwagger2Controller {
 
     private static final String SWAGGER_SECURITY_URL = "/v2/swagger-security";

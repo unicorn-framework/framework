@@ -19,7 +19,7 @@ public class UnicornHystrixExceptionHandler {
         }else if(throwable.getCause() instanceof RetryableException){
             throw new PendingException(SysCode.SYS_FAIL, "没有找到可用的服务");
         }else {
-            throw new PendingException(SysCode.SYS_FAIL, throwable.getMessage());
+            throw new PendingException(SysCode.SYS_FAIL);
         }
     }
 }

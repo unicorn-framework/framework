@@ -20,7 +20,9 @@ public class UnicornAuthExceptionEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(HttpServletResponse.SC_OK);
         try {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(response.getOutputStream(), new ResponseDto<>(SysCode.SESSION_ERROR));
+            ResponseDto resDto= new ResponseDto<>(SysCode.SESSION_ERROR);
+            resDto.setUrl(request.getRequestURL().toString());
+            mapper.writeValue(response.getOutputStream(), resDto);
         } catch (Exception e) {
             throw new ServletException();
         }
