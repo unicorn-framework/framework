@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
-import org.unicorn.framework.core.exception.FeignException;
+import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.util.json.JsonUtils;
 
 /**
@@ -38,10 +38,10 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
             message = Util.toString(response.body().asReader());
             log.info("feign 异常信息===》"+message);
             ResponseDto  responseDto=JsonUtils.fromJson(message, ResponseDto.class);
-            return  new FeignException(responseDto);
+            return  new PendingException(responseDto);
         } catch (Exception e) {
             log.error("feign错误",e);
-            return  new FeignException(SysCode.SYS_FAIL,e);
+            return  new PendingException(SysCode.SYS_FAIL);
         }
     }
 }
