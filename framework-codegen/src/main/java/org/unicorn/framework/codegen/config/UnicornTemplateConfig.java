@@ -9,18 +9,23 @@ import lombok.Data;
 @Data
 public class UnicornTemplateConfig extends TemplateConfig{
 
-	private String entity = "/mytemplates/entity.java.vm";
+	private String entity = "/generate_templates/backstage/entity.java.vm";
 
-	private String serviceImpl = "/mytemplates/serviceImpl.java.vm";
+	private String serviceImpl = "/generate_templates/backstage/serviceImpl.java.vm";
 
-    private String mapper = "/mytemplates/mapper.java.vm";
+    private String mapper = "/generate_templates/backstage/mapper.java.vm";
 
-    private String xml = "/mytemplates/mapper.xml.vm";
+    private String xml = "/generate_templates/backstage/mapper.xml.vm";
 
-    private String controller ="/mytemplates/controller.java.vm";
+    private String controller = "/generate_templates/backstage/controller.java.vm";
     
-    private String dto ="/mytemplates/dto.java.vm";
+    private String dto = "/generate_templates/backstage/dto.java.vm";
     
-    private String entityExample ="/mytemplates/entityExample.java.vm";
+    private String entityExample = "/generate_templates/backstage/entityExample.java.vm";
+
+    private String apiServiceImpl = "/generate_templates/api/serviceImpl.java.vm";
+
+    private String apiController = "/generate_templates/api/controller.java.vm";
+
 
 }
