@@ -15,6 +15,7 @@ import org.unicorn.framework.core.exception.PendingException;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
 /**
  * 分布式锁
  *
@@ -103,6 +104,7 @@ public class RedisLockService implements LockService {
         if(success){
             stringRedisTemplate.expire(key, lockTimeout, lockTimeoutUnit);
         }
+
         return success;
     }
 

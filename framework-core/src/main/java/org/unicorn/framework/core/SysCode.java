@@ -98,8 +98,20 @@ public class SysCode {
      * 入参为空
      */
     public static final ResBean PARA_NULL = new ResBean("99998", DEFAULT_RES_INFO);
+    /**
+     * hystrix异常
+     */
+    public static final ResBean HYSTRIX_EXCEPTION_MESSSGE = new ResBean("99000", DEFAULT_RES_INFO);
 
+    /**
+     * hystrix异常
+     */
+    public static final ResBean HYSTRIX_BAD_REQUEST_EXCEPTION = new ResBean("99001", DEFAULT_RES_INFO);
 
+    /**
+     * 类型转换异常
+     */
+    public static final ResBean CLASS_CAST_EXCEPTION = new ResBean("99002", DEFAULT_RES_INFO);
     /**
      * 外部系统接口调用错误
      **/
@@ -129,6 +141,11 @@ public class SysCode {
      * 未找到对应的处理器
      */
     public static final ResBean NOT_FOUND_HANDLER = new ResBean("99905", DEFAULT_RES_INFO);
+
+    /**
+     * api limit
+     */
+    public static final ResBean API_LIMIT_ERROR = new ResBean("99906", "接口调用超过次数");
 
 
     //===================9开头的为系统异常  end==================================

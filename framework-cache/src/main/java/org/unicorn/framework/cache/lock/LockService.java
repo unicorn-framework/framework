@@ -3,6 +3,7 @@ package org.unicorn.framework.cache.lock;
 import org.unicorn.framework.core.exception.PendingException;
 
 import java.util.concurrent.TimeUnit;
+
 /**
  * @author  xiebin
  */
@@ -24,7 +25,7 @@ public interface LockService {
 	 * @return
 	 * @throws PendingException
 	 */
-	boolean tryLock(String name, int timeout, TimeUnit unit)throws PendingException;
+	 boolean tryLock(String name, int timeout, TimeUnit unit)throws PendingException;
 
 	/**
 	 * 尝试获取锁
@@ -36,14 +37,14 @@ public interface LockService {
 	 * @return
 	 * @throws PendingException
 	 */
-	boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit,int lockTimeout, TimeUnit lockTimeoutUnit)throws PendingException;
+	 boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit,int lockTimeout, TimeUnit lockTimeoutUnit)throws PendingException;
 
 	/**
 	 * 一直阻塞获取锁
 	 * @param name
 	 * @throws PendingException
 	 */
-	void lock(String name) throws  PendingException;
+	 void lock(String name) throws  PendingException;
 
 	/**
 	 * 一直阻塞获取锁
@@ -52,13 +53,13 @@ public interface LockService {
 	 * @param lockTimeUnit
 	 * @throws PendingException
 	 */
-	void lock(String name,int lockTime ,TimeUnit lockTimeUnit)throws PendingException;
+	 void lock(String name,int lockTime ,TimeUnit lockTimeUnit)throws PendingException;
 
 	/**
 	 * 释放锁
 	 * @param name
 	 */
-	void unlock(String name);
+	 void unlock(String name);
 
 
 

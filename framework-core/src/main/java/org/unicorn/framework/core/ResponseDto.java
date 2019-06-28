@@ -99,10 +99,9 @@ public class ResponseDto<T> {
         return this.getResCode().equals(SysCode.SUCCESS.getCode());
     }
     @JsonIgnore
-    public boolean isSuccessThrowException() throws PendingException {
+    public void isSuccessThrowException() throws PendingException {
         if(!this.getResCode().equals(SysCode.SUCCESS.getCode())){
             throw new PendingException(resCode,resInfo);
         }
-        return this.getResCode().equals(SysCode.SUCCESS.getCode());
     }
 }

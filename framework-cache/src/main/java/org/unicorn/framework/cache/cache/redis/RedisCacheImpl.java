@@ -1,10 +1,6 @@
 package org.unicorn.framework.cache.cache.redis;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
@@ -215,6 +211,18 @@ public class RedisCacheImpl  implements CacheService {
 			boolean success = redisTemplate.opsForValue().setIfAbsent(actrualkey, value);
 			if (success && timeToLive > 0)
 				redisTemplate.expire(actrualkey, timeToLive, timeUnit);
+			return success;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	@Override
+	public boolean putIfAbsent(String key, Object value, Date expireDate, String namespace) {
+		try {
+			String actrualkey = generateKey(key, namespace);
+			boolean success = redisTemplate.opsForValue().setIfAbsent(actrualkey, value);
+			if (success && expireDate!=null)
+				redisTemplate.expireAt(actrualkey, expireDate);
 			return success;
 		} catch (Exception e) {
 			return false;

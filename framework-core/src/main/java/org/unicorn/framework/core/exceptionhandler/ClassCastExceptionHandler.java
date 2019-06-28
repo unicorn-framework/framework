@@ -4,21 +4,19 @@ import org.springframework.stereotype.Component;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
 
-import java.sql.SQLException;
-
 /**
  * @author xiebin
  */
 @Component
-public class SqlExceptionHandler implements IExceptionHandler {
+public class ClassCastExceptionHandler implements IExceptionHandler {
     @Override
     public boolean supports(Exception e) {
-        return (e instanceof SQLException);
+        return (e instanceof ClassCastException);
     }
 
     @Override
     public ResponseDto<String> handler(Exception e,String url) {
-        ResponseDto  resDto =new ResponseDto<>(SysCode.DB_ERROR);
+        ResponseDto  resDto =new ResponseDto<>(SysCode.CLASS_CAST_EXCEPTION);
         resDto.setUrl(url);
         return resDto;
     }

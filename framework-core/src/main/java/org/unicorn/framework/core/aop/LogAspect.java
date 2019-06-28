@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -25,6 +26,7 @@ import java.io.Serializable;
  */
 @Aspect
 @Component
+@ConditionalOnProperty(prefix = "unicorn.api.log", name = "enable", havingValue = "true")
 public class LogAspect extends AbstractService {
 
 	@Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
