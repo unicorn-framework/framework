@@ -28,6 +28,12 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
     public Exception decode(String methodKey, Response response) {
         String message=null;
         try {
+            if(response.status() == 401){
+                return new PendingException(SysCode.SESSION_ERROR);
+            }
+            if(response.status() == 403){
+                return new PendingException(SysCode.UNAUTHOR__ERROR);
+            }
             if(response.status() >= 400 && response.status() <= 499){
                 if(methodKey.contains("AuthTokenClient#postAccessToken(String,Map)")){
                     return new HystrixBadRequestException("用户信息错误");
@@ -41,7 +47,7 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
             return  new PendingException(responseDto);
         } catch (Exception e) {
             log.error("feign错误",e);
-            return  new PendingException(SysCode.SYS_FAIL);
+            return  new PendingException(SysCode.SYS_FAIL,"feignException",e);
         }
     }
 }
