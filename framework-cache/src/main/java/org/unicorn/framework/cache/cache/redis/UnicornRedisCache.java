@@ -53,12 +53,12 @@ public class UnicornRedisCache extends RedisCache {
     }
     @Override
     public ValueWrapper putIfAbsent(Object key, @Nullable Object value) {
-
+        Duration duration=getDuration();
         Object cacheValue = this.preProcessCacheValue(value);
         if (!this.isAllowNullValues() && cacheValue == null) {
             return this.get(key);
         } else {
-            byte[] result = this.cacheWriter.putIfAbsent(this.name, this.createAndConvertCacheKey(key), this.serializeCacheValue(cacheValue), this.cacheConfig.getTtl());
+            byte[] result = this.cacheWriter.putIfAbsent(this.name, this.createAndConvertCacheKey(key), this.serializeCacheValue(cacheValue), duration);
             return result == null ? null : new SimpleValueWrapper(this.fromStoreValue(this.deserializeCacheValue(result)));
         }
     }
