@@ -59,6 +59,7 @@ public class JsonUtils {
 		final ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.setDateFormat(new SimpleDateFormat(DEFAULT_DATE_FORMAT));
 		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		objectMapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
 
 			private static final long serialVersionUID = 8855888602140931060L;

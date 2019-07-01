@@ -16,8 +16,9 @@ public interface IExceptionHandler {
     /**
      * 具体的处理逻辑
      * @param e
+     * @param url 请求URL
      * @return
      */
-    ResponseDto<String> handler(Exception e);
+    ResponseDto<String> handler(Exception e,String url);
 
 }

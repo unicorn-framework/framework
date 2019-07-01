@@ -11,8 +11,6 @@ import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.util.json.JsonUtils;
 
-import java.io.IOException;
-
 /**
  * 接口提供方抛出的异常进行转换
  * feign客户端调用时异常转化处理
@@ -30,6 +28,12 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
     public Exception decode(String methodKey, Response response) {
         String message=null;
         try {
+            if(response.status() == 401){
+                return new PendingException(SysCode.SESSION_ERROR);
+            }
+            if(response.status() == 403){
+                return new PendingException(SysCode.UNAUTHOR__ERROR);
+            }
             if(response.status() >= 400 && response.status() <= 499){
                 if(methodKey.contains("AuthTokenClient#postAccessToken(String,Map)")){
                     return new HystrixBadRequestException("用户信息错误");
@@ -40,10 +44,10 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
             message = Util.toString(response.body().asReader());
             log.info("feign 异常信息===》"+message);
             ResponseDto  responseDto=JsonUtils.fromJson(message, ResponseDto.class);
-            return  new PendingException(responseDto.getResCode(),responseDto.getResInfo());
+            return  new PendingException(responseDto);
         } catch (Exception e) {
             log.error("feign错误",e);
-            return  new PendingException(SysCode.SYS_FAIL,message);
+            return  new PendingException(SysCode.SYS_FAIL,"feignException",e);
         }
     }
 }

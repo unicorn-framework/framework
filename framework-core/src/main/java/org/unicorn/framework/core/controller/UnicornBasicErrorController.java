@@ -59,6 +59,9 @@ public class UnicornBasicErrorController  {
 
     public void handlerException(HttpServletRequest request)throws Throwable{
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        if(statusCode==401){
+            throw new PendingException(SysCode.SESSION_ERROR);
+        }
         if(statusCode==404){
             throw new PendingException(SysCode.URL_NOT_EXIST);
         }

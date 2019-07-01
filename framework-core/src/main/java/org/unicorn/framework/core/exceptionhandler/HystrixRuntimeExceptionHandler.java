@@ -18,23 +18,14 @@ public class HystrixRuntimeExceptionHandler implements IExceptionHandler {
     }
 
     @Override
-    public ResponseDto<String> handler(Exception e) {
-        ResponseDto<String> resDto = new ResponseDto<>(SysCode.SYS_FAIL,e.getMessage());
-        HystrixRuntimeException hre=(HystrixRuntimeException)e;
-        if(hre.getFallbackException().getCause() instanceof PendingException){
-            PendingException pe = (PendingException) hre.getFallbackException().getCause();
+    public ResponseDto<String> handler(Exception e,String url) {
+        ResponseDto  resDto =new ResponseDto<>(SysCode.HYSTRIX_EXCEPTION_MESSSGE);
+        if(e.getCause() instanceof  PendingException){
+            PendingException pe=(PendingException)e.getCause();
             resDto.setResCode(pe.getCode());
             resDto.setResInfo(pe.getMessage());
-        }else if(hre.getFallbackException().getCause() instanceof  AssertionError){
-            if(hre.getFallbackException().getCause().getCause() instanceof  PendingException){
-                PendingException pe = (PendingException) hre.getFallbackException().getCause().getCause();
-                resDto.setResCode(pe.getCode());
-                resDto.setResInfo(Constants.TIME_OUT_INFO);
-            }
-        }else {
-            resDto.setResCode(SysCode.SYS_FAIL.getCode());
-            resDto.setResInfo(e.getMessage());
         }
+        resDto.setUrl(url);
         return resDto;
     }
 }
