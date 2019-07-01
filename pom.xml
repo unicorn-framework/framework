@@ -21,11 +21,11 @@
     <dependencyManagement>
         <dependencies>
             <!--<dependency>-->
-                <!--<groupId>io.spring.platform</groupId>-->
-                <!--<artifactId>platform-bom</artifactId>-->
-                <!--<version>Cairo-SR5</version>-->
-                <!--<type>pom</type>-->
-                <!--<scope>import</scope>-->
+            <!--<groupId>io.spring.platform</groupId>-->
+            <!--<artifactId>platform-bom</artifactId>-->
+            <!--<version>Cairo-SR5</version>-->
+            <!--<type>pom</type>-->
+            <!--<scope>import</scope>-->
             <!--</dependency>-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -36,12 +36,47 @@
             </dependency>
             <dependency>
                 <groupId>org.unicorn</groupId>
+                <artifactId>framework-api-doc</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-base</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-cache</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-codegen</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
                 <artifactId>framework-oauth2.0</artifactId>
                 <version>${module.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.unicorn</groupId>
                 <artifactId>framework-core</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-drools</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-elastic-job</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-gateway</artifactId>
                 <version>${module.version}</version>
             </dependency>
             <dependency>
@@ -59,16 +94,9 @@
                 <artifactId>framework-orm</artifactId>
                 <version>${module.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.unicorn</groupId>
-                <artifactId>framework-codegen</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-api-doc</artifactId>
+                <artifactId>framework-oss</artifactId>
                 <version>${module.version}</version>
             </dependency>
             <dependency>
