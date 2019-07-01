@@ -40,7 +40,7 @@ public class ${controllerContext.name} {
     @Autowired
     private ${serviceImplContext.name} ${serviceImplContext.beanName};
 
-    /**mytemplates
+    /**
      * 新增记录
      * @param ${entityContext.beanName}
      * @return

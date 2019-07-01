@@ -190,6 +190,7 @@ public abstract class UnicornAbstractGenerator {
 			//dto类路径
 			String dtoFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.DTO_PATH),tableInfo.getPageRequestDto(),UnicornConstVal.JAVA_SUFFIX);
 
+
 			UnicornTemplateConfig template = config.getTemplate();
             //创建entity文件
 			createFile(context,template.getEntity(),entityFile);
@@ -205,6 +206,15 @@ public abstract class UnicornAbstractGenerator {
 			createFile(context,template.getController(),controllerFile);
 			//创建dto文件
 			createFile(context,template.getDto(),dtoFile);
+
+			if (pathInfo.get(UnicornConstVal.API_CONTROLLER_PATH) != null) {
+				String apiCtrFile =getFilePath(tableInfo,pathInfo.get(UnicornConstVal.API_CONTROLLER_PATH),"Api"+tableInfo.getControllerName(),UnicornConstVal.JAVA_SUFFIX);
+				createFile(context,template.getApiController(),apiCtrFile);
+
+				String apiServiceFile =getFilePath(tableInfo,pathInfo.get(UnicornConstVal.API_SERIVCE_PATH),"Api"+tableInfo.getServiceImplName(),UnicornConstVal.JAVA_SUFFIX);
+				createFile(context,template.getApiServiceImpl(),apiServiceFile);
+			}
+
 		} catch (IOException e) {
 			logger.error("无法创建文件，请检查配置信息！", e);
 		}

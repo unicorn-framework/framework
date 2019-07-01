@@ -1,4 +1,4 @@
-package ${serviceImplContext.pkg};
+package ${apiServiceImplContext.pkg};
 
 import ${entityContext.classImportPath};
 import ${entityContext.classImportPath}Example;
@@ -24,7 +24,7 @@ import com.github.pagehelper.PageInfo;
  */
 @Slf4j
 @Service
-public class ${serviceImplContext.name} {
+public class ${apiServiceImplContext.name} {
 
     @Autowired
     private ${mapperContext.name} ${mapperContext.beanName};

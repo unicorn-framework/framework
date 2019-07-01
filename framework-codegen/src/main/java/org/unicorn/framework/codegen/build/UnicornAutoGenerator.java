@@ -33,14 +33,34 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 			setServiceImpl(context,tableInfo,config);
 			setControllerContext(context,tableInfo,config);
 			setDtoContext(context,tableInfo,config);
+			// api
+            setApiServiceImpl(context,tableInfo,config);
+            setApiControllerContext(context,tableInfo,config);
 		}
 		return ctxData;
 	}
 
+    public void setApiServiceImpl(VelocityContext context, UnicornTableInfo tableInfo, UnicornConfigBuilder config) {
+        ClassBaseContext serviceImplContext=new ClassBaseContext();
+        serviceImplContext.setName("Api"+tableInfo.getServiceImplName());
+        String pkg=config.getPackageInfo().get(UnicornConstVal.API_SERVICEIMPL)+"."+tableInfo.getEntityPath().toLowerCase();
+        serviceImplContext.setPkg(pkg);
+        serviceImplContext.setClassImportPath(pkg+".Api"+tableInfo.getServiceImplName());
+        serviceImplContext.setBeanName("api"+serviceImplContext.getName());
+        context.put("apiServiceImplContext", serviceImplContext);
+    }
+
+    public void setApiControllerContext(VelocityContext context, UnicornTableInfo tableInfo, UnicornConfigBuilder config) {
+        ClassBaseContext controllerContext=new ClassBaseContext();
+        controllerContext.setName("Api"+tableInfo.getControllerName());
+        String pkg=config.getPackageInfo().get(UnicornConstVal.API_CONTROLLER)+"."+tableInfo.getEntityPath().toLowerCase();
+        controllerContext.setPkg(pkg);
+        controllerContext.setClassImportPath(pkg+".Api"+tableInfo.getControllerName());
+        context.put("apiControllerContext", controllerContext);
+    }
 
 
-
-	public void setDtoContext(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
+    public void setDtoContext(VelocityContext context,UnicornTableInfo tableInfo,UnicornConfigBuilder config){
 		ClassBaseContext dtoContext=new ClassBaseContext();
 		dtoContext.setName(tableInfo.getPageRequestDto());
 		String pkg=config.getPackageInfo().get(UnicornConstVal.DTO)+"."+tableInfo.getEntityPath().toLowerCase();
