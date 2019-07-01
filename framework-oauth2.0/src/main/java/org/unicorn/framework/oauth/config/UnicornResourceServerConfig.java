@@ -19,10 +19,9 @@ public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter
                 .requestMatchers()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-//                .antMatchers("/oauth/token").permitAll()
-//                .antMatchers("/**.html", "/**.js", "/**.css", "/**.ico", "/**.ttf").permitAll()
-//                .antMatchers("/static/**").permitAll()
+                .antMatchers("/oauth/token").permitAll()
+                .antMatchers("/**.html", "/**.js", "/**.css", "/**.ico", "/**.ttf").permitAll()
+                .antMatchers("/static/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
