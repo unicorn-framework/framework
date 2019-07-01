@@ -18,22 +18,21 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.unicorn.framework.cache.cache.redis.UnicornRedisCacheManager;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
 
 /**
-*
-*@author xiebin
-*
-*/
+ * @author xiebin
+ */
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
-	@Bean
+    @Bean
     @Override
     public KeyGenerator keyGenerator() {
-        return (Object target, Method method, Object... params)->{
+        return (Object target, Method method, Object... params) -> {
             StringBuilder sb = new StringBuilder();
             sb.append(target.getClass().getName());
             sb.append(method.getName());
@@ -49,13 +48,14 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 // 设置缓存有效期一小时
                 .entryTtl(Duration.ofHours(1));
-        return RedisCacheManager
+        return UnicornRedisCacheManager
                 .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
                 .cacheDefaults(redisCacheConfiguration).build();
     }
 
     /**
      * 字符串
+     *
      * @param factory
      * @return
      */
@@ -71,16 +71,18 @@ public class RedisConfig extends CachingConfigurerSupport {
         template.afterPropertiesSet();
         return template;
     }
+
     /**
      * 对象
+     *
      * @param factory
      * @return
      */
     @Bean
     public RedisTemplate<String, ?> objectRedisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String,?> template = new RedisTemplate<>();
+        RedisTemplate<String, ?> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
-        StringRedisSerializer serializer=new StringRedisSerializer();
+        StringRedisSerializer serializer = new StringRedisSerializer();
         template.setKeySerializer(serializer);
         template.setValueSerializer(serializer);
         template.setHashKeySerializer(serializer);
