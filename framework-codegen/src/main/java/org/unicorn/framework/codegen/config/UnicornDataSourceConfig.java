@@ -1,14 +1,13 @@
 package org.unicorn.framework.codegen.config;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
+import com.baomidou.mybatisplus.exceptions.MybatisPlusException;
+import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import org.unicorn.framework.codegen.convert.IUnicornTypeConvert;
 import org.unicorn.framework.codegen.convert.UnicornMysqlTypeConvert;
 
-import com.baomidou.mybatisplus.exceptions.MybatisPlusException;
-import com.baomidou.mybatisplus.generator.config.rules.DbType;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * @author xiebin
@@ -17,11 +16,11 @@ public class UnicornDataSourceConfig {
 	 /**
      * 数据库类型
      */
-    private DbType dbType;
+    private DbType dbType = DbType.MYSQL;
     /**
      * 类型转换
      */
-    private IUnicornTypeConvert typeConvert;
+    private IUnicornTypeConvert typeConvert = new UnicornMysqlTypeConvert();
     /**
      * 驱动连接的URL
      */
@@ -29,7 +28,7 @@ public class UnicornDataSourceConfig {
     /**
      * 驱动名称
      */
-    private String driverName;
+    private String driverName = "com.mysql.jdbc.Driver";
     /**
      * 数据库连接用户名
      */

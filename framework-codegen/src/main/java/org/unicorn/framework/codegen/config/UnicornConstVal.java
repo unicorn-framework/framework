@@ -11,17 +11,21 @@ public class UnicornConstVal {
 
     public static final String ENTITY = "Entity";
     public static final String SERVICEIMPL = "Service";
+    public static final String API_SERVICEIMPL = "Api_Service";
     public static final String MAPPER = "Mapper";
     public static final String XML = "Xml";
     public static final String CONTROLLER = "Controller";
+    public static final String API_CONTROLLER = "Api_Controller";
     public static final String DTO = "PageRequestDto";
 
     public static final String ENTITY_PATH = "entity_path";
     public static final String SERIVCE_PATH = "serivce_path";
+    public static final String API_SERIVCE_PATH = "api_serivce_path";
     public static final String SERVICEIMPL_PATH = "serviceimpl_path";
     public static final String MAPPER_PATH = "mapper_path";
     public static final String XML_PATH = "xml_path";
     public static final String CONTROLLER_PATH = "controller_path";
+    public static final String API_CONTROLLER_PATH = "api_controller_path";
     public static final String DTO_PATH = "dto_path";
 
     public static final String JAVA_TMPDIR = "java.io.tmpdir";

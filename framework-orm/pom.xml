@@ -28,6 +28,11 @@
 			<version>1.2.5</version>
 		</dependency>
 		<dependency>
+			<groupId>tk.mybatis</groupId>
+			<artifactId>mapper-spring-boot-starter</artifactId>
+			<version>2.1.5</version>
+		</dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
@@ -42,12 +47,6 @@
 			<groupId>io.shardingsphere</groupId>
 			<artifactId>sharding-jdbc-spring-namespace</artifactId>
 			<version>${sharding-jdbc-spring-namespace}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>tk.mybatis</groupId>
-			<artifactId>mapper-spring-boot-starter</artifactId>
-            <version>1.1.5</version>
 		</dependency>
 
 	</dependencies>

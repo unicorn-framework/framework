@@ -156,6 +156,13 @@ public class UnicornConfigBuilder  {
         if (StringUtils.isNotEmpty(template.getDto())) {
             pathInfo.put(UnicornConstVal.DTO_PATH, joinPath(outputDir, packageInfo.get(UnicornConstVal.DTO)));
         }
+
+        if (config.isApiPackage()) {
+            packageInfo.put(UnicornConstVal.API_CONTROLLER, joinPackage(config.getParent(), config.getApiController()));
+            packageInfo.put(UnicornConstVal.API_SERVICEIMPL, joinPackage(config.getParent(), config.getApiserviceImpl()));
+            pathInfo.put(UnicornConstVal.API_CONTROLLER_PATH, joinPath(outputDir, packageInfo.get(UnicornConstVal.API_CONTROLLER)));
+            pathInfo.put(UnicornConstVal.API_SERIVCE_PATH, joinPath(outputDir, packageInfo.get(UnicornConstVal.API_SERVICEIMPL)));
+        }
     }
 
     /**

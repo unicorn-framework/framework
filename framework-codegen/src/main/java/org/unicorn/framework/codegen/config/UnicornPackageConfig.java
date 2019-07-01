@@ -29,7 +29,11 @@ public class UnicornPackageConfig {
     /**
      * Service Impl包名
      */
-    private String serviceImpl = "service.base";
+    private String serviceImpl = "service.bks";
+    /**
+     * api Service包
+     */
+    private String apiserviceImpl = "service.api";
     /**
      * Mapper包名
      */
@@ -43,12 +47,42 @@ public class UnicornPackageConfig {
     /**
      * Controller包名
      */
-    private String controller = "controller.base";
+    private String controller = "controller.bks";
+
+    private String apiController = "controller.api";
     /**
      * dto包名
      */
     private String dto = "dto";
-    
+
+    /**
+     * 是否生成api 类
+     */
+    private boolean apiPackage = false;
+
+    public String getApiserviceImpl() {
+        return apiserviceImpl;
+    }
+
+    public void setApiserviceImpl(String apiserviceImpl) {
+        this.apiserviceImpl = apiserviceImpl;
+    }
+
+    public String getApiController() {
+        return apiController;
+    }
+
+    public void setApiController(String apiController) {
+        this.apiController = apiController;
+    }
+
+    public boolean isApiPackage() {
+        return apiPackage;
+    }
+
+    public void setApiPackage(boolean apiPackage) {
+        this.apiPackage = apiPackage;
+    }
 
     public String getParent() {
         if (StringUtils.isNotEmpty(moduleName)) {
