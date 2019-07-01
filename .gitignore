@@ -1,23 +1,12 @@
-.classpath
-framework-base/target/
-framework-cache/target/
-framework-core/target/
-framework-orm/target/
-framework-core/target/
-framework-util/target/
-framwork-oss/target/
-framework-config-server/target/
-framwork-elastic-job/target/
-/bin/
-framework-drools/.project
-framework-drools/.settings/
-framework-mq/.settings/
-framework-mq/.project
-*.project
-framework-gateway/.settings/
-framework-codegen/.settings/
-framework-register-center/.settings/
-framework-api-doc/.settings/
-framework-websocket/.settings/
-framework-session/.settings/
+# Created by .ignore support plugin (hsz.mobi)
+### spring_boot_template template
+### Example user template
+
+# IntelliJ project files
+.idea
 *.iml
+traget/
+src/main/resources/rebel.xml
+*.log
+.project
+.setting
