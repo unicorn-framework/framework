@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.unicorn.framework.core.exception.PendingException;
 
+import java.util.Date;
+
 /**
  * @author xiebin
  */
@@ -20,6 +22,18 @@ public class ResponseDto<T> {
     @ApiModelProperty(value = "请求是否成功", name = "请求是否成功")
     private boolean success;
 
+    private boolean tip=false;
+
+    private Date responseTime=new Date();
+
+    public Date getResponseTime() {
+        return responseTime;
+    }
+
+    public void setResponseTime(Date responseTime) {
+        this.responseTime = responseTime;
+    }
+
     public boolean isTip() {
         return tip;
     }
@@ -28,7 +42,7 @@ public class ResponseDto<T> {
         this.tip = tip;
     }
 
-    private boolean tip=false;
+
     public ResponseDto() {
         this.resCode = SysCode.SUCCESS.getCode();
         this.resInfo = SysCode.SUCCESS.getInfo();
