@@ -60,7 +60,21 @@ public class ${apiServiceImplContext.name} {
         }
 
     }
-
+    /**
+         * 根据ids删除记录
+         * @param ids
+         * @return
+         * @throws PendingException
+         */
+    @Transactional(rollbackFor = {PendingException.class})
+    public void deleteByIdList(List<Long> ids)throws PendingException{
+        try {
+            ${mapperContext.beanName}.deleteByIdList(ids);
+        } catch(Exception e){
+            log.error("根据ids删除记录失败",e);
+            throw new PendingException(SysCode.DB_ERROR.getCode(),"根据ids删除记录失败", e);
+        }
+    }
 
     /**
      * 保存记录
@@ -69,7 +83,7 @@ public class ${apiServiceImplContext.name} {
      * @throws PendingException
      */
     @Transactional(rollbackFor = {Exception.class})
-    public ${entity} save(${entity} ${entityContext.beanName})throws PendingException{
+    public ${entity} insertSelective(${entity} ${entityContext.beanName})throws PendingException{
         try {
             ${mapperContext.beanName}.insertSelective(${entityContext.beanName});
             return ${entityContext.beanName};
@@ -162,9 +176,7 @@ public class ${apiServiceImplContext.name} {
      */
     public List<${entity}> selectListByIds(List<${table.primaryTableField.propertyType}> ids)throws PendingException{
         try {
-            ${entity}Example example = new ${entity}Example();
-            example.createCriteria().andIdIn(ids);
-            return ${mapperContext.beanName}.selectByExample(example);
+            return orderDetailsMapper.selectByIdList(ids);
         } catch(Exception e){
             log.error("根据ID列表批量查询记录失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"根据ID列表批量查询记录失败",e);

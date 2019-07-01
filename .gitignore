@@ -21,3 +21,4 @@ framework-api-doc/.settings/
 framework-websocket/.settings/
 framework-session/.settings/
 *.iml
+.idea

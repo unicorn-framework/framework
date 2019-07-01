@@ -30,8 +30,8 @@ import ${superControllerClassPackage};
  * @since ${date}
  */
 @RestController
-@RequestMapping("#if("/api/"+${package.ModuleName})/${package.ModuleName}#end/${table.entityPath}")
-@Api(value = "${table.comment}模块", tags = {"${table.comment}模块"})
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/api/${table.entityPath}")
+@Api(value = "Api${table.comment}模块", tags = {"Api${table.comment}模块"})
 #if(${superControllerClass})
 public class ${apiControllerContext.name} extends ${superControllerClass} {
 #else
@@ -49,7 +49,7 @@ public class ${apiControllerContext.name} {
     @ApiOperation("新增记录")
     @RequestMapping(method = {RequestMethod.POST})
     public ResponseDto<${entityContext.name}> save(@RequestBody ${entityContext.name}  ${entityContext.beanName})throws PendingException{
-        return new ResponseDto<>(${apiServiceImplContext.beanName}.save(${entityContext.beanName}));
+        return new ResponseDto<>(${apiServiceImplContext.beanName}.insertSelective(${entityContext.beanName}));
     }
 
     /**
