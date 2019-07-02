@@ -29,7 +29,6 @@ import org.unicorn.framework.oauth.handler.UnicornAccessDeniedHandler;
 @ConditionalOnProperty(prefix = "unicorn.security.oauth2", name = "authorizationServer", havingValue = "true")
 public abstract class AbstractUnicornAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-
     @Autowired
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
