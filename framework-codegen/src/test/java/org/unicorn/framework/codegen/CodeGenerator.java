@@ -6,27 +6,13 @@ import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
 import org.unicorn.framework.codegen.config.UnicornGlobalConfig;
 import org.unicorn.framework.codegen.config.UnicornPackageConfig;
 import org.unicorn.framework.codegen.config.UnicornStrategyConfig;
+import org.unicorn.framework.codegen.util.CodeGeneratorUtil;
 
 /**
  * @author zhanghaibo
  * @since 2019/6/28
  */
 public class CodeGenerator {
-
-    public static void generator(UnicornGlobalConfig gc,UnicornDataSourceConfig dsc, UnicornStrategyConfig strategy,
-                                 UnicornPackageConfig pc) {
-        UnicornAutoGenerator mpg = new UnicornAutoGenerator();
-        // 全局配置
-        mpg.setGlobalConfig(gc);
-        // 数据源配置
-        mpg.setDataSource(dsc);
-        // 策略配置
-        mpg.setStrategy(strategy);
-        // 包配置
-        mpg.setPackageInfo(pc);
-        // 执行生成
-        mpg.execute();
-    }
 
     public static void main(String[] args) throws InterruptedException {
         // 数据源配置
@@ -51,7 +37,7 @@ public class CodeGenerator {
         gc.setFileOverride(true);
         gc.setOpen(false);
 
-        generator(gc,dsc, strategy, pc);
+        CodeGeneratorUtil.generator(gc,dsc, strategy, pc);
     }
 
 }

@@ -101,6 +101,11 @@
             </dependency>
             <dependency>
                 <groupId>org.unicorn</groupId>
+                <artifactId>framework-util</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
                 <artifactId>framework-register-center</artifactId>
                 <version>${module.version}</version>
             </dependency>
