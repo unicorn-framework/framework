@@ -161,7 +161,9 @@ public class ${apiServiceImplContext.name} {
      */
     public PageInfo<${entity}> get${entity}ByPage(${dtoContext.name} ${dtoContext.beanName}) throws PendingException{
         try {
-            return PageHelper.startPage(${dtoContext.beanName}).doSelectPageInfo(() -> ${mapperContext.beanName}.select(${dtoContext.beanName}.get${entityContext.name}()));
+            ${entityContext.name}Example example = new ${entityContext.name}Example();
+            example.createCriteriaAllOfBean(${dtoContext.beanName}.get${entityContext.name}());
+            return PageHelper.startPage(${dtoContext.beanName}).doSelectPageInfo(() -> ${mapperContext.beanName}.selectByExample(example));
         } catch(Exception e){
             log.error("分页查询${table.comment}失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"分页查询${table.comment}失败",e);
