@@ -1,5 +1,6 @@
 package org.unicorn.framework.oauth.properties;
 
+import com.google.common.collect.Lists;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -29,7 +30,7 @@ public class OAuth2Properties {
     /**
      * 不需要验证的接口  ant风格
      */
-    private List<String> permitAlls=  Arrays.asList("/ver/**","/login");
+    private List<String> permitAlls= Lists.newArrayList("/ver/**", "/login");
 
     /**
      * 头部名称
