@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.unicorn</groupId>
 		<artifactId>unicorn-framework</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>framework-transaction</artifactId>
 	<name>framework-transaction</name>
@@ -17,12 +17,12 @@
 		<dependency>
 			<groupId>org.unicorn</groupId>
 			<artifactId>framework-orm</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>${module.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.unicorn</groupId>
 			<artifactId>framework-core</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>${module.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.codingapi.txlcn</groupId>
