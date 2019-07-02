@@ -106,6 +106,17 @@ public class ${entityContext.name}Example implements Serializable {
         return criteria;
     }
 
+    public Criteria createCriteriaAllOfBean(${entityContext.name}  ${entityContext.beanName}) {
+        Criteria criteria = createCriteria(false);
+        if(${entityContext.beanName} == null)return criteria;
+    #foreach($field in ${table.fields})
+    criteria.and${field.capitalName}EqualTo(${entityContext.beanName}.get${field.capitalName}());
+    #end
+    return criteria;
+    }
+
+
+
     /**
      *
      */
@@ -125,11 +136,11 @@ public class ${entityContext.name}Example implements Serializable {
 
         protected BaseGeneratedCriteria() {
             this(true);
-            criteria = new ArrayList<Criterion>();
         }
 
         public BaseGeneratedCriteria(boolean exception) {
             this.exception = exception;
+            criteria = new ArrayList<Criterion>();
         }
 
         public boolean isValid() {
@@ -155,7 +166,7 @@ public class ${entityContext.name}Example implements Serializable {
         }
 
         protected void addCriterion(String condition, Object value, String property) {
-            if (condition == null) {
+            if (value == null) {
                 if (exception) {
                     throw new RuntimeException("Value for " + property + " cannot be null");
                 }
@@ -165,7 +176,7 @@ public class ${entityContext.name}Example implements Serializable {
         }
 
         protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if (condition == null) {
+            if (value1 == null && value2 == null) {
                 if (exception) {
                     throw new RuntimeException("Between values for " + property + " cannot be null");
                 }
