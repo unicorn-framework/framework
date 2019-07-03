@@ -216,12 +216,12 @@
         <repository>
             <id>releases</id>
             <name>Gigold Nexus Repository</name>
-            <url>http://${neuxs.path}/repositories/releases/</url>
+            <url>http://${neuxs.path}/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Gigold Nexus Repository</name>
-            <url>http://${neuxs.path}/repositories/snapshots/</url>
+            <url>http://${neuxs.path}/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
