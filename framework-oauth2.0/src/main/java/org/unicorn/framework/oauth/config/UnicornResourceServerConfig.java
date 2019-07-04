@@ -1,5 +1,6 @@
 package org.unicorn.framework.oauth.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.unicorn.framework.oauth.properties.OAuth2Properties;
+import org.unicorn.framework.util.json.JsonUtils;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @Configuration
 @EnableResourceServer
 @EnableConfigurationProperties({OAuth2Properties.class})
+@Slf4j
 public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter {
   @Autowired
   private OAuth2Properties oauth2Properties;
@@ -25,6 +28,7 @@ public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter
     public void configure(HttpSecurity http) throws Exception {
         List<String> permitList=  oauth2Properties.getPermitAlls();
         permitList.add("/oauth/**");
+        log.info("权限==="+JsonUtils.toJson(permitList));
         http.requestMatchers()
                 .and()
                 .authorizeRequests()
