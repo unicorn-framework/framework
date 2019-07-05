@@ -13,9 +13,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * feign客户端接口工厂类
@@ -25,7 +25,7 @@ import java.util.Set;
 @Slf4j
 public class UnicornFeignClientFactory {
 
-    private static final Map<String, Object> feignClientProxtMap = new HashMap<>();
+    private static final Map<String, Object> feignClientProxtMap = new ConcurrentHashMap<>();
 
     private static Class<?> responseDtoClazz;
 
