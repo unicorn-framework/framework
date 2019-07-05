@@ -18,7 +18,7 @@ public class InsertOnExistenceProvider extends BaseInsertProvider {
     /**
      *  insert into table (xx,xx,xx)  values(xx,xx,xx) on  DUPLICATE key update id=1111,aa='22'
      *
-     * 插入一跳记录，存在就更新
+     * 插入一条记录，存在就更新
      * @param ms
      * @return
      */
