@@ -35,7 +35,6 @@ public class UnicornFeignClientFactory {
      * @return
      */
     public static <T> T getFeignClientInstance(Class<T> clazz) {
-        Throwable e = UnicornContext.getValue(UnicornConstants.FEIGN_THROWABLE);
         //获取上下文中IUnicornFiengClient类型的对象
         Map<String, T> beanMaps = SpringContextHolder.getApplicationContext().getBeansOfType(clazz);
         Set<String> beanNameSet = beanMaps.keySet();
@@ -49,20 +48,20 @@ public class UnicornFeignClientFactory {
                 }
             }
         }
-        log.warn("没有发现["+clazz.getName()+"]的服务降级处理类");
+        log.warn("没有发现[" + clazz.getName() + "]的服务降级处理类");
         if (feignClientProxtMap.containsKey(clazz.getName())) {
             return (T) feignClientProxtMap.get(clazz.getName());
         }
         T t = null;
         if (clazz.isInterface()) {
-            t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new FeignClientInvocationHandler(e));
+            t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new FeignClientInvocationHandler(clazz));
         }
 
         if (t == null) {
             // 创建 cglib 代理类
             Enhancer enhancer = new Enhancer();
             enhancer.setSuperclass(clazz);
-            enhancer.setCallback(new FeignClientInvocationHandler(e));
+            enhancer.setCallback(new FeignClientInvocationHandler(clazz));
             t = (T) enhancer.create();
         }
 
@@ -83,20 +82,20 @@ public class UnicornFeignClientFactory {
             responseDtoClazz = Class.forName(responseDtoclassName);
             resBeanClazz = Class.forName(resBeanclassName);
         } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("没有发现[ " + responseDtoclassName + " ]或 [ " + resBeanclassName + "]的依赖",e);
+            throw new IllegalStateException("没有发现[ " + responseDtoclassName + " ]或 [ " + resBeanclassName + "]的依赖", e);
         }
     }
 
 
     static class FeignClientInvocationHandler implements InvocationHandler, MethodInterceptor {
 
-        private Throwable e;
+        private Class clazz;
 
         public FeignClientInvocationHandler() {
         }
 
-        public FeignClientInvocationHandler(Throwable e) {
-            this.e = e;
+        public FeignClientInvocationHandler(Class clazz) {
+            this.clazz = clazz;
         }
 
         @Override
@@ -110,18 +109,16 @@ public class UnicornFeignClientFactory {
         }
 
         public Object defaultMessage() {
+            Throwable throwable = UnicornContext.getValue(UnicornConstants.FEIGN_THROWABLE);
+            log.error("服务调用降级："+clazz.getName(), throwable);
             try {
                 Constructor<?> redBeanConstr = resBeanClazz.getConstructor(String.class, String.class);
                 // 99000", "请稍后重试
                 Object resBean = BeanUtils.instantiateClass(redBeanConstr, "99000", "请稍后重试");
-                if (this.e == null) {
-                    Constructor<?> dtoContru = responseDtoClazz.getConstructor(resBeanClazz);
-                    return BeanUtils.instantiateClass(dtoContru, resBean);
-                }
-                Constructor<?> dtoContru = responseDtoClazz.getConstructor(resBeanClazz,String.class);
-                return BeanUtils.instantiateClass(dtoContru, resBean,this.e.getMessage());
+                Constructor<?> dtoContru = responseDtoClazz.getConstructor(resBeanClazz);
+                return BeanUtils.instantiateClass(dtoContru, resBean);
             } catch (NoSuchMethodException e) {
-                throw new IllegalStateException("没有发现[ " + resBeanClazz + " ]或 [ " + responseDtoClazz + "]的构造方法，ResponseDto的 构造参数类型为(String.class, String.class)",e);
+                throw new IllegalStateException("没有发现[ " + resBeanClazz + " ]或 [ " + responseDtoClazz + "]的构造方法，ResponseDto的 构造参数类型为(String.class, String.class)", e);
             }
         }
     }
