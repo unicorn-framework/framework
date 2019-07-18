@@ -30,7 +30,7 @@ import ${superControllerClassPackage};
  * @since ${date}
  */
 @RestController
-@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/bks/${table.entityPath}")
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/bkm/${table.entityPath}")
 @Api(value = "${table.comment}模块", tags = {"${table.comment}模块"})
 #if(${superControllerClass})
 public class ${controllerContext.name} extends ${superControllerClass} {

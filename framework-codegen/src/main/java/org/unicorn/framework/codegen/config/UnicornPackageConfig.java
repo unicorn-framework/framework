@@ -29,7 +29,7 @@ public class UnicornPackageConfig {
     /**
      * Service Impl包名
      */
-    private String serviceImpl = "service.bks";
+    private String serviceImpl = "service.bkm";
     /**
      * api Service包
      */
@@ -47,7 +47,7 @@ public class UnicornPackageConfig {
     /**
      * Controller包名
      */
-    private String controller = "controller.bks";
+    private String controller = "controller.bkm";
 
     private String apiController = "controller.api";
     /**

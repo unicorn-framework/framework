@@ -25,10 +25,10 @@ public class MysqlDbCloumnTypeMapper {
 		_MAP.put("FLOAT", new DbCloumnTypeInfo("FLOAT", null,"java.lang.Float"));
 		_MAP.put("DOUBLE", new DbCloumnTypeInfo("DOUBLE", null,"java.lang.Double"));
 		_MAP.put("BIT", new DbCloumnTypeInfo("BIT", null,"java.lang.Boolean"));
-		_MAP.put("DATE", new DbCloumnTypeInfo("DATE", "java.util.Date","java.util.Date"));
-		_MAP.put("TIME", new DbCloumnTypeInfo("TIME", "java.sql.Time","java.sql.Time"));
+		_MAP.put("DATE", new DbCloumnTypeInfo("DATE", "java.time.LocalDate","java.time.LocalDate"));
+		_MAP.put("TIME", new DbCloumnTypeInfo("TIME", "java.time.LocalTime","java.time.LocalTime"));
 		_MAP.put("TIMESTAMP", new DbCloumnTypeInfo("TIMESTAMP", "java.util.Date","java.util.Date"));
-		_MAP.put("DATETIME", new DbCloumnTypeInfo("DATETIME", "java.util.Date","java.util.Date"));
+		_MAP.put("DATETIME", new DbCloumnTypeInfo("DATETIME", "java.time.LocalDateTime","java.time.LocalDateTime"));
 		_MAP.put("BLOB", new DbCloumnTypeInfo("BLOB", "java.sql.Blob", "java.sql.Blob"));
 		_MAP.put("CLOB", new DbCloumnTypeInfo("CLOB", "java.sql.Clob", "java.sql.Clob"));
 		_MAP.put("NUMERIC", new DbCloumnTypeInfo("NUMERIC", "java.math.BigInteger", "java.math.BigInteger"));
