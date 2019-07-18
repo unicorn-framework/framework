@@ -112,15 +112,15 @@ public class ${serviceImplContext.name} {
 
     /**
     * 存在就更新记录，不存在就插入
-    * @param orderDetails
+    * @param ${entityContext.beanName}
     * @return
     * @throws PendingException
     */
     @Transactional(rollbackFor = {PendingException.class})
     public ${entity} insertOnExistence(${entity} ${entityContext.beanName})throws PendingException{
         try {
-            orderDetailsMapper.insertOnExistence(${entityContext.beanName});
-            return orderDetails;
+            ${mapperContext.beanName}.insertOnExistence(${entityContext.beanName});
+            return ${entityContext.beanName};
         } catch(Exception e){
             log.error("保存记录失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"保存记录失败", e);
@@ -198,7 +198,7 @@ public class ${serviceImplContext.name} {
      */
     public List<${entity}> selectListByIds(List<${table.primaryTableField.propertyType}> ids)throws PendingException{
         try {
-            return orderDetailsMapper.selectByIdList(ids);
+            return ${mapperContext.beanName}.selectByIdList(ids);
         } catch(Exception e){
             log.error("根据ID列表批量查询记录失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"根据ID列表批量查询记录失败",e);
