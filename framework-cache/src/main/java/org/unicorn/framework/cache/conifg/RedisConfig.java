@@ -55,8 +55,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 //        UnicornRedisCacheManager
 //                .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
 //                .cacheDefaults(redisCacheConfiguration).build();
-        return
-                new UnicornRedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory),redisCacheConfiguration);
+//        return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory)).cacheDefaults(redisCacheConfiguration).build();
+        return new UnicornRedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory),redisCacheConfiguration);
     }
 
     /**
