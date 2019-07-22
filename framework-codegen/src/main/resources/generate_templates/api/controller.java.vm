@@ -73,8 +73,10 @@ public class ${apiControllerContext.name} {
      * @throws PendingException
      */
     @ApiOperation("编辑记录")
-    @RequestMapping(method = {RequestMethod.PUT})
-    public ResponseDto<${entityContext.name}> edit(@RequestBody ${entityContext.name}  ${entityContext.beanName})throws PendingException{
+    @RequestMapping(value = {"/{id}"}, method = {RequestMethod.PUT})
+    public ResponseDto<${entityContext.name}> edit(@ApiParam(name = "id", value = "主键id", required = true) @PathVariable("id") Long  id,
+            @RequestBody ${entityContext.name}  ${entityContext.beanName})throws PendingException{
+        ${entityContext.beanName}.setId(id);
         return new ResponseDto<>(${apiServiceImplContext.beanName}.updateByPrimaryKey(${entityContext.beanName}));
     }
 

@@ -30,7 +30,7 @@ import ${superControllerClassPackage};
  * @since ${date}
  */
 @RestController
-@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/bkm/${table.entityPath}")
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/backstage/${table.entityPath}")
 @Api(value = "${table.comment}模块", tags = {"${table.comment}模块"})
 #if(${superControllerClass})
 public class ${controllerContext.name} extends ${superControllerClass} {
@@ -72,8 +72,10 @@ public class ${controllerContext.name} {
      * @throws PendingException
      */
     @ApiOperation("编辑记录")
-    @RequestMapping(method = {RequestMethod.PUT})
-    public ResponseDto<${entityContext.name}> edit(@RequestBody ${entityContext.name}  ${entityContext.beanName})throws PendingException{
+    @RequestMapping(value = {"/{id}"}, method = {RequestMethod.PUT})
+    public ResponseDto<${entityContext.name}> edit(@ApiParam(name = "id", value = "主键id", required = true) @PathVariable("id") Long  id,
+            @RequestBody ${entityContext.name}  ${entityContext.beanName})throws PendingException{
+        ${entityContext.beanName}.setId(id);
         return new ResponseDto<>(${serviceImplContext.beanName}.updateByPrimaryKey(${entityContext.beanName}));
     }
 
