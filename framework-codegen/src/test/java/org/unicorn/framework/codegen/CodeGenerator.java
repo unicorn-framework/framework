@@ -1,7 +1,6 @@
 package org.unicorn.framework.codegen;
 
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import org.unicorn.framework.codegen.build.UnicornAutoGenerator;
 import org.unicorn.framework.codegen.config.UnicornDataSourceConfig;
 import org.unicorn.framework.codegen.config.UnicornGlobalConfig;
 import org.unicorn.framework.codegen.config.UnicornPackageConfig;
@@ -32,7 +31,7 @@ public class CodeGenerator {
         pc.setApiPackage(true);
         //全局配置
         UnicornGlobalConfig gc = new UnicornGlobalConfig();
-        gc.setOutputDir("D:\\company\\local-project\\wx-auth\\src\\main\\java");
+        gc.setOutputDir("D:\\tmp");
         gc.setAuthor("zz");
         gc.setFileOverride(true);
         gc.setOpen(false);

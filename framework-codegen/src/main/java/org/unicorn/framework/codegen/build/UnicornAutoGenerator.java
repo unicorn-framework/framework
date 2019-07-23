@@ -8,6 +8,9 @@ import org.unicorn.framework.codegen.bo.EntityContext;
 import org.unicorn.framework.codegen.config.UnicornConstVal;
 import org.unicorn.framework.codegen.config.UnicornTemplateConfig;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -118,8 +121,16 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 		for(UnicornTableField field:fieldList){
 			String pkg=field.getColumnType().getImportPkg();
 			if(StringUtils.isNotBlank(pkg)){
+				if (pkg.equals(LocalDateTime.class.getName()) || pkg.equals(LocalDate.class.getName())
+						|| pkg.equals(LocalTime.class.getName())) {
+					importSet.add("com.fasterxml.jackson.annotation.JsonFormat");
+					importSet.add("org.springframework.format.annotation.DateTimeFormat");
+
+					field.setDateFlag(pkg.equals(LocalDateTime.class.getName())?"1":pkg.equals(LocalDate.class.getName())?"2":"3");
+				}
 				importSet.add(pkg);
 			}
+
 		}
 		return importSet;
 	}

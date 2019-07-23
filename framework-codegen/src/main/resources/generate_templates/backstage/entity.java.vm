@@ -44,7 +44,18 @@ public class ${entityContext.name} implements Serializable{
     @Column(name = "${field.name}")
     #end
 @ApiModelProperty(value = "${field.comment}", name = "${field.comment}")
-    private ${field.propertyType} ${field.propertyName};
+#if($field.dateFlag != "")
+    #if($field.dateFlag  == "1")
+@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    #elseif($field.dateFlag == "2")
+@DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    #elseif($field.dateFlag == "3")
+@DateTimeFormat(pattern = "HH:mm:ss")
+    @JsonFormat(pattern = "HH:mm:ss")#end
+#end
+private ${field.propertyType} ${field.propertyName};
 
 #end
 
