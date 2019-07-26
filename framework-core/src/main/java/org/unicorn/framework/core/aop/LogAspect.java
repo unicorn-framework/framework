@@ -37,32 +37,44 @@ public class LogAspect extends AbstractService {
 
 	@Before("controllerPointCut()") //
 	public void before(JoinPoint  pjp) {
-		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = attributes.getRequest();
-		long beginTime = System.currentTimeMillis();
-		UnicornContext.setValue("beginTime", beginTime);
-		MethodSignature signature = (MethodSignature) pjp.getSignature();
-        String url=request.getRequestURL().toString();
-		info("请求开始。。。。。");
-		info("请求地址:{}", url );
-		// 记录下请求内容
-		info("请求IP : {} ", request.getRemoteAddr());
-		info("请求方法名 : {}",signature.getDeclaringTypeName() + "." + signature.getName());
-		Object args[]=pjp.getArgs();
-		for(Object arg:args){
-			if(arg instanceof Serializable){
-				if(!(arg instanceof MultipartFile)){
-					info("请求报文 :{} ", JsonUtils.toJson(arg));
-				}
+        try {
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = attributes.getRequest();
+            long beginTime = System.currentTimeMillis();
+            UnicornContext.setValue("beginTime", beginTime);
+            MethodSignature signature = (MethodSignature) pjp.getSignature();
+            String url=request.getRequestURL().toString();
+            info("请求开始。。。。。");
+            info("请求地址:{} - {}", url , request.getMethod());
+            // 记录下请求内容
+            info("请求IP : {} ", request.getRemoteAddr());
+            info("请求方法名 : {}",signature.getDeclaringTypeName() + "." + signature.getName());
+            Object args[]=pjp.getArgs();
+            for(Object arg:args){
+                if(arg instanceof Serializable){
+                    if(!(arg instanceof MultipartFile)){
+                        info("请求报文 :{} ", JsonUtils.toJson(arg));
+                    }
 
-			}
-		}
+                }
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+
 	}
 	@AfterReturning(pointcut="controllerPointCut()",returning = "ret") //
 	public void afterReturning(Object ret) {
-		info("请求响应报文：{}", JsonUtils.toJson(ret));
-		long costMs = System.currentTimeMillis() - Long.valueOf(UnicornContext.getValue("beginTime").toString());
-		info("请求结束，耗时：{}ms", costMs);
+        try {
+            if (ret != null) {
+                info("请求响应报文：{}", JsonUtils.toJson(ret));
+            }
+            long costMs = System.currentTimeMillis() - Long.valueOf(UnicornContext.getValue("beginTime").toString());
+            info("请求结束，耗时：{}ms", costMs);
+        } catch (Exception e) {
+            // ignore
+        }
+
 	}
 
 }
