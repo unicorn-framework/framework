@@ -1,9 +1,9 @@
 package org.unicorn.framework.mybatis.config.sharding;
 
 import com.google.common.collect.Maps;
-import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
-import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
-import io.shardingsphere.api.config.rule.TableRuleConfiguration;
+import io.shardingsphere.api.config.MasterSlaveRuleConfiguration;
+import io.shardingsphere.api.config.ShardingRuleConfiguration;
+import io.shardingsphere.api.config.TableRuleConfiguration;
 import io.shardingsphere.api.config.strategy.InlineShardingStrategyConfiguration;
 import io.shardingsphere.core.constant.properties.ShardingPropertiesConstant;
 import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
