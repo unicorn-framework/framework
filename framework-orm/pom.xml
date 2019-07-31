@@ -13,26 +13,32 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sharding-jdbc-spring-namespace>3.0.0</sharding-jdbc-spring-namespace>
+		<sharding-jdbc-spring-namespace>3.1.0</sharding-jdbc-spring-namespace>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>${mybatis-spring-boot-starter.version}</version>
-		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-typehandlers-jsr310 -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-typehandlers-jsr310</artifactId>
 			<version>1.0.2</version>
 		</dependency>
-
+        <dependency>
+            <artifactId>pagehelper</artifactId>
+            <groupId>com.github.pagehelper</groupId>
+            <version>5.0.0</version>
+        </dependency>
 		<!--pagehelper -->
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<version>1.2.5</version>
+			<version>1.2.12</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>pagehelper</artifactId>
+                    <groupId>com.github.pagehelper</groupId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>tk.mybatis</groupId>

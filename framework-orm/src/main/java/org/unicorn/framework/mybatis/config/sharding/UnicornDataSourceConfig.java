@@ -1,9 +1,9 @@
 package org.unicorn.framework.mybatis.config.sharding;
 
 import com.google.common.collect.Maps;
-import io.shardingsphere.api.config.MasterSlaveRuleConfiguration;
-import io.shardingsphere.api.config.ShardingRuleConfiguration;
-import io.shardingsphere.api.config.TableRuleConfiguration;
+import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
+import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
+import io.shardingsphere.api.config.rule.TableRuleConfiguration;
 import io.shardingsphere.api.config.strategy.InlineShardingStrategyConfiguration;
 import io.shardingsphere.core.constant.properties.ShardingPropertiesConstant;
 import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
@@ -85,7 +85,7 @@ public class UnicornDataSourceConfig {
         try {
             Properties pro = new Properties();
             pro.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), unicornDataSourceBaseProperties.isShowSql());
-            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, Maps.newConcurrentMap(), pro);
+            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration,Maps.newConcurrentMap(), pro);
         } catch (Exception e) {
             log.error("创建分片数据源失败", e);
         }
