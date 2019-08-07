@@ -11,6 +11,7 @@ import java.util.Collection;
  */
 @Data
 public class UnicornUser extends User {
+    private static final long serialVersionUID = 1L;
     //用户ID
     private Long id;
     //是否新用户
