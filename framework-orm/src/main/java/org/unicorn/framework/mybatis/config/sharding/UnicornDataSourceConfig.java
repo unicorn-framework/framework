@@ -85,7 +85,7 @@ public class UnicornDataSourceConfig {
         try {
             Properties pro = new Properties();
             pro.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), unicornDataSourceBaseProperties.isShowSql());
-            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, Maps.newConcurrentMap(), pro);
+            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration,Maps.newConcurrentMap(), pro);
         } catch (Exception e) {
             log.error("创建分片数据源失败", e);
         }
