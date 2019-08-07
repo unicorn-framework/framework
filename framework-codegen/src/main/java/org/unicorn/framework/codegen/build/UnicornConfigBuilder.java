@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.unicorn.framework.codegen.config.*;
+import org.unicorn.framework.codegen.mapper.DbCloumnTypeInfo;
+import org.unicorn.framework.codegen.mapper.MysqlDbCloumnTypeMapper;
 
 import java.io.File;
 import java.sql.Connection;
@@ -302,7 +304,7 @@ public class UnicornConfigBuilder  {
                             }
                         }
                     }
-                    List<UnicornTableField> fieldList = getListFields(tableInfo, strategy);
+                    List<UnicornTableField> fieldList = getListFields(tableInfo, strategy,config);
                     tableInfo.setFields(fieldList);
                     tableList.add(tableInfo);
                 } else {
@@ -367,9 +369,10 @@ public class UnicornConfigBuilder  {
      *
      * @param tableName 表名称
      * @param strategy  命名策略
+     * @param config
      * @return 表信息
      */
-    private List<UnicornTableField> getListFields(UnicornTableInfo tableInfo,  NamingStrategy strategy){
+    private List<UnicornTableField> getListFields(UnicornTableInfo tableInfo, NamingStrategy strategy, UnicornStrategyConfig config){
        String tableName=tableInfo.getName();
     	boolean haveId = false;
         List<UnicornTableField> fieldList = new ArrayList<>();
@@ -399,7 +402,13 @@ public class UnicornConfigBuilder  {
                 }
                 field.setType(results.getString(querySQL.getFieldType()));
                 field.setPropertyName(strategyConfig, processName(field.getName(), strategy));
-                field.setColumnType(dataSourceConfig.getTypeConvert().processTypeConvert(processJdbcType(field.getType())));
+                String type = processJdbcType(field.getType());
+
+                if (MysqlDbCloumnTypeMapper.DATELIST.contains(type) && config.isDateJava8()) {
+                    type += "_X";
+                }
+                DbCloumnTypeInfo dbCloumnTypeInfo = dataSourceConfig.getTypeConvert().processTypeConvert(type);
+                field.setColumnType(dbCloumnTypeInfo);
                 field.setComment(results.getString(querySQL.getFieldComment()));
                 fieldList.add(field);
             }
