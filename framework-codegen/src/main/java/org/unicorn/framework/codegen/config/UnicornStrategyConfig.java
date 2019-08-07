@@ -82,8 +82,18 @@ public class UnicornStrategyConfig {
      */
     private boolean entityBuilderModel = false;
 
+    private boolean dateJava8 = false;
+
     public void setDbColumnUnderline(boolean dbColumnUnderline) {
         DB_COLUMN_UNDERLINE = dbColumnUnderline;
+    }
+
+    public boolean isDateJava8() {
+        return dateJava8;
+    }
+
+    public void setDateJava8(boolean dateJava8) {
+        this.dateJava8 = dateJava8;
     }
 
     /**
