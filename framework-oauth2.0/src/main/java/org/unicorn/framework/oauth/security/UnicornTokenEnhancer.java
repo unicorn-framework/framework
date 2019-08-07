@@ -35,6 +35,7 @@ public class UnicornTokenEnhancer implements TokenEnhancer {
             if (authentication.getPrincipal() instanceof UnicornUser) {
                 UnicornUser user = (UnicornUser) authentication.getPrincipal();
                 additionalInformation.put("userInfo", user);
+                additionalInformation.put("userId", user.getId());
             }
             OAuth2RefreshToken refreshToken = token.getRefreshToken();
             if (refreshToken instanceof DefaultOAuth2RefreshToken) {
