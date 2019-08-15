@@ -26,6 +26,24 @@ public abstract class SimpleSlatUitl {
         return stringBuffer.toString();
     }
 
+    /**
+     * 字符串数字加盐
+     * @param s
+     * @return
+     */
+    public static String slatWithNumber(String s) {
+        if (s == null || s.length() < 13) {
+            return s;
+        }
+        StringBuffer stringBuffer = new StringBuffer(s);
+        stringBuffer.insert(1, RandomUtils.getCode(2, 0));
+        stringBuffer.insert(4, RandomUtils.getCode(2, 0));
+        stringBuffer.insert(7, RandomUtils.getCode(2, 0));
+        stringBuffer.insert(10, RandomUtils.getCode(2, 0));
+        stringBuffer.insert(13, RandomUtils.getCode(2, 0));
+        return stringBuffer.toString();
+    }
+
     public static String deSlat(String s) {
         if (s == null || s.length() < 13) {
             return s;
@@ -40,8 +58,10 @@ public abstract class SimpleSlatUitl {
     }
 
     public static void main(String[] args) {
-        String s = slat("o6_bmasdasdsad6_2sgVt7hMZOPfL");
+        String code = "o6_bmasdasdsad6_2sgVt7hMZOPfL";
+        String s = slat(code);
         System.out.println(s);
         System.out.println(deSlat(s));
+        System.out.println(deSlat(s).equals(code));
     }
 }
