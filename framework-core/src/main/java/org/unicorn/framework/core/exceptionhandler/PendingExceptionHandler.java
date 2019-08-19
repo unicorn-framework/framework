@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
-import org.unicorn.framework.core.exception.UnicornRuntimeException;
 
 /**
  * @author xiebin
@@ -17,11 +16,13 @@ public class PendingExceptionHandler implements IExceptionHandler {
             return true;
         } else if (e.getCause() instanceof PendingException) {
             return true;
-        } else if (e.getCause() instanceof UnicornRuntimeException) {
-            return true;
-        } else if (e instanceof UnicornRuntimeException) {
-            return true;
         }
+
+//        else if (e.getCause() instanceof UnicornRuntimeException) {
+//            return true;
+//        } else if (e instanceof UnicornRuntimeException) {
+//            return true;
+//        }
         return false;
     }
 
@@ -32,19 +33,23 @@ public class PendingExceptionHandler implements IExceptionHandler {
             PendingException pe = (PendingException) e;
             resDto.setResCode(pe.getCode());
             resDto.setResInfo(pe.getMessage());
+            resDto.setTip(pe.getTipsFlag());
         } else if (e.getCause() instanceof PendingException) {
             PendingException pe = (PendingException) e.getCause();
             resDto.setResCode(pe.getCode());
             resDto.setResInfo(pe.getMessage());
-        } else if (e.getCause() instanceof UnicornRuntimeException) {
-            UnicornRuntimeException pe = (UnicornRuntimeException) e.getCause();
-            resDto.setResCode(pe.getCode());
-            resDto.setResInfo(pe.getMessage());
-        } else if (e instanceof UnicornRuntimeException) {
-            UnicornRuntimeException pe = (UnicornRuntimeException) e;
-            resDto.setResCode(pe.getCode());
-            resDto.setResInfo(pe.getMessage());
+            resDto.setTip(pe.getTipsFlag());
         }
+//       else if (e.getCause() instanceof UnicornRuntimeException) {
+//            UnicornRuntimeException pe = (UnicornRuntimeException) e.getCause();
+//            resDto.setResCode(pe.getCode());
+//            resDto.setResInfo(pe.getMessage());
+//            resDto.setTip(pe.getTipsFlag());
+//        } else if (e instanceof UnicornRuntimeException) {
+//            UnicornRuntimeException pe = (UnicornRuntimeException) e;
+//            resDto.setResCode(pe.getCode());
+//            resDto.setResInfo(pe.getMessage());
+//        }
         resDto.setUrl(url);
         return resDto;
     }
