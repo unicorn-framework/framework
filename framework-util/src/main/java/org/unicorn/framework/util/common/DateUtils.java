@@ -75,7 +75,32 @@ public class DateUtils {
         cal.add(Calendar.DAY_OF_YEAR, days);
         return cal.getTime();
     }
+    /**
+     * 日期加时间
+     *
+     * @param day   指定日期
+     * @param value 数值
+     * @param type  0:天,1:小时,2:分钟
+     * @return
+     */
+    public static Date addDays(Date date, int value, int type) {
 
+        if (date == null) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        if (type == 0) {
+            cal.add(Calendar.DATE, value);// value为增加的天数，可以改变的
+        }
+        if (type == 1) {
+            cal.add(Calendar.HOUR, value);// 24小时制
+        }
+        if (type == 2) {
+            cal.add(Calendar.MINUTE, value);
+        }
+        return date = cal.getTime();
+    }
     public static int getIntervalDays(Date startDate, Date endDate) {
         startDate = beginOfDay(startDate);
         endDate = beginOfDay(endDate);
