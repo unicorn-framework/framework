@@ -23,15 +23,19 @@ import java.util.logging.Logger;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    /**
+     * 不需要弹出来的 返回码列表
+     */
     List<String> resCodeList=Lists.newArrayList();
-    {
+    {   //token失效
         resCodeList.add(SysCode.SESSION_ERROR.getCode());
+        //接口不存在
         resCodeList.add(SysCode.URL_NOT_EXIST.getCode());
     }
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public ResponseDto<String> jsonErrorHandler(HttpServletRequest req, Exception e) throws Exception {
-        //初始化返回
+        //初始化返回  //tips：默认是false
         ResponseDto<String> resDto = new ResponseDto<>(SysCode.SYS_FAIL);
         String url=req.getRequestURL().toString();
         resDto.setUrl(url);
@@ -45,13 +49,7 @@ public class GlobalExceptionHandler {
                 break;
             }
         }
-
-
         log.error("异常信息:{}", JsonUtils.toJson(resDto), e);
-        if(!resCodeList.contains(resDto.getResCode())){
-            //设置为展示resInfo信息
-            resDto.setTip(true);
-        }
         return resDto;
     }
 }

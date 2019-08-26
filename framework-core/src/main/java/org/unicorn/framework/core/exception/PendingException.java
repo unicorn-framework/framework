@@ -14,35 +14,56 @@ public class PendingException extends UnicornException {
     private static final long serialVersionUID = 1L;
 
     public PendingException(String code, String message) {
-        super(code, message);
-        this.code = code;
+        this(code, message, true);
+    }
+
+    public PendingException(String code, String message, Boolean tipsFlag) {
+        super(code, message, tipsFlag);
     }
 
     public PendingException(ResBean resBean) {
-        super(resBean.getCode(), resBean.getInfo());
+        this(resBean, true);
+    }
+
+    public PendingException(ResBean resBean, Boolean tipsFlag) {
+        super(resBean.getCode(), resBean.getInfo(),tipsFlag);
         this.code = resBean.getCode();
     }
 
     public PendingException(ResponseDto<?> responseDto) {
-        super(responseDto.getResCode(), responseDto.getResInfo());
+        this(responseDto, true);
+    }
+
+    public PendingException(ResponseDto<?> responseDto, Boolean tipsFlag) {
+        super(responseDto.getResCode(), responseDto.getResInfo(),tipsFlag);
         this.code = responseDto.getResCode();
     }
 
-
     public PendingException(String code, String message, Throwable throwable) {
-        super(code, message, throwable);
+        this(code,message,throwable,true);
+    }
+
+    public PendingException(String code, String message, Throwable throwable,Boolean tipsFlag) {
+        super(code, message, throwable,tipsFlag);
         this.code = code;
     }
 
 
     public PendingException(ResBean resCode, String message) {
-        super(resCode.getCode(), message);
-        this.code = resCode.getCode();
+        this(resCode,message,true);
     }
-    public PendingException(ResBean resCode, String message,Throwable throwable) {
-        super(resCode.getCode(), message,throwable);
+
+    public PendingException(ResBean resCode, String message,Boolean tipsFlag) {
+        super(resCode.getCode(), message,tipsFlag);
         this.code = resCode.getCode();
     }
 
+    public PendingException(ResBean resCode, String message, Throwable throwable) {
+        this(resCode,message,throwable,true);
+    }
 
+    public PendingException(ResBean resCode, String message, Throwable throwable,Boolean tipsFlag) {
+        super(resCode.getCode(), message, throwable,tipsFlag);
+        this.code = resCode.getCode();
+    }
 }

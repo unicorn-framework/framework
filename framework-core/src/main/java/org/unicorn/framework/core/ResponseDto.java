@@ -21,7 +21,10 @@ public class ResponseDto<T> {
     private String url;
     @ApiModelProperty(value = "请求是否成功", name = "请求是否成功")
     private boolean success;
-
+    /**
+     * 默认为false
+     */
+    @ApiModelProperty(value = "标识是否需要弹出resInfo内容", name = "标识是否需要弹出resInfo内容")
     private boolean tip=false;
 
     private Date responseTime=new Date();
