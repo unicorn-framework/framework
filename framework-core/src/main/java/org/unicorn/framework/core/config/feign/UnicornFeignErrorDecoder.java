@@ -34,16 +34,17 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
             if(response.status() == 403){
                 return new PendingException(SysCode.UNAUTHOR__ERROR);
             }
+            // 这里直接拿到feign服务端抛出的异常信息
+            message = Util.toString(response.body().asReader());
+            log.info("feign 异常信息===》"+message);
+            ResponseDto  responseDto=JsonUtils.fromJson(message, ResponseDto.class);
             if(response.status() >= 400 && response.status() <= 499){
+
                 if(methodKey.contains("AuthTokenClient#postAccessToken(String,Map)")){
                     return new HystrixBadRequestException("用户信息错误");
                 }
                 return new HystrixBadRequestException("请求参数错误 :"+methodKey);
             }
-            // 这里直接拿到feign服务端抛出的异常信息
-            message = Util.toString(response.body().asReader());
-            log.info("feign 异常信息===》"+message);
-            ResponseDto  responseDto=JsonUtils.fromJson(message, ResponseDto.class);
             return  new PendingException(responseDto);
         } catch (Exception e) {
             log.error("feign错误",e);
