@@ -15,7 +15,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * SHA1的算法
+ * SHA256的算法
+ * 安全散列算法
  *
  * @author xiebin
  */

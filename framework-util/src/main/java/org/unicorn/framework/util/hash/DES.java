@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * DES加解密工具类
+ * 对称加密   AES,3DES,DES
  *
  * @author xiebin
  */
@@ -23,22 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 public class DES {
 
 
-    public static void main(String[] args) {  
-          
-        String content="你好你好你好";  
-        String key="01234567";  
-      
-        System.out.println("加密前："+content);  
-        byte[] encrypted=encode(content.getBytes(), key.getBytes());  
-        System.out.println("加密后："+encode16(content,key));  
-        byte[] decrypted=decode(encrypted, key.getBytes());  
-        System.out.println("解密后："+new String(decrypted));  
-        System.out.println(decode16("488eb117913186cfc7fbe9d128b6f61676be7a5459f8e71d",key));
-    }  
+
   
     /**
      * 加密16位串
-     * @param string
+     * @param connent
      * @param key
      * @return	加密串
      */
@@ -99,5 +89,20 @@ public class DES {
         	 log.error("解密错误", e);
         }  
         return null;  
-    }  
+    }
+
+    public static void main(String[] args) {
+
+        String content="你好你好你好你好你好你好你好你好你好";
+        //长度只能是8
+        String key="98765432";
+
+        System.out.println("加密前："+content);
+        byte[] encrypted=encode(content.getBytes(), key.getBytes());
+        System.out.println("加密后："+encode16(content,key));
+        byte[] decrypted=decode(encrypted, key.getBytes());
+        System.out.println("解密后："+new String(decrypted));
+    }
+
+
 }

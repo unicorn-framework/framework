@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * md5算法
+ * 信息摘要算法
  *
  * @author xiebin
  */

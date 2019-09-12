@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * SHA1的算法
+ * 安全散列算法
  *
  * @author xiebin
  */
