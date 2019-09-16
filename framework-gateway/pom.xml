@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.unicorn</groupId>
-            <artifactId>framework-cache</artifactId>
+            <artifactId>framework-core</artifactId>
             <version>${module.version}</version>
         </dependency>
 
@@ -25,11 +25,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
         </dependency>
-        <!--&lt;!&ndash; 缓存 限流信息存储在redis中&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-data-redis</artifactId>-->
-        <!--</dependency>-->
+        <!-- 缓存 限流信息存储在redis中-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <!--限流 -->
         <dependency>
             <groupId>com.marcosbarbero.cloud</groupId>
