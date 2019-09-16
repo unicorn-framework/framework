@@ -147,6 +147,10 @@ public class SysCode {
      */
     public static final ResBean API_LIMIT_ERROR = new ResBean("99906", "该接口超过调用限制");
 
+    /**
+     * api limit
+     */
+    public static final ResBean API_SECURITY_ERROR = new ResBean("99907", "您的请求被拒绝");
 
     //===================9开头的为系统异常  end==================================
 

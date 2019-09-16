@@ -35,6 +35,24 @@ public class HandlerAdapter  {
 		throw new PendingException(SysCode.NOT_FOUND_HANDLER,"没有找到对应的处理类");
 	}
 
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <S>  List<IHandler<S>> handlerList(S s) throws PendingException{
+		List<IHandler<S>> list=new ArrayList<>();
+		Map<String, IHandler> beanMaps=SpringContextHolder.getApplicationContext().getBeansOfType(IHandler.class);
+		for(String beanName:beanMaps.keySet()){
+			IHandler<S> handler=beanMaps.get(beanName);
+			try{
+				if(handler.supports(s)){
+					list.add(handler);
+				}
+			}catch(Exception e){
+
+			}
+		}
+		return list;
+	}
+
 	
 	public static <T> List<T> getHandler(Class<T> clazz) throws PendingException{
 		List<T> list=new ArrayList<>();

@@ -286,18 +286,21 @@ public class RSA {
         mm.put("resCode", "0000");
         mm.put("resInfo", "成功");
         mm.put("data", "null");
-        String content = JsonUtils.toJson(mm);
+        String content = "bearer unicorn:0f8aa4df34e34a249db57980c1c8b0882019-09-12 18:20:38{\"pageNo\": 1,\"pageSize\": 10}";
         //初始化密钥对
         KeyPair keyPair = initKey();
         //私钥
         String privateKey = Base64Util.encode(keyPair.getPrivate().getEncoded());
         //公钥
-        String publicKey = Base64Util.encode(keyPair.getPublic().getEncoded());
-        System.out.println("privateKey==" + privateKey);
-        System.out.println("publicKey==" + publicKey);
+//        String publicKey = Base64Util.encode(keyPair.getPublic().getEncoded());
+//        System.out.println("privateKey==" + privateKey);
+//        System.out.println("publicKey==" + publicKey);
+        String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBO0VvYNuIHdWzTFRoUD9CN21L4cmSU10516GfnPpKhMQyXKqXoQzOvptFrvDyMd+koqcy7KuFTdgmhjvjzNYCgAJYNx+2yyPvc4TXiKmjpY6GVGkdTETitIVcW88B+Cc+LBiWbNEm/kA6bGXmYTOb7m9R2d0c6CwZGxp0z/n7BwIDAQAB";
+
+        privateKey="MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAME7RW9g24gd1bNMVGhQP0I3bUvhyZJTXTnXoZ+c+kqExDJcqpehDM6+m0Wu8PIx36SipzLsq4VN2CaGO+PM1gKAAlg3H7bLI+9zhNeIqaOljoZUaR1MROK0hVxbzwH4Jz4sGJZs0Sb+QDpsZeZhM5vub1HZ3RzoLBkbGnTP+fsHAgMBAAECgYEAvCeB0hVHTwB2ITPXEQfqwQiFpZkDFTeVlIgyeeB6G2uyO7Pd7O3GMd6KBU12ku8bbQ1wr3ajAZeuPL0Cviurymt4lhXXRDDNNzyUSCSAnaj+wf93p3IGj5Qu7GzMXwj5QGwI8iC3tmjACSDteXcxa8uALxiywJiCrAepUZbKp2kCQQDsUgOnyJ/mctQ9y+P5g4+J1xG4bzpjpF/82P29IguNkmXik49z/uNPSJq83uSYsRS9XlWRO1+KFBUv5KzWzmatAkEA0VKrWmTMAzn5SNwWCSNqCMGSoZPkUnLoi3rEjjugq80BcOVfgl0SuFcxSFzdEw/UHkvSN/XQRe1IGDLgMN3DAwJBAJjPp8F0/8C6e/fBwhb0NXsCcVj7w5vvDIqpndoRC7tt8SgEFv0A0ufPoQ+Eafk6eJjDST1yUSMuPU0M5563NLkCQB60HphSwq4SeeNbDQxoGmyQYD69H7eMTVnwNxaZ3nZ0yqpRqtHHbzCE8aCopnDeWIHdI0e8EcHADVwnUkU4shsCQDYSIJz0iYXsr+NL6cv0Q5HrK14v8aYaa4HlgRAro4a6OkyuGr3b+wHhJCddPmaeczvXNqp2qDp3CFUCs1QoJ7M=";
         //签名
         String signStr = sign(content, privateKey, "utf-8");
-        System.out.println(signStr);
+        System.out.println("签名=="+signStr);
         //验签
         System.out.println(verify(content, signStr, publicKey, "utf-8"));
         //私钥加密
