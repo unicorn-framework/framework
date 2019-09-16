@@ -52,19 +52,4 @@ public class HandlerAdapter  {
 		}
 		return list;
 	}
-
-	
-	public static <T> List<T> getHandler(Class<T> clazz) throws PendingException{
-		List<T> list=new ArrayList<>();
-		Map<String, T> beanMaps=SpringContextHolder.getApplicationContext().getBeansOfType(clazz);
-		if(beanMaps==null||beanMaps.size()==0){
-			return list;
-		}
-		Set<String> beanNameSet=beanMaps.keySet();
-		for(String beanName:beanNameSet){
-			list.add(beanMaps.get(beanName));
-		}
-		return null;
-	}
-	
 }

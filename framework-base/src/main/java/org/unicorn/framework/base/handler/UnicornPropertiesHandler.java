@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+
+/**
+ * 属性处理
+ * @author  xiebin
+ */
 @Component
 @Slf4j
 public class UnicornPropertiesHandler implements PropertySourceLoader {
