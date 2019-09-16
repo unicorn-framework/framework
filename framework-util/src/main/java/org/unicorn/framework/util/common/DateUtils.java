@@ -573,7 +573,7 @@ public class DateUtils {
         }catch (MalformedURLException e) {
             e.printStackTrace();
         }catch (IOException e) {
-            // TODO: handle exception
+            // TODO: handler exception
             e.printStackTrace();
         }
         return new Date();
