@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -20,6 +21,7 @@ import java.util.List;
 @Configuration
 @EnableResourceServer
 @EnableConfigurationProperties({OAuth2Properties.class})
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Slf4j
 public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter {
   @Autowired
@@ -28,7 +30,9 @@ public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter
     public void configure(HttpSecurity http) throws Exception {
         List<String> permitList=  oauth2Properties.getPermitAlls();
         permitList.add("/oauth/**");
-        log.info("权限==="+JsonUtils.toJson(permitList));
+        log.info("不需要权限==="+JsonUtils.toJson(permitList));
+        List<String> authenticatedList=oauth2Properties.getAuthenticated();
+        log.info("需要权限==="+JsonUtils.toJson(authenticatedList));
         http.requestMatchers()
                 .and()
                 .authorizeRequests()
@@ -36,6 +40,7 @@ public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter
                 .antMatchers("/**.html", "/**.js", "/**.css", "/**.ico", "/**.ttf").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/swagger**","/v2/**").permitAll()
+                .antMatchers(authenticatedList.stream().toArray(String[]::new)).authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();

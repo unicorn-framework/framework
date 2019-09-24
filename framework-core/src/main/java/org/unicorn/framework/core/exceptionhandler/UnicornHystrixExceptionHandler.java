@@ -12,6 +12,7 @@ import org.unicorn.framework.core.exception.PendingException;
 public class UnicornHystrixExceptionHandler {
 
     public void hystrixExceptionHandler( Throwable throwable) throws PendingException {
+
         if (throwable instanceof PendingException) {
             throw (PendingException) throwable;
         }else if(throwable instanceof HystrixTimeoutException){
