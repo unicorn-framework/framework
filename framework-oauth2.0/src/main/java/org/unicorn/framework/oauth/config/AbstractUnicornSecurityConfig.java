@@ -40,27 +40,4 @@ public class AbstractUnicornSecurityConfig extends WebSecurityConfigurerAdapter 
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setUserDetailsService(userDetailsService());
-//        authenticationProvider.setPasswordEncoder(passwordEncoder);
-//        return authenticationProvider;
-//    }
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(authenticationProvider());
-//    }
-//
-//
-//    /**
-//     * 用户明细服务
-//     *
-//     * @return
-//     */
-//    @Override
-//    public abstract UserDetailsService userDetailsService();
 }
