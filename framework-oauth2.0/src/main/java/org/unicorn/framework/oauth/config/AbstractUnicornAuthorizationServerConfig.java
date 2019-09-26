@@ -3,13 +3,10 @@ package org.unicorn.framework.oauth.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -32,6 +29,7 @@ public abstract class AbstractUnicornAuthorizationServerConfig extends Authoriza
     @Autowired
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private TokenStore tokenStore;
 
@@ -41,12 +39,19 @@ public abstract class AbstractUnicornAuthorizationServerConfig extends Authoriza
     @Autowired
     private WebResponseExceptionTranslator customWebResponseExceptionTranslator;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(tokenStore)
                 .exceptionTranslator(customWebResponseExceptionTranslator)
                 .authenticationManager(authenticationManager)
-                .tokenEnhancer(unicornTokenEnhancer);
+                .tokenEnhancer(unicornTokenEnhancer)
+                .userDetailsService(userDetailsService())
+
+        ;
 
     }
 
@@ -65,6 +70,7 @@ public abstract class AbstractUnicornAuthorizationServerConfig extends Authoriza
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
         oauthServer.authenticationEntryPoint(new UnicornAuthExceptionEntryPoint())
                 .accessDeniedHandler(new UnicornAccessDeniedHandler())
+                .passwordEncoder(passwordEncoder)
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()");
     }
@@ -79,5 +85,12 @@ public abstract class AbstractUnicornAuthorizationServerConfig extends Authoriza
      * @return
      */
     public abstract ClientDetailsService clientDetailsService();
+
+    /**
+     * 用户明细服务
+     *
+     * @return
+     */
+    public abstract UserDetailsService userDetailsService();
 
 }
