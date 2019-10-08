@@ -22,6 +22,11 @@ public class SysCode {
 
 
     //===================4开头的授权及接口相关异常  start  ==================================
+
+    /**
+     * 认证授权错误
+     */
+    public static final ResBean AUTH_FAIL = new ResBean("49999", "认证授权失败");
     /**
      * session失效
      */

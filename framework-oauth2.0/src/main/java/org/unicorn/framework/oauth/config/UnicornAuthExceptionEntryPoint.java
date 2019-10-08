@@ -1,6 +1,9 @@
 package org.unicorn.framework.oauth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.unicorn.framework.core.ResponseDto;
@@ -14,15 +17,24 @@ import javax.servlet.http.HttpServletResponse;
  * @author xiebin
  */
 public class UnicornAuthExceptionEntryPoint implements AuthenticationEntryPoint {
+    @Autowired
+    private ObjectMapper objectMapper;
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,AuthenticationException authException)  throws ServletException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            ResponseDto resDto= new ResponseDto<>(SysCode.SESSION_ERROR);
+            ResponseDto resDto= new ResponseDto<>(SysCode.AUTH_FAIL);
             resDto.setUrl(request.getRequestURL().toString());
-            mapper.writeValue(response.getOutputStream(), resDto);
+            if(authException.getCause() instanceof AccessDeniedException){
+                resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
+                resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
+            }
+            if(authException instanceof InsufficientAuthenticationException){
+                resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
+                resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
+            }
+            objectMapper.writeValue(response.getOutputStream(), resDto);
         } catch (Exception e) {
             throw new ServletException();
         }
