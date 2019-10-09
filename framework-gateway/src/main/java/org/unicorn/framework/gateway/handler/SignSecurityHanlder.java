@@ -1,7 +1,7 @@
 package org.unicorn.framework.gateway.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.core.SysCode;
@@ -9,6 +9,7 @@ import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.gateway.dto.BaseSecurityDto;
 import org.unicorn.framework.util.hash.RSA;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,9 +20,9 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class SignSecurityHanlder extends AbstractSecurityHanlder {
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-
+    @Qualifier("redisTemplate")
+    @Resource
+    private RedisTemplate redisTemplate;
     @Override
     public void vaildation(BaseSecurityDto baseSecurityDto) throws PendingException {
         try {

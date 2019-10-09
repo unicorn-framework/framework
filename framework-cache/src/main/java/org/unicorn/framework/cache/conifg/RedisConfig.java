@@ -74,6 +74,20 @@ public class RedisConfig extends CachingConfigurerSupport {
         return template;
     }
 
+    /**
+     * 字符串
+     *
+     * @param factory
+     * @return
+     */
+    @Bean
+    public RedisTemplate<String, String> stringRedisTemplate(RedisConnectionFactory factory) {
+        StringRedisTemplate template = new StringRedisTemplate(factory);
+        template.setValueSerializer(jackson2JsonRedisSerializer());
+        template.afterPropertiesSet();
+        return template;
+    }
+
 
     private  Jackson2JsonRedisSerializer jackson2JsonRedisSerializer(){
         Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
