@@ -49,7 +49,7 @@ public class SignSecurityHanlder extends AbstractSecurityHanlder {
 
     @Override
     public boolean supports(BaseSecurityDto baseSecurityDto) throws PendingException {
-        return true;
+        return super.getGatewaySecurityProperties().getSignCheckEnable();
     }
 
     @Override

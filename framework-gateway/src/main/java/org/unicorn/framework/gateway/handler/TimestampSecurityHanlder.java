@@ -41,7 +41,7 @@ public class TimestampSecurityHanlder extends AbstractSecurityHanlder {
 
     @Override
     public boolean supports(BaseSecurityDto baseSecurityDto) throws PendingException {
-        return true;
+        return super.getGatewaySecurityProperties().getTimeStampCheckEnable();
     }
 
     @Override

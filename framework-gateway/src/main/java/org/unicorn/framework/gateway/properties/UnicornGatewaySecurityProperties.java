@@ -27,5 +27,13 @@ public class UnicornGatewaySecurityProperties {
      * 是否开启安全过滤 默认不开启
      */
     private Boolean enable=false;
+    /**
+     * 是否开启签名检查
+     */
+    private Boolean signCheckEnable=false;
+    /**
+     * 是否开启时间检查
+     */
+    private Boolean timeStampCheckEnable=false;
 
 }
