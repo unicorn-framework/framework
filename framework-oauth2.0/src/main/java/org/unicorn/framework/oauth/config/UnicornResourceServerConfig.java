@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.util.AntPathMatcher;
 import org.unicorn.framework.oauth.properties.OAuth2Properties;
 import org.unicorn.framework.util.json.JsonUtils;
 
@@ -35,9 +36,9 @@ public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 .antMatchers(permitList.stream().toArray(String[]::new)).permitAll()
-                .antMatchers("/**.html", "/**.js", "/**.css", "/**.ico", "/**.ttf").permitAll()
+                .antMatchers("/**/**.html", "/**/**.js", "/**/**.css", "/**/**.ico", "/**/**.ttf").permitAll()
                 .antMatchers("/static/**").permitAll()
-                .antMatchers("/swagger**","/v2/**").permitAll()
+                .antMatchers("/**/swagger**","/**/v2/**").permitAll()
                 .antMatchers(authenticatedList.stream().toArray(String[]::new)).authenticated()
                 .anyRequest().authenticated()
                 .and()
@@ -49,5 +50,8 @@ public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter
         resources.authenticationEntryPoint(new UnicornAuthExceptionEntryPoint());
     }
 
-
+  public static void main(String args []){
+      AntPathMatcher antPathMatcher=new AntPathMatcher("/");
+      System.out.println(antPathMatcher.match("/**/swagger**","/gf-backstage-service/swagger-resources"));
+  }
 }

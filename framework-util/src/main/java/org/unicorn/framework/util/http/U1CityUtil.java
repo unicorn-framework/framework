@@ -1,16 +1,20 @@
 package org.unicorn.framework.util.http;
-
 import org.assertj.core.util.Lists;
+import org.unicorn.framework.util.json.JsonUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
+import java.security.MessageDigest;
 
 /**
  *   U1CityUtil.invoke()
@@ -55,7 +59,6 @@ public class U1CityUtil
             result.put("result",buffer.toString());
             return result;
         } catch ( Exception e ) {
-            e.printStackTrace();
             HashMap<String,String> result=new HashMap<String,String>();
             result.put("code","0");
             result.put("msg",e.getMessage());
@@ -117,7 +120,7 @@ public class U1CityUtil
         return buf.toString();
     }
 
-    public static   HashMap<String,String> invoke(String pUrl,String pMethod, String pUser, String pSession, String pFormat,Map<String,Object> data ){
+    public static   HashMap<String,String> invoke(String pUrl,String pMethod, String pUser, String pSession, String pFormat,Map<String,String> data ){
         StringBuilder pStr=new StringBuilder();
         pStr.append("user=").append(U1CityUtil.encodeURL(pUser,"utf-8"));
         pStr.append("&").append("method=").append(U1CityUtil.encodeURL(pMethod,"utf-8"));
@@ -126,7 +129,7 @@ public class U1CityUtil
         String str=pMethod+pSession;
         for(String key:data.keySet()){
             str=str+key+data.get(key);
-            pStr.append("&").append(key).append("=").append(U1CityUtil.encodeURL(data.get(key).toString(),"utf-8"));
+            pStr.append("&").append(key).append("=").append(U1CityUtil.encodeURL(data.get(key),"utf-8"));
         }
 
         String token=strMd5(strAsc(str));
@@ -163,37 +166,43 @@ public class U1CityUtil
 
     public static void main(String[] args)
     {
-        HashMap<String,Object> data=new HashMap<String, Object>();
-        data.put("appKey","U1CITYFXSTEST");
-        data.put("orderNo","111222");
-        data.put("uName","zhangsan");
-        data.put("province","湖南省");
-        data.put("city","长沙市");
-        data.put("district","开福区");
-        data.put("address","湖南省长沙市开福区芙蓉北路17号");
-        data.put("postcode","000000");
-        data.put("phone","15588888888");
-
-        data.put("oSumPrice","100.00");
-        data.put("expCod","0");
-        HashMap<String,Object> orderData=new HashMap<String, Object>();
-        orderData.put("proNo","1");
-        orderData.put("proTitle","口红");
-        orderData.put("proCount","10");
-        orderData.put("proPrice","10.98");
-        orderData.put("proSku","1");
-        List<HashMap<String,Object>> orderList=Lists.newArrayList();
-        orderList.add(orderData);
-        data.put("OrderPro", orderList);
+        HashMap<String,String> data=new HashMap<String, String>();
+//        data.put("appKey","U1CITYFXSTEST");
+//        data.put("orderNo","111224");
+//        data.put("uName","zhangsan");
+//        data.put("province","湖南省");
+//        data.put("city","长沙市");
+//        data.put("district","开福区");
+//        data.put("address","湖南省长沙市开福区芙蓉北路17号");
+//        data.put("postcode","000000");
+//        data.put("phone","15588888888");
 //
-        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.AddOrder","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
+//        data.put("oSumPrice","100.00");
+//        data.put("expCod","0");
+//        HashMap<String,Object> orderData=new HashMap<String, Object>();
+//        orderData.put("proNo","1");
+//        orderData.put("proTitle","口红");
+//        orderData.put("proCount","10");
+//        orderData.put("proPrice","10.98");
+//        orderData.put("proSku","1");
+//        List<HashMap<String,Object>> orderList= Lists.newArrayList();
+//        orderList.add(orderData);
+//        orderData.put("proNo","2");
+//        orderData.put("proTitle","面膜");
+//        orderData.put("proCount","20");
+//        orderData.put("proPrice","20.98");
+//        orderData.put("proSku","2");
+//        orderList.add(orderData);
+//        data.put("OrderPro", JsonUtils.toJson(orderList));
+//        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.AddOrder","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
+//        System.out.println(restJson);
+
+        data.put("appKey","U1CITYFXSTEST");
+//        data.put("orderNo  ","102068272643444737");
+//        data.put("proSkuNo  ","571416641001");
+        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.GetOrder","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
         System.out.println(restJson);
 
 
-//        data.put("appKey","U1CITYFXSTEST");
-//        data.put("orderNo","123456");
-//        data.put("proSkuNo","123456");
-//        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.GetOrder","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
-//        System.out.println(restJson);
     }
 }
