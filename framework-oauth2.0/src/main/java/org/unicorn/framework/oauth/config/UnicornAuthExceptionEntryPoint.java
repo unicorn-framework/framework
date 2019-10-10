@@ -24,16 +24,16 @@ public class UnicornAuthExceptionEntryPoint implements AuthenticationEntryPoint 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
         try {
-            ResponseDto resDto= new ResponseDto<>(SysCode.AUTH_FAIL);
+            ResponseDto resDto= new ResponseDto<>(SysCode.SESSION_ERROR);
             resDto.setUrl(request.getRequestURL().toString());
-            if(authException.getCause() instanceof AccessDeniedException){
-                resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
-                resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
-            }
-            if(authException instanceof InsufficientAuthenticationException){
-                resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
-                resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
-            }
+//            if(authException.getCause() instanceof AccessDeniedException){
+//                resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
+//                resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
+//            }
+//            if(authException instanceof InsufficientAuthenticationException){
+//                resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
+//                resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
+//            }
             objectMapper.writeValue(response.getOutputStream(), resDto);
         } catch (Exception e) {
             throw new ServletException();

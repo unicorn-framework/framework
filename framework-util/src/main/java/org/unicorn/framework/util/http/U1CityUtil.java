@@ -198,10 +198,15 @@ public class U1CityUtil
 //        System.out.println(restJson);
 
         data.put("appKey","U1CITYFXSTEST");
-//        data.put("orderNo  ","102068272643444737");
-//        data.put("proSkuNo  ","571416641001");
-        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.GetOrder","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
+        data.put("orderId","190319000000028");
+        data.put("proSkuNo","581336618001");
+        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.GetOrderDeliver","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
         System.out.println(restJson);
+
+//        data.put("appKey","U1CITYFXSTEST");
+//        data.put("orderId  ","190319000000028");
+//        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.GetOrder","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
+//        System.out.println(restJson);
 
 
     }

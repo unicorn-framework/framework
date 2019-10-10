@@ -41,4 +41,8 @@ public class OAuth2Properties {
      */
     private String headName="Authorization";
 
- }
+    /**
+     * 是否开启权限检查
+     */
+    private Boolean privilegeCheck=false;
+}
