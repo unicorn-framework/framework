@@ -62,7 +62,7 @@ public class UnicornAccessDecisionManager implements AccessDecisionManager {
             throw new PendingException(SysCode.UNAUTHOR__ERROR);
         }
         for (GrantedAuthority ga : authentication.getAuthorities()) {
-            List<String> list = map.get(ga.getAuthority());
+            List<String> list = map.get(ga.getAuthority().toUpperCase());
             if (!CollectionUtils.isEmpty(list)) {
                 for (String url : list) {
                     AntPathRequestMatcher matcher = new AntPathRequestMatcher(url);
