@@ -39,9 +39,6 @@ public class UnicornFilterSecurityInterceptor extends AbstractSecurityIntercepto
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         FilterInvocation fi = new FilterInvocation(servletRequest, servletResponse, filterChain);
-        log.info("用户上下文信息:{}", SecurityContextHolder.getContext().getAuthentication());
-        log.info("url地址:{}",fi.getHttpRequest().getRequestURI());
-        log.info("客户端信息:{}", fi.getHttpRequest());
         invoke(fi);
     }
 

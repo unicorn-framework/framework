@@ -57,7 +57,7 @@ public class SecurityFilter extends ZuulFilter {
      */
     @Override
     public boolean shouldFilter() {
-        return gatewaySecurityProperties.getEnable();
+        return gatewaySecurityProperties.getSecurityCheckEnable();
     }
 
     /**

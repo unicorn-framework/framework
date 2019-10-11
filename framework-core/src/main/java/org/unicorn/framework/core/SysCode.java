@@ -157,6 +157,11 @@ public class SysCode {
      */
     public static final ResBean API_SECURITY_ERROR = new ResBean("99907", "您的请求被拒绝");
 
+    /**
+     * api MediaType not support
+     */
+    public static final ResBean HTTP_MEDIA_TYPE_NOT_SUPPORTED = new ResBean("99908", "不支持媒体类型");
+
     //===================9开头的为系统异常  end==================================
 
     //=======================7开头标识数据库异常 start ==============================

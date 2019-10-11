@@ -34,6 +34,9 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
             if(response.status() == 403){
                 return new PendingException(SysCode.UNAUTHOR__ERROR);
             }
+            if(response.body()==null){
+                return new PendingException(SysCode.SYS_FAIL);
+            }
             // 这里直接拿到feign服务端抛出的异常信息
             message = Util.toString(response.body().asReader());
             log.info("feign 异常信息===》"+message);
