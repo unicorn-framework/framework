@@ -12,6 +12,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.unicorn.framework.cache.cache.CacheService;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
@@ -65,6 +66,9 @@ public class UnicornAccessDecisionManager implements AccessDecisionManager {
             List<String> list = map.get(ga.getAuthority().toUpperCase());
             if (!CollectionUtils.isEmpty(list)) {
                 for (String url : list) {
+                    if(StringUtils.isEmpty(url)){
+                        continue;
+                    }
                     AntPathRequestMatcher matcher = new AntPathRequestMatcher(url);
                     if (matcher.matches(fi.getHttpRequest())) {
                         return;
