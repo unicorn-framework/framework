@@ -67,7 +67,7 @@ public class LogAspect extends AbstractService {
                 }
             }
             //打印请求日志
-            info("接口请求信息：{}",JsonUtils.toJson(requestInfoDto));
+            info("接口请求信息：{}",requestInfoDto);
         } catch (Exception e) {
             // ignore
         }
@@ -88,7 +88,7 @@ public class LogAspect extends AbstractService {
             //设置请求开始时间
             responseInfoDto.setResponseTime(costMs+"ms");
             //打印响应日志
-            info("接口响应信息：{}",JsonUtils.toJson(responseInfoDto));
+            info("接口响应信息：{}",responseInfoDto);
         } catch (Exception e) {
 
         }

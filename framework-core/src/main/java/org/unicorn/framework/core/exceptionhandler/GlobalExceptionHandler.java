@@ -51,12 +51,11 @@ public class GlobalExceptionHandler {
             }
         }
         ResponseInfoDto responseInfoDto = new ResponseInfoDto();
-//        System.out.println(UnicornContext.getValue(UnicornConstants.REQUEST_TRACK_HEADER_NAME).toString());
         //设置响应ID
         responseInfoDto.setResponseId(req.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
         //设置响应报文
         responseInfoDto.setResponseBody(resDto);
-        log.error("异常信息:{}", JsonUtils.toJson(responseInfoDto), e);
+        log.error("异常信息:{}", responseInfoDto, e);
         return resDto;
     }
 }

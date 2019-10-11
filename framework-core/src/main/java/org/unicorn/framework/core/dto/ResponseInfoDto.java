@@ -2,6 +2,7 @@ package org.unicorn.framework.core.dto;
 
 import lombok.*;
 import org.unicorn.framework.core.ResponseDto;
+import org.unicorn.framework.util.json.JsonUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -36,4 +37,14 @@ public class ResponseInfoDto implements Serializable {
      * 请求响应时间
      */
     private String responseTime;
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n");
+        stringBuilder.append("响应ID=>" + this.getResponseId() + "\n");
+        stringBuilder.append("响应报文=>" + JsonUtils.toJson(this.getResponseBody()) + "\n");
+        stringBuilder.append("请求响应时间=>" + this.getResponseTime());
+        return stringBuilder.toString();
+    }
 }

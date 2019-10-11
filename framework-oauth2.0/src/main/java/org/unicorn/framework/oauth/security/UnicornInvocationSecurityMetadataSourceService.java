@@ -34,6 +34,10 @@ public class UnicornInvocationSecurityMetadataSourceService implements FilterInv
      */
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
+        //检查是否开启检查，没开启则直接返回
+        if(!oAuth2Properties.getPrivilegeCheck()){
+            return null;
+        }
         //object 中包含用户请求的request 信息  url
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
         List<String> permitAlls=oAuth2Properties.getPermitAlls();
