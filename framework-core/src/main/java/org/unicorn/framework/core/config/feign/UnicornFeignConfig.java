@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.unicorn.framework.base.constants.UnicornConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
@@ -37,6 +38,8 @@ public class UnicornFeignConfig implements RequestInterceptor {
             if(!headerMap.containsKey(TOKEN_HEADER_NAME)){
                 requestTemplate.header(TOKEN_HEADER_NAME, authorization);
             }
+            //设置跟踪ID头部
+            requestTemplate.header(UnicornConstants.REQUEST_TRACK_HEADER_NAME,  request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
         } catch (Exception e) {
             log.error("requestTemplate设置错误", e);
         }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.base.base.UnicornContext;
 import org.unicorn.framework.base.constants.UnicornConstants;
@@ -57,17 +58,19 @@ public class LogAspect extends AbstractService {
             requestInfoDto.setRemoteIp(RequestUtils.getIp(request));
             //请求控制器方法名
             requestInfoDto.setRequestMethod(signature.getDeclaringTypeName() + "." + signature.getName());
+            // 请求参数
             Object args[] = pjp.getArgs();
-            for (Object arg : args) {
-                if (arg instanceof Serializable) {
-                    if (!(arg instanceof MultipartFile)) {
+            //请求报文
+            if (!(request instanceof MultipartHttpServletRequest)) {
+                for (Object arg : args) {
+                    if (arg instanceof Serializable) {
                         //请求报文
                         requestInfoDto.getRequestBodys().add(JsonUtils.toJson(arg));
                     }
                 }
             }
             //打印请求日志
-            info("接口请求信息：{}",requestInfoDto);
+            info("接口请求信息：{}", requestInfoDto);
         } catch (Exception e) {
             // ignore
         }
@@ -86,9 +89,9 @@ public class LogAspect extends AbstractService {
             }
             long costMs = System.currentTimeMillis() - Long.valueOf(UnicornContext.getValue("beginTime").toString());
             //设置请求开始时间
-            responseInfoDto.setResponseTime(costMs+"ms");
+            responseInfoDto.setResponseTime(costMs + "ms");
             //打印响应日志
-            info("接口响应信息：{}",responseInfoDto);
+            info("接口响应信息：{}", responseInfoDto);
         } catch (Exception e) {
 
         }
