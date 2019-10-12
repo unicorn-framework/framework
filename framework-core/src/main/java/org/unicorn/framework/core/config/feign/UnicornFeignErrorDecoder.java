@@ -26,7 +26,8 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String methodKey, Response response) {
-        String message=null;
+
+        log.info("feign 调用方法名===》"+methodKey);
         try {
             if(response.status() == 401){
                 return new PendingException(SysCode.SESSION_ERROR);
@@ -38,8 +39,7 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
                 return new PendingException(SysCode.SYS_FAIL);
             }
             // 这里直接拿到feign服务端抛出的异常信息
-            message = Util.toString(response.body().asReader());
-            log.info("feign 异常信息===》"+message);
+           String message = Util.toString(response.body().asReader());
             ResponseDto  responseDto=JsonUtils.fromJson(message, ResponseDto.class);
             if(response.status() >= 400 && response.status() <= 499){
 
