@@ -61,12 +61,14 @@ public class LogAspect extends AbstractService {
             // 请求参数
             Object args[] = pjp.getArgs();
             //请求报文
-            if (!(request instanceof MultipartHttpServletRequest)) {
-                for (Object arg : args) {
-                    if (arg instanceof Serializable) {
-                        //请求报文
-                        requestInfoDto.getRequestBodys().add(JsonUtils.toJson(arg));
+            for (Object arg : args) {
+                if (arg instanceof Serializable) {
+                    if (arg instanceof MultipartFile) {
+                        requestInfoDto.getRequestBodys().add(JsonUtils.toJson("流数据"));
+                        continue;
                     }
+                    //请求报文
+                    requestInfoDto.getRequestBodys().add(JsonUtils.toJson(arg));
                 }
             }
             //打印请求日志

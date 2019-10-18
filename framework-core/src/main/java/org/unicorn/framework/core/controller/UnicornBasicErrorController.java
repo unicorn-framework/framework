@@ -22,6 +22,7 @@ import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.dto.RequestInfoDto;
 import org.unicorn.framework.core.dto.ResponseInfoDto;
 import org.unicorn.framework.util.http.RequestUtils;
+import org.unicorn.framework.util.json.JsonUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -66,9 +67,13 @@ public class UnicornBasicErrorController extends AbstractErrorController {
      */
     public ResponseDto<?> handlerException(HttpServletRequest request) throws Throwable {
         Map<String, Object> body = this.getErrorAttributes(request, this.isIncludeStackTrace(request, MediaType.ALL));
+        log.info("error:异常信息:{}", JsonUtils.toJson(body));
         ResponseDto<?> responseDto = null;
         Integer statusCode = Integer.valueOf(body.get("status").toString());
-        String url = request.getRequestURL().toString().replace("/error", "") + body.get("path").toString();
+        String url = null;
+        if (body != null && body.get("path") != null) {
+            url = request.getRequestURL().toString().replace("/error", "") + body.get("path").toString();
+        }
         if (statusCode == 401) {
             responseDto = new ResponseDto<>(SysCode.SESSION_ERROR);
             responseDto.setUrl(url);
@@ -82,9 +87,10 @@ public class UnicornBasicErrorController extends AbstractErrorController {
             responseDto.setUrl(url);
         }
         if (responseDto != null) {
-            printlnRequestLog(request, responseDto,url);
+            printlnRequestLog(request, responseDto, url);
             return responseDto;
         }
+
         //其他异常获取并将异常抛出去
         RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         throw getError(requestAttributes);
@@ -114,6 +120,7 @@ public class UnicornBasicErrorController extends AbstractErrorController {
         if (exception == null) {
             exception = getAttribute(requestAttributes, "javax.servlet.error.exception");
         }
+        log.info("error:其他异常信息:{}", exception);
         return exception;
     }
 
