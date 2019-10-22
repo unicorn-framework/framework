@@ -19,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.unicorn.framework.base.config.xss.XssProperties;
+import org.unicorn.framework.base.config.xss.XssStringJsonSerializer;
 import org.unicorn.framework.base.constants.UnicornConstants;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +36,7 @@ import java.util.List;
  */
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
-
+    private XssProperties xssProperties;
     private static final String SDF_PARTTERN = "yyyy-MM-dd HH:mm:ss";
 
     @Override
@@ -53,9 +55,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public ObjectMapper objectMapper() {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        //注册xss解析器
         SimpleModule simpleModule = new SimpleModule("XssStringJsonSerializer");
-//        simpleModule.addSerializer(new XssStringJsonSerializer());
+        //注册xss解析器
+        if (xssProperties.getEnable()) {
+            simpleModule.addSerializer(new XssStringJsonSerializer());
+        }
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
         simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
         objectMapper.registerModule(simpleModule);
@@ -65,12 +69,12 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         objectMapper.setDateFormat(new SimpleDateFormat(SDF_PARTTERN));
         // java8 时间序列化
         JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDateTime.class,new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_DATE_TIME_FORMAT)));
-        javaTimeModule.addSerializer(LocalDate.class,new LocalDateSerializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_DATE_FORMAT)));
-        javaTimeModule.addSerializer(LocalTime.class,new LocalTimeSerializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_TIME_FORMAT)));
-        javaTimeModule.addDeserializer(LocalDateTime.class,new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_DATE_TIME_FORMAT)));
-        javaTimeModule.addDeserializer(LocalDate.class,new LocalDateDeserializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_DATE_FORMAT)));
-        javaTimeModule.addDeserializer(LocalTime.class,new LocalTimeDeserializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_TIME_FORMAT)));
+        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_DATE_TIME_FORMAT)));
+        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_DATE_FORMAT)));
+        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_TIME_FORMAT)));
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_DATE_TIME_FORMAT)));
+        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_DATE_FORMAT)));
+        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(UnicornConstants.DEFAULT_TIME_FORMAT)));
         objectMapper.registerModule(javaTimeModule).registerModule(new ParameterNamesModule());
         return objectMapper;
     }
