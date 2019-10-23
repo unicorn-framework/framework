@@ -14,6 +14,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -36,6 +37,7 @@ import java.util.List;
  * @author xiebin
  */
 @Configuration
+@EnableConfigurationProperties(XssProperties.class)
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
