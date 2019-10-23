@@ -1,5 +1,6 @@
 package org.unicorn.framework.util.http;
 import org.assertj.core.util.Lists;
+import org.springframework.util.IdGenerator;
 import org.unicorn.framework.util.json.JsonUtils;
 
 import java.io.BufferedReader;
@@ -166,9 +167,13 @@ public class U1CityUtil
 
     public static void main(String[] args)
     {
+        String key="mxyq_123";
+        String secrect="3BB8B30D9A021FF2C2DABB2F27BEDA7C";
+
         HashMap<String,String> data=new HashMap<String, String>();
-//        data.put("appKey","U1CITYFXSTEST");
-//        data.put("orderNo","111224");
+
+//        data.put("appKey",key);
+//        data.put("orderNo", "20191023002");
 //        data.put("uName","zhangsan");
 //        data.put("province","湖南省");
 //        data.put("city","长沙市");
@@ -177,35 +182,36 @@ public class U1CityUtil
 //        data.put("postcode","000000");
 //        data.put("phone","15588888888");
 //
-//        data.put("oSumPrice","100.00");
+//        data.put("oSumPrice","188.00");
 //        data.put("expCod","0");
 //        HashMap<String,Object> orderData=new HashMap<String, Object>();
-//        orderData.put("proNo","1");
-//        orderData.put("proTitle","口红");
-//        orderData.put("proCount","10");
-//        orderData.put("proPrice","10.98");
-//        orderData.put("proSku","1");
+//        orderData.put("proNo","MXCS002");
+//        orderData.put("proTitle","秒寻测试002");
+//        orderData.put("proCount","1");
+//        orderData.put("proPrice","89.00");
+//        orderData.put("proSku","2");
 //        List<HashMap<String,Object>> orderList= Lists.newArrayList();
 //        orderList.add(orderData);
-//        orderData.put("proNo","2");
-//        orderData.put("proTitle","面膜");
-//        orderData.put("proCount","20");
-//        orderData.put("proPrice","20.98");
-//        orderData.put("proSku","2");
-//        orderList.add(orderData);
+//        HashMap<String,Object> orderData1=new HashMap<String, Object>();
+//        orderData1.put("proNo","MXCS001");
+//        orderData1.put("proTitle","秒寻测试001");
+//        orderData1.put("proCount","1");
+//        orderData1.put("proPrice","99.00");
+//        orderData1.put("proSku","1");
+//        orderList.add(orderData1);
 //        data.put("OrderPro", JsonUtils.toJson(orderList));
-//        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.AddOrder","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
+//        HashMap<String,String> restJson=invoke("http://47.92.124.204/Modian/api.rest","IOpenAPI.AddOrder",key,secrect,"json",data);
 //        System.out.println(restJson);
-//
+
 //        data.put("appKey","U1CITYFXSTEST");
 //        data.put("orderId","190319000000028");
 //        data.put("proSkuNo","581336618001");
 //        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.GetOrderDeliver","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
 //        System.out.println(restJson);
 
-        data.put("appKey","U1CITYFXSTEST");
-        data.put("orderNo  ","102082593708576769");
-        HashMap<String,String> restJson=invoke("http://wqbopenapi.ushopn6.com/wqbnew/api.rest","IOpenAPI.GetOrder","U1CITYFXSTEST","U1CITYFXSTESTBBIOFKD","json",data);
+        data.put("appKey",key);
+//        data.put("orderNo  ","102082593708576769");
+        HashMap<String,String> restJson=invoke("http://47.92.124.204/Modian/api.rest","IOpenAPI.GetOrder",key,secrect,"json",data);
         System.out.println(restJson);
 
 
