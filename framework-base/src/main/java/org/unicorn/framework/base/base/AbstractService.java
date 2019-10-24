@@ -1,8 +1,6 @@
 
 package org.unicorn.framework.base.base;
 
-import com.google.gson.Gson;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractService {
 	
-//	 private static final Logger log = LoggerFactory.getLogger("service");
 	 public void info(String message){
 		 log.info(message); 
 	 }

@@ -40,7 +40,7 @@ public class RequestInfoDto implements Serializable {
     /**
      * 请求报文
      */
-    private List<String> requestBodys = Lists.newArrayList();
+    private List<Object> requestBodys = Lists.newArrayList();
 
     @Override
     public String toString() {

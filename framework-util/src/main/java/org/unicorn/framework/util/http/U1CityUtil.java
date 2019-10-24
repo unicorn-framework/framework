@@ -210,7 +210,7 @@ public class U1CityUtil
 //        System.out.println(restJson);
 
         data.put("appKey",key);
-//        data.put("orderNo  ","102082593708576769");
+        data.put("OrderNo  ","107428987738787841");
         HashMap<String,String> restJson=invoke("http://47.92.124.204/Modian/api.rest","IOpenAPI.GetOrder",key,secrect,"json",data);
         System.out.println(restJson);
 

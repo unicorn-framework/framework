@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.unicorn.framework.base.base.AbstractService;
 import org.unicorn.framework.base.base.UnicornContext;
 import org.unicorn.framework.base.constants.UnicornConstants;
@@ -63,12 +62,17 @@ public class LogAspect extends AbstractService {
             //请求报文
             for (Object arg : args) {
                 if (arg instanceof Serializable) {
+
                     if (arg instanceof MultipartFile) {
-                        requestInfoDto.getRequestBodys().add(JsonUtils.toJson("流数据"));
+                        requestInfoDto.getRequestBodys().add("流数据");
+                        continue;
+                    }
+                    if (arg instanceof MultipartFile[]) {
+                        requestInfoDto.getRequestBodys().add("[流数据]");
                         continue;
                     }
                     //请求报文
-                    requestInfoDto.getRequestBodys().add(JsonUtils.toJson(arg));
+                    requestInfoDto.getRequestBodys().add(arg);
                 }
             }
             //打印请求日志
@@ -81,6 +85,7 @@ public class LogAspect extends AbstractService {
 
     @AfterReturning(pointcut = "controllerPointCut()", returning = "ret")
     public void afterReturning(Object ret) {
+
         try {
             ResponseInfoDto responseInfoDto = new ResponseInfoDto();
             if (ret != null) {
@@ -96,6 +101,8 @@ public class LogAspect extends AbstractService {
             info("接口响应信息：{}", responseInfoDto);
         } catch (Exception e) {
 
+        }finally {
+            UnicornContext.reset();
         }
 
     }
