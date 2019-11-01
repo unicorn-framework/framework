@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -18,7 +19,6 @@ import org.unicorn.framework.base.constants.UnicornConstants;
 import org.unicorn.framework.core.dto.RequestInfoDto;
 import org.unicorn.framework.core.dto.ResponseInfoDto;
 import org.unicorn.framework.util.http.RequestUtils;
-import org.unicorn.framework.util.json.JsonUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
@@ -39,13 +39,20 @@ public class LogAspect extends AbstractService {
     @Before("controllerPointCut()")
     public void before(JoinPoint pjp) {
         try {
+            MethodSignature signature = (MethodSignature) pjp.getSignature();
+            boolean  flag=signature.getDeclaringType().isAnnotationPresent(FeignClient.class);
+            if(flag){
+                return ;
+            }
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = attributes.getRequest();
             RequestInfoDto requestInfoDto = new RequestInfoDto();
             long beginTime = System.currentTimeMillis();
             UnicornContext.setValue("beginTime", beginTime);
             UnicornContext.setValue(UnicornConstants.REQUEST_TRACK_HEADER_NAME, request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
-            MethodSignature signature = (MethodSignature) pjp.getSignature();
+
+
+
             String url = request.getRequestURL().toString();
             //设置请求ID
             requestInfoDto.setRequestId(request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
