@@ -34,19 +34,14 @@ public class UnicornAccessDecisionManager implements AccessDecisionManager {
     @Autowired
     private CacheService cacheService;
 
-    /***
-     *
+    /**
      *
      * @param authentication  登陆系统用户的权限
-     *
      * @param object
      * @param configAttributes url的权限
-     *
      * @throws AccessDeniedException
-     *             配置属性
      * @throws InsufficientAuthenticationException
      */
-
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
         //检查是否开启检查，没开启则直接返回
@@ -62,13 +57,16 @@ public class UnicornAccessDecisionManager implements AccessDecisionManager {
         if (map == null) {
             throw new PendingException(SysCode.UNAUTHOR__ERROR);
         }
+        //遍历用户拥有的权限
         for (GrantedAuthority ga : authentication.getAuthorities()) {
+            //权限能访问的接口列表
             List<String> list = map.get(ga.getAuthority().toUpperCase());
             if (!CollectionUtils.isEmpty(list)) {
                 for (String url : list) {
                     if(StringUtils.isEmpty(url)){
                         continue;
                     }
+                    //是否和访问URL匹配
                     AntPathRequestMatcher matcher = new AntPathRequestMatcher(url);
                     if (matcher.matches(fi.getHttpRequest())) {
                         return;
@@ -76,6 +74,7 @@ public class UnicornAccessDecisionManager implements AccessDecisionManager {
                 }
             }
         }
+        //不匹配返回无权限
         throw new PendingException(SysCode.UNAUTHOR__ERROR);
     }
 
