@@ -19,26 +19,26 @@ public interface LockService {
 	/**
 	 * 尝试获取锁
 	 * @param name
-	 * @param timeout
+	 * @param tryTimeout
 	 * @param unit
 	 * @return
 	 * @throws PendingException
 	 */
-	boolean tryLock(String name, int timeout, TimeUnit unit)throws PendingException;
+	boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit)throws PendingException;
 
 	/**
 	 * 尝试获取锁
-	 * @param name
-	 * @param tryTimeout
-	 * @param tryTimeoutUnit
-	 * @param lockTimeout
-	 * @param lockTimeoutUnit
+	 * @param name    锁名称
+	 * @param tryTimeout   尝试获取锁超时时间
+	 * @param tryTimeoutUnit 尝试获取锁超时间单位
+	 * @param lockTimeout   获取锁成功之后锁定时间
+	 * @param lockTimeoutUnit  获取锁成功之后锁定时间单位
 	 * @return
 	 * @throws PendingException
 	 */
 	boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit,int lockTimeout, TimeUnit lockTimeoutUnit)throws PendingException;
 	/**
-	 * 一直阻塞获取锁
+	 * 一直阻塞直接获取锁
 	 * @param name
 	 * @throws PendingException
 	 */

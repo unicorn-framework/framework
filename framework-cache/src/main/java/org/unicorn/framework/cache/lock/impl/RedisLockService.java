@@ -15,6 +15,7 @@ import org.unicorn.framework.core.exception.PendingException;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
 /**
  * 分布式锁
  *
@@ -86,7 +87,7 @@ public class RedisLockService implements LockService {
     public boolean tryLock(String name, int tryTimeout, TimeUnit tryTimeoutUnit, int lockTimeout, TimeUnit lockTimeoutUnit) throws PendingException {
         String key = NAMESPACE + name;
         String value = instanceId;
-        boolean success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
+        boolean success = setNxEx(key, value, lockTimeout, lockTimeoutUnit);
         long millisTimeout = tryTimeoutUnit.toMillis(tryTimeout);
         long start = System.currentTimeMillis();
         while (!success) {
@@ -98,15 +99,10 @@ public class RedisLockService implements LockService {
             if ((System.currentTimeMillis() - start) >= millisTimeout) {
                 break;
             }
-            success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
+            success = setNxEx(key, value, lockTimeout, lockTimeoutUnit);
         }
-        if(success){
-            stringRedisTemplate.expire(key, lockTimeout, lockTimeoutUnit);
-        }
-
         return success;
     }
-
 
 
     @Override
@@ -119,21 +115,29 @@ public class RedisLockService implements LockService {
     public void lock(String name, int lockTime, TimeUnit lockTimeUnit) {
         String key = NAMESPACE + name;
         String value = instanceId;
-        boolean success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
+        boolean success = setNxEx(key, value, lockTime, lockTimeUnit);
         while (!success) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            success = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
-            if (success) {
-                stringRedisTemplate.expire(key, lockTime, lockTimeUnit);
-            }
+            success = setNxEx(key, value, lockTime, lockTimeUnit);
         }
 
     }
 
+    /**
+     * reids原子化操作
+     * @param key
+     * @param value
+     * @param lockTime
+     * @param lockTimeUnit
+     * @return
+     */
+    private boolean setNxEx(String key, String value, int lockTime, TimeUnit lockTimeUnit) {
+        return stringRedisTemplate.opsForValue().setIfAbsent(key, value, lockTime, lockTimeUnit);
+    }
 
     @Override
     public void unlock(String name) {
