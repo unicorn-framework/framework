@@ -10,6 +10,8 @@ import java.util.List;
 
 
 /**
+ * 1、主从规则
+ * 2、分片规则
  * @author  xiebin
  */
 @Data

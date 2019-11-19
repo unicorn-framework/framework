@@ -59,21 +59,50 @@ public class UnicornDataSourceConfig {
     }
 
     public DataSource buildDataSource() {
-        //存储所有的数据源信息
-        Map<String, DataSource> dataSourceMap = Maps.newHashMap();
-        //获取数据源配置
-        Map<String, Map<String, String>> masterDbMap = unicornDataSourceBaseProperties.getDatasource();
-        masterDbMap.keySet().forEach(dataSourceName -> {
-            DataSource datasource = createDataSource(masterDbMap.get(dataSourceName));
-            dataSourceMap.put(dataSourceName, datasource);
-        });
-        //分片配置
+        try {
+            //初始化并存储所有的数据源信息
+            Map<String, DataSource> dataSourceMap = initDataSourceMap();
+            //初始化分片规则配置
+            ShardingRuleConfiguration shardingRuleConfiguration = initShardingRuleConfiguration();
+            //初始化额外的属性
+            Properties pro = iniExtPro();
+            //创建并返回分片数据源
+            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration, Maps.newConcurrentMap(), pro);
+        } catch (Exception e) {
+            log.error("创建分片数据源失败", e);
+        }
+        return null;
+    }
+
+    /**
+     * 初始化额外的属性
+     *
+     * @return
+     */
+    private Properties iniExtPro() {
+        Properties pro = new Properties();
+        //是否打印分片sql
+        pro.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), unicornDataSourceBaseProperties.isShowSql());
+        return pro;
+    }
+
+    /**
+     * 初始化  分片规则配置
+     *
+     * @return
+     */
+    private ShardingRuleConfiguration initShardingRuleConfiguration() {
+        //获取分片配置   分库|分表
         ShardingRuleConfiguration shardingRuleConfiguration = unicornDataSourceRuleProperties.getShardingRule();
-        //主从数据源配置
+
+        //获取主从数据源配置
         List<MasterSlaveRuleConfiguration> masterSlaveRuleConfigurationList = unicornDataSourceRuleProperties.getMasterSlaveRule();
-        //主从配置
+        //设置主从规则配置
         shardingRuleConfiguration.setMasterSlaveRuleConfigs(masterSlaveRuleConfigurationList);
+
+        //获取表对应分片配置
         List<TableRuleConfiguration> tableRuleList = new ArrayList<>(shardingRuleConfiguration.getTableRuleConfigs());
+        //遍历分表List并设置分库分表策略配置
         tableRuleList.forEach(tableRuleConfiguration -> {
             //获取分片属性
             UnicornShardingRuleProperties unicornShardingRuleProperties = unicornDataTableRuleProperties.getTableRule().get(tableRuleConfiguration.getLogicTable());
@@ -82,14 +111,23 @@ public class UnicornDataSourceConfig {
             // 配置分表策略（Groovy表达式配置表路由规则）
             tableRuleConfiguration.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration(unicornShardingRuleProperties.getTableShardingCloumnName(), unicornShardingRuleProperties.getTableShardingAlgorithmExpression()));
         });
-        try {
-            Properties pro = new Properties();
-            pro.put(ShardingPropertiesConstant.SQL_SHOW.getKey(), unicornDataSourceBaseProperties.isShowSql());
-            return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfiguration,Maps.newConcurrentMap(), pro);
-        } catch (Exception e) {
-            log.error("创建分片数据源失败", e);
-        }
-        return null;
+        return shardingRuleConfiguration;
+    }
+
+    /**
+     * 初始化并存储所有的数据源信息
+     *
+     * @return
+     */
+    private Map<String, DataSource> initDataSourceMap() {
+        Map<String, DataSource> dataSourceMap = Maps.newHashMap();
+        //获取数据源配置 并初始化所有的数据源
+        Map<String, Map<String, String>> masterDbMap = unicornDataSourceBaseProperties.getDatasource();
+        masterDbMap.keySet().forEach(dataSourceName -> {
+            DataSource datasource = createDataSource(masterDbMap.get(dataSourceName));
+            dataSourceMap.put(dataSourceName, datasource);
+        });
+        return dataSourceMap;
     }
 
     /**
