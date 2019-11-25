@@ -30,4 +30,8 @@ public class MQProperties {
      * switch of trace message consumer: send message consumer info to topic: MQ_TRACE_DATA
      */
     private Boolean traceEnabled = Boolean.FALSE;
+    /**
+     * config whether to open transaction
+     */
+    private Boolean transactionEnable=Boolean.TRUE;
 }

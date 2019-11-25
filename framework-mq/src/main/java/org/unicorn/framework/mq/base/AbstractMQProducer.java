@@ -5,11 +5,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.rocketmq.client.producer.LocalTransactionExecuter;
-import org.apache.rocketmq.client.producer.MessageQueueSelector;
-import org.apache.rocketmq.client.producer.SendCallback;
-import org.apache.rocketmq.client.producer.SendResult;
-import org.apache.rocketmq.client.producer.TransactionMQProducer;
+import org.apache.rocketmq.client.producer.*;
 import org.apache.rocketmq.client.producer.selector.SelectMessageQueueByHash;
 import org.apache.rocketmq.common.message.Message;
 import org.unicorn.framework.mq.annotation.MQKey;
@@ -36,7 +32,7 @@ public abstract class AbstractMQProducer {
 
     @Setter
     @Getter
-    private TransactionMQProducer producer;
+    private DefaultMQProducer producer;
     
     
     public AbstractMQProducer() {

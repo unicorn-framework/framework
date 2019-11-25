@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @ConditionalOnBean(MQBaseAutoConfiguration.class)
 public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
 
-    private  TransactionMQProducer producer;
+    private DefaultMQProducer producer;
 
     @PostConstruct
     public void init() throws Exception {
@@ -38,10 +38,15 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
         if(producer == null) {
             Assert.notNull(mqProperties.getProducerGroup(), "producer group must be defined");
             Assert.notNull(mqProperties.getNameServerAddress(), "name server address must be defined");
-            producer = new TransactionMQProducer(mqProperties.getProducerGroup());
+           if(mqProperties.getTransactionEnable()){
+               producer = new TransactionMQProducer(mqProperties.getProducerGroup());
+               ((TransactionMQProducer)producer).setTransactionCheckListener(new DefaultTransactionCheckListenerImpl());
+           }else{
+               producer = new DefaultMQProducer(mqProperties.getProducerGroup());
+           }
             producer.setNamesrvAddr(mqProperties.getNameServerAddress());
             producer.setSendMsgTimeout(mqProperties.getSendMsgTimeout());
-            producer.setTransactionCheckListener(new DefaultTransactionCheckListenerImpl());
+
             producer.setRetryTimesWhenSendFailed(3);
             producer.start();
         }
