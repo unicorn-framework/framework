@@ -112,21 +112,7 @@
                 <artifactId>framework-mq</artifactId>
                 <version>${module.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-gateway</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-cache</artifactId>
-                <version>${module.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.unicorn</groupId>
-                <artifactId>framework-elastic-job</artifactId>
-                <version>${module.version}</version>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
