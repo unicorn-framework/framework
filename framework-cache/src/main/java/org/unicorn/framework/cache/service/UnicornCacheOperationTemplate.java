@@ -105,7 +105,7 @@ public class UnicornCacheOperationTemplate {
      * @return
      */
     public String genLockKey(String cacheKey, String namespace) {
-        int index = (namespace + ":" + cacheKey + "").hashCode() & (LOCKS.length - 1);
+        int index = (namespace + ":" + cacheKey + ":" + System.currentTimeMillis()).hashCode() & (LOCKS.length - 1);
         return LOCKS[index];
     }
 }
