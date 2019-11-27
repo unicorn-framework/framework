@@ -89,7 +89,7 @@ public class UnicornCacheOperationTemplate {
             } catch (PendingException pe) {
                 throw pe;
             } catch (Exception e) {
-                throw new PendingException(SysCode.SYS_FAIL, SysCode.SYS_FAIL.getInfo(), e);
+                throw new PendingException(SysCode.SYS_FAIL, e);
             } finally {
                 lockService.unlock(lockKey);
             }

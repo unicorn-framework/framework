@@ -30,8 +30,19 @@ public class PendingException extends UnicornException {
         this.code = resBean.getCode();
     }
 
+
+
     public PendingException(ResponseDto<?> responseDto) {
         this(responseDto, true);
+    }
+
+    public PendingException(ResBean resBean,Throwable throwable) {
+        this(resBean.getCode(), resBean.getInfo(),throwable,true);
+        this.code = resBean.getCode();
+    }
+    public PendingException(ResBean resBean,Throwable throwable, Boolean tipsFlag) {
+        this(resBean.getCode(), resBean.getInfo(),throwable,tipsFlag);
+        this.code = resBean.getCode();
     }
 
     public PendingException(ResponseDto<?> responseDto, Boolean tipsFlag) {
