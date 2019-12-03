@@ -1,69 +1,43 @@
-麒麟框架
-一、简述
-unicorn-framework结合springboot、springcloud整合了redis、mybatis、drools，rocketMq、elastic-job、shiro等模块，旨在方便使用者更容易的给自己的应用通过一定的配置便能赋予相应能力，简化整合各种资源的门槛。
-二、框架组成：框架目前包含以下14个子模块，每个子模块后续可以进行扩展，包括新模块的添加和规划，后续会持续更新优化。
-1、framework-base：框架的集成部分，包括上下文的管理，请求信息的封装等
-2、framework-core：框架的核心，定义了一些列框架元素，包括注解、异常定义、异常处理、返回码等。
-3、framework-util：框架提供的一些工具类
-4、framework-cache：框架基于redis提供分布式缓存、分布式锁
-5、framework-session:框架基于 spring-session 、redis 提供分布式应用session共享等
-6、framework-config-server：框架基于springcloud提供分布式配置服务的能力
-7、framework-register-center：框架基于springcloud、eureka提供注册中心
-8、framework-gateway：框架基于springcloud、zuul提供网关能力
-9、framework-mq：框架基于rocketMq提供异步消息机制
-10、framework-orm：框架基于mybatis提供数据操作能力
-11、framework-drools：规则引擎、提供应用解决复杂规则开发的能力
-12、framework-shiro：权限认证
-13、framework-elastic-job：分布式任务调度
-14、framework-oss：基于阿里云的对象存储服务
-15、framework-codegen：基于麒麟框架写的代码生成，方便使用者快速生成项目，并自动生成CRUD等基础功能，解放使用者宝贵的精力去投入业务开发
-16、framework-api-doc :基于swagger的接口文档
-17、framework-websoket:基于webscoket的长连接
-三、使用
-1、framework-cache
-配置
-redis缓存配置
-# REDIS (RedisProperties)
-# Redis数据库索引（默认为0）
-spring.redis.database=0  
-# Redis服务器地址
-spring.redis.host=host
-# Redis服务器连接端口
-spring.redis.port=6379  
-# Redis服务器连接密码（默认为空）
-#spring.redis.password=
-# 连接池最大连接数（使用负值表示没有限制）
-spring.redis.pool.max-active=8  
-# 连接池最大阻塞等待时间（使用负值表示没有限制）
-spring.redis.pool.max-wait=-1  
-# 连接池中的最大空闲连接
-spring.redis.pool.max-idle=8  
-# 连接池中的最小空闲连接
-spring.redis.pool.min-idle=0  
-# 连接超时时间（毫秒）
-spring.redis.timeout=0 
-#启用redis存储session
-spring.session.store-type=redis
-2、framework-session
-session共享配置
-#session配置
-#session过期时间设置
-unicorn.session.maxInactiveIntervalInSeconds=1800
-#响应头部名称设置
-unicorn.session.headName=huanuoToken
-#cookie名称设置
-unicorn.session.cookieName=huanuo
-#session命名空间设置
-unicorn.session.namespace=internet
-
-3、framework-mq
-配置
-#rocketmq nameserverAddress设置
- unicorn.rocketmq.nameServerAddress=nameServerAddress
-#生产者组设置
- unicorn.rocketmq.producerGroup=
-#生产者交易组设置
-unicorn.rocketmqproducerTransactionGroup=
-#消息发送超时时间设置 （单位：毫秒） 默认 3000毫秒
-unicorn.rocketmq.sendMsgTimeout=
-
+#一、简述
+    unicorn-framework结合springboot、springcloud整合了redis、mybatis、sharedingsphere、drools，rocketMq、elastic-job、oauth2.0、LCN等模块，旨在方便使用者更容易的给自己的应用通过一定的配置便能赋予相应能力，简化整合各种资源的门槛。
+#二、框架组成：框架目前包含以下18个子模块，每个子模块后续可以进行扩展，包括新模块的添加和规划，后续会持续更新优化。
+##1、framework-api-doc：
+    框架的接口文档部分，集成swagger,生成在线接口文档
+##2、framework-base：
+    框架的基础部分，包括上下文的管理，请求信息的封装、xss等
+##3、framework-cache：
+    a、框架基于redis提供分布式缓存、分布式锁
+    b、基于spring--boot-stater-data-redis分布式应用session共享等
+    c、防缓存击穿处理
+##4、framework-codegen：
+    框架的代码生成部分：主要基于一定的代码规范，去生成业务代码。模板可定制
+##5、framework-config-server：
+    框架的分布式配置中心：基于spring config server，框架也可以基础apollo，用户可以自己选择
+##6、framework-core：
+    框架的核心，定义了一些列框架元素，包括注解、异常定义、异常处理、返回码等。
+##7、framework-drools：
+    框架提供的规则引擎、提供应用解决复杂规则开发的能力
+##8、framework-elastic-job：
+    分布式任务调度：支持分片
+##9、framework-gateway：
+    a、框架基于springcloud、zuul提供网关能力
+    b、系统接口安全部分
+##10、framework-mq
+    框架基于rocketMq提供异步消息机制
+##11、framework-oauth2.0：
+    框架认证授权模块：基于oauth2.0，提供多种授权方式
+##12、framework-orm：
+    a、框架基于mybatis提供数据操作能力
+    b、基于sharding-jdbc封装支持分库分表的能力
+##13、framework-oss：
+    基于阿里云的对象存储服务
+##14、framework-register-center：
+    框架基于springcloud、eureka提供注册中心
+##15、framework-transaction：
+    框架基于LCN，提供分布式事务处理的能力
+##16、framework-transaction-manager
+    框架基于LCN的事务管理能力
+##17、framework-util
+    框架提供的一些工具类，如：分布式ID等
+##18、framework-websocket
+    框架提供的长连接能力
