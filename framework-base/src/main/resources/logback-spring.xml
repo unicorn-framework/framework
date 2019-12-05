@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 	<contextName>logback</contextName>
-	<springProperty scope="context" name="log.level" source="unicorn.log.level" defaultValue="INFO"/>
 	<property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}-%msg%n"></property>
 	<!--输出到控制台 -->
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -9,15 +8,6 @@
 			<pattern>${log.pattern}</pattern>
 		</encoder>
 	</appender>
-    <contextName>logback</contextName>
-    <springProperty scope="context" name="log.level" source="unicorn.log.level"/>
-    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}-%msg%n"></property>
-    <!--输出到控制台 -->
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${log.pattern}</pattern>
-        </encoder>
-    </appender>
     <!-- 输出到文件 -->
     <appender name="file-info-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--如果只是想要 Info 级别的日志，只是过滤 info 还是会输出 Error 日志，因为 Error 的级别高， 所以我们使用下面的策略，可以避免输出 Error 的日志 -->

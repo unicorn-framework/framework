@@ -1,5 +1,6 @@
 package org.unicorn.framework.drools.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
@@ -24,6 +25,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author xiebin
  */
 @Component
+@Slf4j
 public class RuleLoader implements ApplicationRunner {
 
     /**
@@ -88,7 +90,7 @@ public class RuleLoader implements ApplicationRunner {
             String sceneKey = entry.getKey();
             reload(sceneKey, entry.getValue());
         }
-        System.out.println("reload all success");
+        log.info("reload all success");
     }
 
     /**
@@ -99,13 +101,13 @@ public class RuleLoader implements ApplicationRunner {
     public void reload(String sceneKey) {
         List<RuleInfo> ruleInfos = ruleInfoService.getRuleInfoListBySceneId(sceneKey);
         reload(sceneKey, ruleInfos);
-        System.out.println("reload success");
+        log.info("reload success");
     }
 
     /**
      * 重新加载给定场景给定规则列表，对应一个kmodule
      *
-     * @param sceneKey   场景ID
+     * @param sceneKey  场景ID
      * @param ruleInfos 规则列表
      */
     private void reload(String sceneKey, List<RuleInfo> ruleInfos) {
@@ -117,7 +119,6 @@ public class RuleLoader implements ApplicationRunner {
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem).buildAll();
         Results results = kieBuilder.getResults();
         if (results.hasMessages(Message.Level.ERROR)) {
-            System.out.println(results.getMessages());
             throw new IllegalStateException("rule error");
         }
         KieContainer kieContainer = kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());

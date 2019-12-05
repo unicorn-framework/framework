@@ -22,59 +22,58 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 @Configuration
 public class DroolsAutoConfiguration {
 
-	
-	 private static final String RULES_PATH = "rules/";
 
-	    @Bean
-	    @ConditionalOnMissingBean(KieFileSystem.class)
-	    public KieFileSystem kieFileSystem() throws IOException {
-	        KieFileSystem kieFileSystem = getKieServices().newKieFileSystem();
-	        for (Resource file : getRuleFiles()) {
-	            kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_PATH + file.getFilename(), "UTF-8"));
-	        }        
-	        return kieFileSystem;
-	    }
+    private static final String RULES_PATH = "rules/";
 
-	    private Resource[] getRuleFiles() throws IOException {
-	        ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-	        return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.*");
-	    }
+    @Bean
+    @ConditionalOnMissingBean(KieFileSystem.class)
+    public KieFileSystem kieFileSystem() throws IOException {
+        KieFileSystem kieFileSystem = getKieServices().newKieFileSystem();
+        for (Resource file : getRuleFiles()) {
+            kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_PATH + file.getFilename(), "UTF-8"));
+        }
+        return kieFileSystem;
+    }
 
-	    @Bean
-	    @ConditionalOnMissingBean(KieContainer.class)
-	    public KieContainer kieContainer() throws IOException {
-	        final KieRepository kieRepository = getKieServices().getRepository();
+    /**
+     * 加载规则文件
+     *
+     * @return
+     * @throws IOException
+     */
+    private Resource[] getRuleFiles() throws IOException {
+        ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+        return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.*");
+    }
 
-	        kieRepository.addKieModule(new KieModule() {
-	            public ReleaseId getReleaseId() {
-	                return kieRepository.getDefaultReleaseId();
-	            }
-	        });
+    @Bean
+    @ConditionalOnMissingBean(KieContainer.class)
+    public KieContainer kieContainer() throws IOException {
+        final KieRepository kieRepository = getKieServices().getRepository();
+        kieRepository.addKieModule(() -> {
+                    return kieRepository.getDefaultReleaseId();
+                }
+        );
+        KieBuilder kieBuilder = getKieServices().newKieBuilder(kieFileSystem());
+        kieBuilder.buildAll();
+        return getKieServices().newKieContainer(kieRepository.getDefaultReleaseId());
+    }
 
-	        KieBuilder kieBuilder = getKieServices().newKieBuilder(kieFileSystem()); 
-	        kieBuilder.buildAll();
+    private KieServices getKieServices() {
+        return KieServices.Factory.get();
+    }
 
-	        return getKieServices().newKieContainer(kieRepository.getDefaultReleaseId());
-	    }
+    @Bean
+    @ConditionalOnMissingBean(KieBase.class)
+    public KieBase kieBase() throws IOException {
+        return kieContainer().getKieBase();
+    }
 
-	    private KieServices getKieServices() {
-	        return KieServices.Factory.get();
-	    }
+    @Bean
+    @ConditionalOnMissingBean(KieSession.class)
+    public KieSession kieSession() throws IOException {
+        return kieContainer().newKieSession();
+    }
 
-	    @Bean
-	    @ConditionalOnMissingBean(KieBase.class)
-	    public KieBase kieBase() throws IOException {
-	        return kieContainer().getKieBase();
-	    }
 
-	    @Bean
-	    @ConditionalOnMissingBean(KieSession.class)
-	    public KieSession kieSession() throws IOException {
-	        return kieContainer().newKieSession();
-	    }
-
-	
-	
-	
-	  
 }
