@@ -280,6 +280,7 @@
 
     <modules>
         <module>framework-base</module>
+        <module>framework-apollo</module>
         <module>framework-util</module>
         <module>framework-core</module>
         <module>framework-elastic-job</module>
