@@ -16,10 +16,10 @@
 		 <shiro.version>1.2.4</shiro.version>
 	</properties>
 	<dependencies>
-	   <dependency>
+		<dependency>
 			<groupId>org.unicorn</groupId>
 			<artifactId>framework-base</artifactId>
-		   <version>${module.version}</version>
+			<version>${module.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.unicorn</groupId>
