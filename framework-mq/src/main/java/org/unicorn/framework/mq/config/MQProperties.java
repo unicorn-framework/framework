@@ -19,7 +19,7 @@ public class MQProperties {
      */
     private String producerGroup;
     /**
-     *  config transaction group
+     * config transaction group
      */
     private String producerTransactionGroup;
     /**
@@ -33,5 +33,18 @@ public class MQProperties {
     /**
      * config whether to open transaction
      */
-    private Boolean transactionEnable=Boolean.TRUE;
+    private Boolean transactionEnable = Boolean.TRUE;
+    /**
+     * 检查线程池最小线程数
+     */
+    private Integer checkThreadPoolMinSize=1;
+    /**
+     * 检查线程池最大线程数
+     */
+    private Integer checkThreadPoolMaxSize=1;
+    /**
+     * 检查线程池，producer本地缓冲请求队列大小
+     */
+    private Integer checkRequestHoldMax=2000;
+
 }
