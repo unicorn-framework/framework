@@ -1,5 +1,10 @@
 package org.unicorn.framework.mq.trace.dispatch.impl;
 
+import lombok.extern.slf4j.Slf4j;
+import org.unicorn.framework.mq.trace.common.OnsTraceConstants;
+import org.unicorn.framework.mq.trace.dispatch.AsyncAppender;
+import org.unicorn.framework.mq.trace.dispatch.AsyncDispatcher;
+
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -8,19 +13,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.rocketmq.client.log.ClientLogger;
-import org.slf4j.Logger;
-import org.unicorn.framework.mq.trace.common.OnsTraceConstants;
-import org.unicorn.framework.mq.trace.dispatch.AsyncAppender;
-import org.unicorn.framework.mq.trace.dispatch.AsyncDispatcher;
-
 
 /**
  * @author xiebin
  * 异步提交消息轨迹等数据
  */
+@Slf4j
 public class AsyncTraceDispatcher extends AsyncDispatcher {
-    private final static Logger clientlog = ClientLogger.getLog();
     // RingBuffer 实现，size 必须为 2 的 n 次方
     private final Object[] entries;
     private final int queueSize;
@@ -95,7 +94,7 @@ public class AsyncTraceDispatcher extends AsyncDispatcher {
             final long put = putIndex.get();
             final long size = put - takeIndex.get();
             if (size >= qsize) {
-                clientlog.info("msgtrace buffer is full,the loss count is" + discardCount.incrementAndGet() + "  " + ctx);
+                log.info("msgtrace buffer is full,the loss count is" + discardCount.incrementAndGet() + "  " + ctx);
                 return false;
             }
             if (putIndex.compareAndSet(put, put + 1)) {
@@ -107,7 +106,7 @@ public class AsyncTraceDispatcher extends AsyncDispatcher {
                         notEmpty.signal();
                     }
                     catch (Exception e) {
-                        clientlog.info("fail to signal notEmpty,maybe block!");
+                        log.info("fail to signal notEmpty,maybe block!");
                     }
                     finally {
                         lock.unlock();
@@ -138,7 +137,7 @@ public class AsyncTraceDispatcher extends AsyncDispatcher {
                         notEmpty.signal();
                     }
                     catch (Exception e) {
-                        clientlog.info("fail to signal notEmpty,maybe block!");
+                        log.info("fail to signal notEmpty,maybe block!");
                     }
                     finally {
                         lock.unlock();
@@ -210,11 +209,11 @@ public class AsyncTraceDispatcher extends AsyncDispatcher {
                     }
                 }
                 catch (InterruptedException e) {
-                    clientlog.info("[WARN] " + workerName + " async thread is iterrupted");
+                    log.info("[WARN] " + workerName + " async thread is iterrupted");
                     break;
                 }
                 catch (Exception e) {
-                    clientlog.info("[ERROR] Fail to async write log");
+                    log.info("[ERROR] Fail to async write log");
                 }
             }
             running.set(false);

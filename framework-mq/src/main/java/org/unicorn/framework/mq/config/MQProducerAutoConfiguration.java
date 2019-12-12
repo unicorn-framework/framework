@@ -51,8 +51,7 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
             }
             producer.setNamesrvAddr(mqProperties.getNameServerAddress());
             producer.setSendMsgTimeout(mqProperties.getSendMsgTimeout());
-
-            producer.setRetryTimesWhenSendFailed(3);
+            producer.setRetryTimesWhenSendFailed(mqProperties.getRetryTimesWhenSendFailed());
             producer.start();
         }
         // register default mq producer to spring context

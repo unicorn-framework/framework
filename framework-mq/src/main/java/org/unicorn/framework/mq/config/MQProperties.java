@@ -46,5 +46,18 @@ public class MQProperties {
      * 检查线程池，producer本地缓冲请求队列大小
      */
     private Integer checkRequestHoldMax=2000;
+    /**
+     * 消费线程池：最小线程数
+     */
+    private Integer consumeThreadMin=20;
+
+    /**
+     * 消费线程池：最大线程数
+     */
+    private Integer consumeThreadMax=64;
+    /**
+     * 失败重试次数
+     */
+    private Integer retryTimesWhenSendFailed=3;
 
 }

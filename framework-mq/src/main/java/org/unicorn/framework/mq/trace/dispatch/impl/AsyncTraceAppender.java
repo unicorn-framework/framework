@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.log.ClientLogger;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -24,8 +25,8 @@ import org.unicorn.framework.mq.trace.dispatch.AsyncAppender;
 /**
  * @author xiebin
  */
+@Slf4j
 public class AsyncTraceAppender extends AsyncAppender {
-    private final static Logger clientlog = ClientLogger.getLog();
     /**
      * batch大小
      */
@@ -140,12 +141,12 @@ public class AsyncTraceAppender extends AsyncAppender {
                 @Override
                 public void onException(Throwable e) {
                     //todo 对于发送失败的数据，如何保存，保证所有轨迹数据都记录下来
-                    clientlog.info("send trace data failed ,the msgidSet is"+message.getKeys());
+                    log.info("send trace data failed ,the msgidSet is"+message.getKeys());
                 }
             }, 5000);
         }
         catch (Exception e) {
-            clientlog.info("send trace data failed ,the msgidSet is"+message.getKeys());
+            log.info("send trace data failed ,the msgidSet is"+message.getKeys());
         }
     }
 

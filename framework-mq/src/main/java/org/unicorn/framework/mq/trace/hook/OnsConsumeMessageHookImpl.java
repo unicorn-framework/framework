@@ -41,27 +41,21 @@ public class OnsConsumeMessageHookImpl implements ConsumeMessageHook {
         }
         OnsTraceContext onsTraceContext = new OnsTraceContext();
         context.setMqTraceContext(onsTraceContext);
-        onsTraceContext.setTraceType(OnsTraceType.SubBefore);//
-        onsTraceContext.setGroupName(context.getConsumerGroup());//
+        onsTraceContext.setTraceType(OnsTraceType.SubBefore);
+        onsTraceContext.setGroupName(context.getConsumerGroup());
         List<OnsTraceBean> beans = new ArrayList<OnsTraceBean>();
         for (MessageExt msg : context.getMsgList()) {
             if (msg == null) {
                 continue;
             }
             OnsTraceBean traceBean = new OnsTraceBean();
-            traceBean.setTopic(msg.getTopic());//
-            traceBean.setMsgId(msg.getMsgId());//
-            traceBean.setTags(msg.getTags());//
-            traceBean.setKeys(msg.getKeys());//
-//            InetSocketAddress host;
-//            // host = (InetSocketAddress) msg.getBornHost();
-//            // traceBean.setClientHost(host.getHostName());//
-//
-//            host = (InetSocketAddress) msg.getStoreHost();
-//            traceBean.setStoreHost(host.getHostName());//
-            traceBean.setStoreTime(msg.getStoreTimestamp());//
-            traceBean.setBodyLength(msg.getStoreSize());//
-            traceBean.setRetryTimes(msg.getReconsumeTimes());//
+            traceBean.setTopic(msg.getTopic());
+            traceBean.setMsgId(msg.getMsgId());
+            traceBean.setTags(msg.getTags());
+            traceBean.setKeys(msg.getKeys());
+            traceBean.setStoreTime(msg.getStoreTimestamp());
+            traceBean.setBodyLength(msg.getStoreSize());
+            traceBean.setRetryTimes(msg.getReconsumeTimes());
             beans.add(traceBean);
         }
         onsTraceContext.setTraceBeans(beans);
@@ -77,14 +71,14 @@ public class OnsConsumeMessageHookImpl implements ConsumeMessageHook {
         }
         OnsTraceContext subBeforeContext = (OnsTraceContext) context.getMqTraceContext();
         OnsTraceContext subAfterContext = new OnsTraceContext();
-        subAfterContext.setTraceType(OnsTraceType.SubAfter);//
-        subAfterContext.setRegionId(subBeforeContext.getRegionId());//
-        subAfterContext.setGroupName(subBeforeContext.getGroupName());//
-        subAfterContext.setRequestId(subBeforeContext.getRequestId());//
-        subAfterContext.setSuccess(context.isSuccess());//
+        subAfterContext.setTraceType(OnsTraceType.SubAfter);
+        subAfterContext.setRegionId(subBeforeContext.getRegionId());
+        subAfterContext.setGroupName(subBeforeContext.getGroupName());
+        subAfterContext.setRequestId(subBeforeContext.getRequestId());
+        subAfterContext.setSuccess(context.isSuccess());
         // 批量消息全部处理完毕的平均耗时
         int costTime = (int) ((System.currentTimeMillis() - subBeforeContext.getTimeStamp()) / context.getMsgList().size());
-        subAfterContext.setCostTime(costTime);//
+        subAfterContext.setCostTime(costTime);
         subAfterContext.setTraceBeans(subBeforeContext.getTraceBeans());
         localDispatcher.append(subAfterContext);
     }
