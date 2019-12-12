@@ -1,9 +1,6 @@
 package org.unicorn.framework.mq.config;
 
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.TransactionMQProducer;
@@ -13,9 +10,14 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.unicorn.framework.mq.annotation.MQProducer;
 import org.unicorn.framework.mq.base.AbstractMQProducer;
-import org.unicorn.framework.mq.service.impl.DefaultTransactionCheckListenerImpl;
+import org.unicorn.framework.mq.service.impl.DefaultTransactionListenerImpl;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.annotation.PostConstruct;
+import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xiebin
@@ -41,11 +43,10 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
             if (mqProperties.getTransactionEnable()) {
                 producer = new TransactionMQProducer(mqProperties.getProducerGroup());
                 TransactionMQProducer transactionMQProducer = (TransactionMQProducer) producer;
-                transactionMQProducer.setCheckThreadPoolMinSize(mqProperties.getCheckThreadPoolMinSize());
-                transactionMQProducer.setCheckThreadPoolMaxSize(mqProperties.getCheckThreadPoolMaxSize());
-                transactionMQProducer.setCheckRequestHoldMax(mqProperties.getCheckRequestHoldMax());
+                //设置事务回查线程池
+                transactionMQProducer.setExecutorService(genCheckTransactionExecutorService());
                 //事务回查检测器，是定时任务调用，所以会有线程池设置
-                transactionMQProducer.setTransactionCheckListener(new DefaultTransactionCheckListenerImpl());
+                transactionMQProducer.setTransactionListener(new DefaultTransactionListenerImpl());
             } else {
                 producer = new DefaultMQProducer(mqProperties.getProducerGroup());
             }
@@ -62,6 +63,25 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
         }
     }
 
+    /**
+     * 创建事务检查线程池
+     * @return
+     */
+    private ExecutorService genCheckTransactionExecutorService() {
+        return new ThreadPoolExecutor(mqProperties.getCheckThreadPoolMinSize(), mqProperties.getCheckThreadPoolMaxSize(), 100, TimeUnit.SECONDS,
+                new ArrayBlockingQueue<Runnable>(mqProperties.getCheckRequestHoldMax()), (r) -> {
+            Thread thread = new Thread(r);
+            thread.setName("client-transaction-msg-check-thread");
+            return thread;
+        });
+    }
+
+    /**
+     * 发布生产者
+     * @param beanName
+     * @param bean
+     * @throws Exception
+     */
     private void publishProducer(String beanName, Object bean) throws Exception {
         if (!AbstractMQProducer.class.isAssignableFrom(bean.getClass())) {
             throw new RuntimeException(beanName + " - producer未继承AbstractMQProducer");

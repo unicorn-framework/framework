@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author xiebin
  */
-public class UnicornMqTransactionHandlerAdapter {
+public class UnicornMqTransactionCheckHandlerAdapter {
     /**
      * @param messageExt
      * @return
