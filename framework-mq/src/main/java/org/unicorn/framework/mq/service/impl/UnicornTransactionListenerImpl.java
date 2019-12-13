@@ -15,15 +15,24 @@ import org.unicorn.framework.mq.handler.UnicornMqTransactionExecuteHandlerAdapte
  * @author xiebin
  */
 @Slf4j
-public class DefaultTransactionListenerImpl implements TransactionListener {
-
+public class UnicornTransactionListenerImpl implements TransactionListener {
+    /**
+     * 本地事务执行器
+     * @param message
+     * @param o
+     * @return
+     */
     @Override
     public LocalTransactionState executeLocalTransaction(Message message, Object o) {
         log.info("topic==>" + message.getTopic() + "tag==>" + message.getTags() + "body==>" + new String(message.getBody()));
-        log.info(new Gson().toJson(o));
         return UnicornMqTransactionExecuteHandlerAdapter.getHandler(message).execute(message);
     }
 
+    /**
+     * 本地未知事务状态检查器
+     * @param messageExt
+     * @return
+     */
     @Override
     public LocalTransactionState checkLocalTransaction(MessageExt messageExt) {
         log.info("topic==>" + messageExt.getTopic() + "tag==>" + messageExt.getTags() + "body==>" + new String(messageExt.getBody()));

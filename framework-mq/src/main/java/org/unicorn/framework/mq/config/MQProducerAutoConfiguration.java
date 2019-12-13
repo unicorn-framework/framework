@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.unicorn.framework.mq.annotation.MQProducer;
 import org.unicorn.framework.mq.base.AbstractMQProducer;
-import org.unicorn.framework.mq.service.impl.DefaultTransactionListenerImpl;
+import org.unicorn.framework.mq.service.impl.UnicornTransactionListenerImpl;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
@@ -46,7 +46,7 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
                 //设置事务回查线程池
                 transactionMQProducer.setExecutorService(genCheckTransactionExecutorService());
                 //事务回查检测器，是定时任务调用，所以会有线程池设置
-                transactionMQProducer.setTransactionListener(new DefaultTransactionListenerImpl());
+                transactionMQProducer.setTransactionListener(new UnicornTransactionListenerImpl());
             } else {
                 producer = new DefaultMQProducer(mqProperties.getProducerGroup());
             }
