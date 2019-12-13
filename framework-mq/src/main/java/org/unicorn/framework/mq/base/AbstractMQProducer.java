@@ -363,13 +363,14 @@ public abstract class AbstractMQProducer {
      * @throws MQException 消息异常
      */
     @Deprecated
-    public void sendTransaction(Object msgObj, LocalTransactionExecuter localTransactionExecuter) throws MQException {
+    public TransactionSendResult sendTransaction(Object msgObj, LocalTransactionExecuter localTransactionExecuter) throws MQException {
         try {
             if (null == msgObj) {
-                return;
+                return null;
             }
-            producer.sendMessageInTransaction(genMessage(getTopic(), getTag(), msgObj), localTransactionExecuter, null);
             log.info("send rocketmq message async");
+            return producer.sendMessageInTransaction(genMessage(getTopic(), getTag(), msgObj), localTransactionExecuter, null);
+
         } catch (Exception e) {
             log.error("消息发送失败，topic : {}, msgObj {}", getTopic(), msgObj, e);
             throw new MQException("消息发送失败，topic :" + getTag() + ",e:" + e.getMessage());
@@ -382,13 +383,13 @@ public abstract class AbstractMQProducer {
      * @param msgObj msgObj
      * @throws MQException 消息异常
      */
-    public void sendTransaction(Object msgObj) throws MQException {
+    public TransactionSendResult sendTransaction(Object msgObj) throws MQException {
         try {
             if (null == msgObj) {
-                return;
+                return null;
             }
-            producer.sendMessageInTransaction(genMessage(getTopic(), getTag(), msgObj), null);
             log.info("send rocketmq message async");
+            return producer.sendMessageInTransaction(genMessage(getTopic(), getTag(), msgObj), null);
         } catch (Exception e) {
             log.error("消息发送失败，topic : {}, msgObj {}", getTopic(), msgObj, e);
             throw new MQException("消息发送失败，topic :" + getTag() + ",e:" + e.getMessage());
@@ -405,13 +406,13 @@ public abstract class AbstractMQProducer {
      * @throws MQException 消息异常
      */
     @Deprecated
-    public void sendTransaction(String topic, String tag, Object msgObj, LocalTransactionExecuter localTransactionExecuter) throws MQException {
+    public TransactionSendResult sendTransaction(String topic, String tag, Object msgObj, LocalTransactionExecuter localTransactionExecuter) throws MQException {
         try {
             if (null == msgObj) {
-                return;
+                return null;
             }
-            producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), localTransactionExecuter, null);
             log.info("send rocketmq message async");
+            return producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), localTransactionExecuter, null);
         } catch (Exception e) {
             log.error("消息发送失败，topic : {}, msgObj {}", topic, tag, e);
             throw new MQException("消息发送失败，topic :" + tag + ",e:" + e.getMessage());
@@ -427,13 +428,13 @@ public abstract class AbstractMQProducer {
      * @param msgObj msgObj
      * @throws MQException 消息异常
      */
-    public void sendTransaction(String topic, String tag, Object msgObj) throws MQException {
+    public TransactionSendResult sendTransaction(String topic, String tag, Object msgObj) throws MQException {
         try {
             if (null == msgObj) {
-                return;
+                return null;
             }
-            producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), null);
             log.info("send rocketmq message async");
+            return producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), null);
         } catch (Exception e) {
             log.error("消息发送失败，topic : {}, msgObj {}", topic, tag, e);
             throw new MQException("消息发送失败，topic :" + tag + ",e:" + e.getMessage());
@@ -450,13 +451,13 @@ public abstract class AbstractMQProducer {
      * @throws MQException 消息异常
      */
     @Deprecated
-    public void sendTransaction(String topic, String tag, Object msgObj, LocalTransactionExecuter localTransactionExecuter, Object arg) throws MQException {
+    public TransactionSendResult sendTransaction(String topic, String tag, Object msgObj, LocalTransactionExecuter localTransactionExecuter, Object arg) throws MQException {
         try {
             if (null == msgObj) {
-                return;
+                return null;
             }
-            producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), localTransactionExecuter, arg);
             log.info("send rocketmq message async");
+            return producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), localTransactionExecuter, arg);
         } catch (Exception e) {
             log.error("消息发送失败，topic : {}, msgObj {}", topic, msgObj, e);
             throw new MQException("消息发送失败，topic :" + tag + ",e:" + e.getMessage());
@@ -471,13 +472,13 @@ public abstract class AbstractMQProducer {
      * @param msgObj
      * @throws MQException 消息异常
      */
-    public void sendTransaction(String topic, String tag, Object msgObj, Object arg) throws MQException {
+    public TransactionSendResult sendTransaction(String topic, String tag, Object msgObj, Object arg) throws MQException {
         try {
             if (null == msgObj) {
-                return;
+                return null;
             }
-            producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), arg);
             log.info("send rocketmq message async");
+            return producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), arg);
         } catch (Exception e) {
             log.error("消息发送失败，topic : {}, msgObj {}", topic, msgObj, e);
             throw new MQException("消息发送失败，topic :" + tag + ",e:" + e.getMessage());
