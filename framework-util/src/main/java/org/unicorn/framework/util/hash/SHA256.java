@@ -109,4 +109,8 @@ public class SHA256 {
         }
         return resultString;
     }
+    public static void main(String []args){
+        System.out.println(Encode16("test"));
+        System.out.println(Encode16("testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"));
+    }
 }
