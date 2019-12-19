@@ -3,8 +3,12 @@ package org.unicorn.framework.base.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.base.base.UnicornPasswordEncoder;
+
+import java.util.Locale;
 
 /**
  * 
@@ -23,6 +27,15 @@ public class BeanConfig {
     public PasswordEncoder passwordEncoder(){
         return new UnicornPasswordEncoder();
     }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+        sessionLocaleResolver.setDefaultLocale(Locale.CHINA);
+        return sessionLocaleResolver;
+    }
+
+
     public static void main(String[] args) {
         UnicornPasswordEncoder unicornPasswordEncoder=new UnicornPasswordEncoder();
         Long start =System.currentTimeMillis();
