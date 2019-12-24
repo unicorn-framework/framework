@@ -23,10 +23,7 @@ public class UnicornGatewaySecurityProperties {
      *
      */
     private Map<String,String> keyPair;
-    /**
-     * 是否开启安全过滤 默认不开启
-     */
-    private Boolean securityCheckEnable=false;
+
     /**
      * 是否开启签名检查
      */
@@ -36,9 +33,6 @@ public class UnicornGatewaySecurityProperties {
      */
     private Boolean timeStampCheckEnable=false;
 
-    /**
-     * 是否开启请求跟踪
-     */
-    private Boolean requestTrackEnable=true;
+
 
 }

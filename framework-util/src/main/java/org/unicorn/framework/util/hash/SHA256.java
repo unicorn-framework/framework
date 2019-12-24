@@ -109,8 +109,10 @@ public class SHA256 {
         }
         return resultString;
     }
+    public native void sayHelloworld();
     public static void main(String []args){
         System.out.println(Encode16("test"));
         System.out.println(Encode16("testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"));
+        System.loadLibrary("");
     }
 }

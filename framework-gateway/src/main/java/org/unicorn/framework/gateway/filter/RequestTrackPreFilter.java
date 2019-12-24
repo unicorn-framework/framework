@@ -28,8 +28,7 @@ import java.util.List;
  * 所有的资源请求在路由之前进行前置过滤 生成请求唯一id并传递给下游服务
  */
 public class RequestTrackPreFilter extends ZuulFilter {
-    @Autowired
-    private UnicornGatewaySecurityProperties gatewaySecurityProperties;
+
 
     /**
      * 过滤器的类型 pre表示请求在路由之前被过滤
@@ -58,7 +57,7 @@ public class RequestTrackPreFilter extends ZuulFilter {
      */
     @Override
     public boolean shouldFilter() {
-        return gatewaySecurityProperties.getRequestTrackEnable();
+        return true;
     }
 
     /**

@@ -13,8 +13,6 @@ import org.unicorn.framework.gateway.properties.UnicornGatewaySecurityProperties
  * 所有的资源请求在路由之前进行前置过滤 生成请求唯一id并传递给下游服务
  */
 public class RequestTrackPostFilter extends ZuulFilter {
-    @Autowired
-    private UnicornGatewaySecurityProperties gatewaySecurityProperties;
 
     /**
      * 过滤器的类型 post表示请求在路由之后被过滤
@@ -43,7 +41,7 @@ public class RequestTrackPostFilter extends ZuulFilter {
      */
     @Override
     public boolean shouldFilter() {
-        return gatewaySecurityProperties.getRequestTrackEnable();
+        return true;
     }
 
     /**
@@ -54,9 +52,9 @@ public class RequestTrackPostFilter extends ZuulFilter {
     @Override
     public Object run() {
         RequestContext context = RequestContext.getCurrentContext();
-        String ss=context.get(UnicornConstants.REQUEST_TRACK_HEADER_NAME).toString();
+        String ss = context.get(UnicornConstants.REQUEST_TRACK_HEADER_NAME).toString();
         context.remove(UnicornConstants.REQUEST_TRACK_HEADER_NAME);
-        String  id=UnicornContext.getValue(UnicornConstants.REQUEST_TRACK_HEADER_NAME);
+        String id = UnicornContext.getValue(UnicornConstants.REQUEST_TRACK_HEADER_NAME);
         return null;
     }
 

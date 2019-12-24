@@ -2,15 +2,12 @@ package org.unicorn.framework.gateway.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StreamUtils;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.core.handler.HandlerAdapter;
 import org.unicorn.framework.core.handler.IHandler;
 import org.unicorn.framework.gateway.dto.BaseSecurityDto;
-import org.unicorn.framework.gateway.properties.UnicornGatewaySecurityProperties;
 import org.unicorn.framework.util.json.JsonUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +21,8 @@ import java.util.List;
  * 资源安全过滤器
  * 所有的资源请求在路由之前进行前置过滤
  */
+@Slf4j
 public class SecurityFilter extends ZuulFilter {
-    @Autowired
-    private UnicornGatewaySecurityProperties gatewaySecurityProperties;
-
-    private static Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
 
     /**
      * 过滤器的类型 pre表示请求在路由之前被过滤
@@ -57,7 +51,7 @@ public class SecurityFilter extends ZuulFilter {
      */
     @Override
     public boolean shouldFilter() {
-        return gatewaySecurityProperties.getSecurityCheckEnable();
+        return true;
     }
 
     /**
