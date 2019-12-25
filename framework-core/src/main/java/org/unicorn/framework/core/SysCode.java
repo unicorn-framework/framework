@@ -161,7 +161,10 @@ public class SysCode {
      * api MediaType not support
      */
     public static final ResBean HTTP_MEDIA_TYPE_NOT_SUPPORTED = new ResBean("99908", "不支持媒体类型");
-
+    /**
+     * api http method not support
+     */
+    public static final ResBean HTTP_METHOD_NOT_SUPPORTED = new ResBean("99909", "不支持该http方法");
 
     /**
      * 分布式事务回滚
