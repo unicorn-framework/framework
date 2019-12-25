@@ -4,7 +4,6 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import io.jmnarloch.spring.cloud.ribbon.support.RibbonFilterContextHolder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
 import org.unicorn.framework.core.exception.PendingException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,12 +61,10 @@ public class GrayscaleFilter extends ZuulFilter {
             String grayFlag = request.getHeader("gray-flag");
             RibbonFilterContextHolder.clearCurrentContext();
             //如果为空直接返回
-            if (StringUtils.isEmpty(grayFlag)) {
-                return null;
+            if (GRAY_FLAG.equalsIgnoreCase(grayFlag)) {
+                //如果开启则走灰度节点
+                RibbonFilterContextHolder.getCurrentContext().add("gray", "true");
             }
-            //如果开启则走灰度节点
-            RibbonFilterContextHolder.getCurrentContext().add("gray", grayFlag);
-
         } catch (PendingException pe) {
             throw pe;
         } catch (Exception e) {
