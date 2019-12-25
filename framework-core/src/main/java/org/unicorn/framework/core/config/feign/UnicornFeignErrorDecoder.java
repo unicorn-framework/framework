@@ -13,6 +13,7 @@ import org.unicorn.framework.util.json.JsonUtils;
 
 /**
  * 接口提供方抛出的异常进行转换
+ * 当调用服务时，如果服务返回的状态码不是200，就会进入到Feign的ErrorDecoder中
  * feign客户端调用时异常转化处理
  * 对于restful抛出的4xx的错误，也许大部分是业务异常，并不是服务提供方的异常，
  * 因此在进行feign client调用的时候，需要进行errorDecoder去处理，
