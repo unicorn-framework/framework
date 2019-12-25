@@ -19,7 +19,8 @@ import java.util.Map;
 
 /**
  * @author xiebin
- */@ControllerAdvice
+ */
+@ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
     /**

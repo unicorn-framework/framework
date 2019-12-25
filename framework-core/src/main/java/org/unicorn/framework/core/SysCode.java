@@ -162,6 +162,16 @@ public class SysCode {
      */
     public static final ResBean HTTP_MEDIA_TYPE_NOT_SUPPORTED = new ResBean("99908", "不支持媒体类型");
 
+
+    /**
+     * 分布式事务回滚
+     */
+    public static final ResBean LCN_TRANSACTION_ROLLBACK = new ResBean("99099", "分布式事务回滚");
+
+
+
+
+
     //===================9开头的为系统异常  end==================================
 
     //=======================7开头标识数据库异常 start ==============================

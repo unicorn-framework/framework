@@ -18,6 +18,7 @@ import org.unicorn.framework.util.json.JsonUtils;
  * 因此在进行feign client调用的时候，需要进行errorDecoder去处理，
  * 适配为HystrixBadRequestException，好避开circuit breaker的统计，
  * 否则就容易误判，传几个错误的参数，立马就熔断整个服务了，后果不堪设想。
+ *
  * @author xiebin
  */
 @Configuration
@@ -27,31 +28,31 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String methodKey, Response response) {
 
-        log.info("feign 调用方法名===》"+methodKey);
+        log.info("feign 调用方法名===》" + methodKey);
         try {
-            if(response.status() == 401){
+            if (response.status() == 401) {
                 return new PendingException(SysCode.SESSION_ERROR);
             }
-            if(response.status() == 403){
+            if (response.status() == 403) {
                 return new PendingException(SysCode.UNAUTHOR__ERROR);
             }
-            if(response.body()==null){
+            if (response.body() == null) {
                 return new PendingException(SysCode.SYS_FAIL);
             }
             // 这里直接拿到feign服务端抛出的异常信息
-           String message = Util.toString(response.body().asReader());
-            ResponseDto  responseDto=JsonUtils.fromJson(message, ResponseDto.class);
-            if(response.status() >= 400 && response.status() <= 499){
+            String message = Util.toString(response.body().asReader());
+            ResponseDto responseDto = JsonUtils.fromJson(message, ResponseDto.class);
+            if (response.status() >= 400 && response.status() <= 499) {
 
-                if(methodKey.contains("AuthTokenClient#postAccessToken(String,Map)")){
+                if (methodKey.contains("AuthTokenClient#postAccessToken(String,Map)")) {
                     return new HystrixBadRequestException("用户信息错误");
                 }
-                return new HystrixBadRequestException("请求参数错误 :"+methodKey);
+                return new HystrixBadRequestException("请求参数错误 :" + methodKey);
             }
-            return  new PendingException(responseDto);
+            return new PendingException(responseDto);
         } catch (Exception e) {
-            log.error("feign错误",e);
-            return  new PendingException(SysCode.SYS_FAIL,"feignException",e);
+            log.error("feign错误", e);
+            return new PendingException(SysCode.SYS_FAIL, "feignException", e);
         }
     }
 }
