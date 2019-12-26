@@ -5,6 +5,7 @@ import com.netflix.zuul.context.RequestContext;
 import io.jmnarloch.spring.cloud.ribbon.support.RibbonFilterContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.unicorn.framework.core.exception.PendingException;
+import org.unicorn.framework.core.utils.GrayUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * 灰度过滤器
  */
 @Slf4j
-public class GrayscaleFilter extends ZuulFilter {
+public class GrayScaleFilter extends ZuulFilter {
 
     public static final String GRAY_FLAG = "enable";
 
@@ -57,14 +58,8 @@ public class GrayscaleFilter extends ZuulFilter {
         try {
             RequestContext ctx = RequestContext.getCurrentContext();
             HttpServletRequest request = ctx.getRequest();
-            //请求头部是否有名为gray-flag的请求头参数
-            String grayFlag = request.getHeader("gray-flag");
-            RibbonFilterContextHolder.clearCurrentContext();
-            //如果为空直接返回
-            if (GRAY_FLAG.equalsIgnoreCase(grayFlag)) {
-                //如果开启则走灰度节点
-                RibbonFilterContextHolder.getCurrentContext().add("gray", "true");
-            }
+            //设置灰度上下文
+            GrayUtil.setGrayContext(request);
         } catch (PendingException pe) {
             throw pe;
         } catch (Exception e) {

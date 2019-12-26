@@ -56,5 +56,15 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
+
+        <!-- 灰度发布-->
+        <dependency>
+            <groupId>io.jmnarloch</groupId>
+            <artifactId>ribbon-discovery-filter-spring-cloud-starter</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
     </dependencies>
+
+
 </project>

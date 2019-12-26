@@ -3,7 +3,7 @@ package org.unicorn.framework.gateway.config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.unicorn.framework.gateway.filter.GrayscaleFilter;
+import org.unicorn.framework.gateway.filter.GrayScaleFilter;
 import org.unicorn.framework.gateway.filter.RequestTrackPreFilter;
 import org.unicorn.framework.gateway.filter.SecurityFilter;
 
@@ -19,8 +19,8 @@ public class ZuulFilterConfig {
      */
     @Bean
     @ConditionalOnProperty(prefix = "unicorn.gray", name = "enable", havingValue = "true")
-    public GrayscaleFilter grayscaleFilter() {
-        return new GrayscaleFilter();
+    public GrayScaleFilter grayscaleFilter() {
+        return new GrayScaleFilter();
     }
 
 
