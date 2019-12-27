@@ -2,7 +2,6 @@ package org.unicorn.framework.gateway.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import io.jmnarloch.spring.cloud.ribbon.support.RibbonFilterContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.core.utils.GrayUtil;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 public class GrayScaleFilter extends ZuulFilter {
-
-    public static final String GRAY_FLAG = "enable";
 
     /**
      * 过滤器的类型 pre表示请求在路由之前被过滤

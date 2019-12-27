@@ -35,6 +35,7 @@ public class UnicornFeignConfig implements RequestInterceptor {
                 log.info("attributes==" + attributes);
                 return;
             }
+            //设置token头
             HttpServletRequest request = attributes.getRequest();
             String authorization = request.getHeader(TOKEN_HEADER_NAME);
             Map<String, Collection<String>> headerMap = requestTemplate.request().headers();
