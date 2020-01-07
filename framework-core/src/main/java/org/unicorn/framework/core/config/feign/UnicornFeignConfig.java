@@ -2,7 +2,6 @@ package org.unicorn.framework.core.config.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import io.jmnarloch.spring.cloud.ribbon.support.RibbonFilterContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
