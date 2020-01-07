@@ -4,10 +4,12 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import io.jmnarloch.spring.cloud.ribbon.support.RibbonFilterContextHolder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.unicorn.framework.base.constants.UnicornConstants;
+import org.unicorn.framework.core.properties.UnicornCoreProperties;
 import org.unicorn.framework.core.utils.GrayUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +26,8 @@ public class UnicornFeignConfig implements RequestInterceptor {
      * token 头部名
      */
     public static final String TOKEN_HEADER_NAME = "Authorization";
-
+    @Autowired
+    UnicornCoreProperties unicornCoreProperties;
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
@@ -45,7 +48,9 @@ public class UnicornFeignConfig implements RequestInterceptor {
             //设置跟踪ID头部
             requestTemplate.header(UnicornConstants.REQUEST_TRACK_HEADER_NAME, request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
             //设置灰度上下文
-            GrayUtil.setGrayContext(request);
+            if (unicornCoreProperties.getEnable().equals(Boolean.TRUE)) {
+                GrayUtil.setGrayContext(request);
+            }
         } catch (Exception e) {
             log.error("requestTemplate设置错误", e);
         }
