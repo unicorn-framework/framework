@@ -184,13 +184,13 @@
         <repository>
             <id>releases</id>
             <name>Team Nexus Repository</name>
-            <url>http://${neuxs.path}/maven-releases/</url>
+            <url>http://115.29.241.224:8081/repository/maven-releases/</url>
         </repository>
 
         <repository>
             <id>snapshots</id>
             <name>Team Nexus Repository</name>
-            <url>http://${neuxs.path}/maven-snapshots/</url>
+            <url>http://115.29.241.224:8081/repository/maven-snapshots/</url>
         </repository>
     </repositories>
 
@@ -200,12 +200,12 @@
         <repository>
             <id>releases</id>
             <name>Gigold Nexus Repository</name>
-            <url>http://${neuxs.path}/maven-releases/</url>
+            <url>http://115.29.241.224:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Gigold Nexus Repository</name>
-            <url>http://${neuxs.path}/maven-snapshots/</url>
+            <url>http://115.29.241.224:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
