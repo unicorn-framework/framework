@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -92,14 +93,19 @@ public class LogAspect extends AbstractService {
 
     @AfterReturning(pointcut = "controllerPointCut()", returning = "ret")
     public void afterReturning(Object ret) {
-
         try {
             ResponseInfoDto responseInfoDto = new ResponseInfoDto();
             if (ret != null) {
                 //设置响应ID
                 responseInfoDto.setResponseId(UnicornContext.getValue(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
+               if(ret instanceof ResponseEntity){
+                   ResponseEntity entity=(ResponseEntity)ret;
+                   //设置响应报文
+                   responseInfoDto.setResponseBody(entity.getBody());
+               }else{
                 //设置响应报文
                 responseInfoDto.setResponseBody(ret);
+               }
             }
             long costMs = System.currentTimeMillis() - Long.valueOf(UnicornContext.getValue("beginTime").toString());
             //设置请求开始时间

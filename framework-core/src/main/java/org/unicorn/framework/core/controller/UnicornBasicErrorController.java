@@ -1,5 +1,7 @@
 package org.unicorn.framework.core.controller;
 
+import io.undertow.server.RequestTooBigException;
+import io.undertow.server.handlers.form.MultiPartParserDefinition;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -11,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.unicorn.framework.base.constants.UnicornConstants;
@@ -22,15 +22,13 @@ import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.dto.RequestInfoDto;
 import org.unicorn.framework.core.dto.ResponseInfoDto;
 import org.unicorn.framework.util.http.RequestUtils;
-import org.unicorn.framework.util.json.JsonUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * @author xiebin
  */
-@Controller
+@RestController
 @Slf4j
 public class UnicornBasicErrorController extends AbstractErrorController {
 
@@ -51,11 +49,9 @@ public class UnicornBasicErrorController extends AbstractErrorController {
      * @param request
      * @return
      */
-    @GetMapping(value = "/error")
-    @ResponseBody
-    public ResponseEntity<ResponseDto<?>> getError(HttpServletRequest request) throws Throwable {
-        HttpStatus status = this.getStatus(request);
-        return new ResponseEntity<>(handlerException(request), status);
+    @RequestMapping(value = "/error")
+    public ResponseEntity<ResponseDto<?>> error(HttpServletRequest request) throws Throwable {
+        return new ResponseEntity<>(handlerException(request), HttpStatus.OK);
     }
 
     /**
@@ -66,47 +62,40 @@ public class UnicornBasicErrorController extends AbstractErrorController {
      * @throws Throwable
      */
     public ResponseDto<?> handlerException(HttpServletRequest request) throws Throwable {
-        Map<String, Object> body = this.getErrorAttributes(request, this.isIncludeStackTrace(request, MediaType.ALL));
-        log.info("error:异常信息:{}", JsonUtils.toJson(body));
+
+        HttpStatus status = this.getStatus(request);
+        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         ResponseDto<?> responseDto = null;
-        Integer statusCode = Integer.valueOf(body.get("status").toString());
-        String url = null;
-        if (body != null && body.get("path") != null) {
-            url = request.getRequestURL().toString().replace("/error", "") + body.get("path").toString();
-        }
-        if (statusCode == 401) {
+        String url = getAttribute(requestAttributes, "javax.servlet.error.request_uri");
+        Throwable throwable = getError(requestAttributes);
+        url = request.getRequestURL().toString().replace("/error", "") + url;
+        if (status.equals(HttpStatus.UNAUTHORIZED)) {
             responseDto = new ResponseDto<>(SysCode.SESSION_ERROR);
-            responseDto.setUrl(url);
         }
-        if (statusCode == 404) {
+        if (status.equals(HttpStatus.NOT_FOUND)) {
             responseDto = new ResponseDto<>(SysCode.URL_NOT_EXIST);
-            responseDto.setUrl(url);
         }
-        if (statusCode == 429) {
+        if (status.equals(HttpStatus.TOO_MANY_REQUESTS)) {
             responseDto = new ResponseDto<>(SysCode.API_LIMIT_ERROR);
-            responseDto.setUrl(url);
+        }
+        if (status.equals(HttpStatus.INTERNAL_SERVER_ERROR)) {
+            if (throwable instanceof MultiPartParserDefinition.FileTooLargeException) {
+                responseDto = new ResponseDto<>(SysCode.FILE_UPLOAD_TOO_BIG);
+            } else if (throwable instanceof RequestTooBigException) {
+                responseDto = new ResponseDto<>(SysCode.FILE_UPLOAD_TOO_BIG);
+            } else if (throwable.getCause() instanceof RequestTooBigException) {
+                responseDto = new ResponseDto<>(SysCode.FILE_UPLOAD_TOO_BIG);
+            } else if (throwable.getCause() instanceof MultiPartParserDefinition.FileTooLargeException) {
+                responseDto = new ResponseDto<>(SysCode.FILE_UPLOAD_TOO_BIG);
+            }
         }
         if (responseDto != null) {
-            printlnRequestLog(request, responseDto, url);
+            responseDto.setUrl(url);
             return responseDto;
         }
 
         //其他异常获取并将异常抛出去
-        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-        throw getError(requestAttributes);
-    }
-
-    /**
-     * 定义500的错误JSON信息
-     *
-     * @param request
-     * @return
-     */
-    @PostMapping(value = "/error")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> postError(HttpServletRequest request) throws Throwable {
-        handlerException(request);
-        return null;
+        throw throwable;
     }
 
     /**
@@ -116,11 +105,7 @@ public class UnicornBasicErrorController extends AbstractErrorController {
      * @return
      */
     public Throwable getError(RequestAttributes requestAttributes) {
-        Throwable exception = getAttribute(requestAttributes, ERROR_ATTRIBUTE);
-        if (exception == null) {
-            exception = getAttribute(requestAttributes, "javax.servlet.error.exception");
-        }
-        log.info("error:其他异常信息:{}", exception);
+        Throwable exception = getAttribute(requestAttributes, "javax.servlet.error.exception");
         return exception;
     }
 
@@ -148,30 +133,30 @@ public class UnicornBasicErrorController extends AbstractErrorController {
         return this.errorProperties;
     }
 
-    /**
-     * 打印请求日志
-     *
-     * @param request
-     */
-    private void printlnRequestLog(HttpServletRequest request, ResponseDto<?> responseDto, String url) {
-        RequestInfoDto requestInfoDto = new RequestInfoDto();
-        //设置请求ID
-        requestInfoDto.setRequestId(request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
-        //请求方法
-        requestInfoDto.setHttpMethod(request.getMethod());
-        //请求url
-        requestInfoDto.setRequestUrl(url);
-        //请求IP
-        requestInfoDto.setRemoteIp(RequestUtils.getIp(request));
-        //打印请求日志
-        log.info("接口请求信息：{}", requestInfoDto);
-
-        ResponseInfoDto responseInfoDto = new ResponseInfoDto();
-        //设置响应ID
-        responseInfoDto.setResponseId(request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
-        //设置响应报文
-        responseInfoDto.setResponseBody(responseDto);
-        //打印响应日志
-        log.info("接口响应信息：{}", responseInfoDto);
-    }
+//    /**
+//     * 打印请求日志
+//     *
+//     * @param request
+//     */
+//    private void printlnRequestLog(HttpServletRequest request, ResponseDto<?> responseDto, String url) {
+//        RequestInfoDto requestInfoDto = new RequestInfoDto();
+//        //设置请求ID
+//        requestInfoDto.setRequestId(request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
+//        //请求方法
+//        requestInfoDto.setHttpMethod(request.getMethod());
+//        //请求url
+//        requestInfoDto.setRequestUrl(url);
+//        //请求IP
+//        requestInfoDto.setRemoteIp(RequestUtils.getIp(request));
+//        //打印请求日志
+//        log.info("接口请求信息：{}", requestInfoDto);
+//
+//        ResponseInfoDto responseInfoDto = new ResponseInfoDto();
+//        //设置响应ID
+//        responseInfoDto.setResponseId(request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
+//        //设置响应报文
+//        responseInfoDto.setResponseBody(responseDto);
+//        //打印响应日志
+//        log.info("接口响应信息：{}", responseInfoDto);
+//    }
 }

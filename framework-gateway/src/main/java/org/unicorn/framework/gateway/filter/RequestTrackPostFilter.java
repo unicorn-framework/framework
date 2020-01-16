@@ -21,7 +21,7 @@ public class RequestTrackPostFilter extends ZuulFilter {
      */
     @Override
     public String filterType() {
-        return "post";
+        return "error";
     }
 
     /**

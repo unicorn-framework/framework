@@ -1,4 +1,4 @@
-package org.unicorn.framework.oss.config;
+package org.unicorn.framework.core.config.multipart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;

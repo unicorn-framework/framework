@@ -1,6 +1,7 @@
 package org.unicorn.framework.core.exceptionhandler;
 
 import io.undertow.server.RequestTooBigException;
+import io.undertow.server.handlers.form.MultiPartParserDefinition;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
@@ -17,6 +18,8 @@ public class RequestTooBigExceptionHandler implements IExceptionHandler {
         if(e instanceof RequestTooBigException){
             return true;
         }else if(e.getCause() instanceof  RequestTooBigException){
+            return true;
+        }else if(e.getCause() instanceof MultiPartParserDefinition.FileTooLargeException){
             return true;
         }
         return false;
