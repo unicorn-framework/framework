@@ -12,16 +12,12 @@ import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.unicorn.framework.base.constants.UnicornConstants;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
-import org.unicorn.framework.core.dto.RequestInfoDto;
-import org.unicorn.framework.core.dto.ResponseInfoDto;
-import org.unicorn.framework.util.http.RequestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
