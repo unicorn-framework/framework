@@ -6,6 +6,7 @@ import io.undertow.server.handlers.GracefulShutdownHandler;
 import org.springframework.stereotype.Component;
 
 /**
+ * undertow优雅停机
  * @author xiebin
  */
 @Component
