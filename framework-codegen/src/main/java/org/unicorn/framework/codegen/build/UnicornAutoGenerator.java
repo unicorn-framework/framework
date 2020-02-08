@@ -45,7 +45,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 
     public void setApiServiceImpl(VelocityContext context, UnicornTableInfo tableInfo, UnicornConfigBuilder config) {
         ClassBaseContext serviceImplContext=new ClassBaseContext();
-        serviceImplContext.setName(tableInfo.getServiceImplName()+"Api");
+        serviceImplContext.setName("Api"+tableInfo.getServiceImplName());
         String pkg=config.getPackageInfo().get(UnicornConstVal.API_SERVICEIMPL)+"."+tableInfo.getEntityPath().toLowerCase();
         serviceImplContext.setPkg(pkg);
         serviceImplContext.setClassImportPath(pkg+".Api"+tableInfo.getServiceImplName());
@@ -55,7 +55,7 @@ public class UnicornAutoGenerator extends UnicornAbstractGenerator {
 
     public void setApiControllerContext(VelocityContext context, UnicornTableInfo tableInfo, UnicornConfigBuilder config) {
         ClassBaseContext controllerContext=new ClassBaseContext();
-        controllerContext.setName(tableInfo.getControllerName()+"Api");
+        controllerContext.setName("Api"+tableInfo.getControllerName());
         String pkg=config.getPackageInfo().get(UnicornConstVal.API_CONTROLLER)+"."+tableInfo.getEntityPath().toLowerCase();
         controllerContext.setPkg(pkg);
         controllerContext.setClassImportPath(pkg+".Api"+tableInfo.getControllerName());
