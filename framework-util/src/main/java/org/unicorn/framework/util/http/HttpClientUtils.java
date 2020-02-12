@@ -15,8 +15,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.assertj.core.util.Maps;
-import org.unicorn.framework.util.json.JsonUtils;
 
 import java.io.*;
 import java.util.*;
@@ -105,7 +103,7 @@ public class HttpClientUtils {
                 HttpEntity httpEntity = response1.getEntity();
                 long contentLength = httpEntity.getContentLength();
                 InputStream is = httpEntity.getContent();
-                // 根据InputStream 下载文件  
+                // 根据InputStream 下载文件
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
                 byte[] buffer = new byte[4096];
                 int r = 0;
@@ -113,7 +111,7 @@ public class HttpClientUtils {
                 while ((r = is.read(buffer)) > 0) {
                     output.write(buffer, 0, r);
                     totalRead += r;
-                    if (progress != null) {// 回调进度  
+                    if (progress != null) {// 回调进度
                         progress.onProgress((int) (totalRead * 100 / contentLength));
                     }
                 }
@@ -158,13 +156,11 @@ public class HttpClientUtils {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpGet httpGet = new HttpGet(url);
-            CloseableHttpResponse response1 = httpclient.execute(httpGet);
             setGetHead(httpGet, headMap);
+            CloseableHttpResponse response1 = httpclient.execute(httpGet);
             try {
-                System.out.println(response1.getStatusLine());
                 HttpEntity entity = response1.getEntity();
                 responseContent = getRespString(entity);
-                System.out.println("debug:" + responseContent);
                 EntityUtils.consume(entity);
             } finally {
                 response1.close();
@@ -218,7 +214,6 @@ public class HttpClientUtils {
                 e.printStackTrace();
             }
         }
-        System.out.println("responseContent = " + responseContent);
         return responseContent;
     }
 
@@ -291,9 +286,9 @@ public class HttpClientUtils {
 
             MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder
                     .create();
-            // add the file params  
+            // add the file params
             multipartEntityBuilder.addPart(serverFieldName, binFileBody);
-            // 设置上传的其他参数  
+            // 设置上传的其他参数
             setUploadParams(multipartEntityBuilder, params);
 
             HttpEntity reqEntity = multipartEntityBuilder.build();
@@ -402,18 +397,23 @@ public class HttpClientUtils {
     }
 
     public static void main(String[] args) {
-        String url = "http://beta.hntrgf.com.cn/gf-oss-service/oss/upload/batch?storagePrefix=test";
-        Map<String, String> param = new HashMap<>();
-        String filePaths[]=new String[]{
-                "D:\\config\\gf-config\\logo28.png",
-                "D:\\config\\gf-config\\1.jpg"
-        };
-        param.put("storagePrefix", "test");
-        try {
-            System.out.println(JsonUtils.toJson(HttpClientUtils.uploadBatchFileImpl(url, filePaths, "files", new HashMap<>())));
-        } catch (Exception e) {
+//        String url = "http://beta.hntrgf.com.cn/gf-oss-service/oss/upload/batch?storagePrefix=test";
+//        Map<String, String> param = new HashMap<>();
+//        String filePaths[]=new String[]{
+//                "D:\\config\\gf-config\\logo28.png",
+//                "D:\\config\\gf-config\\1.jpg"
+//        };
+//        param.put("storagePrefix", "test");
+//        try {
+//            System.out.println(JsonUtils.toJson(HttpClientUtils.uploadBatchFileImpl(url, filePaths, "files", new HashMap<>())));
+//        } catch (Exception e) {
+//
+//        }
+        Map<String, String> headMap =new HashMap<>();
+        String url = "http://api09.aliyun.venuscn.com/express/trace/query?number=SF1161425402539";
+        headMap.put("Authorization", "APPCODE 84035ec299934f24b7dc08be68cf9df3");
 
-        }
+        System.out.println(new HttpClientUtils().httpGet(url, headMap));
 
 
     }
