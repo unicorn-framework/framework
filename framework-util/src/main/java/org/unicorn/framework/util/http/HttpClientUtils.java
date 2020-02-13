@@ -151,7 +151,7 @@ public class HttpClientUtils {
      * @param url
      * @return
      */
-    public String httpGet(String url, Map<String, String> headMap) {
+    public static String httpGet(String url, Map<String, String> headMap) {
         String responseContent = null;
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
@@ -257,7 +257,7 @@ public class HttpClientUtils {
      * @param httpGet
      * @param headMap
      */
-    private void setGetHead(HttpGet httpGet, Map<String, String> headMap) {
+    private static void setGetHead(HttpGet httpGet, Map<String, String> headMap) {
         if (headMap != null && headMap.size() > 0) {
             Set<String> keySet = headMap.keySet();
             for (String key : keySet) {
@@ -413,7 +413,7 @@ public class HttpClientUtils {
         String url = "http://api09.aliyun.venuscn.com/express/trace/query?number=SF1161425402539";
         headMap.put("Authorization", "APPCODE 84035ec299934f24b7dc08be68cf9df3");
 
-        System.out.println(new HttpClientUtils().httpGet(url, headMap));
+        System.out.println(HttpClientUtils.httpGet(url, headMap));
 
 
     }
