@@ -113,16 +113,16 @@ public class SecurityFilter extends ZuulFilter {
         BaseSecurityDto baseSecurityDto = BaseSecurityDto.builder().sign(sign).timestamp(timestamp).token(accessToken).build();
         // 请求方法
         String method = request.getMethod();
-        System.out.println("method==" + method);
+        log.info("http request method==" + method);
         if ("GET".equalsIgnoreCase(method)) {
-            System.out.println("param===" + request.getQueryString());
+            log.info("http request param===" + request.getQueryString());
             baseSecurityDto.setQueryString(request.getQueryString());
         } else {
             // 获取请求的输入流
             InputStream in = request.getInputStream();
             String body = StreamUtils.copyToString(in, Charset.forName("UTF-8"));
             baseSecurityDto.setBody(body);
-            System.out.println("body==" + body);
+            log.info("http request body==" + body);
         }
         return baseSecurityDto;
     }
