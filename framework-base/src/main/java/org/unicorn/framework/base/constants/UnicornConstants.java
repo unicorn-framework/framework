@@ -14,4 +14,12 @@ public class UnicornConstants {
     public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
     /** 请求追踪请求头名**/
     public static final String REQUEST_TRACK_HEADER_NAME="request_id";
+    /**
+     * app 加密前缀
+     */
+    public static final String APP_ECODE_PRE="unicorn_app:";
+    /**
+     * backstage 加密前缀
+     */
+    public static final String BACKSTAGE_ECODE_PRE="unicorn_backstage:";
 }
