@@ -9,6 +9,7 @@ import org.springframework.util.unit.DataSize;
 import javax.servlet.MultipartConfigElement;
 
 /**
+ * 文件上传 限制配置
  * @author xiebin
  * @since 1.0
  */
