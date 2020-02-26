@@ -29,6 +29,7 @@ public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter
     public void configure(HttpSecurity http) throws Exception {
         List<String> permitList=  oauth2Properties.getPermitAlls();
         permitList.add("/oauth/**");
+        permitList.add("/**/error");
         log.info("不需要权限==="+JsonUtils.toJson(permitList));
         List<String> authenticatedList=oauth2Properties.getAuthenticated();
         log.info("需要权限==="+JsonUtils.toJson(authenticatedList));
