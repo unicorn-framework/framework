@@ -13,6 +13,8 @@ import org.unicorn.framework.core.utils.GrayUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,10 +41,13 @@ public class UnicornFeignConfig implements RequestInterceptor {
             }
             //设置token头
             HttpServletRequest request = attributes.getRequest();
-            String authorization = request.getHeader(TOKEN_HEADER_NAME);
+            //feign请求模板
             Map<String, Collection<String>> headerMap = requestTemplate.request().headers();
+            //获取oauth2.0授权头
+            List<String> authorizationList = Collections.list(request.getHeaders(TOKEN_HEADER_NAME));
+            //设置授权头信息
             if (!headerMap.containsKey(TOKEN_HEADER_NAME)) {
-                requestTemplate.header(TOKEN_HEADER_NAME, authorization);
+                requestTemplate.header(TOKEN_HEADER_NAME, authorizationList.toArray(new String[]{}));
             }
             //设置跟踪ID头部
             requestTemplate.header(UnicornConstants.REQUEST_TRACK_HEADER_NAME, request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
