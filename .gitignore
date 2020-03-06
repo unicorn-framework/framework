@@ -1,12 +1,30 @@
-# Created by .ignore support plugin (hsz.mobi)
-### spring_boot_template template
-### Example user template
+# Compiled class file
+*.class
 
-# IntelliJ project files
-.idea
-*.iml
-traget/
-src/main/resources/rebel.xml
+# Log file
 *.log
-.project
-.setting
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+*.classpath
+*.project
+.settings/
+.idea/
+target/
+*.iml
+src/main/resources/rebel.xml
+
