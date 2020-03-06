@@ -28,6 +28,11 @@ public class UnicornUserUtil {
         }
     }
 
+    /**
+     * 获取登录用户ID
+     *
+     * @return
+     */
     public static Long getUserId() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -37,6 +42,23 @@ public class UnicornUserUtil {
                 userId = user.getId();
             }
             return userId;
+        } catch (Exception e) {
+            log.warn("获取用户信息异常", e);
+            return null;
+        }
+
+
+    }
+
+    /**
+     * 获取登录用户信息
+     *
+     * @return
+     */
+    public static UnicornUser getLoginUser() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            return (UnicornUser) authentication.getPrincipal();
         } catch (Exception e) {
             log.warn("获取用户信息异常", e);
             return null;

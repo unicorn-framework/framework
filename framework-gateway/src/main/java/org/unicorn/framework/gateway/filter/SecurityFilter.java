@@ -105,7 +105,7 @@ public class SecurityFilter extends ZuulFilter {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
         //token
-        String accessToken = request.getHeader("Authorization");
+        String accessToken = Collections.list(request.getHeaders("Authorization")).toString();
         //timestamp 时间戳
         String timestamp = request.getHeader("timestamp");
         //sign 签名
