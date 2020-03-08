@@ -26,10 +26,10 @@ public class UnicornAuthExceptionEntryPoint implements AuthenticationEntryPoint 
         try {
             ResponseDto resDto= new ResponseDto<>(SysCode.SESSION_ERROR);
             resDto.setUrl(request.getRequestURL().toString());
-//            if(authException.getCause() instanceof AccessDeniedException){
-//                resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
-//                resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
-//            }
+            if(authException.getCause() instanceof AccessDeniedException){
+                resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
+                resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
+            }
 //            if(authException instanceof InsufficientAuthenticationException){
 //                resDto.setResCode(SysCode.UNAUTHOR__ERROR.getCode());
 //                resDto.setResInfo(SysCode.UNAUTHOR__ERROR.getInfo());
