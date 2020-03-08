@@ -4,6 +4,7 @@ import ${entityContext.classImportPath};
 import ${entityContext.classImportPath}Example;
 import ${mapperContext.classImportPath};
 import ${dtoContext.classImportPath};
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.unicorn.framework.core.exception.PendingException;
@@ -17,11 +18,12 @@ import com.github.pagehelper.PageInfo;
 /**
  * <p>
  * ${table.comment} 服务实现类
- * </p>
+ * </p>  
  *
  * @author ${author}
  * @since ${date}
  */
+@Getter
 @Slf4j
 @Service
 public class ${serviceImplContext.name} {
