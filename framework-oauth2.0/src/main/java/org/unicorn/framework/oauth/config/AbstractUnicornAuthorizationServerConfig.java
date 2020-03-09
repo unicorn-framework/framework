@@ -51,6 +51,7 @@ public abstract class AbstractUnicornAuthorizationServerConfig extends Authoriza
                 .tokenEnhancer(unicornTokenEnhancer)
                 .userDetailsService(userDetailsService())
 
+
         ;
 
     }
