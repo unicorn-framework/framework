@@ -75,7 +75,7 @@ public class ShareCodeUtil {
     }
 
     public static void main(String [] args){
-        String code =toSerialCode(102082593708576766L);
+        String code =toSerialCode(19527131400L);
         System.out.println(code);
         System.out.println(codeToId((code)));
     }
