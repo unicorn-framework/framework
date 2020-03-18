@@ -36,7 +36,6 @@ public class ${serviceImplContext.name} {
      * @return
      * @throws PendingException
      */
-    @Transactional(rollbackFor = {Exception.class})
     public void deleteByPrimaryKey(${table.primaryTableField.propertyType} id)throws PendingException{
         try {
             ${mapperContext.beanName}.deleteByPrimaryKey(id);
@@ -52,7 +51,6 @@ public class ${serviceImplContext.name} {
      * @return
      * @throws PendingException
      */
-    @Transactional(rollbackFor = {PendingException.class})
     public void deleteByExample(${entity}Example ${entityContext.beanName}Example)throws PendingException{
         try {
             ${mapperContext.beanName}.deleteByExample(${entityContext.beanName}Example);
@@ -69,7 +67,6 @@ public class ${serviceImplContext.name} {
      * @return
      * @throws PendingException
      */
-    @Transactional(rollbackFor = {PendingException.class})
     public void deleteByIdList(List<Long> ids)throws PendingException{
         try {
             ${mapperContext.beanName}.deleteByIdList(ids);
@@ -85,7 +82,6 @@ public class ${serviceImplContext.name} {
      * @return
      * @throws PendingException
      */
-    @Transactional(rollbackFor = {Exception.class})
     public ${entity} insertSelective(${entity} ${entityContext.beanName})throws PendingException{
         try {
             ${mapperContext.beanName}.insertSelective(${entityContext.beanName});
@@ -102,7 +98,6 @@ public class ${serviceImplContext.name} {
      * @return
      * @throws PendingException
      */
-    @Transactional(rollbackFor = {Exception.class})
     public void insertList(List<${entity}> ${entityContext.beanName}List)throws PendingException{
         try {
             ${mapperContext.beanName}.insertList(${entityContext.beanName}List);
@@ -118,7 +113,6 @@ public class ${serviceImplContext.name} {
     * @return
     * @throws PendingException
     */
-    @Transactional(rollbackFor = {PendingException.class})
     public ${entity} insertOnExistence(${entity} ${entityContext.beanName})throws PendingException{
         try {
             ${mapperContext.beanName}.insertOnExistence(${entityContext.beanName});
