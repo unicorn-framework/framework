@@ -36,11 +36,13 @@ public class UnicornUserUtil {
     public static Long getUserId() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            log.info("是否以认证=======" + authentication.isAuthenticated());
             Long userId = null;
-            if (authentication != null) {
+            if (authentication != null && authentication.isAuthenticated()) {
                 UnicornUser user = (UnicornUser) authentication.getPrincipal();
                 userId = user.getId();
             }
+            log.info("userId======"+userId);
             return userId;
         } catch (Exception e) {
             log.warn("获取用户信息异常", e);
