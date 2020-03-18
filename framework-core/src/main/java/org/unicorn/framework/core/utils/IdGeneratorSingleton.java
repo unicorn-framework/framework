@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import lombok.SneakyThrows;
 
 import java.util.Calendar;
+import java.util.Random;
 
 /**
  * @author xiebin
@@ -40,10 +41,10 @@ public class IdGeneratorSingleton {
         return workerId;
     }
 
-    private  long workerId=1;
+    private long workerId = genWorkId();
 
     public void setWorkerId(long workerId) {
-        this.workerId=workerId;
+        this.workerId = workerId;
     }
 
     /**
@@ -69,7 +70,7 @@ public class IdGeneratorSingleton {
 
 
 //    public static void setWorkerId(final long workerId) {
-//        Preconditions.checkArgument(workerId >= 0L && workerId < WORKER_ID_MAX_VALUE);
+//
 //        IdGeneratorSingleton.workerId = workerId;
 //    }
 
@@ -92,6 +93,7 @@ public class IdGeneratorSingleton {
     public static IdGeneratorSingleton getInstance() {
         return SingletonHolder.instance;
     }
+
     public static IdGeneratorSingleton getInstance(long workerId) {
         SingletonHolder.instance.setWorkerId(workerId);
         return SingletonHolder.instance;
@@ -140,12 +142,26 @@ public class IdGeneratorSingleton {
     }
 
     /**
+     * 生成默认的机器编码
+     *
+     * @return
+     */
+    private static Long genWorkId() {
+        Random random = new Random();
+        Long workerId = new Long(random.nextInt(Integer.valueOf(WORKER_ID_MAX_VALUE + "")));
+        Preconditions.checkArgument(workerId >= 0L && workerId < WORKER_ID_MAX_VALUE);
+        return workerId;
+    }
+
+    /**
      * 测试
+     *
      * @param args
      */
-    public  static void main(String [] args){
-      for(int i=0;i<1000;i++){
-         System.out.println(IdGeneratorSingleton.getInstance(2).generateKey());
-      }
+    public static void main(String[] args) {
+        for (int i = 0; i < 1000; i++) {
+            System.out.println(IdGeneratorSingleton.getInstance().generateKey());
+        }
+
     }
 }
