@@ -49,8 +49,8 @@ public class ZuulFilterConfig {
      * 链路跟踪过滤器
      * @return
      */
-    @Bean
-    public RequestTrackPostFilter requestTrackPostFilter() {
-        return new RequestTrackPostFilter();
-    }
+//    @Bean
+//    public RequestTrackPostFilter requestTrackPostFilter() {
+//        return new RequestTrackPostFilter();
+//    }
 }
