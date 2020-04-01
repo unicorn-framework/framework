@@ -1,29 +1,54 @@
 package org.unicorn.framework.util.barcode;
 
-import org.unicorn.framework.util.common.RandomUtils;
+import org.unicorn.framework.util.hash.Base64Util;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * @author zhanghaibo
  * @since 2019/8/8
  */
 public abstract class SimpleSlatUitl {
+    /** -- key -- **/
+    private static final int keys=0x20200323;
 
+    private static final String ENC = "utf-8";
+
+
+    /**
+     * 异或加密
+     * @param bytes
+     * @return
+     */
+    public static byte[] encrypt(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
+        int len = bytes.length;
+        for (int i = 0; i < len; i++) {
+            bytes[i] ^= keys;
+        }
+        return bytes;
+    }
     /**
      * 字符串加盐
      * @param s
      * @return
      */
     public static String slat(String s) {
-        if (s == null || s.length() < 13) {
-            return s;
+
+        if (s == null) {
+            return null;
         }
-        StringBuffer stringBuffer = new StringBuffer(s);
-        stringBuffer.insert(1, RandomUtils.getCode(2, 4));
-        stringBuffer.insert(4, RandomUtils.getCode(2, 4));
-        stringBuffer.insert(7, RandomUtils.getCode(2, 4));
-        stringBuffer.insert(10, RandomUtils.getCode(2, 4));
-        stringBuffer.insert(13, RandomUtils.getCode(2, 4));
-        return stringBuffer.toString();
+
+        try {
+           return URLEncoder.encode(Base64Util.encode(encrypt(s.getBytes())),ENC) ;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -32,29 +57,30 @@ public abstract class SimpleSlatUitl {
      * @return
      */
     public static String slatWithNumber(String s) {
-        if (s == null || s.length() < 13) {
+        if (s == null) {
             return s;
         }
-        StringBuffer stringBuffer = new StringBuffer(s);
-        stringBuffer.insert(1, RandomUtils.getCode(2, 0));
-        stringBuffer.insert(4, RandomUtils.getCode(2, 0));
-        stringBuffer.insert(7, RandomUtils.getCode(2, 0));
-        stringBuffer.insert(10, RandomUtils.getCode(2, 0));
-        stringBuffer.insert(13, RandomUtils.getCode(2, 0));
-        return stringBuffer.toString();
+        try {
+            return URLEncoder.encode(Base64Util.encode(encrypt(s.getBytes())),ENC) ;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static String deSlat(String s) {
-        if (s == null || s.length() < 13) {
-            return s;
+        if (s == null) {
+            return null;
         }
-        StringBuffer stringBuffer = new StringBuffer(s);
-        stringBuffer.replace(13, 15,"");
-        stringBuffer.replace(10, 12, "");
-        stringBuffer.replace(7, 9, "");
-        stringBuffer.replace(4, 6, "");
-        stringBuffer.replace(1, 3, "");
-        return stringBuffer.toString();
+        try {
+
+            String urlDecode = URLDecoder.decode(s, ENC);
+            byte[] decode = Base64Util.decode(urlDecode);
+            return new String(encrypt(decode));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void main(String[] args) {
