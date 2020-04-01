@@ -10,6 +10,7 @@ import com.dangdang.ddframe.job.executor.handler.JobProperties;
 import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
@@ -37,6 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author xiebin
  */
 @Service
+@Slf4j
 public class JobService extends AbstractService {
 
     @Autowired
@@ -72,8 +74,7 @@ public class JobService extends AbstractService {
      * @throws Exception
      */
     public void removeJob(String jobName) throws Exception {
-        CuratorFramework client = zookeeperRegistryCenter.getClient();
-        client.delete().deletingChildrenIfNeeded().forPath("/" + jobName);
+        zookeeperRegistryCenter.remove("/" + jobName);
     }
 
     /**
@@ -87,16 +88,24 @@ public class JobService extends AbstractService {
             ChildData data = event.getData();
             switch (event.getType()) {
                 case CHILD_ADDED:
-                    String config = new String(client.getData().forPath(data.getPath() + "/config"));
-                    Job job = JsonUtils.toBean(Job.class, config);
-                    // 启动时任务会添加数据触发事件，这边需要去掉第一次的触发，不然在控制台进行手动触发任务会执行两次任务
-                    if (!JOB_ADD_COUNT.containsKey(job.getJobName())) {
-                        JOB_ADD_COUNT.put(job.getJobName(), new AtomicInteger());
+                    try {
+                        String config = new String(client.getData().forPath(data.getPath() + "/config"));
+                        Job job = JsonUtils.toBean(Job.class, config);
+                        // 启动时任务会添加数据触发事件，这边需要去掉第一次的触发，不然在控制台进行手动触发任务会执行两次任务
+                        if (!JOB_ADD_COUNT.containsKey(job.getJobName())) {
+                            JOB_ADD_COUNT.put(job.getJobName(), new AtomicInteger());
+                        }
+                        int count = JOB_ADD_COUNT.get(job.getJobName()).incrementAndGet();
+                        if (count > 1) {
+                            addJob(job);
+                        }
+                    } catch (Exception e) {
+                        zookeeperRegistryCenter.remove(data.getPath());
+                        log.error("监听增加事件异常:{}", e.getMessage());
                     }
-                    int count = JOB_ADD_COUNT.get(job.getJobName()).incrementAndGet();
-                    if (count > 1) {
-                        addJob(job);
-                    }
+                    break;
+                case CHILD_REMOVED:
+                    log.info("节点删除==>" + data.getPath());
                     break;
                 default:
                     break;
