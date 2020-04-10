@@ -1,10 +1,11 @@
 
 package org.unicorn.framework.core.aop;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -29,6 +30,7 @@ import java.io.Serializable;
  */
 @Aspect
 @Component
+@Slf4j
 @ConditionalOnProperty(prefix = "unicorn.api.log", name = "enable", havingValue = "true")
 public class LogAspect extends AbstractService {
 
@@ -37,23 +39,34 @@ public class LogAspect extends AbstractService {
     }
 
 
-    @Before("controllerPointCut()")
-    public void before(JoinPoint pjp) {
+    @Around("controllerPointCut()")
+    public Object processTx(ProceedingJoinPoint jp) throws Throwable {
+        //请求开始时间
+        long beginTime = System.currentTimeMillis();
+        //获取请求参数
+        Object[] args = jp.getArgs();
+        //请求之前
+        doBefore(jp, args);
+        //调用目标方法
+        Object result = jp.proceed(args);
+        //请求之后
+        doAfter(result, beginTime);
+        return result;
+
+    }
+
+
+    public void doBefore(JoinPoint pjp, Object args[]) {
         try {
             MethodSignature signature = (MethodSignature) pjp.getSignature();
-            boolean  flag=signature.getDeclaringType().isAnnotationPresent(FeignClient.class);
-            if(flag){
-                return ;
+            boolean flag = signature.getDeclaringType().isAnnotationPresent(FeignClient.class);
+            if (flag) {
+                return;
             }
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = attributes.getRequest();
             RequestInfoDto requestInfoDto = new RequestInfoDto();
-            long beginTime = System.currentTimeMillis();
-            UnicornContext.setValue("beginTime", beginTime);
             UnicornContext.setValue(UnicornConstants.REQUEST_TRACK_HEADER_NAME, request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
-
-
-
             String url = request.getRequestURL().toString();
             //设置请求ID
             requestInfoDto.setRequestId(request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
@@ -65,8 +78,6 @@ public class LogAspect extends AbstractService {
             requestInfoDto.setRemoteIp(RequestUtils.getIp(request));
             //请求控制器方法名
             requestInfoDto.setRequestMethod(signature.getDeclaringTypeName() + "." + signature.getName());
-            // 请求参数
-            Object args[] = pjp.getArgs();
             //请求报文
             for (Object arg : args) {
                 if (arg instanceof Serializable) {
@@ -86,35 +97,35 @@ public class LogAspect extends AbstractService {
             //打印请求日志
             info("接口请求信息：{}", requestInfoDto);
         } catch (Exception e) {
-            // ignore
+            log.warn("请求前置拦截失败");
         }
 
     }
 
-    @AfterReturning(pointcut = "controllerPointCut()", returning = "ret")
-    public void afterReturning(Object ret) {
+
+    public void doAfter(Object ret, long beginTime) {
         try {
             ResponseInfoDto responseInfoDto = new ResponseInfoDto();
             if (ret != null) {
                 //设置响应ID
                 responseInfoDto.setResponseId(UnicornContext.getValue(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
-               if(ret instanceof ResponseEntity){
-                   ResponseEntity entity=(ResponseEntity)ret;
-                   //设置响应报文
-                   responseInfoDto.setResponseBody(entity.getBody());
-               }else{
-                //设置响应报文
-                responseInfoDto.setResponseBody(ret);
-               }
+                if (ret instanceof ResponseEntity) {
+                    ResponseEntity entity = (ResponseEntity) ret;
+                    //设置响应报文
+                    responseInfoDto.setResponseBody(entity.getBody());
+                } else {
+                    //设置响应报文
+                    responseInfoDto.setResponseBody(ret);
+                }
             }
-            long costMs = System.currentTimeMillis() - Long.valueOf(UnicornContext.getValue("beginTime").toString());
+            long costMs = System.currentTimeMillis() - beginTime;
             //设置请求开始时间
             responseInfoDto.setResponseTime(costMs + "ms");
             //打印响应日志
             info("接口响应信息：{}", responseInfoDto);
         } catch (Exception e) {
-
-        }finally {
+            log.warn("请求后置拦截失败");
+        } finally {
             UnicornContext.reset();
         }
 
