@@ -3,14 +3,20 @@ package org.unicorn.framework.gateway.filter;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.util.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StreamUtils;
+import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.core.handler.HandlerAdapter;
 import org.unicorn.framework.core.handler.IHandler;
 import org.unicorn.framework.gateway.dto.BaseSecurityDto;
-import org.unicorn.framework.util.json.JsonUtils;
+import org.unicorn.framework.gateway.properties.UnicornGatewaySecurityProperties;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Collections;
@@ -23,6 +29,15 @@ import java.util.List;
  */
 @Slf4j
 public class SecurityFilter extends ZuulFilter {
+    @Autowired
+    private UnicornGatewaySecurityProperties unicornGatewaySecurityProperties;
+
+
+    private AntPathMatcher antPathMatcher;
+
+    public SecurityFilter() {
+        this.antPathMatcher = new AntPathMatcher();
+    }
 
     /**
      * 过滤器的类型 pre表示请求在路由之前被过滤
@@ -51,7 +66,35 @@ public class SecurityFilter extends ZuulFilter {
      */
     @Override
     public boolean shouldFilter() {
-        return true;
+        RequestContext requestContext = RequestContext.getCurrentContext();
+        HttpServletRequest request = requestContext.getRequest();
+        String sign=request.getHeader("sign");
+        if(StringUtils.isBlank(sign)){
+            return false;
+        }
+        String requestUrl = request.getRequestURI();
+        List<String> ignoreUrls = unicornGatewaySecurityProperties.getIgnoreUrls();
+        if (ignoreUrls == null) {
+            ignoreUrls = Lists.newArrayList();
+        }
+        ignoreUrls.add("/static/**");
+        ignoreUrls.add("/**/*.html");
+        ignoreUrls.add("/**/*.js");
+        ignoreUrls.add("/**/*.css");
+        ignoreUrls.add("/**/*.ico");
+        ignoreUrls.add("/**/*.ttf");
+        ignoreUrls.add("/**/*.ico");
+        ignoreUrls.add("/**/static/**");
+        ignoreUrls.add("/**/swagger**");
+        ignoreUrls.add("/**/v2/**");
+        boolean flag = true;
+        for (String pattern : ignoreUrls) {
+            if (this.antPathMatcher.match(pattern, requestUrl)) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 
     /**
@@ -68,13 +111,13 @@ public class SecurityFilter extends ZuulFilter {
              */
             //构造 BaseSecurityDto
             BaseSecurityDto baseSecurityDto = genBaseSecurityDto();
-            System.out.println("baseHeader==" + JsonUtils.toJson(baseSecurityDto));
+            baseSecurityDto.vaildatioinThrowException();
             // 轮询处理
             pollingHandler(baseSecurityDto);
         } catch (PendingException pe) {
             throw pe;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new PendingException(SysCode.API_SECURITY_ERROR);
         }
         return null;
     }
@@ -104,26 +147,42 @@ public class SecurityFilter extends ZuulFilter {
     private BaseSecurityDto genBaseSecurityDto() throws PendingException, Exception {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
-        //token
-        String accessToken = Collections.list(request.getHeaders("Authorization")).toString();
+        log.info("url===="+request.getRequestURL());
+        //appKey
+        String appKey = unicornGatewaySecurityProperties.getAppKey();
         //timestamp 时间戳
         String timestamp = request.getHeader("timestamp");
+        //随机字符串
+        String nonceStr = request.getHeader("nonceStr");
         //sign 签名
         String sign = request.getHeader("sign");
-        BaseSecurityDto baseSecurityDto = BaseSecurityDto.builder().sign(sign).timestamp(timestamp).token(accessToken).build();
-        // 请求方法
+        BaseSecurityDto baseSecurityDto = BaseSecurityDto.builder()
+                .sign(sign)
+                .timestamp(timestamp)
+                .appKey(appKey)
+                .nonceStr(nonceStr).build();
+        log.info("baseHeader==" + baseSecurityDto.toString());
+        return baseSecurityDto;
+    }
+
+    /**
+     * 视情况而定
+     *
+     * @param request
+     * @throws IOException
+     */
+    private void setParamter(HttpServletRequest request) throws IOException {
         String method = request.getMethod();
         log.info("http request method==" + method);
         if ("GET".equalsIgnoreCase(method)) {
             log.info("http request param===" + request.getQueryString());
-            baseSecurityDto.setQueryString(request.getQueryString());
         } else {
             // 获取请求的输入流
             InputStream in = request.getInputStream();
             String body = StreamUtils.copyToString(in, Charset.forName("UTF-8"));
-            baseSecurityDto.setBody(body);
             log.info("http request body==" + body);
         }
-        return baseSecurityDto;
     }
+
+
 }

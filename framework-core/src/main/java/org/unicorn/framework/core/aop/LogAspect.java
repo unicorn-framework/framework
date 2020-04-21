@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.assertj.core.util.Lists;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,10 @@ import org.unicorn.framework.util.http.RequestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xiebin
@@ -67,6 +72,7 @@ public class LogAspect extends AbstractService {
             HttpServletRequest request = attributes.getRequest();
             RequestInfoDto requestInfoDto = new RequestInfoDto();
             UnicornContext.setValue(UnicornConstants.REQUEST_TRACK_HEADER_NAME, request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
+            //获取请求URL
             String url = request.getRequestURL().toString();
             //设置请求ID
             requestInfoDto.setRequestId(request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
@@ -78,22 +84,10 @@ public class LogAspect extends AbstractService {
             requestInfoDto.setRemoteIp(RequestUtils.getIp(request));
             //请求控制器方法名
             requestInfoDto.setRequestMethod(signature.getDeclaringTypeName() + "." + signature.getName());
-            //请求报文
-            for (Object arg : args) {
-                if (arg instanceof Serializable) {
-
-                    if (arg instanceof MultipartFile) {
-                        requestInfoDto.getRequestBodys().add("流数据");
-                        continue;
-                    }
-                    if (arg instanceof MultipartFile[]) {
-                        requestInfoDto.getRequestBodys().add("[流数据]");
-                        continue;
-                    }
-                    //请求报文
-                    requestInfoDto.getRequestBodys().add(arg);
-                }
-            }
+            //设置请求头
+            requestInfoDto.setHeaders(getHeaders(request));
+            //设置请求报文
+            requestInfoDto.setRequestBodys(getRequestBody(args));
             //打印请求日志
             info("接口请求信息：{}", requestInfoDto);
         } catch (Exception e) {
@@ -129,6 +123,48 @@ public class LogAspect extends AbstractService {
             UnicornContext.reset();
         }
 
+    }
+
+
+    /**
+     * 获取请求报文
+     *
+     * @param args
+     * @return
+     */
+    private List<Object> getRequestBody(Object args[]) {
+        List<Object> requestBodys = Lists.newArrayList();
+        for (Object arg : args) {
+            if (arg instanceof Serializable) {
+
+                if (arg instanceof MultipartFile) {
+                    requestBodys.add("流数据");
+                    continue;
+                }
+                if (arg instanceof MultipartFile[]) {
+                    requestBodys.add("[流数据]");
+                    continue;
+                }
+                //请求报文
+                requestBodys.add(arg);
+            }
+        }
+        return requestBodys;
+    }
+
+    /**
+     * 获取请求头
+     *
+     * @param request
+     * @return
+     */
+    private Map<String, String> getHeaders(HttpServletRequest request) {
+        Map<String, String> headerMaps = new HashMap<>();
+        for (Enumeration<String> enu = request.getHeaderNames(); enu.hasMoreElements(); ) {
+            String name = enu.nextElement();
+            headerMaps.put(name, request.getHeader(name));
+        }
+        return headerMaps;
     }
 
 }

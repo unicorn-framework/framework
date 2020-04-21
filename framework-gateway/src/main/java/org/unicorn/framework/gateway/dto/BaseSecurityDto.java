@@ -3,11 +3,12 @@ package org.unicorn.framework.gateway.dto;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 import org.apache.commons.lang.StringUtils;
-
-import java.io.Serializable;
+import org.unicorn.framework.core.SysCode;
+import org.unicorn.framework.core.dto.AbstractRequestDto;
+import org.unicorn.framework.core.exception.PendingException;
 
 /**
- * @author  xiebin
+ * @author xiebin
  */
 @Data
 @Builder
@@ -15,43 +16,51 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "基础请求头", description = "基础请求头")
-public class BaseSecurityDto implements Serializable {
-    private static final long serialVersionUID=1L;
+public class BaseSecurityDto extends AbstractRequestDto {
+    private static final long serialVersionUID = 1L;
     /**
-     * 请求token
+     * appKey 由服务端分配
      */
-    private String token;
+    private String appKey;
     /**
      * 请求时间戳
      */
     private String timestamp;
+
+    /**
+     * 随机字符串
+     */
+    private String nonceStr;
+
     /**
      * 签名
      */
     private String sign;
-    /**
-     * 请求报文
-     */
-    private String body;
-    /**
-     * 请求参数
-     */
-    private String queryString;
+
+
     @Override
-    public String toString(){
-        StringBuilder sbuilder=new StringBuilder();
-        if(!StringUtils.isBlank(token)){
-            sbuilder.append(token);
+    public void vaildatioinThrowException() throws PendingException {
+        if (StringUtils.isBlank(appKey)) {
+            throw new PendingException(SysCode.API_SECURITY_ERROR);
         }
-        if(!StringUtils.isBlank(timestamp)){
-            sbuilder.append(timestamp);
+        if (StringUtils.isBlank(timestamp)) {
+            throw new PendingException(SysCode.API_SECURITY_ERROR);
         }
-        if(!StringUtils.isBlank(body)){
-            sbuilder.append(body);
+        if (StringUtils.isBlank(nonceStr)) {
+            throw new PendingException(SysCode.API_SECURITY_ERROR);
         }
-        if(!StringUtils.isBlank(queryString)){
-            sbuilder.append(queryString);
+        if (StringUtils.isBlank(sign)) {
+            throw new PendingException(SysCode.API_SECURITY_ERROR);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sbuilder = new StringBuilder();
+        sbuilder.append("appKey=" + appKey);
+        sbuilder.append("&timestamp=" + timestamp);
+        sbuilder.append("&nonceStr=" + nonceStr);
+        sbuilder.append("&appKey=" + appKey);
         return sbuilder.toString();
     }
 }

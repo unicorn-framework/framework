@@ -6,6 +6,7 @@ import org.unicorn.framework.util.json.JsonUtils;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -38,6 +39,10 @@ public class RequestInfoDto implements Serializable {
      */
     private String requestMethod;
     /**
+     * 请求头部
+     */
+    private Map<String, String> headers;
+    /**
      * 请求报文
      */
     private List<Object> requestBodys = Lists.newArrayList();
@@ -50,6 +55,7 @@ public class RequestInfoDto implements Serializable {
         stringBuilder.append("请求url=>" + this.getRequestUrl() + "\n");
         stringBuilder.append("http请求方法=>" + this.getHttpMethod() + "\n");
         stringBuilder.append("请求控制器的方法=>" + this.getRequestMethod() + "\n");
+        stringBuilder.append("请求头=>" + this.getHeaders() + "\n");
         stringBuilder.append("请求报文=>" + JsonUtils.toJson(this.getRequestBodys()));
         return stringBuilder.toString();
     }

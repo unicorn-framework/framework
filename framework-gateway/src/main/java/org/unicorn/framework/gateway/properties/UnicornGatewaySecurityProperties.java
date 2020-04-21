@@ -1,9 +1,12 @@
 package org.unicorn.framework.gateway.properties;
 
 import lombok.Data;
+import org.assertj.core.util.Lists;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,11 +30,23 @@ public class UnicornGatewaySecurityProperties {
     /**
      * 是否开启签名检查
      */
-    private Boolean signCheckEnable=false;
+    private Boolean signCheckEnable=true;
     /**
      * 是否开启时间检查
      */
-    private Boolean timeStampCheckEnable=false;
+    private Boolean timeStampCheckEnable=true;
+
+    /**
+     * 是否开启时间检查
+     */
+    private String appKey;
+    /**
+     * 忽略的url
+     */
+    private List<String> ignoreUrls= Lists.newArrayList();
+
+
+
 
 
 
