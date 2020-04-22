@@ -44,6 +44,10 @@ public class UnicornGatewaySecurityProperties {
      * 忽略的url
      */
     private List<String> ignoreUrls= Lists.newArrayList();
+    /**
+     * 是否启用安全机制
+     */
+    private Boolean enable=false;
 
 
 

@@ -28,7 +28,7 @@ public class SignSecurityHanlder extends AbstractSecurityHanlder {
         try {
             //检查sign是否存在缓存中
             if (redisTemplate.hasKey(genKey(baseSecurityDto))) {
-                log.warn("未通过安全检查");
+                log.warn("该签名已使用过");
                 //存在拒绝请求
                 throw new PendingException(SysCode.API_SECURITY_ERROR);
             }

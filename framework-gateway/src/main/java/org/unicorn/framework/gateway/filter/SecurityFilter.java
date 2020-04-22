@@ -3,7 +3,6 @@ package org.unicorn.framework.gateway.filter;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.AntPathMatcher;
@@ -15,6 +14,7 @@ import org.unicorn.framework.core.handler.IHandler;
 import org.unicorn.framework.gateway.dto.BaseSecurityDto;
 import org.unicorn.framework.gateway.properties.UnicornGatewaySecurityProperties;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +28,7 @@ import java.util.List;
  * 所有的资源请求在路由之前进行前置过滤
  */
 @Slf4j
+
 public class SecurityFilter extends ZuulFilter {
     @Autowired
     private UnicornGatewaySecurityProperties unicornGatewaySecurityProperties;
@@ -35,8 +36,29 @@ public class SecurityFilter extends ZuulFilter {
 
     private AntPathMatcher antPathMatcher;
 
+    private List<String> ignoreUrls = Lists.newArrayList();
+
     public SecurityFilter() {
         this.antPathMatcher = new AntPathMatcher();
+
+    }
+
+    @PostConstruct
+    public void initIgnoreUrls(){
+        ignoreUrls.add("/static/**");
+        ignoreUrls.add("/**/*.html");
+        ignoreUrls.add("/**/*.js");
+        ignoreUrls.add("/**/*.css");
+        ignoreUrls.add("/**/*.ico");
+        ignoreUrls.add("/**/*.ttf");
+        ignoreUrls.add("/**/*.ico");
+        ignoreUrls.add("/**/static/**");
+        ignoreUrls.add("/**/swagger**");
+        ignoreUrls.add("/**/v2/**");
+        ignoreUrls.addAll(unicornGatewaySecurityProperties.getIgnoreUrls());
+    }
+    public List<String> getIgnoreUrls() {
+        return ignoreUrls;
     }
 
     /**
@@ -66,35 +88,29 @@ public class SecurityFilter extends ZuulFilter {
      */
     @Override
     public boolean shouldFilter() {
-        RequestContext requestContext = RequestContext.getCurrentContext();
-        HttpServletRequest request = requestContext.getRequest();
-        String sign=request.getHeader("sign");
-        if(StringUtils.isBlank(sign)){
-            return false;
-        }
-        String requestUrl = request.getRequestURI();
-        List<String> ignoreUrls = unicornGatewaySecurityProperties.getIgnoreUrls();
-        if (ignoreUrls == null) {
-            ignoreUrls = Lists.newArrayList();
-        }
-        ignoreUrls.add("/static/**");
-        ignoreUrls.add("/**/*.html");
-        ignoreUrls.add("/**/*.js");
-        ignoreUrls.add("/**/*.css");
-        ignoreUrls.add("/**/*.ico");
-        ignoreUrls.add("/**/*.ttf");
-        ignoreUrls.add("/**/*.ico");
-        ignoreUrls.add("/**/static/**");
-        ignoreUrls.add("/**/swagger**");
-        ignoreUrls.add("/**/v2/**");
-        boolean flag = true;
-        for (String pattern : ignoreUrls) {
-            if (this.antPathMatcher.match(pattern, requestUrl)) {
-                flag = false;
-                break;
+        try {
+
+            //未开启则直接返回false
+            if (!unicornGatewaySecurityProperties.getEnable()) {
+                return false;
             }
+            RequestContext requestContext = RequestContext.getCurrentContext();
+            HttpServletRequest request = requestContext.getRequest();
+            String requestUrl = request.getRequestURI();
+            //获取忽略url
+            List<String> ignoreUrls = getIgnoreUrls();
+            boolean flag = true;
+            for (String pattern : ignoreUrls) {
+                if (this.antPathMatcher.match(pattern, requestUrl)) {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
+        } catch (Exception e) {
+            log.error("是否需要安全检查异常:", e);
+            return true;
         }
-        return flag;
     }
 
     /**
@@ -105,18 +121,17 @@ public class SecurityFilter extends ZuulFilter {
     @Override
     public Object run() {
         try {
-            /**
-             * 1、验证时间差   5分钟内
-             * 2、验签
-             */
             //构造 BaseSecurityDto
             BaseSecurityDto baseSecurityDto = genBaseSecurityDto();
+            //参数检查
             baseSecurityDto.vaildatioinThrowException();
             // 轮询处理
             pollingHandler(baseSecurityDto);
         } catch (PendingException pe) {
+            log.error("安全拦截异常:", pe);
             throw pe;
         } catch (Exception e) {
+            log.error("安全拦截异常:", e);
             throw new PendingException(SysCode.API_SECURITY_ERROR);
         }
         return null;
@@ -147,7 +162,7 @@ public class SecurityFilter extends ZuulFilter {
     private BaseSecurityDto genBaseSecurityDto() throws PendingException, Exception {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
-        log.info("url===="+request.getRequestURL());
+        log.info("url====" + request.getRequestURL());
         //appKey
         String appKey = unicornGatewaySecurityProperties.getAppKey();
         //timestamp 时间戳
