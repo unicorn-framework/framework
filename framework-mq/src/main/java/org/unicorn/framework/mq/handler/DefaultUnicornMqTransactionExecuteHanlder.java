@@ -14,7 +14,7 @@ import sun.security.util.PendingException;
 public class DefaultUnicornMqTransactionExecuteHanlder implements IUnicornMqTransactionExecuteHanlder {
     @Override
     public boolean supports(Message message) throws PendingException {
-        return true;
+        return false;
     }
 
     @Override
