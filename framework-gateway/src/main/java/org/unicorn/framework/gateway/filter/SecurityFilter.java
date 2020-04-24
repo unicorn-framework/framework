@@ -44,7 +44,7 @@ public class SecurityFilter extends ZuulFilter {
     }
 
     @PostConstruct
-    public void initIgnoreUrls(){
+    public void initIgnoreUrls() {
         ignoreUrls.add("/static/**");
         ignoreUrls.add("/**/*.html");
         ignoreUrls.add("/**/*.js");
@@ -57,6 +57,7 @@ public class SecurityFilter extends ZuulFilter {
         ignoreUrls.add("/**/v2/**");
         ignoreUrls.addAll(unicornGatewaySecurityProperties.getIgnoreUrls());
     }
+
     public List<String> getIgnoreUrls() {
         return ignoreUrls;
     }
@@ -96,6 +97,10 @@ public class SecurityFilter extends ZuulFilter {
             }
             RequestContext requestContext = RequestContext.getCurrentContext();
             HttpServletRequest request = requestContext.getRequest();
+            String ignoreSignHead = request.getHeader("ignoreSignHead");
+            if (unicornGatewaySecurityProperties.getIgnoreSignHeadValue().equalsIgnoreCase(ignoreSignHead)) {
+                return false;
+            }
             String requestUrl = request.getRequestURI();
             //获取忽略url
             List<String> ignoreUrls = getIgnoreUrls();

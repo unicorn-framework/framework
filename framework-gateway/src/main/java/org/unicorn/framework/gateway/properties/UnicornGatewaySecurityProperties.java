@@ -48,6 +48,10 @@ public class UnicornGatewaySecurityProperties {
      * 是否启用安全机制
      */
     private Boolean enable=false;
+    /**
+     * 忽略安全拦截确定的请求头值
+     */
+    private String ignoreSignHeadValue="86b66e98c7c04787ae7963b2a57a409e";
 
 
 
