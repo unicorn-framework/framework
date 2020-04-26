@@ -18,12 +18,12 @@ public class UnicornMqTransactionExecuteHandlerAdapter {
      * @return
      * @throws PendingException
      */
-    public static IUnicornMqTransactionExecuteHanlder getHandler(Message message) throws PendingException {
+    public static IUnicornMqTransactionExecuteHanlder getHandler(Message message,Object msgObj) throws PendingException {
         Map<String, IUnicornMqTransactionExecuteHanlder> beanMaps = SpringContextHolder.getApplicationContext().getBeansOfType(IUnicornMqTransactionExecuteHanlder.class);
         for (String beanName : beanMaps.keySet()) {
             IUnicornMqTransactionExecuteHanlder handler = beanMaps.get(beanName);
             try {
-                if (handler.supports(message)) {
+                if (handler.supports(message, msgObj)) {
                     return handler;
                 }
             } catch (Exception e) {

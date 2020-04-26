@@ -16,7 +16,7 @@ public interface IUnicornMqTransactionExecuteHanlder {
      * @return
      * @throws PendingException
      */
-    boolean supports(Message message) throws PendingException;
+    boolean supports(Message message,Object msgObj) throws PendingException;
 
     /**
      *
@@ -24,7 +24,7 @@ public interface IUnicornMqTransactionExecuteHanlder {
      * @return
      * @throws PendingException
      */
-    LocalTransactionState execute(Message message) throws PendingException;
+    LocalTransactionState execute(Message message,Object msgObj) throws PendingException;
 
     /**
      * Bean的顺序

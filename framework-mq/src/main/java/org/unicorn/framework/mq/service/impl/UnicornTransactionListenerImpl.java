@@ -6,6 +6,7 @@ import org.apache.rocketmq.client.producer.LocalTransactionState;
 import org.apache.rocketmq.client.producer.TransactionListener;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
+import org.unicorn.framework.mq.handler.UnicornMqTransactionCheckHandlerAdapter;
 import org.unicorn.framework.mq.handler.UnicornMqTransactionExecuteHandlerAdapter;
 
 
@@ -25,7 +26,7 @@ public class UnicornTransactionListenerImpl implements TransactionListener {
     @Override
     public LocalTransactionState executeLocalTransaction(Message message, Object o) {
         log.info("topic==>" + message.getTopic() + "tag==>" + message.getTags() + "body==>" + new String(message.getBody()));
-        return UnicornMqTransactionExecuteHandlerAdapter.getHandler(message).execute(message);
+        return UnicornMqTransactionExecuteHandlerAdapter.getHandler(message,o).execute(message,o);
     }
 
     /**
@@ -36,6 +37,6 @@ public class UnicornTransactionListenerImpl implements TransactionListener {
     @Override
     public LocalTransactionState checkLocalTransaction(MessageExt messageExt) {
         log.info("topic==>" + messageExt.getTopic() + "tag==>" + messageExt.getTags() + "body==>" + new String(messageExt.getBody()));
-        return UnicornMqTransactionExecuteHandlerAdapter.getHandler(messageExt).execute(messageExt);
+        return UnicornMqTransactionCheckHandlerAdapter.getHandler(messageExt).execute(messageExt);
     }
 }
