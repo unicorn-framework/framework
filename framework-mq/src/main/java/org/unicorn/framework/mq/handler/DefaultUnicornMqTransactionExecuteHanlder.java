@@ -13,7 +13,7 @@ import sun.security.util.PendingException;
 @Slf4j
 public class DefaultUnicornMqTransactionExecuteHanlder implements IUnicornMqTransactionExecuteHanlder {
     @Override
-    public boolean supports(Message message,Object msgObj) throws PendingException {
+    public boolean supports(Message message, Object msgObj) throws PendingException {
         return false;
     }
 

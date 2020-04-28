@@ -3,6 +3,7 @@ package org.unicorn.framework.mq.base;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.*;
@@ -70,7 +71,7 @@ public abstract class AbstractMQProducer {
     }
 
     public Message genMessage(String topic, String tag, Object msgObj) {
-        String messageKey = "";
+        String messageKey = UUID.randomUUID().toString().replaceAll("-","");
         try {
             Field[] fields = msgObj.getClass().getDeclaredFields();
             for (Field field : fields) {

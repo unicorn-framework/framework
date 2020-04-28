@@ -60,4 +60,9 @@ public class MQProperties {
      */
     private Integer retryTimesWhenSendFailed=3;
 
+    /**
+     * 消息幂等保障时间
+     */
+    private Integer idempontentScences=60;
+
 }

@@ -64,4 +64,14 @@ public class MessageExtConst {
     public static final String PROPERTY_MAX_RECONSUME_TIMES = "MAX_RECONSUME_TIMES";
     public static final String PROPERTY_CONSUME_START_TIMESTAMP = "CONSUME_START_TIME";
 
+    /**
+     * 消息幂等缓存存储空间名
+     */
+    public static final String IDEMPOTENT_NAMESPACE="idempotent:";
+
+    /**
+     * 消息幂等缓存存储空间名
+     */
+    public static final String MQ_CHECK_NAMESPACE="mq:check:";
+
 }

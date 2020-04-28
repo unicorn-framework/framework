@@ -2,7 +2,6 @@ package org.unicorn.framework.mq.handler;
 
 import org.apache.rocketmq.client.producer.LocalTransactionState;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.common.message.MessageExt;
 import sun.security.util.PendingException;
 
 /**
@@ -12,7 +11,7 @@ import sun.security.util.PendingException;
 public interface IUnicornMqTransactionExecuteHanlder {
     /**
      *
-     * @param messageExt
+     * @param message
      * @return
      * @throws PendingException
      */
@@ -20,7 +19,7 @@ public interface IUnicornMqTransactionExecuteHanlder {
 
     /**
      *
-     * @param messageExt
+     * @param message
      * @return
      * @throws PendingException
      */
