@@ -38,7 +38,7 @@ public class RedisCacheImpl  implements CacheService {
 
 	@Override
 	public void put(String key, Object value, int timeToIdle, int timeToLive, TimeUnit timeUnit, String namespace) {
-		if (key == null || value == null)
+		if (key == null)
 			return;
 		try {
 			if (timeToLive > 0)

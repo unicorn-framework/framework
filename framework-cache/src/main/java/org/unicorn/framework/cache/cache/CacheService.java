@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author xiebin
+ */
 public interface CacheService {
 
 	String DEFAULT_TIME_TO_LIVE = "3600";

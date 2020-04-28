@@ -47,7 +47,7 @@ public class UnicornCacheOperationTemplate {
      * @throws PendingException
      */
     public <T> T doExecute(String cacheKey, String namespace, UnicornCacheCallback<T> unicornCacheCallback) throws PendingException {
-        return doExecute(cacheKey, namespace, null, null, unicornCacheCallback);
+        return doExecute(cacheKey, namespace, 60, TimeUnit.SECONDS, unicornCacheCallback);
     }
 
 
