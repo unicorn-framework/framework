@@ -37,11 +37,11 @@ public class MQProperties {
     /**
      * 检查线程池最小线程数
      */
-    private Integer checkThreadPoolMinSize=1;
+    private Integer checkThreadPoolMinSize=10;
     /**
      * 检查线程池最大线程数
      */
-    private Integer checkThreadPoolMaxSize=1;
+    private Integer checkThreadPoolMaxSize=10;
     /**
      * 检查线程池，producer本地缓冲请求队列大小
      */

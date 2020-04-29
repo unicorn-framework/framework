@@ -82,6 +82,11 @@ public class UnicornCacheOperationTemplate {
                 T t = unicornCacheCallback.doInCache();
                 //存入到缓存
                 if (timeout != null && timeUnit != null) {
+                    if(t==null){
+                        //如果查询对象为空则默认缓存30秒,是否做出可配置？
+                        timeout=30;
+                        timeUnit=TimeUnit.SECONDS;
+                    }
                     cacheService.put(cacheKey, t, timeout, timeUnit, namespace);
                 }
 
