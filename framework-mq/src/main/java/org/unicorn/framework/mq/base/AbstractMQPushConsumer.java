@@ -53,17 +53,17 @@ public abstract class AbstractMQPushConsumer<T> extends AbstractMQConsumer<T> {
      * @return
      */
     public Boolean idempotentProcess(T message, Map<String, Object> extMap) {
-
-        String key = consumer.getConsumerGroup() + "_" + extMap.get(MessageExtConst.PROPERTY_TOPIC) + "_" + extMap.get(MessageExtConst.PROPERTY_TAGS) + "_" + extMap.get(MessageExtConst.PROPERTY_EXT_MSG_ID);
-        Long result = cacheService.increment(key, 1, mqProperties.getIdempontentScences(), TimeUnit.SECONDS, MessageExtConst.IDEMPOTENT_NAMESPACE);
-        Boolean flag = false;
-        if (result == 1) {
-            flag = process(message, extMap);
-        }
-        if (!flag) {
-            cacheService.increment(key, -1, mqProperties.getIdempontentScences(), TimeUnit.SECONDS, MessageExtConst.IDEMPOTENT_NAMESPACE);
-        }
-        return flag;
+        return process(message, extMap);
+//        String key = consumer.getConsumerGroup() + "_" + extMap.get(MessageExtConst.PROPERTY_TOPIC) + "_" + extMap.get(MessageExtConst.PROPERTY_TAGS) + "_" + extMap.get(MessageExtConst.PROPERTY_EXT_MSG_ID);
+//        Long result = cacheService.increment(key, 1, mqProperties.getIdempontentScences(), TimeUnit.SECONDS, MessageExtConst.IDEMPOTENT_NAMESPACE);
+//        Boolean flag = false;
+//        if (result == 1) {
+//            flag = process(message, extMap);
+//        }
+//        if (!flag) {
+//            cacheService.increment(key, -1, mqProperties.getIdempontentScences(), TimeUnit.SECONDS, MessageExtConst.IDEMPOTENT_NAMESPACE);
+//        }
+//        return flag;
 
     }
 

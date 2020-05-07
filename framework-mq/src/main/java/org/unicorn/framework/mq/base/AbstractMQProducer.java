@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.*;
 import org.apache.rocketmq.client.producer.selector.SelectMessageQueueByHash;
 import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.common.message.MessageAccessor;
+import org.apache.rocketmq.common.message.MessageConst;
 import org.unicorn.framework.mq.annotation.MQKey;
 import org.unicorn.framework.mq.exception.MQException;
 
@@ -97,6 +99,8 @@ public abstract class AbstractMQProducer {
             topic = getTopic();
         }
         Message message = new Message(topic, str.getBytes(Charset.forName("utf-8")));
+        MessageAccessor.putProperty(message, MessageConst.PROPERTY_TRANSACTION_PREPARED, "true");
+        MessageAccessor.putProperty(message, MessageConst.PROPERTY_PRODUCER_GROUP, this.producer.getProducerGroup());
         if (!StringUtils.isEmpty(tag)) {
             message.setTags(tag);
         } else if (!StringUtils.isEmpty(getTag())) {

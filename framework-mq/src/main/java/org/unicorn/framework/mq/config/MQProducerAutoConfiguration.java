@@ -18,6 +18,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author xiebin
@@ -65,19 +66,28 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
 
     /**
      * 创建事务检查线程池
+     *
      * @return
      */
     private ExecutorService genCheckTransactionExecutorService() {
-        return new ThreadPoolExecutor(mqProperties.getCheckThreadPoolMinSize(), mqProperties.getCheckThreadPoolMaxSize(), 100, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<Runnable>(mqProperties.getCheckRequestHoldMax()), (r) -> {
-            Thread thread = new Thread(r);
-            thread.setName("client-transaction-msg-check-thread");
-            return thread;
-        });
+        AtomicInteger threadNumber = new AtomicInteger(1);
+        return new ThreadPoolExecutor(
+                mqProperties.getCheckThreadPoolMinSize(),
+                mqProperties.getCheckThreadPoolMaxSize(),
+                100,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(mqProperties.getCheckRequestHoldMax()),
+                (r) -> {
+                    Thread thread = new Thread(r);
+                    thread.setName("client-transaction-msg-check-thread-" + threadNumber.getAndIncrement());
+                    return thread;
+                }
+                , new ThreadPoolExecutor.CallerRunsPolicy());
     }
 
     /**
      * 发布生产者
+     *
      * @param beanName
      * @param bean
      * @throws Exception

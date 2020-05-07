@@ -25,7 +25,7 @@ public class MQProperties {
     /**
      * config send message timeout
      */
-    private Integer sendMsgTimeout = 3000;
+    private Integer sendMsgTimeout = 300000;
     /**
      * switch of trace message consumer: send message consumer info to topic: MQ_TRACE_DATA
      */
@@ -42,6 +42,11 @@ public class MQProperties {
      * 检查线程池最大线程数
      */
     private Integer checkThreadPoolMaxSize=10;
+
+    /**
+     * 检查线程池线程保持时间
+     */
+    private Integer checkThreadKeepAlive=100;
     /**
      * 检查线程池，producer本地缓冲请求队列大小
      */
