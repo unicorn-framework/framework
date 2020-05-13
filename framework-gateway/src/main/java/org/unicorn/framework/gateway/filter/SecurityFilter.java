@@ -2,6 +2,7 @@ package org.unicorn.framework.gateway.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.core.handler.HandlerAdapter;
 import org.unicorn.framework.core.handler.IHandler;
 import org.unicorn.framework.gateway.dto.BaseSecurityDto;
+import org.unicorn.framework.gateway.exception.UnicornGatewayException;
 import org.unicorn.framework.gateway.properties.UnicornGatewaySecurityProperties;
 
 import javax.annotation.PostConstruct;
@@ -124,7 +126,7 @@ public class SecurityFilter extends ZuulFilter {
      * @return 过滤结果
      */
     @Override
-    public Object run() {
+    public Object run() throws ZuulException {
         try {
             //构造 BaseSecurityDto
             BaseSecurityDto baseSecurityDto = genBaseSecurityDto();
@@ -134,10 +136,10 @@ public class SecurityFilter extends ZuulFilter {
             pollingHandler(baseSecurityDto);
         } catch (PendingException pe) {
             log.error("安全拦截异常:", pe);
-            throw pe;
+            throw new UnicornGatewayException(pe);
         } catch (Exception e) {
             log.error("安全拦截异常:", e);
-            throw new PendingException(SysCode.API_SECURITY_ERROR);
+            throw new UnicornGatewayException(new PendingException(SysCode.API_SECURITY_ERROR));
         }
         return null;
     }
