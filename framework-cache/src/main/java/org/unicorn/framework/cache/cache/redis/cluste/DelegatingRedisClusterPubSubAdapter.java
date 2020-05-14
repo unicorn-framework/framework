@@ -40,6 +40,7 @@ public class DelegatingRedisClusterPubSubAdapter extends RedisClusterPubSubAdapt
                 String key = (String) message;
                 if (redisClusterKeyExpiredHandler.match(key)) {
                     executorService.execute(()->redisClusterKeyExpiredHandler.handle(key));
+                }else {
                 }
             }else {
                 log.warn("redis过期message不是String类型");
