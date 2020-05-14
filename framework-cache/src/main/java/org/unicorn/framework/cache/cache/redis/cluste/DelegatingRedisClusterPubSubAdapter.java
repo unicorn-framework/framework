@@ -32,11 +32,9 @@ public class DelegatingRedisClusterPubSubAdapter extends RedisClusterPubSubAdapt
 
     @Override
     public void message(RedisClusterNode node, Object channel, Object message) {
-        log.info("redis 集群key 过期通知");
         if (CollectionUtils.isEmpty(redisClusterKeyExpiredHandlerList)) {
             return;
         }
-        log.info("redis 集群key 过期通知："+redisClusterKeyExpiredHandlerList.size());
         for (RedisClusterKeyExpiredHandler redisClusterKeyExpiredHandler : redisClusterKeyExpiredHandlerList) {
             if (message instanceof String) {
                 String key = (String) message;

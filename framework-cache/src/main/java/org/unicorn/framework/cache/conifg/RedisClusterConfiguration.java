@@ -64,11 +64,12 @@ public class RedisClusterConfiguration {
     }
 
     @Bean(destroyMethod = "close")
-    StatefulRedisClusterConnection statefulRedisClusterConnection(RedisClusterClient redisClusterClient) {
-        return redisClusterClient.connect();
+    StatefulRedisClusterConnection statefulRedisClusterConnection(RedisClusterClient clusterClient) {
+        return clusterClient.connect();
     }
 
     @Bean
+    @ConditionalOnBean({RedisClusterClient.class,DelegatingRedisClusterPubSubAdapter.class})
     LettuceSubscriber lettuceSubscriber(@Qualifier("clusterClient") RedisClusterClient clusterClient,
                                         DelegatingRedisClusterPubSubAdapter delegatingRedisClusterPubSubAdapter){
         LettuceSubscriber lettuceSubscriber = new LettuceSubscriber();
