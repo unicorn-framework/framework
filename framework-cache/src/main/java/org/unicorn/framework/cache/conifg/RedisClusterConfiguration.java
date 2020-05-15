@@ -45,7 +45,7 @@ public class RedisClusterConfiguration {
         return DefaultClientResources.create();
     }
 
-    @Bean
+    @Bean(destroyMethod = "close")
     @ConditionalOnMissingBean
     @ConditionalOnBean(RedisClusterKeyExpiredHandler.class)
     public DelegatingRedisClusterPubSubAdapter delegatingRedisClusterPubSubAdapter(
