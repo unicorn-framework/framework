@@ -18,6 +18,7 @@ import java.util.concurrent.*;
 @Slf4j
 public class DelegatingRedisClusterPubSubAdapter extends RedisClusterPubSubAdapter {
 
+    @Setter
     private ExecutorService executorService;
 
     @Setter
@@ -39,12 +40,22 @@ public class DelegatingRedisClusterPubSubAdapter extends RedisClusterPubSubAdapt
             if (message instanceof String) {
                 String key = (String) message;
                 if (redisClusterKeyExpiredHandler.match(key)) {
-                    executorService.execute(()->redisClusterKeyExpiredHandler.handle(key));
-                }else {
+                    if (executorService != null) {
+                        executorService.execute(()->redisClusterKeyExpiredHandler.handle(key));
+                    }else {
+                        redisClusterKeyExpiredHandler.handle(key);
+                    }
                 }
             }else {
                 log.warn("redis过期message不是String类型");
+                redisClusterKeyExpiredHandler.handle(node, channel, message);
             }
+        }
+    }
+
+    public void close(){
+        if (executorService != null) {
+            executorService.shutdown();
         }
     }
 

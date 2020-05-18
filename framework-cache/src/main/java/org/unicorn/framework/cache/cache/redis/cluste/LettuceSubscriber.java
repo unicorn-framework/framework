@@ -15,6 +15,7 @@ import lombok.Setter;
  */
 public class LettuceSubscriber extends RedisPubSubAdapter {
 
+    /** -- key监听的格式 -- **/
     private static final String EXPIRED_CHANNEL = "__keyevent@0__:expired";
 
     @Setter
