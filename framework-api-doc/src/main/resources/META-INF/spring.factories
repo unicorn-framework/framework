@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.unicorn.framework.api.doc.config.SwaggerAutoConfiguration,\
+  org.unicorn.framework.api.doc.config.SwaggerBeanValidatorPluginsConfiguration
