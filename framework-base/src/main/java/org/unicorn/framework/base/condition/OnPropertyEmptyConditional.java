@@ -7,8 +7,13 @@ import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * property空属性Condition 处理
@@ -24,21 +29,30 @@ public class OnPropertyEmptyConditional extends SpringBootCondition {
         Map<String, Object> mapValue = metadata.getAnnotationAttributes(ConditionalOnPropertyEmpty.class.getName());
         AnnotationAttributes annotationAttributes = new AnnotationAttributes(mapValue);
 
-        String key = annotationAttributes.getString("value");
+        String[] values = annotationAttributes.getStringArray("value");
         boolean attach = annotationAttributes.getBoolean("attach");
         PropertyResolver propertyResolver = context.getEnvironment();
 
         //
-        if (propertyResolver.containsProperty(key)) {
-            String property = propertyResolver.getProperty(key);
-            // 存在值 并且 valueIfExists
-            if (property != null && property.trim().length() > 0 && attach) {
+        Set<String> valuesSet = Arrays.stream(values)
+                // 过滤空值
+                .filter(v -> !StringUtils.isEmpty(v))
+                // containsProperty
+                .filter(v -> propertyResolver.containsProperty(v) && attach)
+                // 实际值判断
+                .filter(v ->!StringUtils.isEmpty(propertyResolver.getProperty(v)))
+                .collect(Collectors.toSet());
 
-                return ConditionOutcome.match(ConditionalOnPropertyEmpty.class.getName() + "->matched");
-            }
-        } else if (!attach) {
-            return ConditionOutcome.match(ConditionalOnPropertyEmpty.class.getName() + "attach -> matched");
+        // 如果为false，则属性名称对应的值不存在就匹配
+        if (CollectionUtils.isEmpty(valuesSet) && !attach) {
+            return ConditionOutcome.match(ConditionalOnPropertyEmpty.class.getName() + "->matched");
+        }else if (CollectionUtils.isEmpty(valuesSet) && attach) {
+            // 如果值为空就不匹配
+           return ConditionOutcome.noMatch(ConditionMessage.of("no matched", valuesSet.size(), attach));
+        }else if (valuesSet.size() == values.length) {
+            // 如果都有值就匹配
+            return ConditionOutcome.match(ConditionalOnPropertyEmpty.class.getName() + "->matched");
         }
-        return ConditionOutcome.noMatch(ConditionMessage.of("no matched", key, attach, propertyResolver.getProperty(key)));
+        return ConditionOutcome.noMatch(ConditionMessage.of("no matched"));
     }
 }
