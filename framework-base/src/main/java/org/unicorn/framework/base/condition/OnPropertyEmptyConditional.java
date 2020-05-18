@@ -24,7 +24,6 @@ public class OnPropertyEmptyConditional extends SpringBootCondition {
         Map<String, Object> mapValue = metadata.getAnnotationAttributes(ConditionalOnPropertyEmpty.class.getName());
         AnnotationAttributes annotationAttributes = new AnnotationAttributes(mapValue);
 
-        // 这里返回数组
         String key = annotationAttributes.getString("value");
         boolean attach = annotationAttributes.getBoolean("attach");
         PropertyResolver propertyResolver = context.getEnvironment();
