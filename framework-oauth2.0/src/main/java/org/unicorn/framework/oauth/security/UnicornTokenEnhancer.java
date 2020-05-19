@@ -9,12 +9,15 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.unicorn.framework.cache.cache.CacheService;
+import org.unicorn.framework.oauth.contans.Contans;
 import org.unicorn.framework.oauth.dto.UnicornUser;
 import org.unicorn.framework.oauth.properties.OAuth2Properties;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xiebin
@@ -22,8 +25,13 @@ import java.util.UUID;
 @Configuration
 @EnableConfigurationProperties(OAuth2Properties.class)
 public class UnicornTokenEnhancer implements TokenEnhancer {
+
     @Autowired
     private OAuth2Properties oAuth2Properties;
+
+    @Autowired
+    private CacheService cacheService;
+
 
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken,
@@ -37,12 +45,14 @@ public class UnicornTokenEnhancer implements TokenEnhancer {
                 additionalInformation.put("userInfo", user);
                 additionalInformation.put("userId", user.getId());
             }
+            //刷新token
             OAuth2RefreshToken refreshToken = token.getRefreshToken();
             if (refreshToken instanceof DefaultOAuth2RefreshToken) {
                 token.setRefreshToken(new DefaultOAuth2RefreshToken(getNewToken()));
             }
             token.setValue(getNewToken());
             token.setAdditionalInformation(additionalInformation);
+            cacheService.put(Contans.USER_TOKEN_KEY + "_" + token.getAdditionalInformation().get("userId"), token.getValue(), (token.getExpiresIn() + 10), TimeUnit.SECONDS, Contans.USER_TOKEN_NAMESPACE);
             return token;
         }
         return accessToken;
