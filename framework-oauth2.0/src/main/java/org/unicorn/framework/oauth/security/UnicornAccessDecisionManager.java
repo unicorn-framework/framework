@@ -48,7 +48,7 @@ public class UnicornAccessDecisionManager implements AccessDecisionManager {
         if(!oAuth2Properties.getPrivilegeCheck()){
             return;
         }
-        // 直接放行
+        // 直接放行 app端
         if (CollectionUtils.isEmpty(authentication.getAuthorities())) {
             return;
         }
