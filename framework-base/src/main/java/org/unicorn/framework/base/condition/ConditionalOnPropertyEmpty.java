@@ -16,9 +16,9 @@ import java.lang.annotation.*;
 public @interface ConditionalOnPropertyEmpty {
 
     /**
-     * 通用属性前缀
+     *配置属性的名称，如果为多个两个值不为空就匹配
      */
-    String value();
+    String[] value();
 
     /**
      * 附加条件
