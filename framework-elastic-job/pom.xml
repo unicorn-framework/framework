@@ -18,6 +18,10 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>org.unicorn</groupId>
+			<artifactId>framework-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.dangdang</groupId>
 			<artifactId>elastic-job-lite-core</artifactId>
 			<version>2.1.5</version>
