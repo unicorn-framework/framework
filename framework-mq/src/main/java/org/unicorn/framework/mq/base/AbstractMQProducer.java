@@ -1,24 +1,20 @@
 package org.unicorn.framework.mq.base;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.nio.charset.Charset;
-import java.util.UUID;
-
+import com.google.gson.Gson;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.*;
 import org.apache.rocketmq.client.producer.selector.SelectMessageQueueByHash;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.common.message.MessageAccessor;
-import org.apache.rocketmq.common.message.MessageConst;
 import org.unicorn.framework.mq.annotation.MQKey;
 import org.unicorn.framework.mq.exception.MQException;
 
-import com.google.gson.Gson;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
+import java.util.UUID;
 
 /**
  * @author xiebin
@@ -73,7 +69,7 @@ public abstract class AbstractMQProducer {
     }
 
     public Message genMessage(String topic, String tag, Object msgObj) {
-        String messageKey = UUID.randomUUID().toString().replaceAll("-","");
+        String messageKey = UUID.randomUUID().toString().replaceAll("-", "");
         try {
             Field[] fields = msgObj.getClass().getDeclaredFields();
             for (Field field : fields) {
@@ -99,8 +95,6 @@ public abstract class AbstractMQProducer {
             topic = getTopic();
         }
         Message message = new Message(topic, str.getBytes(Charset.forName("utf-8")));
-        MessageAccessor.putProperty(message, MessageConst.PROPERTY_TRANSACTION_PREPARED, "true");
-        MessageAccessor.putProperty(message, MessageConst.PROPERTY_PRODUCER_GROUP, this.producer.getProducerGroup());
         if (!StringUtils.isEmpty(tag)) {
             message.setTags(tag);
         } else if (!StringUtils.isEmpty(getTag())) {
@@ -364,12 +358,12 @@ public abstract class AbstractMQProducer {
     /**
      * 发送事务消息
      *
-     * @param msgObj        消息对象
-     * @param businessObj  业务对象
+     * @param msgObj      消息对象
+     * @param businessObj 业务对象
      * @throws MQException 消息异常
      */
     @Deprecated
-    public TransactionSendResult sendTransaction(Object msgObj, Object businessObj,LocalTransactionExecuter localTransactionExecuter) throws MQException {
+    public TransactionSendResult sendTransaction(Object msgObj, Object businessObj, LocalTransactionExecuter localTransactionExecuter) throws MQException {
         try {
             if (null == msgObj) {
                 return null;
@@ -390,7 +384,7 @@ public abstract class AbstractMQProducer {
      * @param businessObj
      * @throws MQException 消息异常
      */
-    public TransactionSendResult sendTransaction(Object msgObj,Object businessObj) throws MQException {
+    public TransactionSendResult sendTransaction(Object msgObj, Object businessObj) throws MQException {
         try {
             if (null == msgObj) {
                 return null;
@@ -408,11 +402,11 @@ public abstract class AbstractMQProducer {
      *
      * @param topic
      * @param tag
-     * @param msgObj msgObj
+     * @param msgObj      msgObj
      * @param businessObj businessObj
      * @throws MQException 消息异常
      */
-    public TransactionSendResult sendTransaction(String topic, String tag, Object msgObj,Object businessObj) throws MQException {
+    public TransactionSendResult sendTransaction(String topic, String tag, Object msgObj, Object businessObj) throws MQException {
         try {
             if (null == msgObj) {
                 return null;
@@ -436,7 +430,7 @@ public abstract class AbstractMQProducer {
      * @throws MQException 消息异常
      */
     @Deprecated
-    public TransactionSendResult sendTransaction(String topic, String tag, Object msgObj,Object businessObj, LocalTransactionExecuter localTransactionExecuter) throws MQException {
+    public TransactionSendResult sendTransaction(String topic, String tag, Object msgObj, Object businessObj, LocalTransactionExecuter localTransactionExecuter) throws MQException {
         try {
             if (null == msgObj) {
                 return null;
@@ -448,8 +442,6 @@ public abstract class AbstractMQProducer {
             throw new MQException("消息发送失败，topic :" + tag + ",e:" + e.getMessage());
         }
     }
-
-
 
 
 }

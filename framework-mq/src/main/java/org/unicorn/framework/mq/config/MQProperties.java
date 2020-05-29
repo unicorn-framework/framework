@@ -70,4 +70,6 @@ public class MQProperties {
      */
     private Integer idempontentScences=60;
 
+    private Integer consumeMessageBatchMaxSize=3;
+
 }

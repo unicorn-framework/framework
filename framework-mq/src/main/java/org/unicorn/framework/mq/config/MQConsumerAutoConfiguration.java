@@ -1,32 +1,23 @@
 package org.unicorn.framework.mq.config;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.UUID;
-
-import javax.annotation.PostConstruct;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyContext;
-import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 import org.unicorn.framework.mq.annotation.MQConsumer;
 import org.unicorn.framework.mq.base.AbstractMQPushConsumer;
 import org.unicorn.framework.mq.base.MessageExtConst;
-import org.unicorn.framework.mq.trace.common.OnsTraceConstants;
-import org.unicorn.framework.mq.trace.dispatch.impl.AsyncTraceAppender;
-import org.unicorn.framework.mq.trace.dispatch.impl.AsyncTraceDispatcher;
-import org.unicorn.framework.mq.trace.hook.OnsConsumeMessageHookImpl;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author xiebin
@@ -37,40 +28,15 @@ import lombok.extern.slf4j.Slf4j;
 @ConditionalOnBean(MQBaseAutoConfiguration.class)
 public class MQConsumerAutoConfiguration extends MQBaseAutoConfiguration {
 
-    private AsyncTraceDispatcher asyncTraceDispatcher;
-
     @PostConstruct
     public void init() throws Exception {
         //获取MQSonsumer注解的类
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(MQConsumer.class);
-        if(!CollectionUtils.isEmpty(beans) && mqProperties.getTraceEnabled()) {
-            initAsyncAppender();
-        }
         for (Map.Entry<String, Object> entry : beans.entrySet()) {
             publishConsumer(entry.getKey(), entry.getValue());
         }
     }
 
-    private AsyncTraceDispatcher initAsyncAppender() {
-        if(asyncTraceDispatcher != null) {
-            return asyncTraceDispatcher;
-        }
-        try {
-            Properties tempProperties = new Properties();
-            tempProperties.put(OnsTraceConstants.MaxMsgSize, "128000");
-            tempProperties.put(OnsTraceConstants.AsyncBufferSize, "2048");
-            tempProperties.put(OnsTraceConstants.MaxBatchNum, "1");
-            tempProperties.put(OnsTraceConstants.WakeUpNum, "1");
-            tempProperties.put(OnsTraceConstants.NAMESRV_ADDR, mqProperties.getNameServerAddress());
-            tempProperties.put(OnsTraceConstants.InstanceName, UUID.randomUUID().toString());
-            AsyncTraceAppender asyncAppender = new AsyncTraceAppender(tempProperties);
-            asyncTraceDispatcher = new AsyncTraceDispatcher(tempProperties);
-            asyncTraceDispatcher.start(asyncAppender, "DEFAULT_WORKER_NAME");
-        } catch (MQClientException e) {
-            e.printStackTrace();
-        }
-        return asyncTraceDispatcher;
-    }
 
     private void publishConsumer(String beanName, Object bean) throws Exception {
         MQConsumer mqConsumer = applicationContext.findAnnotationOnBean(beanName, MQConsumer.class);
@@ -94,13 +60,14 @@ public class MQConsumerAutoConfiguration extends MQBaseAutoConfiguration {
 
         // 配置push consumer
         if (AbstractMQPushConsumer.class.isAssignableFrom(bean.getClass())) {
-            DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(consumerGroup);
+            DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(consumerGroup, mqProperties.getTraceEnabled());
             consumer.setNamesrvAddr(mqProperties.getNameServerAddress());
             consumer.setMessageModel(MessageModel.valueOf(mqConsumer.messageMode()));
             consumer.subscribe(topic, StringUtils.join(mqConsumer.tag(), "||"));
             consumer.setInstanceName(UUID.randomUUID().toString());
             consumer.setConsumeThreadMin(mqProperties.getConsumeThreadMin());
             consumer.setConsumeThreadMax(mqProperties.getConsumeThreadMax());
+            consumer.setConsumeMessageBatchMaxSize(mqProperties.getConsumeMessageBatchMaxSize());
             AbstractMQPushConsumer<?> abstractMQPushConsumer = (AbstractMQPushConsumer<?>) bean;
             if (MessageExtConst.CONSUME_MODE_CONCURRENTLY.equals(mqConsumer.consumeMode())) {
                 consumer.registerMessageListener((List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) ->
@@ -112,17 +79,6 @@ public class MQConsumerAutoConfiguration extends MQBaseAutoConfiguration {
                 throw new RuntimeException("unknown consume mode ! only support CONCURRENTLY and ORDERLY");
             }
             abstractMQPushConsumer.setConsumer(consumer);
-
-            // 为Consumer增加消息轨迹回发模块
-            if (mqProperties.getTraceEnabled()) {
-                try {
-                    consumer.getDefaultMQPushConsumerImpl().registerConsumeMessageHook(
-                            new OnsConsumeMessageHookImpl(asyncTraceDispatcher));
-                } catch (Throwable e) {
-                    log.error("system mqtrace hook init failed ,maybe can't send msg trace data");
-                }
-            }
-
             consumer.start();
         }
 
