@@ -25,7 +25,10 @@ public class OssBucketConfig implements Serializable {
 
 	private static final long serialVersionUID = -1;
 
-
+	/**
+	 *regionId = "cn-shanghai";
+	 */
+	private String regionId = "cn-hangzhou";
 	/**
 	 * 配置名称
 	 */
