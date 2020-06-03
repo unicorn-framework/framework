@@ -1,7 +1,6 @@
 package org.unicorn.framework.cache.lock.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,12 +21,14 @@ import java.util.concurrent.TimeUnit;
  * @author xiebin
  */
 @Component("lockService")
+@Slf4j
 @Primary
 public class RedisLockService implements LockService {
 
-
+    /**
+     * 锁命名空间
+     */
     private static final String NAMESPACE = "unicorn-lock:";
-    private static final Logger log = LoggerFactory.getLogger(RedisLockService.class);
 
     private RedisTemplate<String, String> stringRedisTemplate;
     /**
@@ -36,11 +37,13 @@ public class RedisLockService implements LockService {
     @Value("${unicorn.lock.tryTimeout:300}")
     private int tryTimeout = 300;
     /**
-     * 获取锁后锁定时间 单位秒
+     * 获取锁后最长锁定时间 单位秒
      */
     @Value("${unicorn.lock.lockTime:60}")
     private int lockTime = 60;
-
+    /**
+     * 实例编号
+     */
     @Value("${instance.id:locks}")
     private String instanceId;
 

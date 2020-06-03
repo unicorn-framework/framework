@@ -20,7 +20,7 @@ public interface LockService {
 	 * 尝试获取锁
 	 * @param name
 	 * @param tryTimeout
-	 * @param unit
+	 * @param tryTimeoutUnit
 	 * @return
 	 * @throws PendingException
 	 */

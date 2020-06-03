@@ -73,7 +73,7 @@ public class UnicornCacheOperationTemplate {
             String lockKey = genLockKey(cacheKey, namespace);
             try {
                 //尝试获取锁
-                lockService.tryLock(lockKey);
+                lockService.lock(lockKey);
                 if (cacheService.exists(cacheKey, namespace)) {
                     //存在则直接返回
                     return (T) cacheService.get(cacheKey, namespace);
