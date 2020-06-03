@@ -66,6 +66,7 @@ public class MQConsumerAutoConfiguration extends MQBaseAutoConfiguration {
             consumer.subscribe(topic, StringUtils.join(mqConsumer.tag(), "||"));
             consumer.setInstanceName(UUID.randomUUID().toString());
             consumer.setConsumeThreadMin(mqProperties.getConsumeThreadMin());
+            consumer.setMaxReconsumeTimes(mqProperties.getMaxReconsumeTimes());
             consumer.setConsumeThreadMax(mqProperties.getConsumeThreadMax());
             consumer.setConsumeMessageBatchMaxSize(mqProperties.getConsumeMessageBatchMaxSize());
             AbstractMQPushConsumer<?> abstractMQPushConsumer = (AbstractMQPushConsumer<?>) bean;

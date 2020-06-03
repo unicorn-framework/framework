@@ -61,9 +61,13 @@ public class MQProperties {
      */
     private Integer consumeThreadMax=64;
     /**
-     * 失败重试次数
+     * 消息发送失败重试次数
      */
     private Integer retryTimesWhenSendFailed=3;
+    /**
+     * 消息消费失败重试次数
+     */
+    private Integer maxReconsumeTimes=-1;
 
     /**
      * 消息幂等保障时间

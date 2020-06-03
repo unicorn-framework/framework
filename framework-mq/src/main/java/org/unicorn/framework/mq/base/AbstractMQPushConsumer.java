@@ -45,25 +45,31 @@ public abstract class AbstractMQPushConsumer<T> extends AbstractMQConsumer<T> {
     public abstract boolean process(T message, Map<String, Object> extMap);
 
     /**
-     * 消息幂等，解决同一条消息重复消费的问题
-     * 消息消费失败重试还是存在：消费端业务异常需要进行事务回滚
+     * 消息幂等，在一定时间段内解决同一条消息重复消费的问题
+     * 消息消费成功：该消息在配置时间段内不再重复消费
+     * 消息消费失败：该消息还是会重试：消费端业务异常需要进行事务回滚
      *
      * @param message
      * @param extMap
      * @return
      */
     public Boolean idempotentProcess(T message, Map<String, Object> extMap) {
-        return process(message, extMap);
-//        String key = consumer.getConsumerGroup() + "_" + extMap.get(MessageExtConst.PROPERTY_TOPIC) + "_" + extMap.get(MessageExtConst.PROPERTY_TAGS) + "_" + extMap.get(MessageExtConst.PROPERTY_EXT_MSG_ID);
-//        Long result = cacheService.increment(key, 1, mqProperties.getIdempontentScences(), TimeUnit.SECONDS, MessageExtConst.IDEMPOTENT_NAMESPACE);
-//        Boolean flag = false;
-//        if (result == 1) {
-//            flag = process(message, extMap);
-//        }
-//        if (!flag) {
-//            cacheService.increment(key, -1, mqProperties.getIdempontentScences(), TimeUnit.SECONDS, MessageExtConst.IDEMPOTENT_NAMESPACE);
-//        }
-//        return flag;
+//        return process(message, extMap);
+        String key =extMap.get(MessageExtConst.PROPERTY_UNIQ_CLIENT_MESSAGE_ID_KEYIDX).toString();
+        //初始化为1
+        Long result = cacheService.increment(key, 1, mqProperties.getIdempontentScences(), TimeUnit.SECONDS, MessageExtConst.IDEMPOTENT_NAMESPACE);
+        Boolean flag = false;
+        if (result == 1) {
+            flag = process(message, extMap);
+        }
+        //如果消费成功则-1
+        if (!flag) {
+            cacheService.increment(key, -1, mqProperties.getIdempontentScences(), TimeUnit.SECONDS, MessageExtConst.IDEMPOTENT_NAMESPACE);
+        }
+        if(result>1){
+            return true;
+        }
+        return flag;
 
     }
 
