@@ -19,7 +19,7 @@ public class UnicornThreadFactory implements ThreadFactory {
 
     private final String threadName;
 
-    UnicornThreadFactory(String poolName, String threadName) {
+    public UnicornThreadFactory(String poolName, String threadName) {
         if (poolName == null|| poolName.length()==0) {
             throw new NullPointerException("poolName is not Null");
         }
