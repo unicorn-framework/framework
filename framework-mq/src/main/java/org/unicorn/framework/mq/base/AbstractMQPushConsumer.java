@@ -55,7 +55,7 @@ public abstract class AbstractMQPushConsumer<T> extends AbstractMQConsumer<T> {
      */
     public Boolean idempotentProcess(T message, Map<String, Object> extMap) {
 //        return process(message, extMap);
-        String key =extMap.get(MessageExtConst.PROPERTY_UNIQ_CLIENT_MESSAGE_ID_KEYIDX).toString();
+        String key =consumer.getConsumerGroup() + "_" + extMap.get(MessageExtConst.PROPERTY_TOPIC) + "_" + extMap.get(MessageExtConst.PROPERTY_TAGS)+"_"+extMap.get(MessageExtConst.PROPERTY_UNIQ_CLIENT_MESSAGE_ID_KEYIDX).toString();
         //初始化为1
         Long result = cacheService.increment(key, 1, mqProperties.getIdempontentScences(), TimeUnit.SECONDS, MessageExtConst.IDEMPOTENT_NAMESPACE);
         Boolean flag = false;
