@@ -2,7 +2,9 @@
 package org.unicorn.framework.cache.conifg;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -94,6 +96,10 @@ public class RedisConfig extends CachingConfigurerSupport {
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        //设置在反序列化时忽略在JSON字符串中存在，而在Java中不存在的属性
+        om.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        //设置Jackson序列化时只包含不为空的字段
+        om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         // java 8 时间序列化
         om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         om.registerModule(new JavaTimeModule());

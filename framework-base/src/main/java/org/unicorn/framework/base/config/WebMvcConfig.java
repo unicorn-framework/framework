@@ -1,5 +1,6 @@
 package org.unicorn.framework.base.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,6 +67,10 @@ public class WebMvcConfig  implements WebMvcConfigurer {
         if (xssProperties.getEnable()) {
             simpleModule.addSerializer(new XssStringJsonSerializer());
         }
+        //设置在反序列化时忽略在JSON字符串中存在，而在Java中不存在的属性
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        // 设置Jackson序列化时只包含不为空的字段
+//        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
         simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
         objectMapper.registerModule(simpleModule);
