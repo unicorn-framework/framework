@@ -13,12 +13,12 @@ import sun.security.util.PendingException;
 @Slf4j
 public class DefaultUnicornMqTransactionExecuteHanlder implements IUnicornMqTransactionExecuteHanlder {
     @Override
-    public boolean supports(Message message, Object msgObj) throws PendingException {
+    public boolean supports(Message message, Object businessObj) throws PendingException {
         return false;
     }
 
     @Override
-    public LocalTransactionState execute(Message message,Object msgObj) throws PendingException {
+    public LocalTransactionState execute(Message message, Object businessObj) throws PendingException {
         log.info("本地事务处理器====》系统默认实现");
         return LocalTransactionState.COMMIT_MESSAGE;
     }
