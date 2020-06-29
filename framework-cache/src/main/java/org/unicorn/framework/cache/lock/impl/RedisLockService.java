@@ -46,6 +46,11 @@ public class RedisLockService implements LockService {
      */
     @Value("${instance.id:locks}")
     private String instanceId;
+    /**
+     * 尝试获取锁轮询时间 单位毫秒
+     */
+    @Value("${unicorn.lock.sleepTime:50}")
+    private int sleepTime = 50;
 
     @Autowired
     public RedisLockService(@Qualifier("stringRedisTemplate") RedisTemplate<String, String> stringRedisTemplate) {
@@ -95,7 +100,7 @@ public class RedisLockService implements LockService {
         long start = System.currentTimeMillis();
         while (!success) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 return false;
             }
@@ -121,7 +126,7 @@ public class RedisLockService implements LockService {
         boolean success = setNxEx(key, value, lockTime, lockTimeUnit);
         while (!success) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -132,6 +137,7 @@ public class RedisLockService implements LockService {
 
     /**
      * reids原子化操作
+     *
      * @param key
      * @param value
      * @param lockTime
