@@ -10,6 +10,7 @@ import org.apache.rocketmq.client.producer.selector.SelectMessageQueueByHash;
 import org.apache.rocketmq.common.message.Message;
 import org.unicorn.framework.mq.annotation.MQKey;
 import org.unicorn.framework.mq.exception.MQException;
+import org.unicorn.framework.util.json.JsonUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -389,8 +390,10 @@ public abstract class AbstractMQProducer {
             if (null == msgObj) {
                 return null;
             }
-            log.info("send rocketmq message async");
-            return producer.sendMessageInTransaction(genMessage(getTopic(), getTag(), msgObj), businessObj);
+            log.info("发送事务消息->{}", JsonUtils.toJson(msgObj));
+            TransactionSendResult transactionSendResult = producer.sendMessageInTransaction(genMessage(getTopic(), getTag(), msgObj), businessObj);
+            log.info("发送事务消息结果->{}", JsonUtils.toJson(transactionSendResult));
+            return transactionSendResult;
         } catch (Exception e) {
             log.error("消息发送失败，topic : {}, msgObj {}", getTopic(), msgObj, e);
             throw new MQException("消息发送失败，topic :" + getTag() + ",e:" + e.getMessage());
@@ -398,12 +401,12 @@ public abstract class AbstractMQProducer {
     }
 
     /**
-     * 发送事务消息
+     * 发送事务消息-指定topic、tag
      *
      * @param topic
      * @param tag
-     * @param msgObj      msgObj
-     * @param businessObj businessObj
+     * @param msgObj
+     * @param businessObj
      * @throws MQException 消息异常
      */
     public TransactionSendResult sendTransaction(String topic, String tag, Object msgObj, Object businessObj) throws MQException {
@@ -411,8 +414,11 @@ public abstract class AbstractMQProducer {
             if (null == msgObj) {
                 return null;
             }
-            log.info("send rocketmq message async");
-            return producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), businessObj);
+            log.info("发送事务消息->{}", JsonUtils.toJson(msgObj));
+            TransactionSendResult transactionSendResult = producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), businessObj);
+            log.info("发送事务消息结果->{}", JsonUtils.toJson(transactionSendResult));
+            return transactionSendResult;
+
         } catch (Exception e) {
             log.error("消息发送失败，topic : {}, msgObj {}", topic, tag, e);
             throw new MQException("消息发送失败，topic :" + tag + ",e:" + e.getMessage());
@@ -427,6 +433,7 @@ public abstract class AbstractMQProducer {
      * @param tag
      * @param msgObj
      * @param businessObj
+     * @param localTransactionExecuter
      * @throws MQException 消息异常
      */
     @Deprecated
@@ -435,8 +442,12 @@ public abstract class AbstractMQProducer {
             if (null == msgObj) {
                 return null;
             }
-            log.info("send rocketmq message async");
-            return producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), localTransactionExecuter, businessObj);
+            log.info("发送事务消息->{}", JsonUtils.toJson(msgObj));
+            TransactionSendResult transactionSendResult = producer.sendMessageInTransaction(genMessage(topic, tag, msgObj), localTransactionExecuter, businessObj);
+            log.info("发送事务消息结果->{}", JsonUtils.toJson(transactionSendResult));
+            return transactionSendResult;
+
+
         } catch (Exception e) {
             log.error("消息发送失败，topic : {}, msgObj {}", topic, msgObj, e);
             throw new MQException("消息发送失败，topic :" + tag + ",e:" + e.getMessage());
