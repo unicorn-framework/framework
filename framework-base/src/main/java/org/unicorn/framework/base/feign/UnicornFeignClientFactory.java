@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * feign客户端接口工厂类
+ * 用户返回fegin接口对应的降级类
  *
  * @author xiebin
  */
@@ -34,7 +35,7 @@ public class UnicornFeignClientFactory {
     /**
      * @return
      */
-    public static <T> T getFeignClientInstance(Class<T> clazz) {
+    public static <T> T getFeignClientInstance(Class<T> clazz, Throwable throwable) {
         //获取上下文中IUnicornFiengClient类型的对象
         Map<String, T> beanMaps = SpringContextHolder.getApplicationContext().getBeansOfType(clazz);
         Set<String> beanNameSet = beanMaps.keySet();
@@ -48,26 +49,43 @@ public class UnicornFeignClientFactory {
                 }
             }
         }
-        log.warn("没有发现[" + clazz.getName() + "]的服务降级处理类");
+        log.warn("没有发现[" + clazz.getName() + "]的客户端自定义服务降级处理类");
         if (feignClientProxtMap.containsKey(clazz.getName())) {
             return (T) feignClientProxtMap.get(clazz.getName());
         }
-        T t = null;
-        if (clazz.isInterface()) {
-            t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new FeignClientInvocationHandler(clazz));
-        }
-
-        if (t == null) {
-            // 创建 cglib 代理类
-            Enhancer enhancer = new Enhancer();
-            enhancer.setSuperclass(clazz);
-            enhancer.setCallback(new FeignClientInvocationHandler(clazz));
-            t = (T) enhancer.create();
-        }
-
+        T t = getClientFallbackProxy(clazz, throwable);
         feignClientProxtMap.put(clazz.getName(), t);
-
         return t;
+    }
+
+
+    /**
+     * @return
+     */
+    public static <T> T getFeignClientInstance(Class<T> clazz) {
+        return getFeignClientInstance(clazz, null);
+    }
+
+
+    /**
+     * 获取 fallback动态代理对象
+     *
+     * @param clazz
+     * @param throwable
+     * @param <T>
+     * @return
+     */
+    private static <T> T getClientFallbackProxy(Class<T> clazz, Throwable throwable) {
+        if (clazz.isInterface()) {
+            log.info("通过JDK动态代理实例化[" + clazz.getName() + "]的服务降级处理类");
+            return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new FeignClientInvocationHandler(clazz, throwable));
+        }
+        log.info("通过CGLIB动态代理实例化[" + clazz.getName() + "]的服务降级处理类");
+        // 创建 cglib 代理类
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(clazz);
+        enhancer.setCallback(new FeignClientInvocationHandler(clazz, throwable));
+        return (T) enhancer.create();
 
     }
 
@@ -90,12 +108,14 @@ public class UnicornFeignClientFactory {
     static class FeignClientInvocationHandler implements InvocationHandler, MethodInterceptor {
 
         private Class clazz;
+        private Throwable throwable;
 
-        public FeignClientInvocationHandler() {
-        }
+        //        public FeignClientInvocationHandler() {
+//        }
 
-        public FeignClientInvocationHandler(Class clazz) {
+        public FeignClientInvocationHandler(Class clazz, Throwable throwable) {
             this.clazz = clazz;
+            this.throwable = throwable;
         }
 
         @Override
@@ -108,9 +128,16 @@ public class UnicornFeignClientFactory {
             return defaultMessage();
         }
 
+        /**
+         * 框架默认生成的降级处理逻辑
+         *
+         * @return
+         */
         public Object defaultMessage() {
-            Throwable throwable = UnicornContext.getValue(UnicornConstants.FEIGN_THROWABLE);
-            log.error("服务调用降级："+clazz.getName(), throwable);
+            if (throwable == null) {
+                throwable = UnicornContext.getValue(UnicornConstants.FEIGN_THROWABLE);
+            }
+            log.error("接口降级:{}" + clazz.getName(), throwable);
             try {
                 Constructor<?> redBeanConstr = resBeanClazz.getConstructor(String.class, String.class);
                 // 99000", "请稍后重试

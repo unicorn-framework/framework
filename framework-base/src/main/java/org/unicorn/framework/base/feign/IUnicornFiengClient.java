@@ -1,9 +1,15 @@
 package org.unicorn.framework.base.feign;
 
 /**
- * @author  xiebin
+ * @author xiebin
  */
 public interface IUnicornFiengClient {
-
-     <T> boolean support(Class<T> clazz);
+    /**
+     * 是否支持当前 fallback factory
+     *
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    <T> boolean support(Class<T> clazz);
 }

@@ -11,6 +11,8 @@ import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.util.json.JsonUtils;
 
+import java.io.IOException;
+
 /**
  * 接口提供方抛出的异常进行转换
  * 当调用服务时，如果服务返回的状态码不是200，就会进入到Feign的ErrorDecoder中
@@ -40,20 +42,32 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
             if (response.body() == null) {
                 return new PendingException(SysCode.SYS_FAIL);
             }
-            // 这里直接拿到feign服务端抛出的异常信息
-            String message = Util.toString(response.body().asReader());
-            ResponseDto responseDto = JsonUtils.fromJson(message, ResponseDto.class);
-            if (response.status() >= 400 && response.status() <= 499) {
-
-                if (methodKey.contains("AuthTokenClient#postAccessToken(String,Map)")) {
-                    return new HystrixBadRequestException("用户信息错误");
-                }
-                return new HystrixBadRequestException("请求参数错误 :" + methodKey);
-            }
-            return new PendingException(responseDto);
+            return getResException(methodKey, response);
         } catch (Exception e) {
             log.error("feign错误", e);
             return new PendingException(SysCode.SYS_FAIL, "feignException", e);
         }
+    }
+
+    /**
+     * @param methodKey
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    private Exception getResException(String methodKey, Response response) throws IOException {
+        // 这里直接拿到feign接口服务端抛出的异常信息
+        String message = Util.toString(response.body().asReader());
+        //转换成ResponseDto对象
+        ResponseDto responseDto = JsonUtils.fromJson(message, ResponseDto.class);
+        //4XX 一般是客服端请求不合法，返回HystrixBadRequestException,不进行熔断
+        if (response.status() >= 400 && response.status() <= 499) {
+            //
+            if (methodKey.contains("AuthTokenClient#postAccessToken(String,Map)")) {
+                return new HystrixBadRequestException("用户信息错误");
+            }
+            return new HystrixBadRequestException("请求参数错误 :" + methodKey);
+        }
+        return new PendingException(responseDto);
     }
 }
