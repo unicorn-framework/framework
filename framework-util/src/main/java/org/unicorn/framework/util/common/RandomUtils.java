@@ -46,6 +46,9 @@ public class RandomUtils {
             case 6:
                 String s = UUID.randomUUID().toString();
                 sb.append(s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23) + s.substring(24));
+            case 7:
+                buffer = new StringBuffer("23456789ABCDEFGHJKMNPQRSTUVWXYZ");
+                break;
         }
 
         if (type != 5) {
