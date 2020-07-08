@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.unicorn.framework.base.fulshutdown.undertow.UnicornUnderTowGracefulShutdownWrapper;
 
 /**
+ * 优雅停机配置
+ * Undertow
+ *
  * @author xiebin
  */
 @Configuration

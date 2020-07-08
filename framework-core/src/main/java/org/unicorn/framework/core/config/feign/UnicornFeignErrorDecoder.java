@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
+import org.unicorn.framework.core.constants.Constants;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.util.json.JsonUtils;
 
@@ -33,10 +34,10 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
 
         log.info("feign 调用方法名===》" + methodKey);
         try {
-            if (response.status() == 401) {
+            if (response.status() == Constants.HTTP_401) {
                 return new PendingException(SysCode.SESSION_ERROR);
             }
-            if (response.status() == 403) {
+            if (response.status() == Constants.HTTP_403) {
                 return new PendingException(SysCode.UNAUTHOR__ERROR);
             }
             if (response.body() == null) {
@@ -61,9 +62,9 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
         //转换成ResponseDto对象
         ResponseDto responseDto = JsonUtils.fromJson(message, ResponseDto.class);
         //4XX 一般是客服端请求不合法，返回HystrixBadRequestException,不进行熔断
-        if (response.status() >= 400 && response.status() <= 499) {
+        if (response.status() >= Constants.HTTP_400 && response.status() <= Constants.HTTP_499) {
             //
-            if (methodKey.contains("AuthTokenClient#postAccessToken(String,Map)")) {
+            if (methodKey.contains(Constants.AUTH__METHOD_KEY)) {
                 return new HystrixBadRequestException("用户信息错误");
             }
             return new HystrixBadRequestException("请求参数错误 :" + methodKey);

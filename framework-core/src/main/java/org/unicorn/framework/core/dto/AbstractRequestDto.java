@@ -1,22 +1,25 @@
 package org.unicorn.framework.core.dto;
 
-import java.io.Serializable;
-
 import org.unicorn.framework.core.exception.PendingException;
 
+import java.io.Serializable;
+
 /**
- * 
  * @author xiebin
- *
  */
 
-public abstract class AbstractRequestDto implements Serializable{
+public abstract class AbstractRequestDto implements Serializable {
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	public abstract void vaildatioinThrowException() throws PendingException;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 验证
+     *
+     * @throws PendingException
+     */
+    public abstract void vaildatioinThrowException() throws PendingException;
 }

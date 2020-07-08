@@ -2,7 +2,6 @@
 package org.unicorn.framework.core.aop;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.unicorn.framework.base.base.AbstractService;
 
@@ -11,10 +10,12 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
+ * 自动设置 createTime,updateTime
+ *
  * @author xiebin
  */
 @Slf4j
-public class DateforDaoBaseAspect extends AbstractService {
+public class DateForDaoBaseAspect extends AbstractService {
 
     public void initTime(String propertyName, Object arg) {
         try {
@@ -39,11 +40,12 @@ public class DateforDaoBaseAspect extends AbstractService {
 
     /**
      * 根据属性名称获取方法名
+     *
      * @param propertyName
      * @return
      */
-    private  String getMethodName(String propertyName){
-        return "set"+propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+    private String getMethodName(String propertyName) {
+        return "set" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
     }
 
 }

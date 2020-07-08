@@ -20,11 +20,11 @@ public class UnicornWebResponseExceptionTranslator implements WebResponseExcepti
 
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception e) throws Exception {
-        log.error("异常:", e);
+        log.error("认证异常:", e);
         if (e instanceof OAuth2Exception) {
             OAuth2Exception oAuth2Exception = (OAuth2Exception) e;
             if (e instanceof InvalidGrantException) {
-                InvalidGrantException ig=(InvalidGrantException)e;
+                InvalidGrantException ig = (InvalidGrantException) e;
                 return ResponseEntity
                         .status(200)
                         .body(new UnicornOauthException(ig.getMessage()));

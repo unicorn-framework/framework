@@ -3,31 +3,31 @@ package org.unicorn.framework.cache.cache.redis;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.serializer.support.SerializationFailedException;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.cache.cache.CacheService;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author xiebin
+ */
 @Component("cacheService")
 @Slf4j
 public class RedisCacheImpl implements CacheService {
-
+    @Autowired
     private RedisTemplate redisTemplate;
-
+    @Autowired
     private RedisTemplate stringRedisTemplate;
 
-    @Autowired
-    public RedisCacheImpl(@Qualifier("redisTemplate") RedisTemplate redisTemplate,
-                          @Qualifier("stringRedisTemplate") RedisTemplate stringRedisTemplate) {
-        this.redisTemplate = redisTemplate;
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
+//    @Autowired
+//    public RedisCacheImpl(@Qualifier("redisTemplate") RedisTemplate redisTemplate,
+//                          @Qualifier("stringRedisTemplate") RedisTemplate stringRedisTemplate) {
+//        this.redisTemplate = redisTemplate;
+//        this.stringRedisTemplate = stringRedisTemplate;
+//    }
 
     @Override
     public void put(String key, Object value, int timeToLive, TimeUnit timeUnit, String namespace) {
@@ -80,6 +80,12 @@ public class RedisCacheImpl implements CacheService {
         }
     }
 
+
+    @Override
+    public <T> T get(String key, String namespace, Class<T> clazz) {
+        return (T) get(key, namespace);
+    }
+
     @Override
     public Object get(String key, String namespace, int timeToIdle, TimeUnit timeUnit) {
         if (key == null) {
@@ -99,6 +105,11 @@ public class RedisCacheImpl implements CacheService {
             log.warn(e.getMessage(), e);
             return null;
         }
+    }
+
+    @Override
+    public <T> T get(String key, String namespace, int timeToIdle, TimeUnit timeUnit, Class<T> clazz) {
+        return (T) get(key, namespace, timeToIdle,timeUnit);
     }
 
     @Override
@@ -240,7 +251,7 @@ public class RedisCacheImpl implements CacheService {
 
     @Override
     public long increment(String key, long delta, String namespace) {
-        return increment(key,delta, 0, null, namespace);
+        return increment(key, delta, 0, null, namespace);
     }
 
 

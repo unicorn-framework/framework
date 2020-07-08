@@ -57,7 +57,6 @@ public class LogAspect extends AbstractService {
         //请求之后
         doAfter(result, beginTime);
         return result;
-
     }
 
 

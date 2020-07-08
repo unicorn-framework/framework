@@ -6,16 +6,22 @@ package org.unicorn.framework.mq.base;
 public class MessageExtConst {
 
     /**
-     * 消息模式 集群或者广播
+     * 消息模式 集群
      */
     public static final String MESSAGE_MODE_CLUSTERING = "CLUSTERING";
+    /**
+     * 消息模式 广播
+     */
     public static final String MESSAGE_MODE_BROADCASTING = "BROADCASTING";
 
     /**
-     * 消费模式 有序（单线程）或者无序（多线程）
+     * 消费模式 无序（多线程）
      */
-    public static final String CONSUME_MODE_CONCURRENTLY = "CONCURRENTLY";  //无序
-    public static final String CONSUME_MODE_ORDERLY = "ORDERLY"; //有序
+    public static final String CONSUME_MODE_CONCURRENTLY = "CONCURRENTLY";
+    /**
+     * 消费模式 有序（单线程）
+     */
+    public static final String CONSUME_MODE_ORDERLY = "ORDERLY";
 
     public static final String PROPERTY_TOPIC = "TOPIC";
 
@@ -37,9 +43,7 @@ public class MessageExtConst {
     public static final String PROPERTY_EXT_BODY_CRC = "BODY_CRC";
 
     /**
-     *
      * 以下属性来自 Message.property
-     *
      */
     public static final String PROPERTY_KEYS = "KEYS";
     public static final String PROPERTY_TAGS = "TAGS";
@@ -67,11 +71,6 @@ public class MessageExtConst {
     /**
      * 消息幂等缓存存储空间名
      */
-    public static final String IDEMPOTENT_NAMESPACE="idempotent:";
-
-    /**
-     * 消息幂等缓存存储空间名
-     */
-    public static final String MQ_CHECK_NAMESPACE="mq:check:";
+    public static final String IDEMPOTENT_NAMESPACE = "mq:idempotent:";
 
 }

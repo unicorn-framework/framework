@@ -1,13 +1,12 @@
 package org.unicorn.framework.cache.annotation;
 
-import org.springframework.cache.annotation.Cacheable;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 幂等注解 -暂时没用
  * @author  xiebin
  */
 @Retention(RetentionPolicy.RUNTIME)

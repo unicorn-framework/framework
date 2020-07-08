@@ -17,7 +17,7 @@ import java.util.List;
 @Aspect
 @Component
 @Slf4j
-public class InsertMethodDaoAspect extends DateforDaoBaseAspect {
+public class InsertMethodDaoAspect extends DateForDaoBaseAspect {
     @Pointcut("execution(* *..dao..*.insert*(..))")
     public void daoPointCut() {
     }

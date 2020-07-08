@@ -55,11 +55,7 @@ public class RedisConfig extends CachingConfigurerSupport {
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer()))
                 .disableCachingNullValues();
-//        UnicornRedisCacheManager
-//                .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
-//                .cacheDefaults(redisCacheConfiguration).build();
-//        return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory)).cacheDefaults(redisCacheConfiguration).build();
-        return new UnicornRedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory),redisCacheConfiguration);
+        return new UnicornRedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory), redisCacheConfiguration);
     }
 
     /**
@@ -91,7 +87,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
 
-    private  Jackson2JsonRedisSerializer jackson2JsonRedisSerializer(){
+    private Jackson2JsonRedisSerializer jackson2JsonRedisSerializer() {
         Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -106,6 +102,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         jackson2JsonRedisSerializer.setObjectMapper(om);
         return jackson2JsonRedisSerializer;
     }
+
     /**
      * 对象
      *

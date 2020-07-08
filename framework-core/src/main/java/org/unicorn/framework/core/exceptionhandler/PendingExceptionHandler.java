@@ -17,12 +17,6 @@ public class PendingExceptionHandler implements IExceptionHandler {
         } else if (e.getCause() instanceof PendingException) {
             return true;
         }
-
-//        else if (e.getCause() instanceof UnicornRuntimeException) {
-//            return true;
-//        } else if (e instanceof UnicornRuntimeException) {
-//            return true;
-//        }
         return false;
     }
 

@@ -15,7 +15,7 @@ import org.unicorn.framework.core.exception.PendingException;
 @Aspect
 @Component
 @Slf4j
-public class UpdateMethodDaoAspect extends DateforDaoBaseAspect {
+public class UpdateMethodDaoAspect extends DateForDaoBaseAspect {
     @Pointcut("execution(* *..dao..*.update*(..))")
     public void daoPointCut() {
     }
