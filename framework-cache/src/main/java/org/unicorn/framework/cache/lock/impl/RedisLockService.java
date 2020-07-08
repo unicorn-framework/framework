@@ -30,7 +30,6 @@ public class RedisLockService implements LockService {
      */
     private static final String NAMESPACE = "unicorn-lock:";
 
-    private RedisTemplate<String, String> stringRedisTemplate;
     /**
      * 尝试获取锁的超时时间 单位毫秒
      */
@@ -52,10 +51,9 @@ public class RedisLockService implements LockService {
     @Value("${unicorn.lock.sleepTime:50}")
     private int sleepTime = 50;
 
+    @Qualifier("stringRedisTemplate")
     @Autowired
-    public RedisLockService(@Qualifier("stringRedisTemplate") RedisTemplate<String, String> stringRedisTemplate) {
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
+    private RedisTemplate<String, String> stringRedisTemplate;
 
     /**
      * 尝试获取锁

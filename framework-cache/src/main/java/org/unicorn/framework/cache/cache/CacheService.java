@@ -100,7 +100,7 @@ public interface CacheService {
      * @param timeUnit
      * @param namespace
      */
-    void mput(Map<String, Object> map, int timeToLive, TimeUnit timeUnit, String namespace);
+    void mput(Map<String, ?> map, int timeToLive, TimeUnit timeUnit, String namespace);
 
     /**
      * 获取hash对象
@@ -109,7 +109,7 @@ public interface CacheService {
      * @param namespace
      * @return
      */
-    Map<String, Object> mget(Collection<String> keys, String namespace);
+    <T> Map<String, T> mget(Collection<String> keys, String namespace);
 
     /**
      * 删除hash对象

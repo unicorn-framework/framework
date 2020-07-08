@@ -59,34 +59,43 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
     /**
-     * 字符串
-     *
-     * @param factory
-     * @return
-     */
-    @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
-        StringRedisTemplate template = new StringRedisTemplate(factory);
-        template.setValueSerializer(jackson2JsonRedisSerializer());
-        template.afterPropertiesSet();
-        return template;
-    }
-
-    /**
-     * 字符串
+     * 存储字符串
      *
      * @param factory
      * @return
      */
     @Bean
     public RedisTemplate<String, String> stringRedisTemplate(RedisConnectionFactory factory) {
+        StringRedisSerializer serializer = new StringRedisSerializer();
         StringRedisTemplate template = new StringRedisTemplate(factory);
-        template.setValueSerializer(jackson2JsonRedisSerializer());
+        template.setValueSerializer(serializer);
         template.afterPropertiesSet();
         return template;
     }
 
+    /**
+     * 存储对象
+     *
+     * @param factory
+     * @return
+     */
+    @Bean
+    public RedisTemplate<String, Object> objectRedisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
+        StringRedisSerializer serializer = new StringRedisSerializer();
+        template.setKeySerializer(serializer);
+        template.setValueSerializer(jackson2JsonRedisSerializer());
+        template.setHashKeySerializer(serializer);
+        template.setHashValueSerializer(serializer);
+        return template;
+    }
 
+    /**
+     * 序列化方式
+     *
+     * @return
+     */
     private Jackson2JsonRedisSerializer jackson2JsonRedisSerializer() {
         Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
@@ -101,23 +110,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         om.registerModule(new JavaTimeModule());
         jackson2JsonRedisSerializer.setObjectMapper(om);
         return jackson2JsonRedisSerializer;
-    }
-
-    /**
-     * 对象
-     *
-     * @param factory
-     * @return
-     */
-    @Bean
-    public RedisTemplate<String, ?> objectRedisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, ?> template = new RedisTemplate<>();
-        template.setConnectionFactory(factory);
-        StringRedisSerializer serializer = new StringRedisSerializer();
-        template.setKeySerializer(serializer);
-        template.setValueSerializer(serializer);
-        template.setHashKeySerializer(serializer);
-        return template;
     }
 }
 

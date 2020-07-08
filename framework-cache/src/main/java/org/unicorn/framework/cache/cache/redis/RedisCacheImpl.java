@@ -3,6 +3,7 @@ package org.unicorn.framework.cache.cache.redis;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.serializer.support.SerializationFailedException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -18,16 +19,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedisCacheImpl implements CacheService {
     @Autowired
-    private RedisTemplate redisTemplate;
-    @Autowired
-    private RedisTemplate stringRedisTemplate;
-
-//    @Autowired
-//    public RedisCacheImpl(@Qualifier("redisTemplate") RedisTemplate redisTemplate,
-//                          @Qualifier("stringRedisTemplate") RedisTemplate stringRedisTemplate) {
-//        this.redisTemplate = redisTemplate;
-//        this.stringRedisTemplate = stringRedisTemplate;
-//    }
+    @Qualifier("objectRedisTemplate")
+    private RedisTemplate objectRedisTemplate;
 
     @Override
     public void put(String key, Object value, int timeToLive, TimeUnit timeUnit, String namespace) {
@@ -41,9 +34,9 @@ public class RedisCacheImpl implements CacheService {
         }
         try {
             if (timeToLive > 0) {
-                redisTemplate.opsForValue().set(generateKey(key, namespace), value, timeToLive, timeUnit);
+                objectRedisTemplate.opsForValue().set(generateKey(key, namespace), value, timeToLive, timeUnit);
             } else {
-                redisTemplate.opsForValue().set(generateKey(key, namespace), value);
+                objectRedisTemplate.opsForValue().set(generateKey(key, namespace), value);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,7 +49,7 @@ public class RedisCacheImpl implements CacheService {
             return false;
         }
         try {
-            return redisTemplate.hasKey(generateKey(key, namespace));
+            return objectRedisTemplate.hasKey(generateKey(key, namespace));
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -69,7 +62,7 @@ public class RedisCacheImpl implements CacheService {
             return null;
         }
         try {
-            return redisTemplate.opsForValue().get(generateKey(key, namespace));
+            return objectRedisTemplate.opsForValue().get(generateKey(key, namespace));
         } catch (SerializationFailedException e) {
             log.warn(e.getMessage(), e);
             delete(key, namespace);
@@ -93,10 +86,10 @@ public class RedisCacheImpl implements CacheService {
         }
         String actualKey = generateKey(key, namespace);
         if (timeToIdle > 0) {
-            redisTemplate.expire(actualKey, timeToIdle, timeUnit);
+            objectRedisTemplate.expire(actualKey, timeToIdle, timeUnit);
         }
         try {
-            return redisTemplate.opsForValue().get(actualKey);
+            return objectRedisTemplate.opsForValue().get(actualKey);
         } catch (SerializationFailedException e) {
             log.warn(e.getMessage(), e);
             delete(key, namespace);
@@ -109,7 +102,7 @@ public class RedisCacheImpl implements CacheService {
 
     @Override
     public <T> T get(String key, String namespace, int timeToIdle, TimeUnit timeUnit, Class<T> clazz) {
-        return (T) get(key, namespace, timeToIdle,timeUnit);
+        return (T) get(key, namespace, timeToIdle, timeUnit);
     }
 
     @Override
@@ -118,24 +111,24 @@ public class RedisCacheImpl implements CacheService {
             return;
         }
         try {
-            redisTemplate.delete(generateKey(key, namespace));
+            objectRedisTemplate.delete(generateKey(key, namespace));
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
     }
 
     @Override
-    public void mput(Map<String, Object> map, final int timeToLive, TimeUnit timeUnit, String namespace) {
+    public void mput(Map<String, ?> map, final int timeToLive, TimeUnit timeUnit, String namespace) {
         if (map == null) {
             return;
         }
         try {
             final Map<byte[], byte[]> actualMap = new HashMap<>();
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                actualMap.put(redisTemplate.getKeySerializer().serialize(generateKey(entry.getKey(), namespace)),
-                        redisTemplate.getValueSerializer().serialize(entry.getValue()));
+            for (Map.Entry<String, ?> entry : map.entrySet()) {
+                actualMap.put(objectRedisTemplate.getKeySerializer().serialize(generateKey(entry.getKey(), namespace)),
+                        objectRedisTemplate.getValueSerializer().serialize(entry.getValue()));
             }
-            redisTemplate.execute(conn -> {
+            objectRedisTemplate.execute(conn -> {
                 conn.multi();
                 try {
                     conn.mSet(actualMap);
@@ -150,29 +143,29 @@ public class RedisCacheImpl implements CacheService {
                 }
                 return null;
 
-            }, redisTemplate.isExposeConnection());
+            }, objectRedisTemplate.isExposeConnection());
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
     }
 
     @Override
-    public Map<String, Object> mget(Collection<String> keys, String namespace) {
+    public <T> Map<String, T> mget(Collection<String> keys, String namespace) {
         if (keys == null) {
             return null;
         }
         final List<byte[]> _keys = new ArrayList<>();
         for (String key : keys) {
-            _keys.add(redisTemplate.getKeySerializer().serialize(generateKey(key, namespace)));
+            _keys.add(objectRedisTemplate.getKeySerializer().serialize(generateKey(key, namespace)));
         }
         try {
-            List<byte[]> values = (List<byte[]>) redisTemplate.execute(conn -> {
+            List<byte[]> values = (List<byte[]>) objectRedisTemplate.execute(conn -> {
                 return conn.mGet(_keys.toArray(new byte[0][0]));
-            }, redisTemplate.isExposeConnection());
-            Map<String, Object> map = new HashMap<>();
+            }, objectRedisTemplate.isExposeConnection());
+            Map<String, T> map = new HashMap<>();
             int i = 0;
             for (String key : keys) {
-                map.put(key, redisTemplate.getValueSerializer().deserialize(values.get(i)));
+                map.put(key, (T) objectRedisTemplate.getValueSerializer().deserialize(values.get(i)));
                 i++;
             }
             return map;
@@ -188,12 +181,12 @@ public class RedisCacheImpl implements CacheService {
             return;
         }
         try {
-            redisTemplate.execute(conn -> {
+            objectRedisTemplate.execute(conn -> {
                 conn.multi();
                 try {
                     for (String key : keys) {
                         if (StringUtils.isNotBlank(key)) {
-                            conn.del(redisTemplate.getKeySerializer().serialize(generateKey(key, namespace)));
+                            conn.del(objectRedisTemplate.getKeySerializer().serialize(generateKey(key, namespace)));
                         }
                         conn.exec();
                     }
@@ -202,7 +195,7 @@ public class RedisCacheImpl implements CacheService {
                     conn.discard();
                 }
                 return null;
-            }, redisTemplate.isExposeConnection());
+            }, objectRedisTemplate.isExposeConnection());
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
@@ -214,7 +207,7 @@ public class RedisCacheImpl implements CacheService {
             return false;
         }
         try {
-            return redisTemplate.hasKey(generateKey(key, namespace));
+            return objectRedisTemplate.hasKey(generateKey(key, namespace));
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
             return false;
@@ -225,9 +218,9 @@ public class RedisCacheImpl implements CacheService {
     public boolean putIfAbsent(String key, Object value, int timeToLive, TimeUnit timeUnit, String namespace) {
         try {
             String actrualkey = generateKey(key, namespace);
-            boolean success = redisTemplate.opsForValue().setIfAbsent(actrualkey, value);
+            boolean success = objectRedisTemplate.opsForValue().setIfAbsent(actrualkey, value);
             if (success && timeToLive > 0) {
-                redisTemplate.expire(actrualkey, timeToLive, timeUnit);
+                objectRedisTemplate.expire(actrualkey, timeToLive, timeUnit);
             }
             return success;
         } catch (Exception e) {
@@ -239,9 +232,9 @@ public class RedisCacheImpl implements CacheService {
     public boolean putIfAbsent(String key, Object value, Date expireDate, String namespace) {
         try {
             String actrualkey = generateKey(key, namespace);
-            boolean success = redisTemplate.opsForValue().setIfAbsent(actrualkey, value);
+            boolean success = objectRedisTemplate.opsForValue().setIfAbsent(actrualkey, value);
             if (success && expireDate != null) {
-                redisTemplate.expireAt(actrualkey, expireDate);
+                objectRedisTemplate.expireAt(actrualkey, expireDate);
             }
             return success;
         } catch (Exception e) {
@@ -259,9 +252,9 @@ public class RedisCacheImpl implements CacheService {
     public long increment(String key, long delta, int timeToLive, TimeUnit timeUnit, String namespace) {
         try {
             String actrualkey = generateKey(key, namespace);
-            long result = redisTemplate.opsForValue().increment(actrualkey, delta);
+            long result = objectRedisTemplate.opsForValue().increment(actrualkey, delta);
             if (timeToLive > 0) {
-                redisTemplate.expire(actrualkey, timeToLive, timeUnit);
+                objectRedisTemplate.expire(actrualkey, timeToLive, timeUnit);
             }
             return result;
         } catch (Exception e) {
