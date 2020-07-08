@@ -132,6 +132,7 @@ public class Enumerator implements Enumeration {
      *         contains at least one more element to provide, <code>false</code>
      *         otherwise
      */
+    @Override
     public boolean hasMoreElements() {
 
         return (iterator.hasNext());
@@ -147,6 +148,7 @@ public class Enumerator implements Enumeration {
      * @exception NoSuchElementException
      *                if no more elements exist
      */
+    @Override
     public Object nextElement() throws NoSuchElementException {
 
         return (iterator.next());
