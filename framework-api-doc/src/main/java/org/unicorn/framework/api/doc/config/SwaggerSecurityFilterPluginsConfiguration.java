@@ -14,6 +14,8 @@ import java.io.IOException;
  */
 @Slf4j
 public class SwaggerSecurityFilterPluginsConfiguration implements Filter {
+
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         log.info("==================== init swagger security filter plugin ====================");

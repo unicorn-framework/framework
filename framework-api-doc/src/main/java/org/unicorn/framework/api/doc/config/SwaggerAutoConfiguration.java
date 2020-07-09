@@ -6,10 +6,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -18,7 +16,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.unicorn.framework.api.doc.properties.SwaggerProperties;
 import org.unicorn.framework.api.doc.properties.SwaggerSecurityProperties;
-import org.unicorn.framework.api.doc.security.GlobalAccess;
 import springfox.documentation.builders.*;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
@@ -38,7 +35,7 @@ import static java.util.stream.Collectors.toList;
  * @author xiebin
  */
 @Configuration
-@ConditionalOnProperty(name = "spring.swagger.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "spring.swagger.enable", havingValue = "true", matchIfMissing = true)
 @Import({Swagger2DocumentationConfiguration.class, SwaggerBeanValidatorPluginsConfiguration.class})
 @EnableConfigurationProperties({SwaggerProperties.class, SwaggerSecurityProperties.class})
 public class SwaggerAutoConfiguration implements BeanFactoryAware {
@@ -53,46 +50,28 @@ public class SwaggerAutoConfiguration implements BeanFactoryAware {
         this.beanFactory = beanFactory;
     }
 
+
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public GlobalAccess globalAccess(SwaggerProperties swaggerProperties) {
+//        return new GlobalAccess(swaggerProperties);
+//    }
+
     /**
-     * 安全插件,目前不提供使用
+     * 创建api
      *
+     * @param swaggerProperties
      * @return
      */
-//    @Bean
-//    @ConditionalOnProperty(prefix = "spring.swagger.security", name = "enable", havingValue = "true")
-//    public FilterRegistrationBean someFilterRegistration() {
-//        FilterRegistrationBean registration = new FilterRegistrationBean();
-//        registration.setFilter(new SwaggerSecurityFilterPluginsConfiguration());
-//        registration.addUrlPatterns("/v2/api-docs", "/swagger-resources");
-//        return registration;
-//    }
     @Bean
-    @ConditionalOnProperty(name = {"spring.swagger.enabled", "spring.swagger.security.filter-plugin"}, havingValue = "true")
-    public FilterRegistrationBean someFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new SwaggerSecurityFilterPluginsConfiguration());
-        registration.addUrlPatterns("/v2/api-docs", "/swagger-resources");
-        return registration;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GlobalAccess globalAccess(SwaggerProperties swaggerProperties) {
-        return new GlobalAccess(swaggerProperties);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public List<Docket> createRestApi(SwaggerProperties swaggerProperties, GlobalAccess globalAccess) {
+    public List<Docket> createRestApi(SwaggerProperties swaggerProperties) {
         // 没有分组
         if (swaggerProperties.getGroups().size() == 0) {
-            return noGroup(swaggerProperties, globalAccess);
+            return noGroup(swaggerProperties);
         } else {
             //分组
-            return hasGroup(swaggerProperties, globalAccess);
+            return hasGroup(swaggerProperties);
         }
-
-
     }
 
     /**
@@ -102,8 +81,8 @@ public class SwaggerAutoConfiguration implements BeanFactoryAware {
      * @param globalAccess
      * @return
      */
-    private List<Docket> noGroup(SwaggerProperties swaggerProperties, GlobalAccess globalAccess) {
-        return createDocketList(DEFAULT_GROUP_NAME, swaggerProperties, globalAccess);
+    private List<Docket> noGroup(SwaggerProperties swaggerProperties) {
+        return createDocketList(DEFAULT_GROUP_NAME, swaggerProperties);
     }
 
     /**
@@ -113,11 +92,11 @@ public class SwaggerAutoConfiguration implements BeanFactoryAware {
      * @param globalAccess
      * @return
      */
-    private List<Docket> hasGroup(SwaggerProperties swaggerProperties, GlobalAccess globalAccess) {
+    private List<Docket> hasGroup(SwaggerProperties swaggerProperties) {
         List<Docket> docketList = new LinkedList<>();
         // 分组创建
         for (String groupName : swaggerProperties.getGroups().keySet()) {
-            createDocketList(groupName, swaggerProperties, globalAccess);
+            createDocketList(groupName, swaggerProperties);
         }
         docketList.addAll(docketList);
         return docketList;
@@ -194,7 +173,7 @@ public class SwaggerAutoConfiguration implements BeanFactoryAware {
      * @param globalAccess
      * @return
      */
-    private List<Docket> createDocketList(String groupName, SwaggerProperties swaggerProperties, GlobalAccess globalAccess) {
+    private List<Docket> createDocketList(String groupName, SwaggerProperties swaggerProperties) {
         List<Docket> docketList = new LinkedList<>();
         // base-path处理
         // 当没有配置任何path的时候，解析/**

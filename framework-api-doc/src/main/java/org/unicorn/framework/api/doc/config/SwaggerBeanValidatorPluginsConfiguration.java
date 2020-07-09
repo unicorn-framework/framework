@@ -10,7 +10,7 @@ import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration
  * @author xiebin
  */
 @Configuration
-@ConditionalOnProperty(name = {"spring.swagger.enabled", "spring.swagger.validator-plugin"}, havingValue = "true")
+@ConditionalOnProperty(name = {"spring.swagger.enable,spring.swagger.validator-plugin"}, havingValue = "true")
 public class SwaggerBeanValidatorPluginsConfiguration extends BeanValidatorPluginsConfiguration {
     /**
      * 安全插件,目前不提供使用

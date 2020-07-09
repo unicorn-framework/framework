@@ -43,6 +43,19 @@ public class RedisCacheImpl implements CacheService {
         }
     }
 
+
+    @Override
+    public void put4ExpirTimeOffset(String key, Object value, String namespace) {
+        if (key == null) {
+            return;
+        }
+        try {
+            objectRedisTemplate.opsForValue().set(generateKey(key, namespace), value, 0L);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean exists(String key, String namespace) {
         if (key == null) {

@@ -25,7 +25,7 @@ public class SwaggerProperties {
     /**
      * 是否开启swagger
      */
-    private Boolean enabled;
+    private Boolean enable = Boolean.FALSE;
     /**
      * 标题
      */
@@ -124,7 +124,7 @@ public class SwaggerProperties {
         /**
          * 自定义匹配路径的正则(如：/anyPath.* 或者 ^.*$) 默认匹配所有
          */
-        private String authRegex =  "^.*$";
+        private String authRegex = "^.*$";
 
         /**
          * 传递参数的类型；默认 header 存放

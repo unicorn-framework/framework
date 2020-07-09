@@ -33,6 +33,15 @@ public interface CacheService {
     void put(String key, Object value, int timeToIdle, int timeToLive, TimeUnit timeUnit, String namespace);
 
     /**
+     * 存储对象，进行过期时间偏移
+     *
+     * @param key
+     * @param value
+     * @param namespace
+     */
+    void put4ExpirTimeOffset(String key, Object value, String namespace);
+
+    /**
      * 是否存在对应的key
      *
      * @param key

@@ -1,6 +1,6 @@
 package org.unicorn.framework.api.doc.controller;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,28 +23,32 @@ import java.util.Map;
  */
 @RestController
 @ApiIgnore
-@ConditionalOnProperty(name = "spring.swagger.enabled", havingValue = "true", matchIfMissing = true)
 public class CustomSwagger2Controller {
 
     private static final String SWAGGER_SECURITY_URL = "/v2/swagger-security";
     private static final String SWAGGER_SECURITY_LOGIN_URL = "/v2/swagger-login";
-    private final SwaggerSecurityProperties swaggerSecurityProperties;
+    @Autowired(required = false)
+    private SwaggerSecurityProperties swaggerSecurityProperties;
 
-    public CustomSwagger2Controller(SwaggerSecurityProperties swaggerSecurityProperties) {
-        this.swaggerSecurityProperties = swaggerSecurityProperties;
-    }
 
     @GetMapping(value = SWAGGER_SECURITY_URL,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Map<String, Boolean> getCustomDocumentation() {
         Map<String, Boolean> meteData = new HashMap<>(2);
-        meteData.put("security", swaggerSecurityProperties.isFilterPlugin());
+        if (swaggerSecurityProperties == null) {
+            meteData.put("security", true);
+        } else {
+            meteData.put("security", swaggerSecurityProperties.isFilterPlugin());
+        }
         return meteData;
     }
 
     @PostMapping(value = SWAGGER_SECURITY_LOGIN_URL,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<Void> loginSwagger(HttpSession session, HttpServletResponse response, String username, String password) throws IOException {
+        if (swaggerSecurityProperties == null) {
+            RequestUtils.writeForbidden(response);
+        }
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             RequestUtils.writeForbidden(response);
         }
