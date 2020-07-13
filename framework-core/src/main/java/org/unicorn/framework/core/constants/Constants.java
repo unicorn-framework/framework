@@ -10,7 +10,7 @@ public class Constants {
     public static final Integer HTTP_401 = 401;
     public static final Integer HTTP_403 = 403;
     public static final Integer HTTP_400 = 400;
-    public static final Integer HTTP_499 = 499;
+    public static final Integer HTTP_429 = 429;
     public static final String AUTH__METHOD_KEY = "AuthTokenClient#postAccessToken(String,Map)";
 
 }

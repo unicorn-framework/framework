@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 
 import javax.sql.DataSource;
 
+/**
+ * @author xiebin
+ */
 @Configuration
 @EnableTransactionManagement
 public class MybatisConfig implements TransactionManagementConfigurer {
@@ -46,6 +49,11 @@ public class MybatisConfig implements TransactionManagementConfigurer {
         return new DataSourceTransactionManager(dataSource);
     }
 
+    /**
+     * 新建一个事务
+     *
+     * @return
+     */
     @Bean
     public UnicornTransactionTemplate newTransactionTemplate() {
         UnicornTransactionTemplate newTransactionTemplate = new UnicornTransactionTemplate();
@@ -55,6 +63,11 @@ public class MybatisConfig implements TransactionManagementConfigurer {
         return newTransactionTemplate;
     }
 
+    /**
+     * 如果有事务则加入，没有事务则新建事务
+     *
+     * @return
+     */
     @Bean
     public UnicornTransactionTemplate nestedTransactionTemplate() {
         UnicornTransactionTemplate nestedTransactionTemplate = new UnicornTransactionTemplate();

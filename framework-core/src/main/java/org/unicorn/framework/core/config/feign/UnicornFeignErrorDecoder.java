@@ -6,6 +6,7 @@ import feign.Util;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.constants.Constants;
@@ -62,7 +63,7 @@ public class UnicornFeignErrorDecoder implements ErrorDecoder {
         //转换成ResponseDto对象
         ResponseDto responseDto = JsonUtils.fromJson(message, ResponseDto.class);
         //4XX 一般是客服端请求不合法，返回HystrixBadRequestException,不进行熔断
-        if (response.status() >= Constants.HTTP_400 && response.status() <= Constants.HTTP_499) {
+        if (HttpStatus.valueOf(response.status()).is4xxClientError()) {
             //
             if (methodKey.contains(Constants.AUTH__METHOD_KEY)) {
                 return new HystrixBadRequestException("用户信息错误");

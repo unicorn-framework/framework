@@ -18,7 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AbstractUnicornSecurityConfig extends WebSecurityConfigurerAdapter {
+public class UnicornSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
