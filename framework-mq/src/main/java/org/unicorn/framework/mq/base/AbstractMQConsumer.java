@@ -87,4 +87,5 @@ public abstract class AbstractMQConsumer<T> {
 //            throw new RuntimeException("Unkown parameterized type.");
         }
     }
+
 }

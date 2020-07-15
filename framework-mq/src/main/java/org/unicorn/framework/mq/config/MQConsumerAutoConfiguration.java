@@ -10,6 +10,7 @@ import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
+import org.unicorn.framework.core.utils.IdGeneratorSingleton;
 import org.unicorn.framework.mq.annotation.MQConsumer;
 import org.unicorn.framework.mq.base.AbstractMQPushConsumer;
 import org.unicorn.framework.mq.base.MessageExtConst;
@@ -69,6 +70,10 @@ public class MQConsumerAutoConfiguration extends MQBaseAutoConfiguration {
             consumer.setMaxReconsumeTimes(mqProperties.getMaxReconsumeTimes());
             consumer.setConsumeThreadMax(mqProperties.getConsumeThreadMax());
             consumer.setConsumeMessageBatchMaxSize(mqProperties.getConsumeMessageBatchMaxSize());
+            //如果是广播模式
+            if (mqConsumer.messageMode().equals(MessageExtConst.MESSAGE_MODE_BROADCASTING)) {
+                consumer.setConsumerGroup(mqConsumer.consumerGroup() + "_" + IdGeneratorSingleton.getInstance().generateKey().longValue());
+            }
             AbstractMQPushConsumer<?> abstractMQPushConsumer = (AbstractMQPushConsumer<?>) bean;
             if (MessageExtConst.CONSUME_MODE_CONCURRENTLY.equals(mqConsumer.consumeMode())) {
                 consumer.registerMessageListener((List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) ->
