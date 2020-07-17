@@ -1,20 +1,17 @@
 package ${serviceImplContext.pkg};
-
-import ${entityContext.classImportPath};
-import ${entityContext.classImportPath}Example;
-import ${mapperContext.classImportPath};
-import ${dtoContext.classImportPath};
-import lombok.Getter;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.unicorn.framework.core.exception.PendingException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.unicorn.framework.core.SysCode;
-import lombok.extern.slf4j.Slf4j;
 import java.util.List;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.unicorn.framework.core.SysCode;
+import org.unicorn.framework.core.exception.PendingException;
+import org.unicorn.framework.mybatis.utils.UnicornTkExampleUtils;
+import tk.mybatis.mapper.entity.Example;
+import ${entityContext.classImportPath};
+import ${mapperContext.classImportPath} ;
+import ${dtoContext.classImportPath};
 /**
  * <p>
  * ${table.comment} 服务实现类
@@ -23,11 +20,9 @@ import com.github.pagehelper.PageInfo;
  * @author ${author}
  * @since ${date}
  */
-@Getter
 @Slf4j
 @Service
 public class ${serviceImplContext.name} {
-
     @Autowired
     private ${mapperContext.name} ${mapperContext.beanName};
     /**
@@ -35,28 +30,28 @@ public class ${serviceImplContext.name} {
      * @param id
      * @return
      * @throws PendingException
-     */
+    */
     public void deleteByPrimaryKey(${table.primaryTableField.propertyType} id)throws PendingException{
-        try {
+        try{
             ${mapperContext.beanName}.deleteByPrimaryKey(id);
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("删除记录失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"删除记录失败",e);
         }
     }
 
     /**
-     * 根据Example删除记录
-     * @param ${entityContext.beanName}Example
-     * @return
-     * @throws PendingException
-     */
-    public void deleteByExample(${entity}Example ${entityContext.beanName}Example)throws PendingException{
-        try {
-            ${mapperContext.beanName}.deleteByExample(${entityContext.beanName}Example);
-        } catch(Exception e){
+    * 根据Example删除记录
+    * @param example
+    * @return
+    * @throws PendingException
+    */
+    public void deleteByExample(Example example)throws PendingException{
+        try{
+            ${mapperContext.beanName}.deleteByExample(example);
+        }catch(Exception e){
             log.error("根据Example删除记录失败",e);
-            throw new PendingException(SysCode.DB_ERROR.getCode(),"根据Example删除记录失败", e);
+            throw new PendingException(SysCode.DB_ERROR.getCode(),"根据Example删除记录失败",e);
         }
 
     }
@@ -68,11 +63,11 @@ public class ${serviceImplContext.name} {
      * @throws PendingException
      */
     public void deleteByIdList(List<Long> ids)throws PendingException{
-        try {
+        try{
             ${mapperContext.beanName}.deleteByIdList(ids);
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("根据ids删除记录失败",e);
-            throw new PendingException(SysCode.DB_ERROR.getCode(),"根据ids删除记录失败", e);
+            throw new PendingException(SysCode.DB_ERROR.getCode(),"根据ids删除记录失败",e);
         }
     }
 
@@ -83,12 +78,12 @@ public class ${serviceImplContext.name} {
      * @throws PendingException
      */
     public ${entity} insertSelective(${entity} ${entityContext.beanName})throws PendingException{
-        try {
+        try{
             ${mapperContext.beanName}.insertSelective(${entityContext.beanName});
             return ${entityContext.beanName};
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("新增记录失败",e);
-            throw new PendingException(SysCode.DB_ERROR.getCode(),"新增记录失败", e);
+            throw new PendingException(SysCode.DB_ERROR.getCode(),"新增记录失败",e);
         }
     }
 
@@ -99,27 +94,27 @@ public class ${serviceImplContext.name} {
      * @throws PendingException
      */
     public void insertList(List<${entity}> ${entityContext.beanName}List)throws PendingException{
-        try {
+        try{
             ${mapperContext.beanName}.insertList(${entityContext.beanName}List);
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("批量保存记录失败",e);
-            throw new PendingException(SysCode.DB_ERROR.getCode(),"批量保存记录失败", e);
+            throw new PendingException(SysCode.DB_ERROR.getCode(),"批量保存记录失败",e);
         }
     }
 
     /**
-    * 存在就更新记录，不存在就插入
-    * @param ${entityContext.beanName}
-    * @return
-    * @throws PendingException
-    */
+     * 存在就更新记录，不存在就插入
+     * @param ${entityContext.beanName}
+     * @return
+     * @throws PendingException
+     */
     public ${entity} insertOnExistence(${entity} ${entityContext.beanName})throws PendingException{
-        try {
+        try{
             ${mapperContext.beanName}.insertOnExistence(${entityContext.beanName});
             return ${entityContext.beanName};
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("保存记录失败",e);
-            throw new PendingException(SysCode.DB_ERROR.getCode(),"保存记录失败", e);
+            throw new PendingException(SysCode.DB_ERROR.getCode(),"保存记录失败",e);
         }
     }
 
@@ -131,11 +126,11 @@ public class ${serviceImplContext.name} {
     * @throws PendingException
     */
     public ${entity} selectByPrimaryKey(${table.primaryTableField.propertyType} id)throws PendingException{
-        try {
+        try{
             return ${mapperContext.beanName}.selectByPrimaryKey(id);
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("查询记录失败",e);
-            throw new PendingException(SysCode.DB_ERROR.getCode(),"查询记录失败", e);
+            throw new PendingException(SysCode.DB_ERROR.getCode(),"查询记录失败",e);
         }
     }
 
@@ -146,26 +141,26 @@ public class ${serviceImplContext.name} {
      * @throws PendingException
      */
     public List<${entity}> selectList(${entity} ${entityContext.beanName})throws PendingException{
-        try {
+        try{
             return ${mapperContext.beanName}.select(${entityContext.beanName});
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("查询列表失败",e);
-            throw new PendingException(SysCode.DB_ERROR.getCode(),"查询列表失败", e);
+            throw new PendingException(SysCode.DB_ERROR.getCode(),"查询列表失败",e);
         }
     }
 
     /**
      * 根据Example查询记录列表
-     * @param ${entityContext.beanName}Example
+     * @param example
      * @return
      * @throws PendingException
      */
-    public List<${entity}> selectListByExample(${entity}Example ${entityContext.beanName}Example)throws PendingException{
-        try {
-            return ${mapperContext.beanName}.selectByExample(${entityContext.beanName}Example);
-        } catch(Exception e){
+    public List<${entity}> selectListByExample(Example example)throws PendingException{
+        try{
+            return ${mapperContext.beanName}.selectByExample(example);
+        }catch(Exception e){
             log.error("根据Example查询记录列表",e);
-            throw new PendingException(SysCode.DB_ERROR.getCode(),"根据Example查询记录列表", e);
+            throw new PendingException(SysCode.DB_ERROR.getCode(),"根据Example查询记录列表",e);
         }
     }
     /**
@@ -175,12 +170,11 @@ public class ${serviceImplContext.name} {
      * @return
      * @throws PendingException
      */
-    public PageInfo<${entity}> get${entity}ByPage(${dtoContext.name} ${dtoContext.beanName}) throws PendingException{
-        try {
-            ${entityContext.name}Example example = new ${entityContext.name}Example();
-            example.createCriteriaAllOfBean(${dtoContext.beanName}.get${entityContext.name}());
-            return PageHelper.startPage(${dtoContext.beanName}).doSelectPageInfo(() -> ${mapperContext.beanName}.selectByExample(example));
-        } catch(Exception e){
+    public PageInfo<${entity}> get${entity}ByPage(${dtoContext.name} ${dtoContext.beanName})throws PendingException{
+        try{
+            return PageHelper.startPage(${dtoContext.beanName}).doSelectPageInfo(()->
+                   ${mapperContext.beanName}.selectByExample(UnicornTkExampleUtils.whereAllColumnsExample(${entity}.class, ${dtoContext.beanName}.get${entityContext.name}())));
+        }catch(Exception e){
             log.error("分页查询${table.comment}失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"分页查询${table.comment}失败",e);
         }
@@ -193,9 +187,9 @@ public class ${serviceImplContext.name} {
      * @throws PendingException
      */
     public List<${entity}> selectListByIds(List<${table.primaryTableField.propertyType}> ids)throws PendingException{
-        try {
+        try{
             return ${mapperContext.beanName}.selectByIdList(ids);
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("根据ID列表批量查询记录失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"根据ID列表批量查询记录失败",e);
         }
@@ -207,9 +201,9 @@ public class ${serviceImplContext.name} {
      * @throws PendingException
      */
     public ${entity} selectOne(${entity} ${entityContext.beanName})throws PendingException{
-        try {
+        try{
             return ${mapperContext.beanName}.selectOne(${entityContext.beanName});
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("查询单条记录失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"查询单条记录失败",e);
         }
@@ -222,13 +216,13 @@ public class ${serviceImplContext.name} {
      * @throws PendingException
      */
     public  ${entity} mustGet(${entity} ${entityContext.beanName})throws PendingException{
-        try {
+        try{
             ${entity} query${entity} = ${mapperContext.beanName}.selectOne(${entityContext.beanName});
             if(query${entity}==null){
                 throw new PendingException(SysCode.DB_ERROR.getCode(),"没有查询到相关记录");
             }
             return query${entity};
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("查询单条记录失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"查询单条记录失败",e);
         }
@@ -236,14 +230,14 @@ public class ${serviceImplContext.name} {
 
     /**
      * 根据Example查询记录总数
-     * @param ${entityContext.beanName}Example
+     * @param example
      * @return
      * @throws PendingException
      */
-    public  Integer countByExample(${entity}Example ${entityContext.beanName}Example)throws PendingException{
-        try {
-            return ${mapperContext.beanName}.selectCountByExample(${entityContext.beanName}Example);
-        } catch(Exception e){
+    public  Integer countByExample(Example example)throws PendingException{
+        try{
+            return ${mapperContext.beanName}.selectCountByExample(example);
+        }catch(Exception e){
             log.error("根据Example查询记录总数失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"根据Example查询记录总数失败",e);
         }
@@ -256,10 +250,10 @@ public class ${serviceImplContext.name} {
      * @throws PendingException
      */
     public ${entity} updateByPrimaryKey(${entity} ${entityContext.beanName})throws PendingException{
-        try {
+        try{
             ${mapperContext.beanName}.updateByPrimaryKeySelective(${entityContext.beanName});
             return ${entityContext.beanName};
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("根据主键更新单条记录失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"根据主键更新单条记录失败",e);
         }
@@ -271,11 +265,11 @@ public class ${serviceImplContext.name} {
      * @return
      * @throws PendingException
      */
-    public ${entity} updateByExample(${entity} ${entityContext.beanName},${entity}Example ${entityContext.beanName}Example)throws PendingException{
-        try {
-            ${mapperContext.beanName}.updateByExampleSelective(${entityContext.beanName},${entityContext.beanName}Example);
+    public ${entity} updateByExample(${entity} ${entityContext.beanName},Example example)throws PendingException{
+        try{
+            ${mapperContext.beanName}.updateByExampleSelective(${entityContext.beanName},example);
             return ${entityContext.beanName};
-        } catch(Exception e){
+        }catch(Exception e){
             log.error("根据Example修改记录失败",e);
             throw new PendingException(SysCode.DB_ERROR.getCode(),"根据Example修改记录失败",e);
         }

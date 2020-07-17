@@ -195,7 +195,7 @@ public abstract class UnicornAbstractGenerator {
             //创建entity文件
 			createFile(context,template.getEntity(),entityFile);
 			 //创建entityExample文件
-			createFile(context,template.getEntityExample(),entityExampleFile);
+//			createFile(context,template.getEntityExample(),entityExampleFile);
 			//创建mapper接口文件
 			createFile(context,template.getMapper(),mapperFile);
 			//创建mapper映射文件
