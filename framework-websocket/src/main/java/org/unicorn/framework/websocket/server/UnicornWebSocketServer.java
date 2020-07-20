@@ -25,12 +25,18 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class UnicornWebSocketServer {
+
+    private CacheService cacheService;
+    private WebSocketProducer webSocketProducer;
+
     /**
      * 连接建立成功调用的方法
      * 将session设置到消息消费者
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("sessionKey") String sessionKey) {
+        this.cacheService = SpringContextHolder.getBean(CacheService.class);
+        this.webSocketProducer = SpringContextHolder.getBean(WebSocketProducer.class);
         Set<String> userSet = addWebSocketQueue(sessionKey);
         WebSocketSessionUtils.putWebSocketSession(sessionKey, session);
         log.info("用户连接:" + sessionKey + ",当前在线人数为:" + userSet.size());
@@ -54,14 +60,14 @@ public class UnicornWebSocketServer {
     private Set<String> addWebSocketQueue(@PathParam("sessionKey") String sessionKey) {
         Set<String> userSet = getOnlineUserSet();
         userSet.add(sessionKey);
-        SpringContextHolder.getBean(CacheService.class).put(Constants.WEBSOCKET_SESSION_KEY, userSet, -1, TimeUnit.SECONDS, Constants.WEBSOCKET_NAMESPACE);
+        cacheService.put(Constants.WEBSOCKET_SESSION_KEY, userSet, -1, TimeUnit.SECONDS, Constants.WEBSOCKET_NAMESPACE);
         return userSet;
     }
 
     private Set<String> delWebSocketQueue(@PathParam("sessionKey") String sessionKey) {
         Set<String> userSet = getOnlineUserSet();
         userSet.remove(sessionKey);
-        SpringContextHolder.getBean(CacheService.class).put(Constants.WEBSOCKET_SESSION_KEY, userSet, -1, TimeUnit.SECONDS, Constants.WEBSOCKET_NAMESPACE);
+        cacheService.put(Constants.WEBSOCKET_SESSION_KEY, userSet, -1, TimeUnit.SECONDS, Constants.WEBSOCKET_NAMESPACE);
         return userSet;
     }
 
@@ -70,7 +76,6 @@ public class UnicornWebSocketServer {
      * @return
      */
     private Set<String> getOnlineUserSet() {
-        CacheService cacheService = SpringContextHolder.getBean(CacheService.class);
         Set<String> userSet = Sets.newHashSet();
         //如果包含
         if (cacheService.containsKey(Constants.WEBSOCKET_SESSION_KEY, Constants.WEBSOCKET_NAMESPACE)) {
@@ -88,7 +93,6 @@ public class UnicornWebSocketServer {
     @OnMessage
     public void onMessage(String message, Session session, @PathParam("sessionKey") String sessionKey) throws Exception {
         log.info("用户消息:" + sessionKey + ",报文:" + message);
-        WebSocketProducer webSocketProducer = SpringContextHolder.getBean(WebSocketProducer.class);
         WebSocketMessage webSocketMessage = JsonUtils.fromJson(message, WebSocketMessage.class);
         //将消息发送到消息队列
         webSocketProducer.sendWebscoketMessage(webSocketMessage);

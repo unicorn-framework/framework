@@ -16,5 +16,5 @@ public class Constants implements Serializable {
     /**
      * websocket session count
      */
-    public static final String WEBSOCKET_SESSION_KEY = "webcoket:session:count:";
+    public static final String WEBSOCKET_SESSION_KEY = "webcoket:session:count";
 }
