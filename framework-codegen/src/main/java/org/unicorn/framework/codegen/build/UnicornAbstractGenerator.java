@@ -178,7 +178,7 @@ public abstract class UnicornAbstractGenerator {
 			//实体类路径
 			String entityFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.ENTITY_PATH),tableInfo.getEntityName(),UnicornConstVal.JAVA_SUFFIX);
 			//实体对应的Example类路径
-			String entityExampleFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.ENTITY_PATH),tableInfo.getEntityName()+"Example",UnicornConstVal.JAVA_SUFFIX);
+//			String entityExampleFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.ENTITY_PATH),tableInfo.getEntityName()+"Example",UnicornConstVal.JAVA_SUFFIX);
 			//DAO接口文件路径
 			String mapperFile=getFilePath(tableInfo,pathInfo.get(UnicornConstVal.MAPPER_PATH),tableInfo.getMapperName(),UnicornConstVal.JAVA_SUFFIX);
 			//映射文件路径
