@@ -6,6 +6,7 @@ import org.unicorn.framework.codegen.mapper.DbCloumnTypeInfo;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
 
 /**
+ * 表字段描述类
  * @author xiebin
  */
 public class UnicornTableField {
