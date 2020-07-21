@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -75,6 +74,7 @@ public class DateUtils {
         cal.add(Calendar.DAY_OF_YEAR, days);
         return cal.getTime();
     }
+
     /**
      * 日期加时间
      *
@@ -101,6 +101,7 @@ public class DateUtils {
         }
         return date = cal.getTime();
     }
+
     public static int getIntervalDays(Date startDate, Date endDate) {
         startDate = beginOfDay(startDate);
         endDate = beginOfDay(endDate);
@@ -558,21 +559,21 @@ public class DateUtils {
     }
 
     /**
-     *
      * 获取当前网络时间
+     *
      * @return
      */
-    public static Date  getNetworkTime() {
+    public static Date getNetworkTime() {
         try {
-            String webUrl="http://www.baidu.com";
-            URL url=new URL(webUrl);
-            URLConnection conn=url.openConnection();
+            String webUrl = "http://www.baidu.com";
+            URL url = new URL(webUrl);
+            URLConnection conn = url.openConnection();
             conn.connect();
-            long dateL=conn.getDate();
+            long dateL = conn.getDate();
             return new Date(dateL);
-        }catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
-        }catch (IOException e) {
+        } catch (IOException e) {
             // TODO: handler exception
             e.printStackTrace();
         }
@@ -580,8 +581,7 @@ public class DateUtils {
     }
 
 
-
-    public static void  main(String args[]){
+    public static void main(String args[]) {
         System.out.println(getNetworkTime());
     }
 }

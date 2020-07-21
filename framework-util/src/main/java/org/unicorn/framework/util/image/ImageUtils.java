@@ -1,7 +1,6 @@
 package org.unicorn.framework.util.image;
 
 import net.coobird.thumbnailator.Thumbnails;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
 import java.io.ByteArrayOutputStream;
