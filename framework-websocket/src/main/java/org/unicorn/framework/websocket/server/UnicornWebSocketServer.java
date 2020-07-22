@@ -3,7 +3,6 @@ package org.unicorn.framework.websocket.server;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.cache.cache.CacheService;
 import org.unicorn.framework.util.json.JsonUtils;
 import org.unicorn.framework.websocket.constants.Constants;

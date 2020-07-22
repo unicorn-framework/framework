@@ -1,7 +1,6 @@
 package org.unicorn.framework.core.dto;
 
 import lombok.*;
-import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.util.json.JsonUtils;
 
 import java.io.Serializable;
