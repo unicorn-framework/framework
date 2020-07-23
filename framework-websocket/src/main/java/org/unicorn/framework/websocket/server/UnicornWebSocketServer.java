@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.cache.cache.CacheService;
 import org.unicorn.framework.util.json.JsonUtils;
+import org.unicorn.framework.web.base.SpringContextHolder;
 import org.unicorn.framework.websocket.constants.Constants;
 import org.unicorn.framework.websocket.mq.WebSocketMessage;
 import org.unicorn.framework.websocket.mq.WebSocketProducer;

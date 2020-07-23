@@ -1,4 +1,4 @@
-package org.unicorn.framework.core.config.feign;
+package org.unicorn.framework.web.config.feign;
 
 import com.netflix.hystrix.exception.HystrixBadRequestException;
 import feign.Response;

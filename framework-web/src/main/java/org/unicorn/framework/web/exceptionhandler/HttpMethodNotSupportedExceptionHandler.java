@@ -1,9 +1,10 @@
-package org.unicorn.framework.core.exceptionhandler;
+package org.unicorn.framework.web.exceptionhandler;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
+import org.unicorn.framework.core.exceptionhandler.IExceptionHandler;
 
 /**
  * @author xiebin

@@ -1,4 +1,4 @@
-package org.unicorn.framework.core.config.multipart;
+package org.unicorn.framework.web.config.multipart;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

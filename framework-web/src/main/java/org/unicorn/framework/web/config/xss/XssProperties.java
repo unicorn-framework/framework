@@ -1,4 +1,4 @@
-package org.unicorn.framework.base.config.xss;
+package org.unicorn.framework.web.config.xss;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

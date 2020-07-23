@@ -1,4 +1,4 @@
-package org.unicorn.framework.base.config.xss;
+package org.unicorn.framework.web.config.xss;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;

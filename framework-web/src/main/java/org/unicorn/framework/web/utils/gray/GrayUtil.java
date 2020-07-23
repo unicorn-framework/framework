@@ -1,4 +1,4 @@
-package org.unicorn.framework.core.utils;
+package org.unicorn.framework.web.utils.gray;
 
 import io.jmnarloch.spring.cloud.ribbon.support.RibbonFilterContextHolder;
 

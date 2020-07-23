@@ -47,7 +47,7 @@ public class UnicornGatewaySecurityProperties {
     /**
      * 是否启用安全机制
      */
-    private Boolean enable=false;
+    private Boolean enable=true;
     /**
      * 忽略安全拦截确定的请求头值
      */

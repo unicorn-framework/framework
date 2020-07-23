@@ -2,6 +2,7 @@
 package org.unicorn.framework.mq.handler;
 
 import org.apache.rocketmq.common.message.Message;
+import org.unicorn.framework.web.base.SpringContextHolder;
 import sun.security.util.PendingException;
 
 import java.util.Map;

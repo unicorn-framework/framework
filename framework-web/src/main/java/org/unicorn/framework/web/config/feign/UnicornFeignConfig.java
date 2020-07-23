@@ -1,4 +1,4 @@
-package org.unicorn.framework.core.config.feign;
+package org.unicorn.framework.web.config.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -9,7 +9,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.unicorn.framework.base.constants.UnicornConstants;
 import org.unicorn.framework.core.properties.UnicornCoreProperties;
-import org.unicorn.framework.core.utils.GrayUtil;
+import org.unicorn.framework.web.utils.gray.GrayUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;

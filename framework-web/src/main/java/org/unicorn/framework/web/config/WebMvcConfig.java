@@ -21,9 +21,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.unicorn.framework.base.config.xss.XssProperties;
-import org.unicorn.framework.base.config.xss.XssStringJsonSerializer;
 import org.unicorn.framework.base.constants.UnicornConstants;
+import org.unicorn.framework.web.config.xss.XssProperties;
+import org.unicorn.framework.web.config.xss.XssStringJsonSerializer;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;

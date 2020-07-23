@@ -31,6 +31,10 @@ public class ResBean {
         this.info = info;
     }
 
+    public static ResBean fromPendingException(PendingException pe) {
+        return new ResBean(pe.getCode(), pe.getMessage());
+    }
+
     /**
      * 将枚举类转换成异常抛出（失败时）
      *

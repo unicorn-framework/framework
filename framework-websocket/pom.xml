@@ -21,11 +21,6 @@
         </dependency>
         <dependency>
             <groupId>org.unicorn</groupId>
-            <artifactId>framework-cache</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.unicorn</groupId>
             <artifactId>framework-mq</artifactId>
             <version>${module.version}</version>
         </dependency>
