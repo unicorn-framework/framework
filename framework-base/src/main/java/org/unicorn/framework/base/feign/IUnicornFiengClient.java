@@ -1,4 +1,4 @@
-package org.unicorn.framework.web.feign;
+package org.unicorn.framework.base.feign;
 
 /**
  * @author xiebin
