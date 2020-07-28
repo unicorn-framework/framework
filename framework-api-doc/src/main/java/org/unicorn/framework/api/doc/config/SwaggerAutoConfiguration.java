@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.unicorn.framework.api.doc.properties.SwaggerProperties;
 import org.unicorn.framework.api.doc.properties.SwaggerSecurityProperties;
 import org.unicorn.framework.api.doc.security.GlobalAccess;
+import org.unicorn.framework.util.common.BeanMapping;
 import springfox.documentation.builders.*;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
@@ -30,15 +31,17 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Predicates.*;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * @author xiebin
  */
 @Configuration
-@ConditionalOnProperty(name = "spring.swagger.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "spring.swagger.enable", havingValue = "true", matchIfMissing = true)
 @Import({Swagger2DocumentationConfiguration.class, SwaggerBeanValidatorPluginsConfiguration.class})
 @EnableConfigurationProperties({SwaggerProperties.class, SwaggerSecurityProperties.class})
 public class SwaggerAutoConfiguration implements BeanFactoryAware {
@@ -53,27 +56,15 @@ public class SwaggerAutoConfiguration implements BeanFactoryAware {
         this.beanFactory = beanFactory;
     }
 
-    /**
-     * 安全插件,目前不提供使用
-     *
-     * @return
-     */
-//    @Bean
-//    @ConditionalOnProperty(prefix = "spring.swagger.security", name = "enable", havingValue = "true")
-//    public FilterRegistrationBean someFilterRegistration() {
-//        FilterRegistrationBean registration = new FilterRegistrationBean();
-//        registration.setFilter(new SwaggerSecurityFilterPluginsConfiguration());
-//        registration.addUrlPatterns("/v2/api-docs", "/swagger-resources");
-//        return registration;
-//    }
     @Bean
-    @ConditionalOnProperty(name = {"spring.swagger.enabled", "spring.swagger.security.filter-plugin"}, havingValue = "true")
+    @ConditionalOnProperty(name = {"spring.swagger.enable", "spring.swagger.security.filter-plugin"}, havingValue = "true")
     public FilterRegistrationBean someFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new SwaggerSecurityFilterPluginsConfiguration());
         registration.addUrlPatterns("/v2/api-docs", "/swagger-resources");
         return registration;
     }
+
 
     @Bean
     @ConditionalOnMissingBean
@@ -83,128 +74,93 @@ public class SwaggerAutoConfiguration implements BeanFactoryAware {
 
     @Bean
     @ConditionalOnMissingBean
-    public List<Docket> createRestApi(SwaggerProperties swaggerProperties, GlobalAccess globalAccess) {
-        // 没有分组
-        if (swaggerProperties.getGroups().size() == 0) {
-            return noGroup(swaggerProperties, globalAccess);
-        } else {
-            //分组
-            return hasGroup(swaggerProperties, globalAccess);
-        }
-
-
-    }
-
-    /**
-     * 无分组 创建 docket
-     *
-     * @param swaggerProperties
-     * @param globalAccess
-     * @return
-     */
-    private List<Docket> noGroup(SwaggerProperties swaggerProperties, GlobalAccess globalAccess) {
-        return createDocketList(DEFAULT_GROUP_NAME, swaggerProperties, globalAccess);
-    }
-
-    /**
-     * 分组 创建docket
-     *
-     * @param swaggerProperties
-     * @param globalAccess
-     * @return
-     */
-    private List<Docket> hasGroup(SwaggerProperties swaggerProperties, GlobalAccess globalAccess) {
-        List<Docket> docketList = new LinkedList<>();
-        // 分组创建
-        for (String groupName : swaggerProperties.getGroups().keySet()) {
-            createDocketList(groupName, swaggerProperties, globalAccess);
-        }
-        docketList.addAll(docketList);
-        return docketList;
-    }
-
-    /**
-     * 创建 docket
-     *
-     * @param groupName
-     * @param swaggerProperties
-     * @param excludePath
-     * @param basePath
-     * @return
-     */
-    private Docket createDocket(String groupName, SwaggerProperties swaggerProperties, List<String> excludePath, List<String> basePath) {
+    public List<Docket> createRestApi(SwaggerProperties swaggerProperties) {
         ConfigurableBeanFactory configurableBeanFactory = (ConfigurableBeanFactory) beanFactory;
-        ApiInfo apiInfo = new ApiInfoBuilder()
-                .title(swaggerProperties.getTitle())
-                .description(swaggerProperties.getDescription())
-                .version(swaggerProperties.getVersion())
-                .license(swaggerProperties.getLicense())
-                .licenseUrl(swaggerProperties.getLicenseUrl())
-                .contact(new Contact(swaggerProperties.getContact().getName(),
-                        swaggerProperties.getContact().getUrl(),
-                        swaggerProperties.getContact().getEmail()))
-                .termsOfServiceUrl(swaggerProperties.getTermsOfServiceUrl())
-                .build();
-        Docket docket = new Docket(DocumentationType.SWAGGER_2)
-                .host(swaggerProperties.getHost())
-                .apiInfo(apiInfo)
-                .globalOperationParameters(buildGlobalOperationParameters(swaggerProperties.getGlobalOperationParameters()))
-                .select()
-                .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
-                .paths(and(not(or(getExcludePath(excludePath))), or(getBasePath(basePath))))
-                .build();
-        // 配置全局响应
-        if (!CollectionUtils.isEmpty(swaggerProperties.getGlobalResponseMessages())) {
-            buildGlobalResponseMessage(swaggerProperties, docket);
-        }
-        configurableBeanFactory.registerSingleton(groupName, docket);
-        return docket;
-    }
-
-    /**
-     * 获取basePath
-     *
-     * @param basePaths
-     * @return
-     */
-    List<Predicate<String>> getBasePath(List<String> basePaths) {
-        return basePaths.stream().map(PathSelectors::ant).collect(toList());
-    }
-
-    /**
-     * 获取ExcludePath
-     *
-     * @param excludePaths
-     * @return
-     */
-    List<Predicate<String>> getExcludePath(List<String> excludePaths) {
-        List<Predicate<String>> excludePath = Lists.newArrayList();
-        for (String path : excludePaths) {
-            excludePath.add(PathSelectors.ant(path));
-        }
-        return excludePath;
-    }
-
-    /**
-     * 创建docket list
-     *
-     * @param groupName
-     * @param swaggerProperties
-     * @param globalAccess
-     * @return
-     */
-    private List<Docket> createDocketList(String groupName, SwaggerProperties swaggerProperties, GlobalAccess globalAccess) {
         List<Docket> docketList = new LinkedList<>();
         // base-path处理
         // 当没有配置任何path的时候，解析/**
         if (swaggerProperties.getBasePath().isEmpty()) {
             swaggerProperties.getBasePath().add(BASE_PATH);
         }
-        Docket docket = createDocket(groupName, swaggerProperties, swaggerProperties.getExcludePath(), swaggerProperties.getBasePath());
-        docketList.add(docket);
+        // 没有分组
+        if (swaggerProperties.getGroups().size() == 0) {
+            //创建默认分组
+            SwaggerProperties.GroupInfo groupInfo = BeanMapping.map(swaggerProperties, SwaggerProperties.GroupInfo.class);
+            swaggerProperties.getGroups().put(DEFAULT_GROUP_NAME, groupInfo);
+        }
+        // 分组创建Docket
+        for (String groupName : swaggerProperties.getGroups().keySet()) {
+            SwaggerProperties.GroupInfo groupInfo = swaggerProperties.getGroups().get(groupName);
+            SwaggerProperties.Contact contact = groupInfo.getContact();
+            ApiInfo apiInfo = genApiInfo(swaggerProperties, groupInfo, contact);
+            // base-path处理
+            // 当没有配置任何path的时候，解析/**
+            if (groupInfo.getBasePath().isEmpty()) {
+                groupInfo.getBasePath().add(BASE_PATH);
+            }
+            List<Predicate<String>> basePath = groupInfo.getBasePath().stream().map(PathSelectors::ant).collect(toList());
+            // exclude-path处理
+            List<Predicate<String>> excludePath = Lists.newArrayList();
+            for (String path : groupInfo.getExcludePath()) {
+                excludePath.add(PathSelectors.ant(path));
+            }
+            Docket docket = genDocket(swaggerProperties, groupName, groupInfo, apiInfo, basePath, excludePath);
+            configurableBeanFactory.registerSingleton(groupName, docket);
+            docketList.add(docket);
+        }
         return docketList;
     }
 
+    /**
+     * 创建docket对象
+     *
+     * @param swaggerProperties
+     * @param groupName
+     * @param groupInfo
+     * @param apiInfo
+     * @param basePath
+     * @param excludePath
+     * @return
+     */
+    private Docket genDocket(SwaggerProperties swaggerProperties, String groupName, SwaggerProperties.GroupInfo groupInfo, ApiInfo apiInfo, List<Predicate<String>> basePath, List<Predicate<String>> excludePath) {
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .host(swaggerProperties.getHost())
+                .apiInfo(apiInfo)
+                .globalOperationParameters(assemblyGlobalOperationParameters(swaggerProperties.getGlobalOperationParameters(), groupInfo.getGlobalOperationParameters()))
+                .groupName(groupName)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage(groupInfo.getBasePackage()))
+                .paths(and(not(or(excludePath)), or(basePath)))
+                .build();
+        // 配置全局响应
+        if (!CollectionUtils.isEmpty(swaggerProperties.getGlobalResponseMessages())) {
+            buildGlobalResponseMessage(swaggerProperties, docket);
+        }
+        return docket;
+    }
+
+    /**
+     * 创建ApiInfo对象
+     *
+     * @param swaggerProperties
+     * @param groupInfo
+     * @param contact
+     * @return
+     */
+    private ApiInfo genApiInfo(SwaggerProperties swaggerProperties, SwaggerProperties.GroupInfo groupInfo, SwaggerProperties.Contact contact) {
+        return new ApiInfoBuilder()
+                .title(defaultString(groupInfo.getTitle(), swaggerProperties.getTitle()))
+                .description(defaultString(groupInfo.getDescription(), swaggerProperties.getDescription()))
+                .version(defaultString(groupInfo.getVersion(), swaggerProperties.getVersion()))
+                .license(defaultString(groupInfo.getLicense(), swaggerProperties.getLicense()))
+                .licenseUrl(defaultString(groupInfo.getLicenseUrl(), swaggerProperties.getLicenseUrl()))
+                .contact(new Contact(
+                        defaultString(contact.getName(), swaggerProperties.getContact().getName()),
+                        defaultString(contact.getUrl(), swaggerProperties.getContact().getUrl()),
+                        defaultString(contact.getEmail(), swaggerProperties.getContact().getEmail())))
+                .termsOfServiceUrl(defaultString(groupInfo.getTermsOfServiceUrl(), swaggerProperties.getTermsOfServiceUrl()))
+                .build();
+    }
 
     /**
      * 读取 SwaggerProperties 配置,构建全局响应结果
@@ -247,4 +203,32 @@ public class SwaggerAutoConfiguration implements BeanFactoryAware {
                 .required(globalOperationParameter.getRequired())
                 .build()).collect(toList());
     }
+
+    /**
+     * 局部参数按照name覆盖局部参数
+     *
+     * @param globalOperationParameters 全局参数
+     * @param groupOperationParameters  附加参数
+     * @return 参数集
+     */
+    private List<Parameter> assemblyGlobalOperationParameters(
+            List<SwaggerProperties.GlobalOperationParameter> globalOperationParameters,
+            List<SwaggerProperties.GlobalOperationParameter> groupOperationParameters) {
+        if (CollectionUtils.isEmpty(groupOperationParameters)) {
+            return buildGlobalOperationParameters(globalOperationParameters);
+        }
+        if (CollectionUtils.isEmpty(globalOperationParameters)) {
+            return buildGlobalOperationParameters(groupOperationParameters);
+        }
+        Set<String> groupNames = groupOperationParameters.stream().map(SwaggerProperties.GlobalOperationParameter::getName).collect(toSet());
+        List<SwaggerProperties.GlobalOperationParameter> resultOperationParameters =
+                globalOperationParameters.stream().filter(parameter -> !groupNames.contains(parameter.getName())).collect(Collectors.toList());
+        resultOperationParameters.addAll(groupOperationParameters);
+        return buildGlobalOperationParameters(resultOperationParameters);
+    }
+
+    private static String defaultString(final String str, final String defaultStr) {
+        return str == null || Objects.equals(str.trim(), "") || str.length() == 0 ? defaultStr : str;
+    }
+
 }

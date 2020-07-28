@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public class HystrixFallbackHandler implements HandlerFunction<ServerResponse> {
     @Override
     public Mono<ServerResponse> handle(ServerRequest serverRequest) {
-        return ServerResponse.status(HttpStatus.BAD_REQUEST)
+        return ServerResponse.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(BodyInserters.fromObject(new ResponseDto<>(SysCode.MICRO_SERVICE_ERROR)));
     }

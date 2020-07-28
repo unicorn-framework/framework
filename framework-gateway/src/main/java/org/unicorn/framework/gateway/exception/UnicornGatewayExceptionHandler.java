@@ -51,7 +51,7 @@ public class UnicornGatewayExceptionHandler extends DefaultErrorWebExceptionHand
     protected Mono<ServerResponse> renderErrorView(ServerRequest request) {
         boolean includeStackTrace = this.isIncludeStackTrace(request, MediaType.TEXT_HTML);
         Map<String, Object> error = this.getErrorAttributes(request, includeStackTrace);
-        return ServerResponse.status(HttpStatus.BAD_REQUEST)
+        return ServerResponse.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(BodyInserters.fromObject(error));
     }
