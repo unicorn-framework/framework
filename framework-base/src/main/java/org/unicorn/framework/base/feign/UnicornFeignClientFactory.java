@@ -1,14 +1,13 @@
-package org.unicorn.framework.web.feign;
+package org.unicorn.framework.base.feign;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.base.base.UnicornContext;
 import org.unicorn.framework.base.constants.UnicornConstants;
-import org.unicorn.framework.base.feign.IUnicornFiengClient;
-import org.unicorn.framework.web.base.SpringContextHolder;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;

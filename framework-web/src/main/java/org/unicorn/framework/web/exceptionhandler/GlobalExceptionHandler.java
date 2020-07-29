@@ -5,12 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.base.constants.UnicornConstants;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.dto.ResponseInfoDto;
 import org.unicorn.framework.core.exceptionhandler.IExceptionHandler;
-import org.unicorn.framework.web.base.SpringContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

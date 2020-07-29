@@ -1,6 +1,8 @@
 package org.unicorn.framework.web.utils.http;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +14,7 @@ public abstract class RequestUtils {
 
     /**
      * 得到客户端请求IP 地址
+     *
      * @param request
      * @return
      */
@@ -31,5 +34,16 @@ public abstract class RequestUtils {
             return ip;
         }
         return request.getRemoteAddr();
+    }
+
+    /**
+     * servlet容器环境中获取HttpServletRequest
+     *
+     * @return
+     */
+    public static HttpServletRequest getRequest() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        return request;
     }
 }

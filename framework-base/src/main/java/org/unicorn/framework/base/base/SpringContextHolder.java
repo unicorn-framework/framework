@@ -3,15 +3,11 @@
  * Description: <br/>
  * Copyright: Copyright (c) 2015<br/>
  */
-package org.unicorn.framework.web.base;
+package org.unicorn.framework.base.base;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Title: SpringContextHolder<br/>
@@ -30,12 +26,6 @@ public class SpringContextHolder implements ApplicationContextAware {
         SpringContextHolder.applicationContext = applicationContext;
     }
 
-    public static HttpServletRequest getRequest() {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        return request;
-    }
-
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
@@ -44,7 +34,7 @@ public class SpringContextHolder implements ApplicationContextAware {
         return applicationContext.getBean(beanName);
     }
 
-    public static  <T> T getBean(Class<T> clazz) {
+    public static <T> T getBean(Class<T> clazz) {
         return applicationContext.getBean(clazz);
     }
 

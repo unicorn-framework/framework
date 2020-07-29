@@ -1,5 +1,5 @@
 
-package org.unicorn.framework.web.handler;
+package org.unicorn.framework.core.handler;
 
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.exception.PendingException;

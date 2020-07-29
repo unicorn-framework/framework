@@ -1,4 +1,4 @@
-package org.unicorn.framework.web.base;
+package org.unicorn.framework.base.base;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
