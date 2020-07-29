@@ -122,6 +122,11 @@
                 <artifactId>framework-mq</artifactId>
                 <version>${module.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.unicorn</groupId>
+                <artifactId>framework-websocket</artifactId>
+                <version>${module.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
