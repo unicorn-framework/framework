@@ -67,7 +67,7 @@ public class CustomSwagger2Controller {
         return meteData;
     }
 
-    @PostMapping(value = "/api/search",
+    @PostMapping(value = "/v2/api/search",
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<Void> apiSearch(@RequestBody ApiInfoDto apiInfoDto, HttpServletRequest servletRequest) {
         //根据group过滤出documentation
