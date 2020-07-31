@@ -1,180 +1,225 @@
 package org.unicorn.framework.util.json;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.unicorn.framework.util.common.DateUtils;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+
 /**
- * 
- * @author xiebin
+ * jackson 工具类
  *
+ * @author xiebin
  */
+@Slf4j
 public class JsonUtils {
 
-	public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * 默认日期时间格式
+     */
+    public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * 默认日期格式
+     */
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+    /**
+     * 默认时间格式
+     */
+    public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
 
-	public static final TypeReference<List<String>> STRING_LIST_TYPE = new TypeReference<List<String>>() {
-	};
+    public static final TypeReference<List<String>> STRING_LIST_TYPE = new TypeReference<List<String>>() {
+    };
 
-	public static final TypeReference<Map<String, String>> STRING_MAP_TYPE = new TypeReference<Map<String, String>>() {
-	};
+    public static final TypeReference<Map<String, String>> STRING_MAP_TYPE = new TypeReference<Map<String, String>>() {
+    };
 
-	private static Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
-	private static ObjectMapper objectMapper = createNewObjectMapper();
+    private static ObjectMapper objectMapper = createNewObjectMapper();
 
-	public static ObjectMapper getObjectMapper() {
-		return objectMapper;
-	}
+    public static ObjectMapper getObjectMapper() {
+        return objectMapper;
+    }
 
-	public static ObjectMapper createNewObjectMapper() {
-		final ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setDateFormat(new SimpleDateFormat(DEFAULT_DATE_FORMAT));
-		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		objectMapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+    public static ObjectMapper createNewObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        /**
+         * 简单类型的设置
+         */
+        SimpleModule simpleModule = new SimpleModule();
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+        objectMapper.registerModule(simpleModule);
+        /**
+         * 普通日期序列化&日期格式设置
+         */
+        DeserializationConfig dc = objectMapper.getDeserializationConfig();
+        // 设置反序列化日期格式、忽略不存在get、set的属性
+        objectMapper.setConfig(dc.with(new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT)).without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
+        objectMapper.setDateFormat(new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT));
+        /**
+         *  java8 时间序列化设置
+         */
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)));
+        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)));
+        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)));
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)));
+        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)));
+        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)));
+        objectMapper.registerModule(javaTimeModule).registerModule(new ParameterNamesModule());
+        return objectMapper;
+    }
 
-			private static final long serialVersionUID = 8855888602140931060L;
+    public static String toJson(Object object) {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return null;
+        }
+    }
 
-			@Override
-			protected boolean _isIgnorable(Annotated a) {
-				return false;
-			}
+    public static String toJsonWithView(Object object, Class<?> serializationView) {
+        try {
+            return objectMapper.writerWithView(serializationView).writeValueAsString(object);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return null;
+        }
+    }
 
-		});
-		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-		objectMapper.setTimeZone(TimeZone.getDefault());
-		objectMapper.registerModule(new SimpleModule().addDeserializer(Date.class, new JsonDeserializer<Date>() {
-			@Override
-			public Date deserialize(JsonParser jsonparser, DeserializationContext deserializationcontext)
-					throws IOException, JsonProcessingException {
-				String date = jsonparser.getText();
-				DateFormat df = objectMapper.getDeserializationConfig().getDateFormat();
-				if (df != null) {
-					DateFormat clone = (DateFormat) df.clone();
-					try {
-						return clone.parse(date);
-					} catch (ParseException e) {
-					}
-				}
-				Date d = DateUtils.parse(date);
-				if (d == null)
-					throw new RuntimeException(date + " is not valid date");
-				return d;
-			}
-		}));
-		return objectMapper;
-	}
+    /**
+     * 是否是有效的json
+     *
+     * @param content
+     * @return
+     */
+    public static boolean isValidJson(String content) {
+        try {
+            getObjectMapper().readValue(content, JsonNode.class);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
-	public static String toJson(Object object) {
-		try {
-			return objectMapper.writeValueAsString(object);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return null;
-		}
-	}
+    /**
+     * 反序列化
+     *
+     * @param json
+     * @param type
+     * @param <T>
+     * @return
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    public static <T> T fromJson(String json, TypeReference<T> type)
+            throws JsonParseException, JsonMappingException, IOException {
+        return (T) objectMapper.readValue(json, type);
+    }
 
-	public static String toJsonWithView(Object object, Class<?> serializationView) {
-		try {
-			return objectMapper.writerWithView(serializationView).writeValueAsString(object);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return null;
-		}
-	}
+    /**
+     * 反序列化
+     *
+     * @param json
+     * @param cls
+     * @param <T>
+     * @return
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    public static <T> T fromJson(String json, Class<T> cls)
+            throws JsonParseException, JsonMappingException, IOException {
+        return objectMapper.readValue(json, cls);
+    }
 
-	public static boolean isValidJson(String content) {
-		try {
-			getObjectMapper().readValue(content, JsonNode.class);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
+    /**
+     * 容器类
+     *
+     * @param json
+     * @param containCls
+     * @param clazz
+     * @param <T>
+     * @param <S>
+     * @return
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    public static <T, S> T fromJson(String json, Class<T> containCls, Class<S> clazz) throws JsonParseException, JsonMappingException, IOException {
 
-	@SuppressWarnings("unchecked")
-	public static <T> T fromJson(String json, TypeReference<T> type)
-			throws JsonParseException, JsonMappingException, IOException {
-		return (T) objectMapper.readValue(json, type);
-	}
+        JavaType javaType = getCollectionType(containCls, clazz);
+        return objectMapper.readValue(json, javaType);
+    }
 
-	public static <T> T fromJson(String json, Class<T> cls)
-			throws JsonParseException, JsonMappingException, IOException {
-		return objectMapper.readValue(json, cls);
-	}
-	
-	
-	public static <T,S> T fromJson(String json, Class<T> containCls,Class<S> clazz)throws JsonParseException, JsonMappingException, IOException {
-		
-		JavaType javaType = getCollectionType(containCls, clazz); 
-		return objectMapper.readValue(json, javaType);
-	}
-	
-	
-	
-	public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {   
-		        return objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);   
-	}   
-	
-	public static <T> List<T> fromJsonList(String json, Class<T> cls)throws JsonParseException, JsonMappingException, IOException {
-		JavaType javaType = getCollectionType(List.class, cls); 
-		return fromJson(json,javaType);
-	}
 
-	public static <T> T fromJson(String json, Type type) throws JsonParseException, JsonMappingException, IOException {
-		return objectMapper.readValue(json,
-				objectMapper.getDeserializationConfig().getTypeFactory().constructType(type));
-	}
+    public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
+        return objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
+    }
 
-	public static String unprettify(String json) {
-		ObjectMapper objectMapper = getObjectMapper();
-		try {
-			JsonNode node = objectMapper.readValue(json, JsonNode.class);
-			return objectMapper.writeValueAsString(node);
-		} catch (Exception e) {
-			return json;
-		}
-	}
+    /**
+     * 反序列为list
+     *
+     * @param json
+     * @param cls
+     * @param <T>
+     * @return
+     * @throws JsonParseException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    public static <T> List<T> fromJsonList(String json, Class<T> cls) throws JsonParseException, JsonMappingException, IOException {
+        JavaType javaType = getCollectionType(List.class, cls);
+        return fromJson(json, javaType);
+    }
 
-	public static String prettify(String json) {
-		ObjectMapper objectMapper = getObjectMapper();
-		try {
-			JsonNode node = objectMapper.readValue(json, JsonNode.class);
-			ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
-			return writer.writeValueAsString(node);
-		} catch (Exception e) {
-			return json;
-		}
-	}
+    public static <T> T fromJson(String json, Type type) throws JsonParseException, JsonMappingException, IOException {
+        return objectMapper.readValue(json,
+                objectMapper.getDeserializationConfig().getTypeFactory().constructType(type));
+    }
+
+    public static String unprettify(String json) {
+        ObjectMapper objectMapper = getObjectMapper();
+        try {
+            JsonNode node = objectMapper.readValue(json, JsonNode.class);
+            return objectMapper.writeValueAsString(node);
+        } catch (Exception e) {
+            return json;
+        }
+    }
+
+    public static String prettify(String json) {
+        ObjectMapper objectMapper = getObjectMapper();
+        try {
+            JsonNode node = objectMapper.readValue(json, JsonNode.class);
+            ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
+            return writer.writeValueAsString(node);
+        } catch (Exception e) {
+            return json;
+        }
+    }
 
 }
