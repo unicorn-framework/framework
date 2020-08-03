@@ -11,6 +11,8 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.unicorn.framework.gateway.fallback.HystrixFallbackHandler;
 
 /**
+ * gateway 路由统一降级配置类
+ *
  * @author xiebin
  */
 @Slf4j

@@ -13,6 +13,7 @@ import org.unicorn.framework.core.SysCode;
 import reactor.core.publisher.Mono;
 
 /**
+ * gateway 降级处理类
  * @Author: xiebin
  * @Description:
  * @Date:Create：in 2020-07-22 14:08

@@ -23,7 +23,6 @@
             <groupId>org.unicorn</groupId>
             <artifactId>framework-cache</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.netflix.servo</groupId>
             <artifactId>servo-core</artifactId>
