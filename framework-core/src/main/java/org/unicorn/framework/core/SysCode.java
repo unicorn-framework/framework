@@ -148,11 +148,13 @@ public class SysCode {
     public static final ResBean NOT_FOUND_HANDLER = new ResBean("99905", DEFAULT_RES_INFO);
 
     /**
+     * 限流
      * api limit
      */
-    public static final ResBean API_LIMIT_ERROR = new ResBean("99906", "该接口超过调用限制");
+    public static final ResBean API_LIMIT_ERROR = new ResBean("99906", "接口超过调用限制");
 
     /**
+     * 调用不合法 ，安全检查
      * api limit
      */
     public static final ResBean API_SECURITY_ERROR = new ResBean("99907", "您的请求被拒绝");
@@ -170,9 +172,6 @@ public class SysCode {
      * 分布式事务回滚
      */
     public static final ResBean LCN_TRANSACTION_ROLLBACK = new ResBean("99099", "分布式事务回滚");
-
-
-
 
 
     //===================9开头的为系统异常  end==================================
