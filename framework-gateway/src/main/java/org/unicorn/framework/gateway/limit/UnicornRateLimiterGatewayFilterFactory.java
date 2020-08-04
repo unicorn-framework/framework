@@ -53,8 +53,7 @@ public class UnicornRateLimiterGatewayFilterFactory extends AbstractGatewayFilte
 
     @SuppressWarnings("unchecked")
     @Override
-    public GatewayFilter apply(Config config) {
-        KeyResolver resolver = (KeyResolver) this.getOrDefault(config.keyResolver, this.defaultKeyResolver);
+    public GatewayFilter apply(Config config) { KeyResolver resolver = (KeyResolver) this.getOrDefault(config.keyResolver, this.defaultKeyResolver);
         RateLimiter<Object> limiter = (RateLimiter) this.getOrDefault(config.rateLimiter, this.defaultRateLimiter);
         return (exchange, chain) -> {
             Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);

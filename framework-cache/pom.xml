@@ -18,7 +18,7 @@
 		<!-- 对redis支持,引入的话项目缓存就支持redis了,所以必须加上redis的相关配置,否则操作相关缓存会报异常 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.unicorn</groupId>

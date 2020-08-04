@@ -6,7 +6,6 @@ import org.springframework.cloud.gateway.filter.ratelimit.RateLimiter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.unicorn.framework.gateway.limit.IpKeyResolver;
 import org.unicorn.framework.gateway.limit.UnicornRateLimiterGatewayFilterFactory;
 import reactor.core.publisher.Mono;
 
@@ -19,20 +18,50 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class GatewayRateLimiterKeyResolverConfig {
     @Bean
-    public UnicornRateLimiterGatewayFilterFactory rateLimiterGatewayFilterFactory(RateLimiter rateLimiter) {
+    public UnicornRateLimiterGatewayFilterFactory rateLimiterGatewayFilterFactory(RateLimiter rateLimiter, KeyResolver ipKeyResolver) {
 
-        return new UnicornRateLimiterGatewayFilterFactory(rateLimiter, unicornKeyResolver());
+        return new UnicornRateLimiterGatewayFilterFactory(rateLimiter, ipKeyResolver);
     }
 
+    /**
+     * 默认的key策略
+     *
+     * @return
+     */
     @Bean
-    public KeyResolver unicornKeyResolver() {
-        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
+    @Primary
+    public KeyResolver ipKeyResolver() {
+        return exchange -> {
+            log.info("ipKeyResolver");
+            return Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
+        };
     }
 
-//
-//    public KeyResolver apiKeyResolver() {
-//        return exchange ->
-//                Mono.just(exchange.getRequest().getPath().value());
-//    }
+    /**
+     * 接口级别限流
+     *
+     * @return
+     */
+    @Bean
+    public KeyResolver apiKeyResolver() {
+        return exchange -> {
+            log.info("apiKeyResolver");
+            return Mono.just(exchange.getRequest().getPath().value());
+        };
+
+    }
+
+    /**
+     * 用户级别限流
+     *
+     * @return
+     */
+    @Bean
+    public KeyResolver userKeyResolver() {
+        return exchange -> {
+            log.info("userKeyResolver");
+            return Mono.just(exchange.getRequest().getHeaders().getFirst("Authorization"));
+        };
+    }
 
 }

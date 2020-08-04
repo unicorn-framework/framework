@@ -1,7 +1,7 @@
 package org.unicorn.framework.gateway.config;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -17,10 +17,9 @@ import org.unicorn.framework.gateway.fallback.HystrixFallbackHandler;
  */
 @Slf4j
 @Configuration
-@AllArgsConstructor
 public class GatewayRoutesConfig {
-
-    private final HystrixFallbackHandler hystrixFallbackHandler;
+    @Autowired
+    private HystrixFallbackHandler hystrixFallbackHandler;
 
     @Bean
     public RouterFunction routerFunction() {
