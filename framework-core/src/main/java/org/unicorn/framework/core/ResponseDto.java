@@ -1,8 +1,10 @@
 package org.unicorn.framework.core;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.unicorn.framework.core.exception.PendingException;
 
 import java.util.Date;
@@ -26,7 +28,8 @@ public class ResponseDto<T> {
      */
     @ApiModelProperty(value = "标识是否需要弹出resInfo内容", name = "标识是否需要弹出resInfo内容")
     private boolean tip=false;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date responseTime=new Date();
 
     public Date getResponseTime() {

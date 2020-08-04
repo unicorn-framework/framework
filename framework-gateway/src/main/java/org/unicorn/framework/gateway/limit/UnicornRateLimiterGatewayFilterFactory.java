@@ -4,18 +4,8 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RateLimiter;
-import org.springframework.cloud.gateway.route.Route;
-import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.unicorn.framework.core.ResponseDto;
-import org.unicorn.framework.core.SysCode;
-import org.unicorn.framework.util.json.JsonUtils;
-import reactor.core.publisher.Mono;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
+import org.unicorn.framework.gateway.filter.RequestLimitGatewayFilter;
 
 /**
  * 自定义GatewayFitlerFactory
@@ -39,45 +29,16 @@ public class UnicornRateLimiterGatewayFilterFactory extends AbstractGatewayFilte
         this.defaultKeyResolver = defaultKeyResolver;
     }
 
-    public KeyResolver getDefaultKeyResolver() {
-        return defaultKeyResolver;
-    }
-
-    public RateLimiter getDefaultRateLimiter() {
-        return defaultRateLimiter;
-    }
-
     private <T> T getOrDefault(T configValue, T defaultValue) {
         return configValue != null ? configValue : defaultValue;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public GatewayFilter apply(Config config) { KeyResolver resolver = (KeyResolver) this.getOrDefault(config.keyResolver, this.defaultKeyResolver);
+    public GatewayFilter apply(Config config) {
+        KeyResolver resolver = (KeyResolver) this.getOrDefault(config.keyResolver, this.defaultKeyResolver);
         RateLimiter<Object> limiter = (RateLimiter) this.getOrDefault(config.rateLimiter, this.defaultRateLimiter);
-        return (exchange, chain) -> {
-            Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
-
-            return resolver.resolve(exchange).flatMap(key ->
-                    // TODO: if key is empty?
-                    limiter.isAllowed(route.getId(), key).flatMap(response -> {
-
-                        for (Map.Entry<String, String> header : response.getHeaders().entrySet()) {
-                            exchange.getResponse().getHeaders().add(header.getKey(), header.getValue());
-                        }
-
-                        if (response.isAllowed()) {
-                            return chain.filter(exchange);
-                        }
-                        ServerHttpResponse rs = exchange.getResponse();
-                        ResponseDto responseDto = new ResponseDto(SysCode.API_LIMIT_ERROR);
-                        byte[] datas = JsonUtils.toJson(responseDto).getBytes(StandardCharsets.UTF_8);
-                        DataBuffer buffer = rs.bufferFactory().wrap(datas);
-                        rs.setStatusCode(HttpStatus.OK);
-                        rs.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-                        return rs.writeWith(Mono.just(buffer));
-                    }));
-        };
+        return new RequestLimitGatewayFilter(resolver, limiter);
     }
 
     public static class Config {
