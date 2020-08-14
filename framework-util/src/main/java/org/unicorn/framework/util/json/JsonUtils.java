@@ -63,8 +63,6 @@ public class JsonUtils {
 
     public static ObjectMapper createNewObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
-        // 设置时区
-        objectMapper.setTimeZone(TimeZone.getDefault());
         /**
          * 简单类型的设置
          */
