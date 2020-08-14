@@ -23,8 +23,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * jackson 工具类
@@ -62,6 +64,9 @@ public class JsonUtils {
 
     public static ObjectMapper createNewObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
+        //设置时区
+        objectMapper.setTimeZone(TimeZone.getDefault());
+
         /**
          * 简单类型的设置
          */
@@ -77,6 +82,7 @@ public class JsonUtils {
         // 设置反序列化日期格式、忽略不存在get、set的属性
         objectMapper.setConfig(dc.with(new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT)).without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
         objectMapper.setDateFormat(new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT));
+
         /**
          *  java8 时间序列化设置
          */
@@ -222,4 +228,7 @@ public class JsonUtils {
         }
     }
 
+    public static void main(String[] args) {
+        System.out.println(JsonUtils.toJson(new Date()));
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.unicorn.framework.core.ResponseDto;
 import org.unicorn.framework.core.SysCode;
+import org.unicorn.framework.util.json.JsonUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -25,6 +26,6 @@ public class HystrixFallbackHandler implements HandlerFunction<ServerResponse> {
     public Mono<ServerResponse> handle(ServerRequest serverRequest) {
         return ServerResponse.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .body(BodyInserters.fromObject(new ResponseDto<>(SysCode.MICRO_SERVICE_ERROR)));
+                .body(BodyInserters.fromObject(JsonUtils.toJson(new ResponseDto<>(SysCode.MICRO_SERVICE_ERROR))));
     }
 }
