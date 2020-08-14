@@ -25,6 +25,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * jackson 工具类
@@ -62,6 +63,8 @@ public class JsonUtils {
 
     public static ObjectMapper createNewObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
+        // 设置时区
+        objectMapper.setTimeZone(TimeZone.getDefault());
         /**
          * 简单类型的设置
          */
