@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author zhanghaibo
  * @since 2019/6/27
  */
-public abstract class RequestUtils {
+public  class RequestUtils {
 
     /**
      * 得到客户端请求IP 地址
