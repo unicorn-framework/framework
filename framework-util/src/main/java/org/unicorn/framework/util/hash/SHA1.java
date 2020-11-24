@@ -110,4 +110,12 @@ public class SHA1 {
         }
         return resultString;
     }
+
+
+    public static void main(String[] args) {
+        System.out.println(Encode16("KeySLzS0FT+YNiF66PRcYM72mpTfuac5g==paramstestgtwfIAOZBHI9dw==".getBytes()));
+
+
+
+    }
 }

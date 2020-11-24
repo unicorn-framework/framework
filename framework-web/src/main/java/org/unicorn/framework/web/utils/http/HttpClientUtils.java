@@ -15,8 +15,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.unicorn.framework.util.json.JsonUtils;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -276,7 +278,7 @@ public class HttpClientUtils {
      * @return
      * @throws Exception
      */
-    public static String uploadFileImpl(String serverUrl, String localFilePath,String serverFieldName, Map<String, String> params)
+    public static String uploadFileImpl(String serverUrl, String localFilePath, String serverFieldName, Map<String, String> params)
             throws Exception {
         String respStr = null;
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -321,7 +323,7 @@ public class HttpClientUtils {
      * @return
      * @throws Exception
      */
-    public static String uploadBatchFileImpl(String serverUrl, String [] localFilePaths,String serverFieldName, Map<String, String> params)
+    public static String uploadBatchFileImpl(String serverUrl, String[] localFilePaths, String serverFieldName, Map<String, String> params)
             throws Exception {
         String respStr = null;
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -329,7 +331,7 @@ public class HttpClientUtils {
             HttpPost httppost = new HttpPost(serverUrl);
             MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder
                     .create();
-            for(String localFilePath:localFilePaths){
+            for (String localFilePath : localFilePaths) {
                 FileBody binFileBody = new FileBody(new File(localFilePath));
                 // add the file params
                 multipartEntityBuilder.addPart(serverFieldName, binFileBody);
@@ -396,7 +398,7 @@ public class HttpClientUtils {
         return strBuf.toString();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 //        String url = "http://beta.hntrgf.com.cn/gf-oss-service/oss/upload/batch?storagePrefix=test";
 //        Map<String, String> param = new HashMap<>();
 //        String filePaths[]=new String[]{
@@ -409,12 +411,19 @@ public class HttpClientUtils {
 //        } catch (Exception e) {
 //
 //        }
-        Map<String, String> headMap =new HashMap<>();
-        String url = "http://api09.aliyun.venuscn.com/express/trace/query?number=SF1161425402539";
-        headMap.put("Authorization", "APPCODE 84035ec299934f24b7dc08be68cf9df3");
-
-        System.out.println(HttpClientUtils.httpGet(url, headMap));
-
+        Map<String, String> param = new HashMap<>();
+//        String url = "http://api09.aliyun.venuscn.com/express/trace/query?number=SF1161425402539";
+//        headMap.put("Authorization", "APPCODE 84035ec299934f24b7dc08be68cf9df3");
+        //https://token.faceunity.com/api/v1/GetAccessToken?params=test&Key=SLzS0FT%2BYNiF66PRcYM72mpTfuac5g%3D%3D&Signature=a48782d11b5a18a2ef51568e36285044bf3ba2c3
+        String url = "http://api.faceunity.com/api/cosmetics?access_token=ce0a98b0-f25e-11ea-9b25-ff70baebf2cd";
+        param.put("encoding", "base64");
+        param.put("params", "{\"makeup_highlight_color\":[0.98,0.95,0.94,1.0],\"makeup_intensity_highlight\":5,\"tex_highlight\":\"mu_style_highlight_01\"," +
+                "\"makeup_foundation_color\":[0.91,0.81,0.74,1.0]" +
+                "}");
+       String ss= HttpClientUtils.uploadFileImpl(url, "D:\\美图\\秀.jpg", "image", param);
+        Map map=JsonUtils.fromJson(ss,Map.class);
+        System.out.println("data:image/jpg;base64,"+map.get("data"));
+//    System.out.println(URLEncoder.encode("SLzS0FT+YNiF66PRcYM72mpTfuac5g=="));
 
     }
 

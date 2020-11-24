@@ -1,5 +1,6 @@
 package org.unicorn.framework.web.utils.http;
 
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -8,10 +9,7 @@ import org.unicorn.framework.util.json.JsonUtils;
 
 import javax.net.ssl.*;
 import java.io.*;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
-import java.net.URL;
+import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -201,6 +199,7 @@ public class CoreHttpUtils {
 		} catch (IOException ex) {
 			int status=conn.getResponseCode();
  			logger.error("接口调用失败:url==>{},响应码===>{}",requestUrl,conn.getResponseCode());
+ 			logger.error("调用失败",ex);
 			if(!HTTPSTATUS.contains(status)){
 				throw ex;
 			}
@@ -279,20 +278,28 @@ public class CoreHttpUtils {
 					conn.setRequestProperty(entry.getKey(), entry.getValue());
 				}
 			}
+
+			DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
+			dataOutputStream.writeBytes(body.toString());
+			dataOutputStream.flush();
+			dataOutputStream.close();
+
+
 			conn.connect();
-			if (null != body) {
-				String outputStr = null;
-				if (body instanceof String) {
-					outputStr = (String) body;
-				} else {
-					outputStr = new Gson().toJson(body);
-				}
-				logger.info("请求参数+" + outputStr);
-				OutputStream outputStream = conn.getOutputStream();
-				outputStream.write(outputStr.getBytes(encoding));
-				outputStream.flush();
-				outputStream.close();
-			}
+//			if (null != body) {
+//				String outputStr = null;
+//				if (body instanceof String) {
+//					outputStr = (String) body;
+//				} else {
+//					outputStr = new Gson().toJson(body);
+//				}
+//				logger.info("请求参数+" + outputStr);
+//				OutputStream outputStream = conn.getOutputStream();
+//				outputStream.write(outputStr.getBytes(encoding));
+//				outputStream.flush();
+//				outputStream.close();
+//			}
+
 			// 从输入流读取返回内容
 			inputStream = conn.getInputStream();
 			return IOUtils.toByteArray(inputStream);
@@ -358,5 +365,15 @@ public class CoreHttpUtils {
 			return new PasswordAuthentication(username, password.toCharArray());
 		}
 	}
-	
+
+	public static void main(String[] args)  throws  Exception{
+		String ss="https://api.mall.perfectdiary.com/api/product/page/7793994233605072";
+		Map<String,String> headMap= Maps.newConcurrentMap();
+		headMap.put("Host","api.mall.perfectdiary.com");
+		headMap.put("Authorization","Basic bWluaWFwcDptaW5pYXBw");
+		headMap.put("Referer","https://servicewechat.com/wx805644f008f3ca49/46/page-frame.html");
+		headMap.put("Content-Type","application/json");
+		System.out.println(CoreHttpUtils.get(ss,headMap,(Object)null));
+	}
+
 }
