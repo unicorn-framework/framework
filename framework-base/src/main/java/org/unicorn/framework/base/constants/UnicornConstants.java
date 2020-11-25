@@ -15,9 +15,9 @@ public class UnicornConstants {
     /** 请求追踪请求头名**/
     public static final String REQUEST_TRACK_HEADER_NAME="request_id";
     /**
-     * app 加密前缀
+     * mini 微信小程序 加密前缀
      */
-    public static final String APP_ECODE_PRE="unicorn_app:";
+    public static final String WX_MINI_PRE="unicorn_wx_mini:";
     /**
      * backstage 加密前缀
      */
