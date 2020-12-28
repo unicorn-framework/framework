@@ -30,7 +30,7 @@ public class UnicornTkExampleUtils {
 
 
     /**
-     * 返回example ，指定返回字段
+     * 返回example ，返回指定字段
      *
      * @param clazz
      * @param excludeProperties
@@ -60,6 +60,7 @@ public class UnicornTkExampleUtils {
 
     /**
      * 设置查询条件
+     * 只设置equal
      *
      * @param clazz
      * @param t
@@ -105,7 +106,7 @@ public class UnicornTkExampleUtils {
     }
 
     /**
-     * 根据 excludeProperties 返回需要返回的字段数组
+     * 返回需要返回的字段数组
      *
      * @param clazz
      * @param excludeProperties
@@ -116,8 +117,7 @@ public class UnicornTkExampleUtils {
         Set<EntityColumn> columnSet = EntityHelper.getColumns(clazz);
         List<String> properties = columnSet.stream()
                 .map(entityColumn -> entityColumn.getProperty()).collect(Collectors.toList())
-                .stream().filter(property -> excludeProperties.contains(property)).collect(Collectors.toList());
+                .stream().filter(property -> !excludeProperties.contains(property)).collect(Collectors.toList());
         return properties.toArray(new String[]{});
     }
-
 }
