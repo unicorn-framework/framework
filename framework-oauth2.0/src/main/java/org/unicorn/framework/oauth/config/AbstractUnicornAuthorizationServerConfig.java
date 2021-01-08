@@ -42,18 +42,24 @@ public abstract class AbstractUnicornAuthorizationServerConfig extends Authoriza
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+    /**
+     * 配置授权以及令牌访问断点和令牌服务
+     * @param endpoints
+     * @throws Exception
+     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore)
+        endpoints
+                //token存储
+                .tokenStore(tokenStore)
+                //异常转换
                 .exceptionTranslator(customWebResponseExceptionTranslator)
+                //认证管理
                 .authenticationManager(authenticationManager)
+                //token代理处理
                 .tokenEnhancer(unicornTokenEnhancer)
-                .userDetailsService(userDetailsService())
-
-
-        ;
-
+                //用户信息
+                .userDetailsService(userDetailsService());
     }
 
     /**
@@ -64,20 +70,29 @@ public abstract class AbstractUnicornAuthorizationServerConfig extends Authoriza
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        //客户端详情配置
         clients.withClientDetails(clientDetailsService());
     }
 
+    /**
+     * 配置令牌端点的安全约束
+     * @param oauthServer
+     * @throws Exception
+     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer.authenticationEntryPoint(new UnicornAuthExceptionEntryPoint())
+        oauthServer
+                //认证异常处理
+                .authenticationEntryPoint(new UnicornAuthExceptionEntryPoint())
+                //访问拒绝处理
                 .accessDeniedHandler(new UnicornAccessDeniedHandler())
+                //密码处理
                 .passwordEncoder(passwordEncoder)
+                // 开启/oauth/token_key验证端口无权限访问
                 .tokenKeyAccess("permitAll()")
+                // 开启/oauth/check_token验证端口认证权限访问
                 .checkTokenAccess("isAuthenticated()");
     }
-
-
-
 
 
     /**

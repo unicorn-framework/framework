@@ -13,4 +13,9 @@ public class OauthConstants {
      * 权限缓存命名空间
      */
     public static final String PRIVILEGE_NAMESPACE="unicorn_privilege_namespace";
+
+    /**
+     * 授权请求头名称
+     */
+    public static final String AUTHORIZATION="Authorization";
 }

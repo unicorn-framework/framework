@@ -29,7 +29,7 @@ public class UnicornReidsTokenStoreConfig {
      * @return
      */
 
-    @Bean
+    @Bean(name="redisTokenStore")
     public TokenStore redisTokenStore() {
         return new RedisTokenStore(redisConnectionFactory);
     }
