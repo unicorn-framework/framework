@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.unicorn.framework.oauth.handler.UnicornAccessDeniedHandler;
+import org.unicorn.framework.oauth.handler.UnicornAuthExceptionEntryPoint;
 
 /**
  * @author xiebin

@@ -1,9 +1,8 @@
-package org.unicorn.framework.oauth.config;
+package org.unicorn.framework.oauth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.unicorn.framework.core.ResponseDto;
