@@ -3,16 +3,14 @@ package org.unicorn.framework.oauth.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.unicorn.framework.oauth.filter.UnicornPermitAuthenticationFilter;
+import org.unicorn.framework.oauth.handler.UnicornAuthExceptionEntryPoint;
 import org.unicorn.framework.oauth.properties.OAuth2Properties;
 import org.unicorn.framework.util.json.JsonUtils;
 
@@ -31,6 +29,7 @@ public class UnicornResourceServerConfig extends ResourceServerConfigurerAdapter
     private OAuth2Properties oauth2Properties;
     @Autowired
     private UnicornPermitAuthenticationFilter unicornPermitAuthenticationFilter;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         List<String> permitList = oauth2Properties.getPermitAlls();
