@@ -1,6 +1,7 @@
 
 package org.unicorn.framework.gateway.handler;
 
+import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 
@@ -37,7 +38,7 @@ public class GatewayHandlerAdapter {
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static <S> List<IGatewayHandler<S>> handlerList(S s) throws PendingException {
         List<IGatewayHandler<S>> list = new ArrayList<>();
-        Map<String, IGatewayHandler> beanMaps = GatewaySpringContextHolder.getApplicationContext().getBeansOfType(IGatewayHandler.class);
+        Map<String, IGatewayHandler> beanMaps = SpringContextHolder.getApplicationContext().getBeansOfType(IGatewayHandler.class);
         for (String beanName : beanMaps.keySet()) {
             IGatewayHandler<S> handler = beanMaps.get(beanName);
             try {

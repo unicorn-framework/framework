@@ -124,7 +124,7 @@ public class SecurityFilter implements GlobalFilter {
             throw pe;
         } catch (Exception e) {
             log.error("安全拦截异常:", e);
-            throw new PendingException(SysCode.API_SECURITY_ERROR);
+            throw new PendingException(SysCode.API_SECURITY_ERROR,e);
         }
     }
 
