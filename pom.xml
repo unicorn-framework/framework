@@ -17,7 +17,6 @@
         <version>2.1.5.RELEASE</version>
         <relativePath/>
     </parent>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -127,7 +126,6 @@
                 <artifactId>framework-websocket</artifactId>
                 <version>${module.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -181,6 +179,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <!-- 一大波工具类 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.5.8</version>
         </dependency>
     </dependencies>
 

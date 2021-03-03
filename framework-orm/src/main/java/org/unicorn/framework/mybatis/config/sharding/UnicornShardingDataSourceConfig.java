@@ -8,15 +8,16 @@ import io.shardingsphere.api.config.strategy.InlineShardingStrategyConfiguration
 import io.shardingsphere.core.constant.properties.ShardingPropertiesConstant;
 import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.validation.DataBinder;
-import org.unicorn.framework.mybatis.config.sharding.properties.*;
+import org.unicorn.framework.mybatis.config.AbstractUnicornDataSourceConfig;
+import org.unicorn.framework.mybatis.config.properties.UnicornDataSourcePoolProperties;
+import org.unicorn.framework.mybatis.config.sharding.properties.UnicornDataSourceBaseProperties;
+import org.unicorn.framework.mybatis.config.sharding.properties.UnicornDataSourceRuleProperties;
+import org.unicorn.framework.mybatis.config.sharding.properties.UnicornDataTableRuleProperties;
+import org.unicorn.framework.mybatis.config.sharding.properties.UnicornShardingRuleProperties;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -29,8 +30,9 @@ import java.util.Properties;
  */
 @Slf4j
 @Configuration
+@ConditionalOnProperty(prefix = "unicorn.datasource.sharding",name="enable",havingValue = "true")
 @EnableConfigurationProperties({UnicornDataSourceBaseProperties.class, UnicornDataSourceRuleProperties.class, UnicornDataSourcePoolProperties.class, UnicornDataTableRuleProperties.class})
-public class UnicornDataSourceConfig {
+public class UnicornShardingDataSourceConfig extends AbstractUnicornDataSourceConfig {
     /**
      * 数据源规则
      */
@@ -52,12 +54,8 @@ public class UnicornDataSourceConfig {
     @Autowired
     private UnicornDataTableRuleProperties unicornDataTableRuleProperties;
 
-    @Primary
-    @Bean(name = "unicornDataSource")
-    public DataSource unicornDataSource() {
-        return buildDataSource();
-    }
 
+    @Override
     public DataSource buildDataSource() {
         try {
             //初始化并存储所有的数据源信息
@@ -124,61 +122,11 @@ public class UnicornDataSourceConfig {
         //获取数据源配置 并初始化所有的数据源
         Map<String, Map<String, String>> masterDbMap = unicornDataSourceBaseProperties.getDatasource();
         masterDbMap.keySet().forEach(dataSourceName -> {
-            DataSource datasource = createDataSource(masterDbMap.get(dataSourceName));
+            DataSource datasource = createDataSource(masterDbMap.get(dataSourceName), unicornDataSourcePoolProperties.getProperties());
             dataSourceMap.put(dataSourceName, datasource);
         });
         return dataSourceMap;
     }
 
-    /**
-     * 获取map属性
-     *
-     * @param map
-     * @param proName
-     * @return
-     */
-    public String getProperties(Map<String, String> map, String proName) {
-        return map.get(proName);
-    }
 
-    /**
-     * 根据配置创建数据库对象
-     *
-     * @param datasourceProperties
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public DataSource createDataSource(Map<String, String> datasourceProperties) {
-        try {
-            String dataSourceType = getProperties(datasourceProperties, "type");
-            Class<? extends DataSource> type = null;
-            try {
-                type = (Class<? extends DataSource>) Class.forName(dataSourceType);
-            } catch (Exception e) {
-                log.error("datasource不合法的类型配置", e);
-            }
-            DataSource dataSource = DataSourceBuilder.create().type(type).build();
-            // 数据源基本信息绑定
-            bind(dataSource, datasourceProperties);
-            //数据源连接池信息绑定
-            bind(dataSource, unicornDataSourcePoolProperties.getProperties());
-            return dataSource;
-        } catch (Exception e) {
-            log.error("创建数据源失败", e);
-            return null;
-        }
-    }
-
-    /**
-     * 数据源绑定属性
-     *
-     * @param result
-     * @param properties
-     */
-    public void bind(DataSource datasource, Map<String, String> properties) {
-        //数据源属性
-        MutablePropertyValues mproperties = new MutablePropertyValues(properties);
-        //将数据源属性绑定
-        new DataBinder(datasource).bind(mproperties);
-    }
 }
