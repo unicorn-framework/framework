@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * gatewat 异常处理配置类
+ * gateway 异常处理配置类
  *
  * @Author: xiebin
  * @Description:

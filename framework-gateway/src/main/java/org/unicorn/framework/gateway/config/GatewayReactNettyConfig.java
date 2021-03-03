@@ -9,7 +9,7 @@ import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.unicorn.framework.gateway.properties.UnicornGatewayProperties;
 
 /**
- * 配置gatewat netty IO工作线程数
+ * 配置gateway netty IO工作线程数
  * @author xiebin
  */
 @Slf4j

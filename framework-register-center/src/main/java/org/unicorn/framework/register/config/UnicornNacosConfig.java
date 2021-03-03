@@ -10,7 +10,7 @@ import org.unicorn.framework.register.offline.UnicornNacosOffline;
  * @since 1.0
  */
 @Configuration
-@ConditionalOnProperty(prefix = "spring.cloud.nacos.discovery", name = "server-addr", matchIfMissing = false)
+@ConditionalOnProperty(prefix = "spring.cloud.nacos.discovery", name = "server-addr")
 public class UnicornNacosConfig {
 
 
