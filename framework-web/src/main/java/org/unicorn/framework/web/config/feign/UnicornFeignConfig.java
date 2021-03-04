@@ -9,7 +9,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.unicorn.framework.base.constants.UnicornConstants;
 import org.unicorn.framework.core.properties.UnicornCoreProperties;
-import org.unicorn.framework.web.utils.gray.GrayUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
@@ -51,10 +50,6 @@ public class UnicornFeignConfig implements RequestInterceptor {
             }
             //设置跟踪ID头部
             requestTemplate.header(UnicornConstants.REQUEST_TRACK_HEADER_NAME, request.getHeader(UnicornConstants.REQUEST_TRACK_HEADER_NAME));
-            //设置灰度上下文
-            if (unicornCoreProperties.getEnable().equals(Boolean.TRUE)) {
-                GrayUtil.setGrayContext(request);
-            }
         } catch (Exception e) {
             log.error("requestTemplate设置错误", e);
         }
