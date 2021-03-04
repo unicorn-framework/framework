@@ -297,6 +297,7 @@
         <module>framework-config-server</module>
         <module>framework-cache</module>
         <module>framework-orm</module>
+        <module>framework-web</module>
         <module>framework-drools</module>
         <module>framework-mq</module>
         <module>framework-register-center</module>
