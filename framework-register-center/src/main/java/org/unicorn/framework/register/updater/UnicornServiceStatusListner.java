@@ -1,5 +1,6 @@
 package org.unicorn.framework.register.updater;
 
+import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.listener.NamingEvent;
@@ -7,7 +8,6 @@ import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.netflix.loadbalancer.ServerListUpdater;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.alibaba.nacos.NacosDiscoveryProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * 用来监听nacos服务上下线通知
+ *
  * @Author: xiebin
  * @Description:
  * @Date:Create：in 2021-02-25 10:15
