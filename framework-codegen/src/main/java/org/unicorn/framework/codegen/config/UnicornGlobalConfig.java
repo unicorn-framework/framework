@@ -1,160 +1,72 @@
 package org.unicorn.framework.codegen.config;
 
+import lombok.Data;
+import org.assertj.core.util.Lists;
+import org.unicorn.framework.codegen.enums.UnicornFileType;
+
+import java.util.List;
+
 /**
- * @author  xiebin
+ * @author xiebin
  */
+@Data
 public class UnicornGlobalConfig {
-	/**
-	 * 生成文件的输出目录【默认 D 盘根目录】
-	 */
-	private String outputDir = "D://";
+    /**
+     * 生成文件的输出目录【默认 D 盘根目录】
+     */
+    private String outputDir = "D://";
 
-	/**
-	 * 是否覆盖已有文件
-	 */
-	private boolean fileOverride = false;
+    /**
+     * 是否覆盖已有文件
+     */
+    private boolean fileOverride = false;
 
-	/**
-	 * 是否打开输出目录 默认不打开
-	 */
-	private boolean open = false;
+    /**
+     * 是否打开输出目录 默认不打开
+     */
+    private boolean open = false;
 
-	/**
-	 * 是否在xml中添加二级缓存配置
-	 */
-	private boolean enableCache = false;
+    /**
+     * 是否在xml中添加二级缓存配置
+     */
+    private boolean enableCache = false;
 
-	/**
-	 * 开发人员
-	 */
-	private String author;
 
-	/**
-	 * 开启 ActiveRecord 模式
-	 */
-	private boolean activeRecord = true;
 
-	/**
-	 * 开启 BaseResultMap
-	 */
-	private boolean baseResultMap = false;
+    private List<UnicornFileType> fileTypes = Lists.newArrayList();
 
-	/**
-	 * 开启 baseColumnList
-	 */
-	private boolean baseColumnList = false;
-	/**
-	 * 各层文件名称方式，例如： %Controller 生成 UserController
-	 */
-	private String mapperName="%sMapper";
-	private String xmlName="%sMapper";
-	private String serviceImplName="%sService";
-	private String controllerName="%sController";
-	private String pageDtoName="%sPageRequestDto";
+    {
+        for (UnicornFileType type : UnicornFileType.values()) {
+            fileTypes.add(type);
+        }
+    }
 
-	
-	public String getOutputDir() {
-		return outputDir;
-	}
+    /**
+     * 开发人员
+     */
+    private String author;
 
-	public void setOutputDir(String outputDir) {
-		this.outputDir = outputDir;
-	}
+    /**
+     * 开启 ActiveRecord 模式
+     */
+    private boolean activeRecord = true;
 
-	public boolean isFileOverride() {
-		return fileOverride;
-	}
+    /**
+     * 开启 BaseResultMap
+     */
+    private boolean baseResultMap = false;
 
-	public void setFileOverride(boolean fileOverride) {
-		this.fileOverride = fileOverride;
-	}
-
-	public boolean isOpen() {
-		return open;
-	}
-
-	public void setOpen(boolean open) {
-		this.open = open;
-	}
-
-	public boolean isEnableCache() {
-		return enableCache;
-	}
-
-	public void setEnableCache(boolean enableCache) {
-		this.enableCache = enableCache;
-	}
-
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
-	public boolean isActiveRecord() {
-		return activeRecord;
-	}
-
-	public void setActiveRecord(boolean activeRecord) {
-		this.activeRecord = activeRecord;
-	}
-
-	public boolean isBaseResultMap() {
-		return baseResultMap;
-	}
-
-	public void setBaseResultMap(boolean baseResultMap) {
-		this.baseResultMap = baseResultMap;
-	}
-
-	public boolean isBaseColumnList() {
-		return baseColumnList;
-	}
-
-	public void setBaseColumnList(boolean baseColumnList) {
-		this.baseColumnList = baseColumnList;
-	}
-
-	public String getMapperName() {
-		return mapperName;
-	}
-
-	public void setMapperName(String mapperName) {
-		this.mapperName = mapperName;
-	}
-
-	public String getXmlName() {
-		return xmlName;
-	}
-
-	public void setXmlName(String xmlName) {
-		this.xmlName = xmlName;
-	}
-
-	public String getServiceImplName() {
-		return serviceImplName;
-	}
-
-	public void setServiceImplName(String serviceImplName) {
-		this.serviceImplName = serviceImplName;
-	}
-
-	public String getControllerName() {
-		return controllerName;
-	}
-
-	public void setControllerName(String controllerName) {
-		this.controllerName = controllerName;
-	}
-
-	public String getPageDtoName() {
-		return pageDtoName;
-	}
-
-	public void setPageDtoName(String pageDtoName) {
-		this.pageDtoName = pageDtoName;
-	}
+    /**
+     * 开启 baseColumnList
+     */
+    private boolean baseColumnList = false;
+    /**
+     * 各层文件名称方式，例如： %Controller 生成 UserController
+     */
+    private String mapperName = "%sMapper";
+    private String xmlName = "%sMapper";
+    private String serviceImplName = "%sService";
+    private String controllerName = "%sController";
+    private String pageDtoName = "%sPageRequestDto";
 
 }

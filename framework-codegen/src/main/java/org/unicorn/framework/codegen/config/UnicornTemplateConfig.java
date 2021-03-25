@@ -23,7 +23,7 @@ public class UnicornTemplateConfig extends TemplateConfig {
 
     private String dto = "/generate_templates/backstage/dto.java.vm";
 
-//    private String entityExample = "/generate_templates/backstage/entityExample.java.vm";
+    private String entityExample = "/generate_templates/backstage/entityExample.java.vm";
 
     private String apiServiceImpl = "/generate_templates/api/serviceImpl.java.vm";
 
