@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.unicorn.framework.register.properties.UnicornRibbonIRuleProperties;
 
 /**
@@ -25,8 +24,7 @@ public class RuleConfig {
     private UnicornRibbonIRuleProperties unicornRibbonIRuleProperties;
 
     @Bean
-    @Primary
-    @ConditionalOnProperty(prefix = "ribbon", name = "NFLoadBalancerRuleClassName", matchIfMissing = false)
+    @ConditionalOnProperty(prefix = "ribbon", name = "NFLoadBalancerRuleClassName")
     public IRule ribbonRule() {
         try {
             if (StringUtils.isBlank(unicornRibbonIRuleProperties.getNFLoadBalancerRuleClassName())) {
