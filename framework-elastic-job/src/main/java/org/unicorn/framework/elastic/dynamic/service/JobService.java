@@ -47,6 +47,9 @@ public class JobService extends AbstractService {
     @Autowired
     private ApplicationContext ctx;
 
+    @Autowired(required = false)
+    private IUnicornJobPersistenceService iUnicornJobPersistenceService;
+
     /**
      * 添加job总数
      */
@@ -65,6 +68,15 @@ public class JobService extends AbstractService {
         SpringJobScheduler springJobScheduler = (SpringJobScheduler) ctx.getBean(job.getJobName() + "SpringJobScheduler");
         springJobScheduler.init();
         info("【" + job.getJobName() + "】\t" + job.getJobClass() + "\tinit success");
+        //
+        if (iUnicornJobPersistenceService == null) {
+            return;
+        }
+        try {
+            iUnicornJobPersistenceService.saveJob(job);
+        } catch (Exception e) {
+            log.error("job持久化失败:jobName=" + job.getJobName(), e);
+        }
     }
 
     /**
@@ -75,6 +87,17 @@ public class JobService extends AbstractService {
      */
     public void removeJob(String jobName) throws Exception {
         zookeeperRegistryCenter.remove("/" + jobName);
+        //
+        if (iUnicornJobPersistenceService == null) {
+            return;
+        }
+        try {
+            Job job = new Job();
+            job.setJobName(jobName);
+            iUnicornJobPersistenceService.removeJob(job);
+        } catch (Exception e) {
+            log.error("job删除失败:jobName=" + jobName, e);
+        }
     }
 
     /**
