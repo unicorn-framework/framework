@@ -22,12 +22,12 @@ public class ZookeeperProperties {
 	/**
 	 * 等待重试的间隔时间的初始值. 单位毫秒.
 	 */
-	private int baseSleepTimeMilliseconds = 1000;
+	private int baseSleepTimeMilliseconds = 10000;
 
 	/**
 	 * 等待重试的间隔时间的最大值. 单位毫秒.
 	 */
-	private int maxSleepTimeMilliseconds = 3000;
+	private int maxSleepTimeMilliseconds = 30000;
 
 	/**
 	 * 最大重试次数.
@@ -37,12 +37,12 @@ public class ZookeeperProperties {
 	/**
 	 * 会话超时时间. 单位毫秒.
 	 */
-	private int sessionTimeoutMilliseconds;
+	private int sessionTimeoutMilliseconds=10000;
 
 	/**
 	 * 连接超时时间. 单位毫秒.
 	 */
-	private int connectionTimeoutMilliseconds;
+	private int connectionTimeoutMilliseconds=10000;
 
 	/**
 	 * 连接Zookeeper的权限令牌. 缺省为不需要权限验证.

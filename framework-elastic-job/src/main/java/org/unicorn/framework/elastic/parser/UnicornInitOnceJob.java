@@ -51,7 +51,7 @@ public class UnicornInitOnceJob implements SmartLifecycle {
             jobInfoList.forEach(jobInfo -> {
                 try {
                     Job job = JsonUtils.fromJson(jobInfo, Job.class);
-                    jobService.addJob(job);
+//                    jobService.addJob(job);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
