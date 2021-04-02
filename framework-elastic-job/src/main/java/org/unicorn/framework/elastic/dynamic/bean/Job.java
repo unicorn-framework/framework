@@ -173,7 +173,7 @@ public class Job  extends AbstractRequestDto {
 	 * 前置后置任务监听实现类，需实现ElasticJobListener接口
 	 * @return
 	 */
-	private String listener = "";
+	private String listener = "simpleJobListener";
 	
 	/**
 	 * 作业是否禁止启动,可用于部署作业时，先禁止启动，部署结束后统一启动

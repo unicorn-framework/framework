@@ -11,6 +11,7 @@ import org.apache.shardingsphere.elasticjob.api.JobConfiguration;
 import org.apache.shardingsphere.elasticjob.lite.api.bootstrap.impl.ScheduleJobBootstrap;
 import org.apache.shardingsphere.elasticjob.reg.base.CoordinatorRegistryCenter;
 import org.apache.shardingsphere.elasticjob.reg.zookeeper.ZookeeperRegistryCenter;
+import org.apache.shardingsphere.elasticjob.tracing.api.TracingConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -43,6 +44,8 @@ public class JobService {
     @Autowired(required = false)
     private IUnicornJobPersistenceService iUnicornJobPersistenceService;
 
+    @Autowired
+    private TracingConfiguration tracingConfig;
     /**
      * 添加job总数
      */
@@ -184,6 +187,8 @@ public class JobService {
                 .jobParameter(job.getJobParameter())
                 .misfire(job.isMisfire())
                 .cron(job.getCron())
+                .addExtraConfigurations(tracingConfig)
+                .jobListenerTypes("unicornJobListener")
                 .build();
     }
 

@@ -2,6 +2,7 @@ package org.unicorn.framework.elastic.parser;
 
 
 import org.apache.shardingsphere.elasticjob.api.ElasticJob;
+import org.apache.shardingsphere.elasticjob.tracing.api.TracingConfiguration;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -31,6 +32,8 @@ public class JobConfParser extends AbstractService implements ApplicationContext
 
     @Autowired
     private JobService jobService;
+
+
 
     @Override
     public void setApplicationContext(ApplicationContext ctx) throws BeansException {
