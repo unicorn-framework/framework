@@ -15,7 +15,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<latest.release.version>3.0.0-beta</latest.release.version>
+		<latest.release.version>3.0.0-RC1</latest.release.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>org.apache.shardingsphere.elasticjob</groupId>
 			<artifactId>elasticjob-lite-core</artifactId>
-			<version>3.0.0-beta</version>
+			<version>3.0.0-RC1</version>
 		</dependency>
 
 	</dependencies>

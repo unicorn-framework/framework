@@ -20,6 +20,11 @@ public class ZookeeperProperties {
 	private String namespace;
 
 	/**
+	 * 是否开启追踪.
+	 */
+	private String traceEnable;
+
+	/**
 	 * 等待重试的间隔时间的初始值. 单位毫秒.
 	 */
 	private int baseSleepTimeMilliseconds = 10000;
@@ -37,12 +42,12 @@ public class ZookeeperProperties {
 	/**
 	 * 会话超时时间. 单位毫秒.
 	 */
-	private int sessionTimeoutMilliseconds=10000;
+	private int sessionTimeoutMilliseconds=60000;
 
 	/**
 	 * 连接超时时间. 单位毫秒.
 	 */
-	private int connectionTimeoutMilliseconds=10000;
+	private int connectionTimeoutMilliseconds=15000;
 
 	/**
 	 * 连接Zookeeper的权限令牌. 缺省为不需要权限验证.

@@ -2,7 +2,6 @@ package org.unicorn.framework.elastic.parser;
 
 
 import org.apache.shardingsphere.elasticjob.api.ElasticJob;
-import org.apache.shardingsphere.elasticjob.tracing.api.TracingConfiguration;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,7 +33,6 @@ public class JobConfParser extends AbstractService implements ApplicationContext
     private JobService jobService;
 
 
-
     @Override
     public void setApplicationContext(ApplicationContext ctx) throws BeansException {
         environment = ctx.getEnvironment();
@@ -46,9 +44,6 @@ public class JobConfParser extends AbstractService implements ApplicationContext
             //添加job
             jobService.addJob(job, (ElasticJob) confBean);
         }
-        //开启任务监听,当有任务添加时，监听zk中的数据增加，自动在其他节点也初始化该任务
-//        jobService.monitorJobRegister();
-
     }
 
     /**
