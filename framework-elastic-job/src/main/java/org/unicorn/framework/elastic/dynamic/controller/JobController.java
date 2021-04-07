@@ -34,7 +34,7 @@ public class JobController {
     @RequestMapping(value="/job",method = RequestMethod.POST)
     public ResponseDto<String> addJob(@RequestBody Job job) throws PendingException {
         try {
-            jobService.addJob(job,null);
+            jobService.addJob(job);
             return new ResponseDto<>();
         } catch (Exception e) {
             throw new PendingException(SysCode.SYS_FAIL,"添加动态任务失败");

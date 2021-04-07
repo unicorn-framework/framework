@@ -7,7 +7,7 @@ import org.apache.shardingsphere.elasticjob.lite.api.bootstrap.impl.ScheduleJobB
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.base.base.SpringContextHolder;
-import org.unicorn.framework.elastic.annotation.ElasticOnceJobConf;
+import org.unicorn.framework.elastic.annotation.ElasticJobConf;
 import org.unicorn.framework.elastic.dynamic.service.JobService;
 
 /**
@@ -32,7 +32,7 @@ public class UnicornJobListener implements ElasticJobListener {
     /**
      * 获取Bean
      *
-     * @param job
+     * @param beanName
      * @return
      */
     private Object getBean(String beanName) {
@@ -50,13 +50,13 @@ public class UnicornJobListener implements ElasticJobListener {
     public void afterJobExecuted(ShardingContexts shardingContexts) {
         try {
             if (getBean(shardingContexts.getJobName()) != null) {
-                ElasticOnceJobConf elasticOnceJobConf = SpringContextHolder.getBean(shardingContexts.getJobName()).getClass().getAnnotation(ElasticOnceJobConf.class);
-                if (elasticOnceJobConf != null) {
+                ElasticJobConf elasticJobConf = SpringContextHolder.getBean(shardingContexts.getJobName()).getClass().getAnnotation(ElasticJobConf.class);
+                if (elasticJobConf != null && elasticJobConf.once()) {
                     DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) SpringContextHolder.getApplicationContext().getAutowireCapableBeanFactory();
                     defaultListableBeanFactory.destroySingleton(shardingContexts.getJobName());
                     SpringContextHolder.getBean(shardingContexts.getJobName() + "UnicornJobScheduler", ScheduleJobBootstrap.class).shutdown();
                     SpringContextHolder.getBean(JobService.class).removeJob(shardingContexts.getJobName());
-                    log.info("一次性任务:"+shardingContexts.getJobName()+"清理完成");
+                    log.info("一次性任务:" + shardingContexts.getJobName() + "清理完成");
                 }
             }
         } catch (Exception e) {

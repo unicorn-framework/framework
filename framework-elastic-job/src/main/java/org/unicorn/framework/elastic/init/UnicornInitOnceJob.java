@@ -1,4 +1,4 @@
-package org.unicorn.framework.elastic.parser;
+package org.unicorn.framework.elastic.init;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.SmartLifecycle;
@@ -12,19 +12,19 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * 初始化一次性任务
+ * 初始化 一次性任务
  * SmartLifecycle 生命周期 容器启动将会执行start方法
+ *
  * @Author: xiebin
  * @Description:
  * @Date:Create：in 2021-03-29 18:02
  */
 @Component
 public class UnicornInitOnceJob implements SmartLifecycle {
-
-    private final AtomicBoolean running = new AtomicBoolean(false);
-
     @Autowired
     private JobService jobService;
+
+    private final AtomicBoolean running = new AtomicBoolean(false);
 
     @Autowired(required = false)
     private IUnicornJobPersistenceService iUnicornJobPersistenceService;
@@ -47,6 +47,7 @@ public class UnicornInitOnceJob implements SmartLifecycle {
             if (iUnicornJobPersistenceService == null) {
                 return;
             }
+            //获取本地存储的一次性任务
             List<String> jobInfoList = iUnicornJobPersistenceService.jobInfoJsonList();
             jobInfoList.forEach(jobInfo -> {
                 try {

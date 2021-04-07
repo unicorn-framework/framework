@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.unicorn.framework.elastic.parser.JobConfParser;
 
 import javax.sql.DataSource;
 
@@ -49,17 +48,12 @@ public class JobParserAutoConfiguration {
         return coordinatorRegistryCenter;
     }
 
-
-    @Bean
-    public JobConfParser jobConfParser() {
-        return new JobConfParser();
-    }
-
     /**
      * 定义日志数据库事件溯源配置
+     *
      * @return
      */
-    @ConditionalOnProperty(prefix = "unicorn.elastic.job.zk",value = "traceEnable" ,havingValue = "true")
+    @ConditionalOnProperty(prefix = "unicorn.elastic.job.zk", value = "traceEnable", havingValue = "true")
     @Bean
     public TracingConfiguration tracingConfig() {
         return new TracingConfiguration<>("RDB", dataSource);

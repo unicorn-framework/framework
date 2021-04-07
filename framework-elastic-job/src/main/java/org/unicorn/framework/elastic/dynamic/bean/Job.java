@@ -29,8 +29,8 @@ public class Job extends AbstractRequestDto {
     /**
      * 作业类型（SIMPLE，DATAFLOW，SCRIPT）
      */
-    @ApiModelProperty(value = "job类型", name = "job类型", example = "SimpleJob、DataflowJob、ScriptJob")
-    private String jobType;
+    @ApiModelProperty(value = "job类型", name = "job类型", example = "SimpleJob、DataflowJob、ScriptJob、HttpJob")
+    private String jobType = Contants.SIMPLE_JOB;
 
     /**
      * 任务类路径
@@ -222,26 +222,16 @@ public class Job extends AbstractRequestDto {
      */
     private JobProperties jobProperties = new JobProperties();
 
+    /**
+     * 作业是否为一次性任务
+     *
+     * @return
+     */
+    boolean once = false;
+
+
     @Override
     public void vaildatioinThrowException() throws PendingException {
-        if (StringUtils.isBlank(this.jobName)) {
-            throw new PendingException(SysCode.PARA_NULL, "任务名称不能为空");
-        }
-        if (StringUtils.isBlank(this.cron)) {
-            throw new PendingException(SysCode.PARA_NULL, "corn表达式不能为空");
-        }
 
-        if (StringUtils.isBlank(this.jobType)) {
-            throw new PendingException(SysCode.PARA_NULL, "job类型不能为空");
-        }
-        if (Contants.SCRIP_JOB.equals(jobType)) {
-            if (!org.springframework.util.StringUtils.hasText(scriptCommandLine)) {
-                throw new PendingException(SysCode.PARA_NULL, "脚本命令行不能为空");
-            }
-        } else {
-            if (!org.springframework.util.StringUtils.hasText(jobClass)) {
-                throw new PendingException(SysCode.PARA_NULL, "job类路径不能为空");
-            }
-        }
     }
 }

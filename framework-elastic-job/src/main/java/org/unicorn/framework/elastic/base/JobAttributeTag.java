@@ -50,4 +50,12 @@ public class JobAttributeTag {
 	public static final String SCRIPT_COMMAND_LINE = "scriptCommandLine";
 	
 	public static final String STREAMING_PROCESS = "streamingProcess";
+	public static final String ONCE = "once";
+	public static final String URL = "url";
+	public static final String METHOD = "method";
+	public static final String DATA = "data";
+	public static final String CONNECT_TIMEOUT = "connectTimeout";
+	public static final String READ_TIMEOUT = "readTimeout";
+	public static final String CONTENT_TYPE = "contentType";
+	public static final String SHARDING_CONTEXT = "shardingContext";
 }
