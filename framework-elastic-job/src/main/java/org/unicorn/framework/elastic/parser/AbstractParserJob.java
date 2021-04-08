@@ -2,6 +2,7 @@ package org.unicorn.framework.elastic.parser;
 
 import org.springframework.util.StringUtils;
 import org.unicorn.framework.base.base.SpringContextHolder;
+import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.elastic.annotation.ElasticJobConf;
 import org.unicorn.framework.elastic.base.JobAttributeTag;
 import org.unicorn.framework.elastic.dynamic.bean.Job;
@@ -16,11 +17,17 @@ public abstract class AbstractParserJob implements IParserJob {
     private String prefix = "unicorn.elastic.job.";
 
     @Override
-    public Job parserJob(Object bean) {
-        return parserJobFromJobType(bean);
+    public Job parserJob(Object bean,String jobInfo) throws PendingException {
+        return parserJobFromJobType(bean,jobInfo);
     }
 
-    public abstract Job parserJobFromJobType(Object bean);
+    /**
+     * 根据JobType解析出job
+     * @param bean
+     * @param jobInfo
+     * @return
+     */
+    public abstract Job parserJobFromJobType(Object bean,String jobInfo) throws PendingException ;
 
     /**
      * 构造Job对象
@@ -60,7 +67,7 @@ public abstract class AbstractParserJob implements IParserJob {
         int reconcileIntervalMinutes = getEnvironmentIntValue(jobName, JobAttributeTag.RECONCILE_INTERVAL_MINUTES, conf.reconcileIntervalMinutes());
 
         job.setJobName(jobName);
-        job.setJobType(conf.jobType().toString());
+        job.setJobType(conf.jobType());
         job.setJobClass(jobClass);
         job.setCron(cron);
         job.setShardingItemParameters(shardingItemParameters);

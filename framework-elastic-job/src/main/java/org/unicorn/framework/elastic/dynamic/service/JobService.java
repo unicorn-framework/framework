@@ -8,6 +8,7 @@ import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.elastic.dynamic.bean.Job;
 import org.unicorn.framework.elastic.dynamic.util.JobUtils;
+import org.unicorn.framework.util.json.JsonUtils;
 
 /**
  * @author xiebin
@@ -25,18 +26,19 @@ public class JobService {
     /**
      * 增加动态job
      *
-     * @param job
+     * @param jobInfo
      */
-    public void addJob(Job job) {
+    public void addJob(String jobInfo) {
         try {
+            Job job = JsonUtils.fromJson(jobInfo, Job.class);
             Class clazz = Class.forName(job.getJobClass());
             Object bean = clazz.newInstance();
-            JobUtils.getParserJob(bean).parserJob(bean);
-            JobUtils.getRegJob(bean).regJob(job, bean);
+            Job realJob = JobUtils.getParserJob(bean).parserJob(bean, jobInfo);
+            JobUtils.getRegJob(bean).regJob(realJob, bean);
             //动态job 持久化
-            persistenceJob(job);
+            persistenceJob(realJob);
         } catch (Exception e) {
-            throw new PendingException(SysCode.SYS_FAIL, "job对应的类没找到");
+            throw new PendingException(SysCode.SYS_FAIL, "注册job失败", e);
         }
 
     }
@@ -64,12 +66,13 @@ public class JobService {
      * @throws Exception
      */
     public void removeJob(String jobName) {
-        coordinatorRegistryCenter.remove("/" + jobName);
-        //
-        if (iUnicornJobPersistenceService == null) {
-            return;
-        }
         try {
+            coordinatorRegistryCenter.remove("/" + jobName);
+            //
+            if (iUnicornJobPersistenceService == null) {
+                return;
+            }
+
             Job job = new Job();
             job.setJobName(jobName);
             iUnicornJobPersistenceService.removeJob(job);

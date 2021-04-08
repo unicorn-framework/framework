@@ -1,5 +1,6 @@
 package org.unicorn.framework.elastic.parser;
 
+import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.elastic.dynamic.bean.Job;
 
 /**
@@ -13,7 +14,7 @@ public interface IParserJob {
 
     boolean support(String jobType);
 
-    Job parserJob(Object bean);
+    Job parserJob(Object bean, String jobInfo) throws PendingException;
 
 
 }

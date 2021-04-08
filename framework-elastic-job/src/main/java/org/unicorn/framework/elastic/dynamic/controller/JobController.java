@@ -9,6 +9,7 @@ import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.elastic.dynamic.bean.Job;
 import org.unicorn.framework.elastic.dynamic.service.JobService;
+import org.unicorn.framework.util.json.JsonUtils;
 
 /**
  * 动态任务添加
@@ -31,13 +32,13 @@ public class JobController {
      * @return
      */
     @ApiOperation("动态添加job")
-    @RequestMapping(value="/job",method = RequestMethod.POST)
+    @RequestMapping(value = "/job", method = RequestMethod.POST)
     public ResponseDto<String> addJob(@RequestBody Job job) throws PendingException {
         try {
-            jobService.addJob(job);
+            jobService.addJob(JsonUtils.toJson(job));
             return new ResponseDto<>();
         } catch (Exception e) {
-            throw new PendingException(SysCode.SYS_FAIL,"添加动态任务失败");
+            throw new PendingException(SysCode.SYS_FAIL, "添加动态任务失败");
         }
 
     }
@@ -55,7 +56,7 @@ public class JobController {
             jobService.removeJob(jobName);
             return new ResponseDto<>();
         } catch (Exception e) {
-            throw new PendingException(SysCode.SYS_FAIL,"删除任务失败");
+            throw new PendingException(SysCode.SYS_FAIL, "删除任务失败");
         }
 
     }

@@ -3,10 +3,8 @@ package org.unicorn.framework.elastic.init;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.stereotype.Component;
-import org.unicorn.framework.elastic.dynamic.bean.Job;
 import org.unicorn.framework.elastic.dynamic.service.IUnicornJobPersistenceService;
 import org.unicorn.framework.elastic.dynamic.service.JobService;
-import org.unicorn.framework.util.json.JsonUtils;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -50,12 +48,8 @@ public class UnicornInitOnceJob implements SmartLifecycle {
             //获取本地存储的一次性任务
             List<String> jobInfoList = iUnicornJobPersistenceService.jobInfoJsonList();
             jobInfoList.forEach(jobInfo -> {
-                try {
-                    Job job = JsonUtils.fromJson(jobInfo, Job.class);
-                    jobService.addJob(job);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                //轮询一次性任务重新注册到调度中心
+                jobService.addJob(jobInfo);
             });
 
         }

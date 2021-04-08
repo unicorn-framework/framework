@@ -38,6 +38,8 @@ public class SimpleJobReg extends AbstractJobReg {
             defaultListableBeanFactory.registerBeanDefinition(job.getJobName() + "UnicornJobScheduler", factory.getBeanDefinition());
             ScheduleJobBootstrap scheduleJobBootstrap = (ScheduleJobBootstrap) SpringContextHolder.getBean(job.getJobName() + "UnicornJobScheduler");
             scheduleJobBootstrap.schedule();
+
+
             log.info("【" + job.getJobName() + "】\t" + job.getJobClass() + "\tinit success");
         } catch (Exception e) {
             log.error("【" + job.getJobName() + "】\t" + job.getJobClass() + "\tinit failure", e);

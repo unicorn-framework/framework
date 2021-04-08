@@ -1,5 +1,6 @@
 package org.unicorn.framework.elastic.reg;
 
+import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.elastic.annotation.ElasticJobConf;
 import org.unicorn.framework.elastic.dynamic.bean.Job;
 
@@ -14,7 +15,7 @@ public interface IRegJob {
 
     boolean support(Object jobBean, ElasticJobConf elasticJobConf);
 
-    void regJob(Job job, Object jobBean);
+    void regJob(Job job, Object jobBean)throws PendingException;
 
 
 }

@@ -26,6 +26,7 @@ public class UnicornJobListener implements ElasticJobListener {
 
     @Override
     public void beforeJobExecuted(ShardingContexts shardingContexts) {
+
         log.info(shardingContexts.getJobName() + "开始运行");
     }
 
@@ -55,6 +56,7 @@ public class UnicornJobListener implements ElasticJobListener {
                     DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) SpringContextHolder.getApplicationContext().getAutowireCapableBeanFactory();
                     defaultListableBeanFactory.destroySingleton(shardingContexts.getJobName());
                     SpringContextHolder.getBean(shardingContexts.getJobName() + "UnicornJobScheduler", ScheduleJobBootstrap.class).shutdown();
+                    defaultListableBeanFactory.destroySingleton(shardingContexts.getJobName() + "UnicornJobScheduler");
                     SpringContextHolder.getBean(JobService.class).removeJob(shardingContexts.getJobName());
                     log.info("一次性任务:" + shardingContexts.getJobName() + "清理完成");
                 }
