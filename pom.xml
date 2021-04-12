@@ -5,7 +5,7 @@
 
     <groupId>org.unicorn</groupId>
     <artifactId>unicorn-framework</artifactId>
-    <version>2.2.0-SNAPSHOT</version>
+    <version>${unicorn.version}-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>unicorn-framework</name>
@@ -133,6 +133,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <env.version>SNAPSHOT</env.version>
+        <unicorn.version>3.0.0</unicorn.version>
         <module.version>2.2.0-${env.version}</module.version>
         <java.version>1.8</java.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -153,6 +154,7 @@
         <httpclient.version>4.5</httpclient.version>
         <httpmime.version>4.5</httpmime.version>
         <neuxs.path>115.29.241.224:8081/repository</neuxs.path>
+
     </properties>
 
     <dependencies>
