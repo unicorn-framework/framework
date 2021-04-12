@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.unicorn</groupId>
 		<artifactId>unicorn-framework</artifactId>
-		<version>${unicorn.version}-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>framework-transaction-manager</artifactId>
 	<name>framework-transaction-manager</name>

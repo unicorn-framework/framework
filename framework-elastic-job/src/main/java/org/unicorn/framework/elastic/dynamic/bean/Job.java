@@ -227,7 +227,7 @@ public class Job extends AbstractRequestDto {
      *
      * @return
      */
-    boolean once = false;
+    boolean once = true;
 
 
     @Override
