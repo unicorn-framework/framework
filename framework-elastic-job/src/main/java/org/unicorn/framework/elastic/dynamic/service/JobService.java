@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.elasticjob.reg.base.CoordinatorRegistryCenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.elastic.dynamic.bean.Job;
@@ -32,7 +33,11 @@ public class JobService {
         try {
             Job job = JsonUtils.fromJson(jobInfo, Job.class);
             Class clazz = Class.forName(job.getJobClass());
-            Object bean = clazz.newInstance();
+            Object bean = getBean(clazz);
+            if(bean==null){
+                log.info(clazz.getSimpleName() + "还没注册到容器中");
+                bean = clazz.newInstance();
+            }
             Job realJob = JobUtils.getParserJob(bean).parserJob(bean, jobInfo);
             JobUtils.getRegJob(bean).regJob(realJob, bean);
             //动态job 持久化
@@ -42,6 +47,18 @@ public class JobService {
         }
 
     }
+
+    public Object getBean(Class jobBeanClass) {
+        Object obj = null;
+        try {
+            obj = SpringContextHolder.getBean(jobBeanClass);
+        } catch (Exception e) {
+            log.info(jobBeanClass.getSimpleName() + "还没注册到容器中");
+        } finally {
+            return obj;
+        }
+    }
+
 
     /**
      * 动态job 持久化
