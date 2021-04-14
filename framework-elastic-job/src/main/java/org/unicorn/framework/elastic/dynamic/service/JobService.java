@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.unicorn.framework.base.base.SpringContextHolder;
 import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.exception.PendingException;
+import org.unicorn.framework.elastic.contants.Contants;
 import org.unicorn.framework.elastic.dynamic.bean.Job;
 import org.unicorn.framework.elastic.dynamic.util.JobUtils;
 import org.unicorn.framework.util.json.JsonUtils;
@@ -89,7 +90,7 @@ public class JobService {
             }
 
             Job job = new Job();
-            job.setJobName(jobName);
+            job.setJobName(jobName.replaceFirst(Contants.JOB_NAMESPACE,""));
             iUnicornJobPersistenceService.removeJob(job);
         } catch (Exception e) {
             log.error("job删除失败:jobName=" + jobName, e);

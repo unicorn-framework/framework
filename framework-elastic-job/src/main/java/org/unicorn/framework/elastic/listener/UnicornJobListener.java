@@ -7,10 +7,9 @@ import org.apache.shardingsphere.elasticjob.lite.api.bootstrap.impl.ScheduleJobB
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.stereotype.Component;
 import org.unicorn.framework.base.base.SpringContextHolder;
-import org.unicorn.framework.cache.cache.CacheService;
 import org.unicorn.framework.elastic.contants.Contants;
-import org.unicorn.framework.elastic.dynamic.bean.Job;
 import org.unicorn.framework.elastic.dynamic.service.JobService;
+import org.unicorn.framework.elastic.event.CleanDynamicJobEvent;
 
 /**
  * 框架默认提供的job跟踪，记录job运行日志
@@ -34,14 +33,14 @@ public class UnicornJobListener implements ElasticJobListener {
     @Override
     public void afterJobExecuted(ShardingContexts shardingContexts) {
         try {
-            CacheService cacheService = SpringContextHolder.getBean(CacheService.class);
-            Job job = (Job) cacheService.get(shardingContexts.getJobName(), Contants.JOB_NAMESPACE);
-            if (job != null && job.isOnce()) {
+            //如果是一次性任务则清理
+            if (shardingContexts.getJobName().startsWith(Contants.JOB_NAMESPACE)) {
+                String jobName = shardingContexts.getJobName().replaceFirst(Contants.JOB_NAMESPACE, "");
                 DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) SpringContextHolder.getApplicationContext().getAutowireCapableBeanFactory();
-                SpringContextHolder.getBean(shardingContexts.getJobName() + "UnicornJobScheduler", ScheduleJobBootstrap.class).shutdown();
-                defaultListableBeanFactory.destroySingleton(shardingContexts.getJobName() + "UnicornJobScheduler");
-                SpringContextHolder.getBean(JobService.class).removeJob(shardingContexts.getJobName());
-                cacheService.delete(shardingContexts.getJobName(), Contants.JOB_NAMESPACE);
+                SpringContextHolder.getBean(jobName + "UnicornJobScheduler", ScheduleJobBootstrap.class).shutdown();
+                defaultListableBeanFactory.destroySingleton(jobName + "UnicornJobScheduler");
+                CleanDynamicJobEvent cleanDynamicJobEvent=new CleanDynamicJobEvent(this,shardingContexts.getJobName());
+                SpringContextHolder.getApplicationContext().publishEvent(cleanDynamicJobEvent);
                 log.info("一次性任务:" + shardingContexts.getJobName() + "清理完成");
             }
         } catch (Exception e) {

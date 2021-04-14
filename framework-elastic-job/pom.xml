@@ -1,37 +1,38 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>framework-elastic-job</artifactId>
-	<name>framework-elastic-job</name>
-	<url>http://maven.apache.org</url>
-	<parent>
-		<groupId>org.unicorn</groupId>
-		<artifactId>unicorn-framework</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
-	</parent>
+    <artifactId>framework-elastic-job</artifactId>
+    <name>framework-elastic-job</name>
+    <url>http://maven.apache.org</url>
+    <parent>
+        <groupId>org.unicorn</groupId>
+        <artifactId>unicorn-framework</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+    </parent>
 
-	<properties>
-		<java.version>1.8</java.version>
-		<latest.release.version>3.0.0-RC1</latest.release.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.unicorn</groupId>
-			<artifactId>framework-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.unicorn</groupId>
-			<artifactId>framework-cache</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.shardingsphere.elasticjob/elasticjob-lite-core -->
-		<dependency>
-			<groupId>org.apache.shardingsphere.elasticjob</groupId>
-			<artifactId>elasticjob-lite-core</artifactId>
-			<version>3.0.0-RC1</version>
-		</dependency>
+    <properties>
+        <java.version>1.8</java.version>
+        <latest.release.version>3.0.0-RC1</latest.release.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.unicorn</groupId>
+            <artifactId>framework-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.unicorn</groupId>
+            <artifactId>framework-mq</artifactId>
+        </dependency>
 
-	</dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.shardingsphere.elasticjob/elasticjob-lite-core -->
+        <dependency>
+            <groupId>org.apache.shardingsphere.elasticjob</groupId>
+            <artifactId>elasticjob-lite-core</artifactId>
+            <version>3.0.0-RC1</version>
+        </dependency>
+
+    </dependencies>
 </project>

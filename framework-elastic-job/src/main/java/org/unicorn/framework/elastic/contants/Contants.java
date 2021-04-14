@@ -26,5 +26,5 @@ public class Contants {
     /**
      * job 缓存命名空间
      */
-    public static final String JOB_NAMESPACE="job:namespace";
+    public static final String JOB_NAMESPACE="job:namespace:once:";
 }

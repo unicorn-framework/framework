@@ -4,14 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.elasticjob.api.JobConfiguration;
 import org.apache.shardingsphere.elasticjob.lite.api.bootstrap.impl.ScheduleJobBootstrap;
 import org.apache.shardingsphere.elasticjob.reg.base.CoordinatorRegistryCenter;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.unicorn.framework.base.base.SpringContextHolder;
-import org.unicorn.framework.cache.cache.CacheService;
 import org.unicorn.framework.elastic.contants.Contants;
 import org.unicorn.framework.elastic.dynamic.bean.Job;
 
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 /**
  * @Author: xiebin
@@ -20,8 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public abstract class AbstractJobReg implements IRegJob {
-    @Autowired
-    private CacheService cacheService;
+
 
     @Autowired
     private CoordinatorRegistryCenter coordinatorRegistryCenter;
@@ -30,9 +29,6 @@ public abstract class AbstractJobReg implements IRegJob {
     @Override
     public void regJob(Job job, Object jobBean) {
         try {
-            if (job.isOnce()) {
-                cacheService.put(job.getJobName(), job,-1, TimeUnit.SECONDS, Contants.JOB_NAMESPACE);
-            }
             DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) SpringContextHolder.getApplicationContext().getAutowireCapableBeanFactory();
             ScheduleJobBootstrap scheduleJobBootstrap = prepareScheduleJobBootstrap(job, jobBean);
             defaultListableBeanFactory.registerSingleton(job.getJobName() + "UnicornJobScheduler", scheduleJobBootstrap);
@@ -58,15 +54,22 @@ public abstract class AbstractJobReg implements IRegJob {
      * @return
      */
     public JobConfiguration jobCoreConfiguration(Job job) {
+        List<String> listeners = Lists.newArrayList();
+        listeners.add("unicornJobListener");
+        String jobName=job.getJobName();
+        //如果是一次性任务 则修改jobName
+        if(job.isOnce()){
+            jobName=Contants.JOB_NAMESPACE+jobName;
+        }
         JobConfiguration jobConfiguration =
-                JobConfiguration.newBuilder(job.getJobName(), job.getShardingTotalCount())
+                JobConfiguration.newBuilder(jobName, job.getShardingTotalCount())
                         .shardingItemParameters(job.getShardingItemParameters())
                         .description(job.getDescription())
                         .failover(job.isFailover())
                         .jobParameter(job.getJobParameter())
                         .misfire(job.isMisfire())
                         .cron(job.getCron())
-                        .jobListenerTypes("unicornJobListener")
+                        .jobListenerTypes(listeners.toArray(new String[]{}))
                         .build();
         return jobConfiguration;
     }

@@ -3,8 +3,6 @@ package org.unicorn.framework.elastic.dynamic.bean;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-import org.unicorn.framework.core.SysCode;
 import org.unicorn.framework.core.dto.AbstractRequestDto;
 import org.unicorn.framework.core.exception.PendingException;
 import org.unicorn.framework.elastic.contants.Contants;
@@ -187,7 +185,7 @@ public class Job extends AbstractRequestDto {
      *
      * @return
      */
-    private String listener = "simpleJobListener";
+    private String listener = "";
 
     /**
      * 作业是否禁止启动,可用于部署作业时，先禁止启动，部署结束后统一启动
