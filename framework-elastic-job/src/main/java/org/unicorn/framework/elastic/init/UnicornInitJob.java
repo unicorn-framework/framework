@@ -44,9 +44,9 @@ public class UnicornInitJob implements SmartLifecycle {
             Map<String, Object> beanMap = SpringContextHolder.getApplicationContext().getBeansWithAnnotation(ElasticJobConf.class);
             for (Object confBean : beanMap.values()) {
                 //解析job
-                Job job = JobUtils.getParserJob(confBean).parserJob(confBean,null);
+                Job job = JobUtils.getParserJob(confBean).parserJob(confBean, null);
                 //如果corn为空则不注册 没意义
-                if (StringUtils.isBlank(job.getCron())) {
+                if (job.isOnce() && StringUtils.isBlank(job.getCron())) {
                     continue;
                 }
                 //注册job

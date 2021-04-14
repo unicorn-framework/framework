@@ -24,6 +24,8 @@ public class JobService {
     @Autowired(required = false)
     private IUnicornJobPersistenceService iUnicornJobPersistenceService;
 
+
+
     /**
      * 增加动态job
      *
@@ -33,11 +35,7 @@ public class JobService {
         try {
             Job job = JsonUtils.fromJson(jobInfo, Job.class);
             Class clazz = Class.forName(job.getJobClass());
-            Object bean = getBean(clazz);
-            if(bean==null){
-                log.info(clazz.getSimpleName() + "还没注册到容器中");
-                bean = clazz.newInstance();
-            }
+            Object bean = SpringContextHolder.getApplicationContext().getBean(clazz);
             Job realJob = JobUtils.getParserJob(bean).parserJob(bean, jobInfo);
             JobUtils.getRegJob(bean).regJob(realJob, bean);
             //动态job 持久化

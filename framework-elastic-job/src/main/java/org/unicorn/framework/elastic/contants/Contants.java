@@ -22,4 +22,9 @@ public class Contants {
      * HttpJob
      */
     public static final String HTTP_JOB = "HttpJob";
+
+    /**
+     * job 缓存命名空间
+     */
+    public static final String JOB_NAMESPACE="job:namespace";
 }
