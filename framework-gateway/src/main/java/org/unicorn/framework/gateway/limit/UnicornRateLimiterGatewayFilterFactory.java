@@ -1,5 +1,6 @@
 package org.unicorn.framework.gateway.limit;
 
+import lombok.Data;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
@@ -33,45 +34,19 @@ public class UnicornRateLimiterGatewayFilterFactory extends AbstractGatewayFilte
         return configValue != null ? configValue : defaultValue;
     }
 
-    @SuppressWarnings("unchecked")
+
     @Override
     public GatewayFilter apply(Config config) {
-        KeyResolver resolver = (KeyResolver) this.getOrDefault(config.keyResolver, this.defaultKeyResolver);
+        KeyResolver resolver = this.getOrDefault(config.keyResolver, this.defaultKeyResolver);
         RateLimiter<Object> limiter = (RateLimiter) this.getOrDefault(config.rateLimiter, this.defaultRateLimiter);
         return new RequestLimitGatewayFilter(resolver, limiter);
     }
 
+    @Data
     public static class Config {
         private KeyResolver keyResolver;
         private RateLimiter rateLimiter;
         private HttpStatus statusCode = HttpStatus.TOO_MANY_REQUESTS;
-
-        public KeyResolver getKeyResolver() {
-            return keyResolver;
-        }
-
-        public Config setKeyResolver(KeyResolver keyResolver) {
-            this.keyResolver = keyResolver;
-            return this;
-        }
-
-        public RateLimiter getRateLimiter() {
-            return rateLimiter;
-        }
-
-        public Config setRateLimiter(RateLimiter rateLimiter) {
-            this.rateLimiter = rateLimiter;
-            return this;
-        }
-
-        public HttpStatus getStatusCode() {
-            return statusCode;
-        }
-
-        public Config setStatusCode(HttpStatus statusCode) {
-            this.statusCode = statusCode;
-            return this;
-        }
     }
 
 }
