@@ -6,21 +6,26 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 幂等注解 -暂时没用
- * @author  xiebin
+ * 幂等注解
+ *
+ * @author xiebin
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface UnicornIdempotent {
     /**
-     * 幂等key的分组值，例如：sale-check
+     * 幂等key的分组值
+     *
+     * @return
+     */
+    String group() default "unicorn";
+
+    /**
+     * 参数的表达式，用来确定key值，例如："#req.saleInfo.channelCode+'-'+#req.seqId"
+     *
      * @return
      */
     String value();
 
-    /**
-     * 参数的表达式，用来确定key值，例如："#req.saleInfo.channelCode+'-'+#req.seqId"
-     * @return
-     */
-    String express();
+
 }

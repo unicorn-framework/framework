@@ -174,6 +174,12 @@ public class SysCode {
     public static final ResBean LCN_TRANSACTION_ROLLBACK = new ResBean("99099", "分布式事务回滚");
 
 
+    /**
+     * 重复提交
+     */
+    public static final ResBean REPEATED_SUBMIT = new ResBean("99100", "重复提交");
+
+
     //===================9开头的为系统异常  end==================================
 
     //=======================7开头标识数据库异常 start ==============================
