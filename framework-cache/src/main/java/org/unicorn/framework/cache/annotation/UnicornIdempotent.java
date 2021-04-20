@@ -27,5 +27,11 @@ public @interface UnicornIdempotent {
      */
     String value();
 
+    /**
+     * 是否抛出异常 默认抛出异常
+     * @return
+     */
+    boolean throwException() default  true;
+
 
 }

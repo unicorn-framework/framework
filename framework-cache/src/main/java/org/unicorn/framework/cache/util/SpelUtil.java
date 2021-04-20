@@ -32,20 +32,21 @@ public class SpelUtil {
      * @param joinPoint
      * @return
      */
-    public static String generateKeyBySpEL(String spELString, JoinPoint joinPoint) {
+    public static String generateKeyBySpEL(Object[] args, String spELString, JoinPoint joinPoint) {
         try {
             //如果表达式为空则直接返回
             if (StringUtils.isEmpty(spELString)) {
-                return spELString;
+                return null;
             }
-            //获取方法前面
-            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-            //解析参数名列表
-            String[] paramNames = nameDiscoverer.getParameterNames(methodSignature.getMethod());
             //构建spel表达式
             Expression expression = parser.parseExpression(spELString);
+            //获取方法签名
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+            //spel表达式上下文
             EvaluationContext context = new StandardEvaluationContext();
-            Object[] args = joinPoint.getArgs();
+            //解析参数名列表
+            String[] paramNames = nameDiscoverer.getParameterNames(methodSignature.getMethod());
+            //设置spel上下文
             for (int i = 0; i < args.length; i++) {
                 context.setVariable(paramNames[i], args[i]);
             }
